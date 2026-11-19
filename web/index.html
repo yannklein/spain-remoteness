@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How far is rural Spain from a city?</title>
+    <meta name="description" content="Public transport travel time from every Spanish municipality to the nearest main city." />
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <aside id="panel">
+      <button id="collapse" aria-label="Toggle panel">▾</button>
+      <h1>How far is rural Spain from a city?</h1>
+      <p class="lead">
+        Public transport time from each municipality to the nearest <strong id="tier-noun">regional hub</strong>,
+        arriving on a weekday morning.
+      </p>
+
+      <div class="tiers" role="radiogroup" aria-label="What counts as a main city">
+        <button role="radio" data-tier="1">Metros<span id="n1"></span></button>
+        <button role="radio" data-tier="2" aria-checked="true">Regional hubs<span id="n2"></span></button>
+        <button role="radio" data-tier="3">All urban<span id="n3"></span></button>
+      </div>
+      <p class="tier-help" id="tier-help"></p>
+
+      <div id="headline" class="headline" hidden></div>
+
+      <div class="legend" id="legend"></div>
+
+      <div id="status" class="status" hidden></div>
+
+      <details>
+        <summary>How this map is made</summary>
+        <ul>
+          <li><b>Metros</b>: the 6 municipalities over 500k people (Madrid, Barcelona, València, Sevilla, Zaragoza, Málaga).</li>
+          <li><b>Regional hubs</b>: the 50 provincial capitals, Ceuta, Melilla, Mérida, Santiago de Compostela, and every municipality over 100k. Suburbs over 100k are labelled with their metro.</li>
+          <li><b>All urban</b>: hubs plus every municipality over 50k, the core-city threshold Eurostat uses for Functional Urban Areas.</li>
+          <li>Main-city municipalities themselves are grey: the map colours only the non-urban ones.</li>
+          <li>Times come from the TravelTime API (public transport incl. walking, arriving 8–9am on a weekday), measured from each municipality's town centre (OpenStreetMap), capped at 3 hours. Islands only count cities on the same island.</li>
+          <li>Boundaries: IGN via <a href="https://github.com/martgnz/es-atlas">es-atlas</a>. Population: INE padrón.</li>
+        </ul>
+        <p class="meta" id="meta"></p>
+      </details>
+
+      <div class="jump">
+        <button data-view="peninsula">Peninsula</button>
+        <button data-view="canarias">Canarias</button>
+        <button data-view="baleares">Balears</button>
+      </div>
+    </aside>
+
+    <div id="tooltip" hidden></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

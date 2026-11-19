@@ -1,0 +1,77 @@
+name: Compute travel times
+
+# Rebuilds data/places.json (INE population + OSM town centres) and
+# web/public/data/remoteness.json (TravelTime public transport times),
+# then commits the results. Deploy runs automatically afterwards.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Only compute the first N cities (smoke test). Empty = all."
+        required: false
+        default: ""
+      refresh_places:
+        description: "Re-download INE population and OSM town centres"
+        type: boolean
+        default: true
+  schedule:
+    - cron: "17 4 1 */3 *" # quarterly, timetables change
+
+permissions:
+  contents: write
+
+concurrency:
+  group: compute
+  cancel-in-progress: false
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run tests
+        run: |
+          pip install pytest
+          python -m pytest -q pipeline/tests
+
+      - name: Restore per-city cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/times
+          key: times-${{ github.run_id }}
+          restore-keys: times-
+
+      - name: Build places (INE population + OSM town centres)
+        if: ${{ github.event_name == 'schedule' || inputs.refresh_places }}
+        run: python pipeline/build_places.py
+
+      - name: Compute travel times
+        env:
+          TRAVELTIME_APP_ID: ${{ secrets.TRAVELTIME_APP_ID }}
+          TRAVELTIME_API_KEY: ${{ secrets.TRAVELTIME_API_KEY }}
+        run: |
+          # a scheduled refresh recomputes everything; manual runs reuse the cache
+          FLAGS=""
+          if [ "${{ github.event_name }}" = "schedule" ]; then FLAGS="--no-cache"; fi
+          if [ -n "${{ inputs.limit }}" ]; then FLAGS="$FLAGS --limit ${{ inputs.limit }}"; fi
+          python pipeline/compute_times.py $FLAGS
+
+      - name: Show a sample of the output
+        run: python -c "import json;d=json.load(open('web/public/data/remoteness.json'));print(len(d['cities']),'cities',len(d['m']),'municipalities');print({k:d['m'][k] for k in ['44216','42173','10037','05019'] if k in d['m']})"
+
+      - name: Commit data
+        # smoke tests (limit set) only check the API round-trip, they never publish
+        if: ${{ inputs.limit == '' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/places.json web/public/data/remoteness.json
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "data: refresh travel times ($(date -u +%Y-%m-%d))"
+          git push
