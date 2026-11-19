@@ -14,7 +14,7 @@
       <h1>How far is rural Spain from a city?</h1>
       <p class="lead">
         Public transport time from each municipality to the nearest <strong id="tier-noun">regional hub</strong>,
-        arriving on a weekday morning.
+        best connection of a weekday.
       </p>
 
       <div class="tiers" role="radiogroup" aria-label="What counts as a main city">
@@ -37,7 +37,8 @@
           <li><b>Regional hubs</b>: the 50 provincial capitals, Ceuta, Melilla, Mérida, Santiago de Compostela, and every municipality over 100k. Suburbs over 100k are labelled with their metro.</li>
           <li><b>All urban</b>: hubs plus every municipality over 50k, the core-city threshold Eurostat uses for Functional Urban Areas.</li>
           <li>Main-city municipalities themselves are grey: the map colours only the non-urban ones.</li>
-          <li>Times come from the TravelTime API (public transport incl. walking, arriving 8–9am on a weekday), measured from each municipality's town centre (OpenStreetMap), capped at 3 hours. Islands only count cities on the same island.</li>
+          <li>Times come from the TravelTime API: public transport incl. walking, the fastest of three Tuesday arrivals (08:30, 11:30, 14:30), measured from each municipality's town centre (OpenStreetMap), capped at 3 hours. Islands only count cities on the same island.</li>
+          <li>Coverage depends on the timetables TravelTime has. Some local bus networks are missing (e.g. Alcantarilla to Murcia, Petrer to Elda), so a few places look more isolated than they are.</li>
           <li>Boundaries: IGN via <a href="https://github.com/martgnz/es-atlas">es-atlas</a>. Population: INE padrón.</li>
         </ul>
         <p class="meta" id="meta"></p>

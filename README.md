@@ -1,7 +1,7 @@
 # How far is rural Spain from a city?
 
 A map of every Spanish municipality coloured by how long it takes to reach the
-nearest **main city by public transport**, arriving on a weekday morning.
+nearest **main city by public transport**, taking the best connection of a weekday.
 
 The question "what is a main city?" has no single answer, so the map lets you
 switch between three definitions:
@@ -28,10 +28,10 @@ data/municipalities_base.json   8,132 INE municipalities (codes, names, islands,
         ▼
 data/places.json
         │
-        ▼  pipeline/compute_times.py  (TravelTime /v4/time-filter/fast)
-        │    one many-to-one search per city, 10 cities per request:
-        │    "arrive at city X on a weekday morning, from every municipality
-        │     in the same zone within 350 km", capped at 3 h
+        ▼  pipeline/compute_times.py  (TravelTime /v4/time-filter)
+        │    many-to-one searches per city: "arrive at city X next Tuesday at
+        │    08:30 / 11:30 / 14:30 from every municipality in the same zone
+        │    within 300 km", 2,000 origins per search, best time kept, capped at 3 h
         ▼
 web/public/data/remoteness.json  → per municipality and tier: minutes + nearest city
         │
@@ -47,13 +47,19 @@ Details worth knowing:
 - **Origins are town centres,** not geometric centroids. Large municipalities like Lorca or
   Cáceres have centroids far out in the countryside, which would add a long walk.
   If OSM has no `admin_centre` for a municipality, the centroid is used.
+- **Why several arrival times.** Rural lines may run two or three times a day. Benavente to Zamora
+  has no trip arriving at 08:30 but a 97 min one arriving at 11:30, so the map keeps the best of the three.
+  Edit `ARRIVAL_TIMES` in `pipeline/compute_times.py` to change this.
+- **Why not the fast endpoint.** `/time-filter/fast` only has a generic "weekday morning" profile and missed
+  many regional trips (La Rinconada to Sevilla, Avinyó to Barcelona). `pipeline/diagnose.py` compares both
+  endpoints on known commuter trips; `--endpoint fast` is still available.
+- **Known gaps.** Some local bus networks are absent from TravelTime's data (Alcantarilla to Murcia,
+  Petrer to Elda come out unreachable on every endpoint).
 - **Fallbacks.** If the INE download fails, the >100k list in `pipeline/cities.py` is used
-  and "All urban" equals "Regional hubs". If the fast endpoint rejects a request, the
-  pipeline falls back to the regular `/v4/time-filter` (2,000 locations per search,
-  next Tuesday 08:30 arrival, 250 km radius).
-- **Cost.** About 160 cities at 10 searches per request is roughly 20 API calls per full run.
-  Per-city results are cached in `.cache/times/` (and in the Actions cache), so a re-run only
-  computes new cities.
+  and "All urban" equals "Regional hubs".
+- **Cost.** About 775 searches (~80 requests) per full run, ~7 min at the free-key pace of
+  ~110 searches/min. Per-city results are cached in `.cache/times/<method>/`, so an interrupted
+  run resumes where it stopped.
 
 ## Running it
 

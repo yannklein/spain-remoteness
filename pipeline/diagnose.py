@@ -9,7 +9,7 @@ frequent bus), so all of them should be reachable well within 3 hours.
 import json
 
 from common import PLACES_FILE, load_json
-from compute_times import MAX_SECONDS, Client, next_weekday_8am
+from compute_times import ARRIVAL_TIMES, MAX_SECONDS, Client, arrival_times
 
 PAIRS = [  # (origin, destination)
     ("30005", "30030"),  # Alcantarilla -> Murcia
@@ -27,9 +27,9 @@ def main():
     by = {m["code"]: m for m in load_json(PLACES_FILE)["municipalities"]}
     loc = lambda c: {"id": c, "coords": {"lat": by[c]["lat"], "lng": by[c]["lng"]}}  # noqa: E731
     fast, regular = Client("fast"), Client("regular")
-    arrivals = [next_weekday_8am(), next_weekday_8am().replace("T07:30", "T10:30")]
+    arrivals = arrival_times()
 
-    print(f"{'origin -> destination':45s} {'fast':>6s} " + " ".join(f"reg@{a[11:16]}Z" for a in arrivals))
+    print(f"{'origin -> destination':45s} {'fast':>11s} " + " ".join(f"{'reg@' + t:>11s}" for t in ARRIVAL_TIMES))
     for o, d in PAIRS:
         locs = [loc(o), loc(d)]
         res = []

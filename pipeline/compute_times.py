@@ -1,14 +1,19 @@
 """Step 2: public transport travel times to the nearest main city.
 
 For every destination city we ask TravelTime how long it takes to arrive
-there on a weekday morning by public transport, from every municipality
-in the same zone (mainland / island / Ceuta / Melilla) within MAX_KM.
+there by public transport from every municipality in the same zone
+(mainland / island / Ceuta / Melilla) within MAX_KM, and keep the best
+of several weekday arrival times ("best connection of the day").
 Up to 3 hours is measured; anything slower is "3h+ / unreachable".
 
 Then, per municipality and per tier, we keep the fastest city.
 
+Why the regular /time-filter endpoint: the /fast one only knows a generic
+"weekday morning" profile and misses many regional connections (see
+pipeline/diagnose.py: La Rinconada -> Sevilla, Benavente -> Zamora...).
+
 Env: TRAVELTIME_APP_ID, TRAVELTIME_API_KEY
-Usage: python pipeline/compute_times.py [--limit N] [--endpoint fast|regular]
+Usage: python pipeline/compute_times.py [--limit N] [--endpoint regular|fast]
 """
 
 import argparse
@@ -23,12 +28,12 @@ from common import (CACHE_DIR, OUTPUT_FILE, PLACES_FILE, HTTPStatusError,
                     dump_json, haversine_km, http, load_json, zone)
 
 API = "https://api.traveltimeapp.com/v4"
-MAX_SECONDS = 10800          # 3 h, the maximum the fast endpoint allows
-MAX_KM = 350                 # beyond this, 3 h by public transport is out of reach
-MAX_KM_REGULAR = 250         # tighter radius for the (2,000-locations) regular endpoint
+MAX_SECONDS = 10800              # 3 h cap
+MAX_KM = 300                     # beyond this, 3 h by public transport is out of reach (AVE included)
+ARRIVAL_TIMES = ["08:30", "11:30", "14:30"]   # Madrid local time, on a Tuesday
 SEARCHES_PER_REQUEST = 10
-REGULAR_CHUNK = 1999         # 2,000 ids per search, minus the arrival location
-MIN_INTERVAL_S = 0.6         # stay well below 120 hits/min on a free key
+CHUNK = 1999                     # regular endpoint: 2,000 ids per search, minus the arrival location
+SECONDS_PER_SEARCH = 0.55        # free keys allow ~120 searches/min; each search is a "hit"
 TIERS = (1, 2, 3)
 
 
@@ -40,17 +45,32 @@ def headers():
     return {"Content-Type": "application/json", "X-Application-Id": app_id, "X-Api-Key": key}
 
 
-def next_weekday_8am():
-    """Next Tuesday 08:30 Madrid time, as UTC ISO string (regular endpoint)."""
+def next_tuesday():
     tz = ZoneInfo("Europe/Madrid")
     d = datetime.now(tz) + timedelta(days=1)
     while d.weekday() != 1:
         d += timedelta(days=1)
-    d = d.replace(hour=8, minute=30, second=0, microsecond=0)
-    return d.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return d.date()
 
 
-def origins_for(dest, munis, max_km):
+def arrival_times(times=ARRIVAL_TIMES):
+    """Next Tuesday at each local time, as UTC ISO strings."""
+    tz = ZoneInfo("Europe/Madrid")
+    day = next_tuesday()
+    out = []
+    for t in times:
+        h, m = map(int, t.split(":"))
+        local = datetime(day.year, day.month, day.day, h, m, tzinfo=tz)
+        out.append(local.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+    return out
+
+
+def next_weekday_8am():
+    """First arrival time (kept for diagnose.py)."""
+    return arrival_times()[0]
+
+
+def origins_for(dest, munis, max_km=MAX_KM):
     z = zone(dest)
     return [m for m in munis
             if m["code"] != dest["code"] and zone(m) == z
@@ -72,29 +92,33 @@ def parse_results(payload):
     return out
 
 
+def _locations(locs):
+    return [{"id": c, "coords": {"lat": m["lat"], "lng": m["lng"]}} for c, m in locs.items()]
+
+
 class Client:
-    def __init__(self, endpoint):
+    def __init__(self, endpoint="regular"):
         self.endpoint = endpoint
         self.headers = headers()
-        self.last = 0.0
+        self.next_allowed = 0.0
         self.calls = 0
 
     def post(self, path, body):
-        wait = MIN_INTERVAL_S - (time.time() - self.last)
+        wait = self.next_allowed - time.time()
         if wait > 0:
             time.sleep(wait)
-        self.last = time.time()
+        searches = body["arrival_searches"]
+        n = len(searches["many_to_one"]) if isinstance(searches, dict) else len(searches)
+        self.next_allowed = time.time() + n * SECONDS_PER_SEARCH
         self.calls += 1
         return json.loads(http(f"{API}{path}", data=body, headers=self.headers, timeout=300))
 
     def fast(self, batch):
         """batch: list of (dest, origins). One request, up to 10 searches."""
-        locs = {}
-        searches = []
+        locs, searches = {}, []
         for dest, origins in batch:
             locs[dest["code"]] = dest
-            for o in origins:
-                locs[o["code"]] = o
+            locs.update((o["code"], o) for o in origins)
             searches.append({
                 "id": dest["code"],
                 "arrival_location_id": dest["code"],
@@ -104,83 +128,87 @@ class Client:
                 "travel_time": MAX_SECONDS,
                 "properties": ["travel_time"],
             })
-        body = {
-            "locations": [{"id": c, "coords": {"lat": m["lat"], "lng": m["lng"]}} for c, m in locs.items()],
-            "arrival_searches": {"many_to_one": searches},
-        }
+        body = {"locations": _locations(locs), "arrival_searches": {"many_to_one": searches}}
         return parse_results(self.post("/time-filter/fast", body))
 
-    def regular(self, batch, arrival_time):
-        """Same as fast() but via /time-filter, chunked to 2,000 ids per search."""
+    def regular(self, batch, times):
+        """Same as fast(), via /time-filter: one search per (city, arrival time, chunk of
+        2,000 origins), 10 searches per request, keeping the best time per origin."""
         out = {}
         searches, locs = [], {}
 
         def flush():
             if not searches:
                 return
-            body = {"locations": [{"id": c, "coords": {"lat": m["lat"], "lng": m["lng"]}}
-                                  for c, m in locs.items()],
-                    "arrival_searches": list(searches)}
-            for sid, times in parse_results(self.post("/time-filter", body)).items():
-                out.setdefault(sid.split("#")[0], {}).update(times)
+            body = {"locations": _locations(locs), "arrival_searches": list(searches)}
+            for sid, got in parse_results(self.post("/time-filter", body)).items():
+                best = out.setdefault(sid.split("#")[0], {})
+                for oid, t in got.items():
+                    if oid not in best or t < best[oid]:
+                        best[oid] = t
             searches.clear()
             locs.clear()
 
         for dest, origins in batch:
-            for i in range(0, max(len(origins), 1), REGULAR_CHUNK):
-                chunk = origins[i:i + REGULAR_CHUNK]
-                if not chunk:
-                    continue
-                locs[dest["code"]] = dest
-                for o in chunk:
-                    locs[o["code"]] = o
-                searches.append({
-                    "id": f"{dest['code']}#{i}",
-                    "arrival_location_id": dest["code"],
-                    "departure_location_ids": [o["code"] for o in chunk],
-                    "transportation": {"type": "public_transport"},
-                    "arrival_time": arrival_time,
-                    "travel_time": MAX_SECONDS,
-                    "properties": ["travel_time"],
-                })
-                if len(searches) == SEARCHES_PER_REQUEST:
-                    flush()
+            for at in times:
+                for i in range(0, len(origins), CHUNK):
+                    chunk = origins[i:i + CHUNK]
+                    locs[dest["code"]] = dest
+                    locs.update((o["code"], o) for o in chunk)
+                    searches.append({
+                        "id": f"{dest['code']}#{at}#{i}",
+                        "arrival_location_id": dest["code"],
+                        "departure_location_ids": [o["code"] for o in chunk],
+                        "transportation": {"type": "public_transport"},
+                        "arrival_time": at,
+                        "travel_time": MAX_SECONDS,
+                        "properties": ["travel_time"],
+                    })
+                    if len(searches) == SEARCHES_PER_REQUEST:
+                        flush()
         flush()
         return out
 
 
+def cache_dir(client):
+    """Separate cache per method, so a config change never reuses stale results."""
+    tag = "fast" if client.endpoint == "fast" else "regular-" + "-".join(t.replace(":", "") for t in ARRIVAL_TIMES)
+    return CACHE_DIR / tag
+
+
 def compute_all(munis, dests, client, use_cache=True):
     """Return {dest_code: {origin_code: seconds}}, using/refreshing the disk cache."""
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    results = {}
-    todo = []
+    cdir = cache_dir(client)
+    cdir.mkdir(parents=True, exist_ok=True)
+    results, todo = {}, []
     for d in dests:
-        f = CACHE_DIR / f"{d['code']}.json"
+        f = cdir / f"{d['code']}.json"
         if use_cache and f.exists():
             results[d["code"]] = load_json(f)
         else:
             todo.append(d)
-    print(f"{len(dests)} destinations, {len(dests) - len(todo)} cached, {len(todo)} to compute")
+    print(f"{len(dests)} destinations, {len(dests) - len(todo)} cached, {len(todo)} to compute "
+          f"({client.endpoint} endpoint)")
 
-    max_km = MAX_KM if client.endpoint == "fast" else MAX_KM_REGULAR
-    arrival_time = next_weekday_8am() if client.endpoint == "regular" else None
-    # group destinations by zone so a batch shares most of its origins
+    times = arrival_times() if client.endpoint == "regular" else None
+    # one city per batch for the regular endpoint (its chunks already fill a request);
+    # 10 per batch for fast. Cities are grouped by zone so a batch shares its origins.
+    per_batch = 1 if client.endpoint == "regular" else SEARCHES_PER_REQUEST
     todo.sort(key=lambda d: (zone(d), d["code"]))
-    for i in range(0, len(todo), SEARCHES_PER_REQUEST):
-        group = todo[i:i + SEARCHES_PER_REQUEST]
-        batch = [(d, origins_for(d, munis, max_km)) for d in group]
-        names = ", ".join(d["name"] for d in group)
-        print(f"[{i + len(group)}/{len(todo)}] {names}")
+    for i in range(0, len(todo), per_batch):
+        group = todo[i:i + per_batch]
+        batch = [(d, origins_for(d, munis)) for d in group]
+        print(f"[{i + len(group)}/{len(todo)}] " + ", ".join(d["name"] for d in group))
         # a city alone in its zone (Ceuta, Melilla, Eivissa...) has nobody to reach it
         to_ask = [(d, o) for d, o in batch if o]
         got = {}
         if to_ask:
-            got = client.fast(to_ask) if client.endpoint == "fast" else client.regular(to_ask, arrival_time)
+            got = client.fast(to_ask) if client.endpoint == "fast" else client.regular(to_ask, times)
         for d, _ in batch:
-            times = got.get(d["code"], {})
-            times[d["code"]] = 0
-            results[d["code"]] = times
-            dump_json(times, CACHE_DIR / f"{d['code']}.json", compact=True)
+            res = got.get(d["code"], {})
+            res[d["code"]] = 0
+            results[d["code"]] = res
+            dump_json(res, cdir / f"{d['code']}.json", compact=True)
     return results
 
 
@@ -207,7 +235,7 @@ def aggregate(munis, dests, results):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, help="only compute the first N destinations (testing)")
-    ap.add_argument("--endpoint", choices=["fast", "regular", "auto"], default="auto")
+    ap.add_argument("--endpoint", choices=["regular", "fast"], default="regular")
     ap.add_argument("--no-cache", action="store_true")
     args = ap.parse_args()
 
@@ -217,26 +245,24 @@ def main():
     if args.limit:
         dests = sorted(dests, key=lambda d: d["tier"])[:args.limit]
 
-    endpoint = "fast" if args.endpoint == "auto" else args.endpoint
-    client = Client(endpoint)
+    client = Client(args.endpoint)
     try:
         results = compute_all(munis, dests, client, use_cache=not args.no_cache)
     except HTTPStatusError as e:
         if e.code in (401, 403):
             sys.exit(f"TravelTime rejected the credentials ({e}).\n"
                      "Check TRAVELTIME_APP_ID / TRAVELTIME_API_KEY on https://account.traveltime.com")
-        if args.endpoint != "auto":
-            raise
-        print(f"fast endpoint failed ({e}); falling back to regular /time-filter")
-        client = Client("regular")
-        results = compute_all(munis, dests, client, use_cache=not args.no_cache)
+        raise
 
     cities, rows = aggregate(munis, dests, results)
+    arrival = ("weekday morning (fast endpoint profile)" if client.endpoint == "fast"
+               else f"best of {', '.join(ARRIVAL_TIMES)} on a Tuesday")
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "params": {
             "mode": "public_transport",
-            "arrival": "weekday morning" if client.endpoint == "fast" else next_weekday_8am(),
+            "arrival": arrival,
+            "arrival_times": ARRIVAL_TIMES if client.endpoint == "regular" else [],
             "endpoint": client.endpoint,
             "max_minutes": MAX_SECONDS // 60,
             "population_year": places["meta"].get("population_year"),

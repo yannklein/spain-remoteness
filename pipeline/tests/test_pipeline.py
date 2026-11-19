@@ -174,4 +174,35 @@ def test_bad_credentials_exit_without_fallback(monkeypatch, tmp_path, capsys):
     with pytest.raises(SystemExit) as exc:
         compute_times.main()
     assert "credentials" in str(exc.value)
-    assert calls == ["/time-filter/fast"]   # no pointless fallback to /time-filter
+    assert calls == ["/time-filter"]        # stops at the first 401, no retries
+
+
+def test_regular_keeps_best_arrival_time(monkeypatch, tmp_path):
+    """A rural line that only connects for the 11:30 arrival must still count."""
+    times = compute_times.arrival_times()
+
+    def timetable_post(self, path, body):
+        self.calls += 1
+        results = []
+        for srch in body["arrival_searches"]:
+            # only the second arrival time has a connection, 50 min; the others 170 min or none
+            t = {times[0]: None, times[1]: 3000, times[2]: 10200}[srch["arrival_time"]]
+            locs = [] if t is None else [{"id": o, "properties": [{"travel_time": t}]}
+                                         for o in srch["departure_location_ids"]]
+            results.append({"search_id": srch["id"], "locations": locs, "unreachable": []})
+        return {"results": results}
+
+    monkeypatch.setenv("TRAVELTIME_APP_ID", "x")
+    monkeypatch.setenv("TRAVELTIME_API_KEY", "y")
+    monkeypatch.setattr(compute_times, "CACHE_DIR", tmp_path)
+    monkeypatch.setattr(compute_times.Client, "post", timetable_post)
+    munis = build_places.classify(base(), {})
+    dests = [m for m in munis if m["code"] == "49275"]  # Zamora
+    res = compute_times.compute_all(munis, dests, compute_times.Client("regular"), use_cache=False)
+    assert res["49275"]["49021"] == 3000                # Benavente: best of the three
+
+
+def test_arrival_times_are_madrid_local():
+    ts = compute_times.arrival_times(["08:30"])
+    hour = int(ts[0][11:13])
+    assert hour in (6, 7)                               # 08:30 CET/CEST in UTC
