@@ -12,6 +12,12 @@ PLACES_FILE = DATA / "places.json"
 OUTPUT_FILE = ROOT / "web" / "public" / "data" / "remoteness.json"
 CACHE_DIR = ROOT / ".cache" / "times"
 
+class HTTPStatusError(RuntimeError):
+    def __init__(self, code, msg):
+        super().__init__(msg)
+        self.code = code
+
+
 USER_AGENT = "spain-remoteness/1.0 (+https://github.com/yannklein/spain-remoteness)"
 
 
@@ -33,7 +39,7 @@ def http(url, data=None, headers=None, timeout=300, retries=4):
             detail = e.read().decode(errors="replace")[:500]
             # 4xx other than 429 will not get better by retrying
             if e.code != 429 and 400 <= e.code < 500:
-                raise RuntimeError(f"HTTP {e.code} for {url}: {detail}") from e
+                raise HTTPStatusError(e.code, f"HTTP {e.code} for {url}: {detail}") from e
             print(f"  HTTP {e.code}, retrying ({attempt + 1}/{retries}): {detail[:120]}")
         except (urllib.error.URLError, TimeoutError) as e:
             last = e

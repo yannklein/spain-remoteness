@@ -133,3 +133,45 @@ def test_regular_endpoint_chunks(monkeypatch, tmp_path):
     assert results["28079"] == fast["28079"]
     assert len(results["28079"]) == 2000                 # 1,999 within 180 km + itself (> one chunk)
     assert client.calls > -(-len(dests) // 10)
+
+
+def test_city_alone_in_its_zone_needs_no_request(monkeypatch, tmp_path):
+    """Ceuta is the only municipality in its zone: no empty search may be sent."""
+    sent = []
+
+    def recording_post(self, path, body):
+        for srch in body["arrival_searches"]["many_to_one"]:
+            assert srch["departure_location_ids"], "empty departure_location_ids sent"
+            sent.append(srch["id"])
+        return fake_post(self, path, body)
+
+    monkeypatch.setenv("TRAVELTIME_APP_ID", "x")
+    monkeypatch.setenv("TRAVELTIME_API_KEY", "y")
+    monkeypatch.setattr(compute_times, "CACHE_DIR", tmp_path)
+    monkeypatch.setattr(compute_times.Client, "post", recording_post)
+    munis = build_places.classify(base(), {})
+    dests = [m for m in munis if m["code"] in ("51001", "52001", "28079")]
+    res = compute_times.compute_all(munis, dests, compute_times.Client("fast"), use_cache=False)
+    assert "51001" not in sent and "52001" not in sent and "28079" in sent
+    assert res["51001"] == {"51001": 0}
+
+
+def test_bad_credentials_exit_without_fallback(monkeypatch, tmp_path, capsys):
+    import pytest
+    from common import HTTPStatusError
+
+    calls = []
+
+    def unauthorized(self, path, body):
+        calls.append(path)
+        raise HTTPStatusError(401, "HTTP 401: Application Id or Api Key is invalid")
+
+    monkeypatch.setenv("TRAVELTIME_APP_ID", "x")
+    monkeypatch.setenv("TRAVELTIME_API_KEY", "y")
+    monkeypatch.setattr(compute_times, "CACHE_DIR", tmp_path)
+    monkeypatch.setattr(compute_times.Client, "post", unauthorized)
+    monkeypatch.setattr(sys, "argv", ["compute_times.py", "--limit", "2"])
+    with pytest.raises(SystemExit) as exc:
+        compute_times.main()
+    assert "credentials" in str(exc.value)
+    assert calls == ["/time-filter/fast"]   # no pointless fallback to /time-filter

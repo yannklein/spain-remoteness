@@ -19,8 +19,8 @@ import time
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from common import (CACHE_DIR, OUTPUT_FILE, PLACES_FILE, dump_json,
-                    haversine_km, http, load_json, zone)
+from common import (CACHE_DIR, OUTPUT_FILE, PLACES_FILE, HTTPStatusError,
+                    dump_json, haversine_km, http, load_json, zone)
 
 API = "https://api.traveltimeapp.com/v4"
 MAX_SECONDS = 10800          # 3 h, the maximum the fast endpoint allows
@@ -171,10 +171,11 @@ def compute_all(munis, dests, client, use_cache=True):
         batch = [(d, origins_for(d, munis, max_km)) for d in group]
         names = ", ".join(d["name"] for d in group)
         print(f"[{i + len(group)}/{len(todo)}] {names}")
-        if client.endpoint == "fast":
-            got = client.fast(batch)
-        else:
-            got = client.regular(batch, arrival_time)
+        # a city alone in its zone (Ceuta, Melilla, Eivissa...) has nobody to reach it
+        to_ask = [(d, o) for d, o in batch if o]
+        got = {}
+        if to_ask:
+            got = client.fast(to_ask) if client.endpoint == "fast" else client.regular(to_ask, arrival_time)
         for d, _ in batch:
             times = got.get(d["code"], {})
             times[d["code"]] = 0
@@ -220,7 +221,10 @@ def main():
     client = Client(endpoint)
     try:
         results = compute_all(munis, dests, client, use_cache=not args.no_cache)
-    except RuntimeError as e:
+    except HTTPStatusError as e:
+        if e.code in (401, 403):
+            sys.exit(f"TravelTime rejected the credentials ({e}).\n"
+                     "Check TRAVELTIME_APP_ID / TRAVELTIME_API_KEY on https://account.traveltime.com")
         if args.endpoint != "auto":
             raise
         print(f"fast endpoint failed ({e}); falling back to regular /time-filter")
