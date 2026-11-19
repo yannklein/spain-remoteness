@@ -36,7 +36,7 @@ data/places.json
 web/public/data/remoteness.json  → per municipality and tier: minutes + nearest city
         │
         ▼  web/ (Vite + TypeScript + MapLibre)
-GitHub Pages
+Docker image (nginx, static) → Coolify
 ```
 
 Details worth knowing:
@@ -57,14 +57,22 @@ Details worth knowing:
 
 ## Running it
 
-### In GitHub Actions (recommended)
+### Hosting on Coolify
+
+The repo root has a `Dockerfile`: it builds `web/` with Node and serves the static
+result with nginx (`nginx.conf`: gzip, long cache on hashed assets, 1 h on data).
+
+1. Coolify → New resource → Public/GitHub repository → `yannklein/spain-remoteness`, branch `main`.
+2. Build pack: **Dockerfile**. Ports exposes: **80**. No environment variables needed.
+3. Set the domain and keep **auto deploy** on, so every data commit redeploys.
+
+### Computing the data (GitHub Actions)
 
 1. Add repo secrets `TRAVELTIME_APP_ID` and `TRAVELTIME_API_KEY`
    (Settings → Secrets and variables → Actions).
-2. Settings → Pages → Source: **GitHub Actions**.
-3. Actions → **Compute travel times** → Run workflow. Put `5` in *limit* first for a smoke test
+2. Actions → **Compute travel times** → Run workflow. Put `5` in *limit* first for a smoke test
    (it prints a sample and does not commit), then run it with *limit* empty.
-4. The data commit triggers **Deploy to GitHub Pages**.
+3. The workflow commits `web/public/data/remoteness.json`; Coolify picks up the push and redeploys.
 
 The compute workflow also runs quarterly, since timetables change.
 

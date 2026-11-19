@@ -2,7 +2,7 @@ name: Compute travel times
 
 # Rebuilds data/places.json (INE population + OSM town centres) and
 # web/public/data/remoteness.json (TravelTime public transport times),
-# then commits the results. Deploy runs automatically afterwards.
+# then commits the results. Coolify auto-deploys on the resulting push.
 on:
   workflow_dispatch:
     inputs:
