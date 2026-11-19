@@ -14,7 +14,7 @@ interface Remoteness {
   generated_at: string
   params: { arrival: string; endpoint: string; max_minutes: number; population_year: number | null; notes: string[] }
   cities: City[]
-  // code -> [t1, c1, t2, c2, t3, c3, urban, population]; t = minutes, -1 = over the cap
+  // code -> [t1, c1, t2, c2, t3, c3, urban (any tier), population]; t = minutes, -1 = over the cap
   m: Record<string, [number, number, number, number, number, number, 0 | 1, number | null]>
 }
 
@@ -62,7 +62,7 @@ function fillColor(t: Tier): ExpressionSpecification {
   BINS.slice(0, -1).forEach((b, i) => steps.push(b, COLORS[i + 1]))
   return [
     'case',
-    ['==', ['get', 'urban'], 1], URBAN,
+    ['all', ['>', ['get', 'dt'], 0], ['<=', ['get', 'dt'], t]], URBAN,
     ['!', ['has', key]], NODATA,
     ['<', ['get', key], 0], COLORS[6],
     ['step', ['get', key], ...steps] as unknown as ExpressionSpecification,
@@ -94,13 +94,16 @@ async function loadData() {
     data = null
   }
 
+  // tier in which each municipality counts as a main city (tiers are nested)
+  const cityTier = new Map((data?.cities ?? []).map((c) => [c[0], c[2]]))
   for (const f of geo.features) {
     const code = String(f.id)
     const p: Record<string, unknown> = { code, name: f.properties?.name }
     const row = data?.m[code]
     if (row) {
-      ;[p.t1, p.c1, p.t2, p.c2, p.t3, p.c3, p.urban, p.pop] = row
+      ;[p.t1, p.c1, p.t2, p.c2, p.t3, p.c3, , p.pop] = row
     }
+    p.dt = cityTier.get(code) ?? 0
     f.properties = p
   }
   return { geo, provinces }
@@ -119,14 +122,17 @@ function cityGeoJSON(t: Tier): FeatureCollection {
   }
 }
 
-/** Share of non-urban population (or municipalities) beyond 60 min, per tier. */
+/** Share of the population living outside this tier's cities that is beyond 60 min. */
 function headline(t: Tier): string | null {
   if (!data) return null
   const idx = (t - 1) * 2
   let total = 0
   let far = 0
   let usesPop = true
-  const rows = Object.values(data.m).filter((r) => r[6] === 0)
+  const tierOf = new Map(data.cities.map((c) => [c[0], c[2]]))
+  const rows = Object.entries(data.m)
+    .filter(([code]) => !((tierOf.get(code) ?? 99) <= t))
+    .map(([, r]) => r)
   if (rows.every((r) => r[7] == null)) usesPop = false
   for (const r of rows) {
     const w = usesPop ? (r[7] ?? 0) : 1
@@ -136,7 +142,8 @@ function headline(t: Tier): string | null {
   }
   if (!total) return null
   const pct = Math.round((far / total) * 100)
-  const who = usesPop ? 'of people outside the main cities' : 'of non-urban municipalities'
+  const n = data.cities.filter((c) => c[2] <= t).length
+  const who = usesPop ? `of people living outside these ${n} cities` : 'of the other municipalities'
   return `<b>${pct}%</b> ${who} are more than <b>1 hour</b> by public transport from a ${TIER_TEXT[t].noun}.`
 }
 
@@ -144,7 +151,7 @@ function renderLegend() {
   const labels = ['< 30 min', '30–60', '60–90', '90 min–2 h', '2 h–2 h 30', '2 h 30–3 h', '3 h+ / no service']
   $('#legend').innerHTML =
     COLORS.map((c, i) => `<div><i style="background:${c}"></i>${labels[i]}</div>`).join('') +
-    `<div><i style="background:${URBAN}"></i>Main city (not coloured)</div>`
+    `<div><i style="background:${URBAN}"></i>City of the selected tier</div>`
 }
 
 function setTier(map: maplibregl.Map, t: Tier) {
@@ -169,7 +176,7 @@ function tooltipHTML(p: Record<string, unknown>): string {
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
   if (p.t1 === undefined) return `<b>${name}</b><br><span class="muted">No travel data</span>`
-  if (p.urban === 1) return `<b>${name}</b><br>${pop ? pop + '<br>' : ''}<span class="muted">Main city</span>`
+  if ((p.dt as number) > 0 && (p.dt as number) <= tier) return `<b>${name}</b><br>${pop ? pop + '<br>' : ''}<span class="muted">Main city</span>`
   const t = p[`t${tier}`] as number
   const ci = p[`c${tier}`] as number
   const city = data && ci >= 0 ? data.cities[ci] : null
