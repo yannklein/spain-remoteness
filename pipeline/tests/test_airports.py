@@ -140,6 +140,7 @@ def test_airports_csv(monkeypatch, tmp_path):
     output = compute_airports.build_output(places, aps, rows)
     assert output["airports"][0][:3] == [aps[0]["iata"], aps[0]["name"], "ES"]
     assert len(output["m"]["44216"]) == 13
+    assert output["params"]["notes"] == airports.NOTES
     header, csv_rows = compute_airports.airports_csv_rows(output, munis)
     assert header == ["code", "name", "province", "population",
                       "y1_min", "y1_airport", "y2_min", "y2_airport", "y3_min", "y3_airport",

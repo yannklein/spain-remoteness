@@ -67,7 +67,7 @@ def build_output(places, airports, rows):
             "arrival_times": ARRIVAL_TIMES,
             "max_minutes": MAX_SECONDS // 60,
             "population_year": places["meta"].get("population_year"),
-            "notes": [],
+            "notes": list(airport_list.NOTES),
         },
         # [iata, name, country, lat, lng, tier_year, tier_summer, note]
         "airports": [[a["iata"], a["name"], a["country"], a["lat"], a["lng"],
