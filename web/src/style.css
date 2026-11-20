@@ -51,7 +51,7 @@ html, body { margin: 0; height: 100%; }
 #panel[data-mode='airports'] .tiers button .n:not(:empty)::after { content: ' airports'; }
 
 .modes {
-  display: inline-grid; grid-template-columns: 1fr 1fr; margin-bottom: 10px;
+  display: inline-grid; grid-template-columns: 1fr 1fr 1fr; margin-bottom: 10px;
   background: #f1f0ed; border-radius: 7px; padding: 2px; gap: 2px;
 }
 .modes button {

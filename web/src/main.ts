@@ -15,8 +15,18 @@ import {
   type AirportsData,
   type Tier,
 } from './airports'
+import {
+  METRICS,
+  internetFill,
+  internetHeadline,
+  internetLegend,
+  internetProps,
+  internetTooltip,
+  loadInternet,
+  type InternetData,
+} from './internet'
 
-type Mode = 'cities' | 'airports'
+type Mode = 'cities' | 'airports' | 'internet'
 
 // [code, name, tier, lat, lng, metro, population]
 type City = [string, string, number, number, number, string | null, number | null]
@@ -44,7 +54,9 @@ const TIER_TEXT: Record<Tier, { label: string; noun: string; help: string }> = {
 const TITLE: Record<Mode, string> = {
   cities: 'How far is rural Spain from a city?',
   airports: 'How far is rural Spain from an airport?',
+  internet: 'How good is the internet in rural Spain?',
 }
+const INTERNET_NODATA = '#c4c2bc'
 
 const VIEWS: Record<string, [[number, number], [number, number]]> = {
   peninsula: [[-9.6, 35.8], [4.5, 43.9]],
@@ -61,12 +73,14 @@ const FALLBACK_STYLE: StyleSpecification = {
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T
 
-let mode: Mode = location.hash === '#airports' ? 'airports' : 'cities'
-const tiers: Record<Mode, Tier> = { cities: 2, airports: 2 }
+let mode: Mode = location.hash === '#airports' ? 'airports' : location.hash === '#internet' ? 'internet' : 'cities'
+const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 2 }
 let tier: Tier = tiers[mode]
 let summer = false
 let data: Remoteness | null = null
 let airports: AirportsData | null | undefined // undefined = not loaded yet
+let internet: InternetData | null | undefined
+let mobile = false
 let geo: FeatureCollection<Geometry, Record<string, unknown>> | null = null
 
 function fmtMinutes(t: number, max = 180): string {
@@ -80,6 +94,11 @@ function fmtMinutes(t: number, max = 180): string {
 /** Feature property holding the minutes shown for the current mode, tier and variant. */
 function valueKey(): string {
   return mode === 'cities' ? `t${tier}` : `${summer ? 's' : 'y'}${tier}`
+}
+
+function currentFill(): ExpressionSpecification {
+  if (mode === 'internet') return internetFill(tier, mobile, COLORS.slice(1), INTERNET_NODATA)
+  return fillColor(valueKey(), mode === 'cities' ? tier : null)
 }
 
 /** Colour by minutes in `key`; municipalities that are a city of tier <= greyTier are grey. */
@@ -148,7 +167,22 @@ async function ensureAirports(map: maplibregl.Map) {
   src?.setData(geo)
 }
 
+/** Load internet.json once and merge its values into the municipality features. */
+async function ensureInternet(map: maplibregl.Map) {
+  if (internet !== undefined) return
+  internet = await loadInternet()
+  if (!internet || !geo) return
+  for (const f of geo.features) {
+    const row = internet.m[String(f.id)]
+    if (!row) continue
+    Object.assign(f.properties, internetProps(row))
+    if (f.properties.pop == null && typeof row[10] === 'number') f.properties.pop = row[10]
+  }
+  ;(map.getSource('munis') as maplibregl.GeoJSONSource | undefined)?.setData(geo)
+}
+
 function destGeoJSON(): FeatureCollection {
+  if (mode === 'internet') return { type: 'FeatureCollection', features: [] }
   if (mode === 'airports') return airports ? airportMarkers(airports, tier, summer) : { type: 'FeatureCollection', features: [] }
   return cityGeoJSON(tier)
 }
@@ -192,10 +226,17 @@ function headline(t: Tier): string | null {
 }
 
 function renderLegend() {
+  const item = (c: string, l: string) => `<div><i style="background:${c}"></i>${l}</div>`
+  if (mode === 'internet') {
+    const labels = internetLegend(tier)
+    $('#legend').innerHTML =
+      COLORS.slice(1).map((c, i) => item(c, labels[i])).join('') + item(INTERNET_NODATA, 'Not enough speed tests')
+    return
+  }
   const labels = ['< 30 min', '30–60', '60–90', '90 min–2 h', '2 h–2 h 30', '2 h 30–3 h', '3 h+ / no service']
   $('#legend').innerHTML =
-    COLORS.map((c, i) => `<div><i style="background:${c}"></i>${labels[i]}</div>`).join('') +
-    (mode === 'cities' ? `<div><i style="background:${URBAN}"></i>City of the selected tier</div>` : '')
+    COLORS.map((c, i) => item(c, labels[i])).join('') +
+    (mode === 'cities' ? item(URBAN, 'City of the selected tier') : '')
 }
 
 function fmtDate(iso: string): string {
@@ -214,11 +255,11 @@ function refresh(map: maplibregl.Map) {
   })
   $('#title').textContent = TITLE[mode]
   document.title = TITLE[mode]
-  const text = mode === 'cities' ? TIER_TEXT : AIRPORT_TEXT
+  const text = mode === 'cities' ? TIER_TEXT : mode === 'airports' ? AIRPORT_TEXT : METRICS
   const counts: (number | null)[] =
     mode === 'cities'
       ? [1, 2, 3].map((t) => (data ? data.cities.filter((c) => c[2] <= t).length : null))
-      : airports
+      : mode === 'airports' && airports
         ? airportCounts(airports, summer)
         : [null, null, null]
   document.querySelectorAll<HTMLButtonElement>('.tiers button').forEach((b) => {
@@ -228,21 +269,32 @@ function refresh(map: maplibregl.Map) {
     b.querySelector('.n')!.textContent = counts[t - 1] == null ? '' : String(counts[t - 1])
   })
   $('#summer-wrap').hidden = mode !== 'airports'
-  $('#tier-noun').textContent = text[tier].noun.replace(/^an? /, '')
+  $('#mobile-wrap').hidden = mode !== 'internet'
+  const noun = `<strong>${text[tier].noun.replace(/^an? /, '')}</strong>`
+  $('#lead').innerHTML =
+    mode === 'internet'
+      ? `Average measured ${noun}${tier === 3 ? '' : ' speed'} per municipality, from Speedtest by Ookla, last 4 quarters.`
+      : `Public transport time from each municipality to the nearest ${noun}, best connection of a weekday.`
   $('#tier-help').textContent = text[tier].help
 
-  const h = mode === 'cities' ? headline(tier) : airports ? airportHeadline(airports, tier, summer) : null
+  const h =
+    mode === 'cities'
+      ? headline(tier)
+      : mode === 'airports'
+        ? airports ? airportHeadline(airports, tier, summer) : null
+        : internet ? internetHeadline(internet, tier, mobile) : null
   const el = $('#headline')
   el.hidden = !h
   if (h) el.innerHTML = h
 
   const s = $('#status')
-  const missing = mode === 'cities' ? !data : airports === null
+  const missing = mode === 'cities' ? !data : mode === 'airports' ? airports === null : internet === null
   s.hidden = !missing
-  s.innerHTML =
-    mode === 'cities'
-      ? 'Travel times have not been computed yet. Run the <b>Compute travel times</b> workflow in the GitHub repo (it needs the TravelTime API secrets).'
-      : 'Airport travel times have not been computed yet. Run <code>python3 pipeline/compute_airports.py</code>.'
+  s.innerHTML = {
+    cities: 'Travel times have not been computed yet. Run <code>python3 pipeline/compute_times.py</code>.',
+    airports: 'Airport travel times have not been computed yet. Run <code>python3 pipeline/compute_airports.py</code>.',
+    internet: 'Internet speeds have not been computed yet. Run <code>python3 pipeline/compute_internet.py</code>.',
+  }[mode]
 
   const meta = $('#meta')
   if (mode === 'cities' && data) {
@@ -255,13 +307,20 @@ function refresh(map: maplibregl.Map) {
       `Computed ${fmtDate(airports.generated_at)} · ${airports.airports.length} airports` +
       (airports.params.population_year ? ` · population ${airports.params.population_year}` : '')
     $('#airport-notes').innerHTML = airports.params.notes.map((n) => `<li>${n}</li>`).join('')
+  } else if (mode === 'internet' && internet) {
+    const q = internet.params.quarters
+    const n = Object.values(internet.m).filter((r) => typeof r[mobile ? 5 : 0] === 'number').length
+    meta.textContent =
+      `Speed tests ${q[0]} to ${q[q.length - 1]} · ${n.toLocaleString('en')} municipalities with enough ${mobile ? 'mobile' : 'fixed'} tests`
+    $('#internet-period').textContent = `${q[0]} to ${q[q.length - 1]}`
+    $('#internet-licence').textContent = internet.params.licence
   } else {
     meta.textContent = ''
   }
 
   renderLegend()
   if (map.getLayer('muni-fill')) {
-    map.setPaintProperty('muni-fill', 'fill-color', fillColor(valueKey(), mode === 'cities' ? tier : null))
+    map.setPaintProperty('muni-fill', 'fill-color', currentFill())
     ;(map.getSource('dests') as maplibregl.GeoJSONSource).setData(destGeoJSON())
   }
   hideTooltip()
@@ -275,12 +334,14 @@ function setTier(map: maplibregl.Map, t: Tier) {
 async function setMode(map: maplibregl.Map, m: Mode) {
   mode = m
   tier = tiers[m]
-  history.replaceState(null, '', m === 'airports' ? '#airports' : location.pathname + location.search)
+  history.replaceState(null, '', m === 'cities' ? location.pathname + location.search : `#${m}`)
   if (m === 'airports') await ensureAirports(map)
+  if (m === 'internet') await ensureInternet(map)
   refresh(map)
 }
 
 function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string {
+  if (mode === 'internet') return internetTooltip(p, tier, mobile)
   if (mode === 'airports') {
     return airports ? airportTooltip(airports, p, tier, summer, fmtMinutes, at) : `<b>${String(p.name ?? '')}</b>`
   }
@@ -319,6 +380,7 @@ async function main() {
   renderLegend()
   // browsers may restore a ticked checkbox on reload: start from what is shown
   summer = $<HTMLInputElement>('#summer').checked
+  mobile = $<HTMLInputElement>('#mobile').checked
   const [style, loaded] = await Promise.all([loadStyle(), loadData()])
   geo = loaded.geo
   const provinces = loaded.provinces
@@ -350,7 +412,7 @@ async function main() {
       data: geo!,
       promoteId: 'code',
       attribution:
-        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap',
+        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla',
     })
     map.addSource('provinces', { type: 'geojson', data: provinces })
     map.addSource('dests', { type: 'geojson', data: destGeoJSON() })
@@ -358,7 +420,7 @@ async function main() {
     map.addLayer(
       {
         id: 'muni-fill', type: 'fill', source: 'munis',
-        paint: { 'fill-color': fillColor(valueKey(), mode === 'cities' ? tier : null), 'fill-opacity': 0.88 },
+        paint: { 'fill-color': currentFill(), 'fill-opacity': 0.88 },
       },
       firstSymbol,
     )
@@ -438,6 +500,10 @@ async function main() {
   document.querySelectorAll<HTMLButtonElement>('.modes button').forEach((b) =>
     b.addEventListener('click', () => setMode(map, b.dataset.mode as Mode)),
   )
+  $<HTMLInputElement>('#mobile').addEventListener('change', (e) => {
+    mobile = (e.target as HTMLInputElement).checked
+    refresh(map)
+  })
   $<HTMLInputElement>('#summer').addEventListener('change', (e) => {
     summer = (e.target as HTMLInputElement).checked
     refresh(map)

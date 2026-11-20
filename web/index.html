@@ -14,10 +14,11 @@
       <div class="modes" role="radiogroup" aria-label="Map">
         <button role="radio" data-mode="cities" aria-checked="true">Cities</button>
         <button role="radio" data-mode="airports">Airports</button>
+        <button role="radio" data-mode="internet">Internet</button>
       </div>
       <h1 id="title">How far is rural Spain from a city?</h1>
-      <p class="lead">
-        Public transport time from each municipality to the nearest <strong id="tier-noun">regional hub</strong>,
+      <p class="lead" id="lead">
+        Public transport time from each municipality to the nearest <strong>regional hub</strong>,
         best connection of a weekday.
       </p>
 
@@ -29,6 +30,9 @@
       <label id="summer-wrap" class="summer" hidden>
         <input type="checkbox" id="summer" autocomplete="off" /> Include seasonal routes
         <span class="muted">(summer-only, or winter-only in Canarias)</span>
+      </label>
+      <label id="mobile-wrap" class="summer" hidden>
+        <input type="checkbox" id="mobile" autocomplete="off" /> Mobile instead of fixed broadband
       </label>
       <p class="tier-help" id="tier-help"></p>
 
@@ -59,6 +63,14 @@
           <li>Timetables are a November weekday's: summer-only airport shuttles are not reflected.</li>
         </ul>
         <ul data-for="airports" id="airport-notes" hidden></ul>
+        <ul data-for="internet" hidden>
+          <li>Speeds people actually measured with Speedtest by Ookla, <span id="internet-period">over the last 4 quarters</span>, pooled. Ookla publishes ~600 m tiles with average download, upload and latency and the number of tests behind them.</li>
+          <li>Each tile counts for the municipality containing its centre. Values are averages weighted by the number of tests.</li>
+          <li>A municipality gets a value only with at least 20 tests from 5 devices; otherwise it is grey (“not enough speed tests”). Most villages under 1,000 people are grey.</li>
+          <li>Speed tests measure the plans people have, not what could be installed: a village with fibre whose residents keep cheap plans reads slower than it could be.</li>
+          <li>Seafront tiles that fall outside the simplified boundaries are left out.</li>
+          <li id="internet-licence"></li>
+        </ul>
         <p class="meta" id="meta"></p>
       </details>
 
