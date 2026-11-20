@@ -49,26 +49,31 @@ def latest_quarters(keys, n=4):
 
 
 def aggregate(tiles, locate):
-    """{type: [Tile]} -> {code: {type: [down_mbps, up_mbps, lat_ms, tests, devices]}}.
+    """{type: [[Tile] per quarter]} -> {code: {type: [down_mbps, up_mbps, lat_ms, tests, devices]}}.
 
-    Tile = (lng, lat, d_kbps, u_kbps, lat_ms, tests, devices). Test-weighted
-    means; values None below the minimum evidence; counts always kept.
+    Tile = (lng, lat, d_kbps, u_kbps, lat_ms, tests, devices). Speeds are
+    test-weighted means over all tiles and quarters. `devices` is the most
+    devices seen in any one quarter (summed over the municipality's tiles):
+    Ookla counts devices per tile and quarter, so summing over quarters would
+    count one household four times. Values are None below the minimum evidence.
     """
     sums = {}
-    for kind, tl in tiles.items():
-        for lng, lat, d, u, lt, tests, devices in tl:
-            code = locate(lng, lat)
-            if code is None or not tests:
-                continue
-            s = sums.setdefault(code, {}).setdefault(kind, [0, 0, 0, 0, 0])
-            s[0] += d * tests
-            s[1] += u * tests
-            s[2] += lt * tests
-            s[3] += tests
-            s[4] += devices
+    for kind, quarters in tiles.items():
+        for qi, tl in enumerate(quarters):
+            for lng, lat, d, u, lt, tests, devices in tl:
+                code = locate(lng, lat)
+                if code is None or not tests:
+                    continue
+                s = sums.setdefault(code, {}).setdefault(kind, [0, 0, 0, 0, {}])
+                s[0] += d * tests
+                s[1] += u * tests
+                s[2] += lt * tests
+                s[3] += tests
+                s[4][qi] = s[4].get(qi, 0) + devices
     out = {}
     for code, kinds in sums.items():
-        for kind, (d, u, lt, tests, devices) in kinds.items():
+        for kind, (d, u, lt, tests, per_q) in kinds.items():
+            devices = max(per_q.values())
             if tests >= MIN_TESTS and devices >= MIN_DEVICES:
                 row = [round(d / tests / 1000, 1), round(u / tests / 1000, 1), round(lt / tests), tests, devices]
             else:
@@ -163,7 +168,7 @@ def main():
         for y, q in quarters:
             got = fetch_quarter(kind, y, q)
             print(f"  {kind} {y}-Q{q}: {len(got)} tiles in the box")
-            tiles[kind] += got
+            tiles[kind].append(got)
 
     index = MuniIndex(load_municipalities())
     located = {}

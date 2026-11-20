@@ -124,8 +124,11 @@ actually measure: average download, upload and latency per municipality, for fix
   - Each tile goes to the municipality containing its centre (point in polygon on the map's own
     boundaries, `pipeline/geo.py`).
   - Values are test-weighted means over all tiles and quarters.
-  - A value is published only with at least **20 tests from 5 devices**; otherwise the municipality
-    is grey ("not enough speed tests") and only the counts are given. Devices are summed over quarters.
+  - A value is published only with at least **20 tests** over the 4 quarters and **5 devices within one
+    quarter**; otherwise the municipality is grey ("not enough speed tests") and only the counts are given.
+    Ookla counts devices per tile and quarter, so devices are summed over a municipality's tiles but not
+    over quarters (one household testing every quarter is still one device). `*_devices` in the CSV is
+    the busiest quarter's count.
 - **What it shows:** wherever there are enough tests, fixed internet is fast. Practically nobody lives where
   measured fixed upload is under 10 Mbps. The gap is evidence: most municipalities under 1,000 people
   have too few tests.

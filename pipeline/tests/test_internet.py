@@ -27,7 +27,7 @@ def tile(d, u, lat, tests, devices):
 
 
 def test_test_weighted_mean():
-    tiles = {"fixed": [tile(100_000, 10_000, 20, 10, 3), tile(20_000, 2_000, 60, 30, 4)], "mobile": []}
+    tiles = {"fixed": [[tile(100_000, 10_000, 20, 10, 3), tile(20_000, 2_000, 60, 30, 4)]], "mobile": [[]]}
     agg = ci.aggregate(tiles, lambda lng, lat: "X")
     assert agg["X"]["fixed"] == [40.0, 4.0, 50, 40, 7]
     assert "mobile" not in agg["X"]
@@ -35,14 +35,25 @@ def test_test_weighted_mean():
 
 def test_minimum_evidence():
     def one(tests, devices):
-        return ci.aggregate({"fixed": [tile(50_000, 5_000, 30, tests, devices)]}, lambda a, b: "X")["X"]["fixed"]
+        return ci.aggregate({"fixed": [[tile(50_000, 5_000, 30, tests, devices)]]}, lambda a, b: "X")["X"]["fixed"]
     assert one(40, 2) == [None, None, None, 40, 2]          # one household testing a lot
     assert one(19, 10) == [None, None, None, 19, 10]
     assert one(20, 5) == [50.0, 5.0, 30, 20, 5]
 
 
+def test_devices_not_summed_across_quarters():
+    """One household testing every quarter must not add up to 'five devices'."""
+    quarters = [[tile(200_000, 200_000, 10, 10, d)] for d in (1, 1, 2, 1)]
+    row = ci.aggregate({"fixed": quarters}, lambda a, b: "X")["X"]["fixed"]
+    assert row == [None, None, None, 40, 2]                  # busiest quarter: 2 devices
+    # devices from several tiles in the same quarter do add up (different homes)
+    row = ci.aggregate({"fixed": [[tile(200_000, 200_000, 10, 10, 3), tile(200_000, 200_000, 10, 10, 2)]]},
+                       lambda a, b: "X")["X"]["fixed"]
+    assert row == [200.0, 200.0, 10, 20, 5]
+
+
 def test_unlocated_tiles_dropped():
-    agg = ci.aggregate({"fixed": [tile(1, 1, 1, 100, 100)]}, lambda lng, lat: None)
+    agg = ci.aggregate({"fixed": [[tile(1, 1, 1, 100, 100)]]}, lambda lng, lat: None)
     assert agg == {}
 
 

@@ -93,7 +93,10 @@ export function internetTooltip(p: Record<string, unknown>, metric: Tier, mobile
   const tests = typeof p[`${t}t`] === 'number' ? (p[`${t}t`] as number) : 0
   const devices = typeof p[`${t}v`] === 'number' ? (p[`${t}v`] as number) : 0
   if (typeof p[`${t}d`] !== 'number') {
-    return `${head}<br><span class="muted">${kind}: not enough speed tests (${tests.toLocaleString('en')})</span>`
+    return (
+      `${head}<br><span class="muted">${kind}: not enough speed tests ` +
+      `(${tests.toLocaleString('en')} tests, ${devices} devices; needs 20 tests and 5 devices)</span>`
+    )
   }
   const main = METRICS[metric]
   const others = ([1, 2, 3] as Tier[]).filter((m) => m !== metric)
@@ -101,7 +104,7 @@ export function internetTooltip(p: Record<string, unknown>, metric: Tier, mobile
     `${head}<br><span class="muted">${kind}</span>` +
     `<br><span class="big">${fmt(p[`${t}${main.key}`], main.unit)}</span> ${main.noun}` +
     `<br>${others.map((m) => `${METRICS[m].label} ${fmt(p[`${t}${METRICS[m].key}`], METRICS[m].unit)}`).join(' · ')}` +
-    `<br><span class="muted">from ${tests.toLocaleString('en')} tests on ${devices.toLocaleString('en')} devices</span>`
+    `<br><span class="muted">from ${tests.toLocaleString('en')} tests; ${devices.toLocaleString('en')} devices in the busiest quarter</span>`
   )
 }
 

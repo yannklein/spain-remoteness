@@ -54,8 +54,9 @@ Network Performance Maps" and state that the derived internet data is under the 
 - **Aggregation:** per municipality and type, the **test-weighted mean** of the tile averages
   (Ookla's own recommended way to aggregate tiles), over all 4 quarters.
   Download/upload in Mbps (1 decimal), latency in ms (integer).
-- **Minimum evidence:** a value is published only with **≥ 20 tests from ≥ 5 devices** over the
-  period. Below that: no value, shown as "not enough speed tests". The counts are always published.
+- **Minimum evidence:** a value is published only with **≥ 20 tests** over the period and **≥ 5 devices
+  within one quarter** (amended after review: Ookla's device counts are per tile and quarter, so summing
+  them over quarters counted one household several times). Below that: no value, shown as "not enough speed tests". The counts are always published.
 - **Tooling:** DuckDB (one new Python dependency, `pip install duckdb`) reads the Parquet files
   straight from S3 with a bounding-box filter on Spain, so nothing global is downloaded.
   The point-in-polygon step is plain Python on the TopoJSON. Raw per-quarter extracts for Spain are
