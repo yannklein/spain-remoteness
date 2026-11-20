@@ -75,3 +75,19 @@ def test_internet_csv(tmp_path):
     types = p.with_suffix(".csvt").read_text().strip().split(",")
     assert types[0] == '"String"' and types[header.index("fixed_tests")] == '"Integer"'
     assert types[header.index("fixed_down_mbps")] == '"Real"'          # decimals must survive in QGIS
+
+
+def test_fetch_quarter_uses_cache(monkeypatch, tmp_path):
+    import gzip
+    import json
+    monkeypatch.setattr(ci, "CACHE", tmp_path)
+    tiles = [[-3.7, 40.4, 100000, 10000, 20, 50, 9]]
+    with gzip.open(tmp_path / "fixed-2026-Q1.json.gz", "wt") as f:
+        json.dump(tiles, f)
+
+    class NoDuck:
+        def __getattr__(self, name):
+            raise AssertionError("DuckDB must not be used when the cache exists")
+
+    monkeypatch.setitem(sys.modules, "duckdb", NoDuck())
+    assert ci.fetch_quarter("fixed", 2026, 1) == [tuple(t) for t in tiles]

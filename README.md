@@ -110,6 +110,40 @@ python3 pipeline/compute_airports.py                  # everything (~50 requests
 Output: `web/public/data/airports.json` and `airports.csv`. Per-airport results are cached in
 `.cache/airports/`; delete an airport's file there after changing its coordinates.
 
+## Internet map
+
+The **Internet** view (`#internet`) answers "could I work remotely from here?" with the speeds people
+actually measure: average download, upload and latency per municipality, for fixed broadband and
+(with the checkbox) mobile.
+
+- **Source:** Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps, CC BY-NC-SA 4.0.
+  The internet data derived here is shared under the same licence.
+  Ookla publishes ~600 m tiles per quarter, with average speeds and the number of tests and devices behind them.
+- **Period:** the last 4 published quarters, pooled (currently 2025-Q4 to 2026-Q3).
+- **Method:**
+  - Each tile goes to the municipality containing its centre (point in polygon on the map's own
+    boundaries, `pipeline/geo.py`).
+  - Values are test-weighted means over all tiles and quarters.
+  - A value is published only with at least **20 tests from 5 devices**; otherwise the municipality
+    is grey ("not enough speed tests") and only the counts are given. Devices are summed over quarters.
+- **What it shows:** wherever there are enough tests, fixed internet is fast. Practically nobody lives where
+  measured fixed upload is under 10 Mbps. The gap is evidence: most municipalities under 1,000 people
+  have too few tests.
+- **Limitations:**
+  - Speed tests measure the plans people have, not what could be installed.
+  - Tiles straddling a border count for one municipality.
+  - The boundaries are simplified (~200 m), so some seafront tiles fall "in the sea" and are dropped
+    (e.g. ~16% of Cádiz's tests). Snapping them to the nearest municipality would also pull in
+    Portuguese or Gibraltar tiles, so they are left out.
+
+```bash
+pip install -r pipeline/requirements.txt          # DuckDB, reads Ookla's Parquet files on S3
+python3 pipeline/compute_internet.py              # latest 4 quarters; no API key needed (~4 min)
+python3 pipeline/compute_internet.py --quarters 2025-1,2025-2,2025-3,2025-4
+```
+
+Quarter extracts for Spain are cached in `.cache/internet/`.
+
 ## Using the data in QGIS
 
 Both datasets come as a flat CSV, one row per municipality, next to the JSON:
@@ -119,7 +153,10 @@ Both datasets come as a flat CSV, one row per municipality, next to the JSON:
 - `web/public/data/airports.csv`: `y1_min`..`y3_min` (year-round) and `s1_min`..`s3_min` (with seasonal
   routes) minutes to the nearest intercontinental / Europe / any airport, `*_airport` its IATA code.
 
-Empty cells mean over 3 hours or no airport/city reachable. Load the CSV as a delimited text layer
+- `web/public/data/internet.csv`: `fixed_down_mbps`, `fixed_up_mbps`, `fixed_latency_ms`, `fixed_tests`,
+  `fixed_devices` and the same for `mobile_*`. Empty speed cells mean not enough speed tests.
+
+Empty cells in the first two mean over 3 hours or no airport/city reachable. Load the CSV as a delimited text layer
 without geometry and join it on `code` to a municipalities layer whose INE code is a 5-digit text field
 (for example `web/public/data/municipalities.topo.json`, whose feature ids are those codes). The `.csvt` file next to each
 CSV makes QGIS read `code` as text, so `01001` keeps its leading zero.
@@ -165,4 +202,5 @@ cd web && npm install && npm run dev
 - Population: INE, *Cifras oficiales de población de los municipios españoles* (table 29005)
 - Town centres: © OpenStreetMap contributors (ODbL)
 - Travel times: [TravelTime API](https://traveltime.com)
+- Internet speeds: [Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps](https://github.com/teamookla/ookla-open-data) (CC BY-NC-SA 4.0)
 - Basemap: [OpenFreeMap](https://openfreemap.org) Positron
