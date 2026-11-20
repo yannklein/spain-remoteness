@@ -280,9 +280,9 @@ async function setMode(map: maplibregl.Map, m: Mode) {
   refresh(map)
 }
 
-function tooltipHTML(p: Record<string, unknown>): string {
+function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string {
   if (mode === 'airports') {
-    return airports ? airportTooltip(airports, p, tier, summer, fmtMinutes) : `<b>${String(p.name ?? '')}</b>`
+    return airports ? airportTooltip(airports, p, tier, summer, fmtMinutes, at) : `<b>${String(p.name ?? '')}</b>`
   }
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
@@ -317,6 +317,8 @@ function hideTooltip() {
 
 async function main() {
   renderLegend()
+  // browsers may restore a ticked checkbox on reload: start from what is shown
+  summer = $<HTMLInputElement>('#summer').checked
   const [style, loaded] = await Promise.all([loadStyle(), loadData()])
   geo = loaded.geo
   const provinces = loaded.provinces
@@ -379,8 +381,9 @@ async function main() {
       id: 'city-dot', type: 'circle', source: 'dests',
       paint: {
         'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, ['match', ['get', 'tier'], 1, 4, 2.5], 9, ['match', ['get', 'tier'], 1, 7, 5]],
-        'circle-color': '#ffffff',
-        'circle-stroke-color': '#1f1e1c',
+        // airports nobody reaches (no transit link in the data) are drawn faded
+        'circle-color': ['case', ['==', ['coalesce', ['get', 'reach'], 1], 0], '#d6d4ce', '#ffffff'],
+        'circle-stroke-color': ['case', ['==', ['coalesce', ['get', 'reach'], 1], 0], '#8a877f', '#1f1e1c'],
         'circle-stroke-width': 1.5,
       },
     })
@@ -412,7 +415,7 @@ async function main() {
       if (!f) return
       map.getCanvas().style.cursor = 'crosshair'
       setHover(f.id)
-      showTooltip(e.point.x, e.point.y, tooltipHTML(f.properties as Record<string, unknown>))
+      showTooltip(e.point.x, e.point.y, tooltipHTML(f.properties as Record<string, unknown>, [e.lngLat.lng, e.lngLat.lat]))
     })
     map.on('mouseleave', 'muni-fill', () => {
       map.getCanvas().style.cursor = ''
@@ -424,7 +427,7 @@ async function main() {
       const f = e.features?.[0]
       if (!f) return
       setHover(f.id)
-      showTooltip(e.point.x, e.point.y, tooltipHTML(f.properties as Record<string, unknown>))
+      showTooltip(e.point.x, e.point.y, tooltipHTML(f.properties as Record<string, unknown>, [e.lngLat.lng, e.lngLat.lat]))
     })
     map.on('movestart', hideTooltip)
   })

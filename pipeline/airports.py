@@ -161,12 +161,9 @@ AIRPORTS = [
 
 # Shown on the page and stored in airports.json params.notes.
 NOTES = [
-    "Cross-border public transport to Portugal and France is missing from TravelTime's "
-    "data (Nov 2026 check: no Spanish municipality reaches Lisbon, Porto, Faro, Biarritz, "
-    "Perpignan or Toulouse), so those airports never come out nearest. Gibraltar works on foot.",
-    "Some Spanish airports have no public transport link in TravelTime's data (Murcia-Corvera, "
-    "Lleida-Alguaire, Castellón, Salamanca, El Hierro, La Gomera, Melilla) and never come out "
-    "nearest. Where an airport bus is missing from the data, times are mostly walking (e.g. Maó).",
+    "Cross-border public transport to Portugal and France is missing from TravelTime's data "
+    "(Nov 2026 check), so airports across the border never come out nearest. Gibraltar works on foot.",
+    "Where an airport bus is missing from the data, times are mostly walking (e.g. Maó).",
 ]
 
 FIELDS = ("iata", "name", "country", "lat", "lng", "tier_year", "tier_summer", "zone", "note")

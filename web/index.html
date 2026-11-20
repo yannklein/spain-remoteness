@@ -27,7 +27,7 @@
         <button role="radio" data-tier="3"><span class="tl">All urban</span><span class="n" id="n3"></span></button>
       </div>
       <label id="summer-wrap" class="summer" hidden>
-        <input type="checkbox" id="summer" /> Include seasonal routes
+        <input type="checkbox" id="summer" autocomplete="off" /> Include seasonal routes
         <span class="muted">(summer-only, or winter-only in Canarias)</span>
       </label>
       <p class="tier-help" id="tier-help"></p>
@@ -55,7 +55,7 @@
           <li><b>Any airport</b>: any scheduled passenger flight, domestic included. Airports with no scheduled flights (Teruel, Huesca, Ciudad Real, Burgos, Albacete) are left out.</li>
           <li>Categories are nested. By default only year-round routes count; tick <i>Include seasonal routes</i> to also count summer-only routes (and winter-only ones in Canarias). Routes were checked in November 2026.</li>
           <li>Times come from the TravelTime API, as for the cities map: public transport incl. walking, the fastest of three Tuesday arrivals (08:30, 11:30, 14:30), from each municipality's town centre to the airport's bus or rail stop (OpenStreetMap), capped at 3 hours. Islands only count airports on the same island.</li>
-          <li>Airports near the border (Lisbon, Porto, Faro, Gibraltar, Biarritz, Toulouse, Perpignan…) are included too.</li>
+          <li>Airports near the border (Lisbon, Porto, Faro, Gibraltar, Biarritz, Toulouse, Perpignan…) are included too. Faded markers are airports nobody reaches by public transport in TravelTime's data; they are not counted.</li>
           <li>Timetables are a November weekday's: summer-only airport shuttles are not reflected.</li>
         </ul>
         <ul data-for="airports" id="airport-notes" hidden></ul>

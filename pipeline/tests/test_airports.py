@@ -137,7 +137,8 @@ def test_airports_csv(monkeypatch, tmp_path):
     from common import write_csv
     munis, (aps, rows) = run_airports(monkeypatch, tmp_path)
     places = {"meta": {"population_year": 2025}, "municipalities": munis}
-    output = compute_airports.build_output(places, aps, rows)
+    results = {a["code"]: {"x": 1} for a in aps}
+    output = compute_airports.build_output(places, aps, rows, results)
     assert output["airports"][0][:3] == [aps[0]["iata"], aps[0]["name"], "ES"]
     assert len(output["m"]["44216"]) == 13
     assert output["params"]["notes"] == airports.NOTES
@@ -165,3 +166,19 @@ def test_partial_run_writes_nothing(monkeypatch, tmp_path):
     assert not (tmp_path / "airports.json").exists()
     assert not (tmp_path / "airports.csv").exists()
     assert (tmp_path / "cache").exists()
+
+
+def test_output_flags_airports_nobody_reaches():
+    """An airport with no transit link must be flagged, not look like a real result."""
+    munis = [{"code": "52001", "name": "Melilla", "province": "Melilla", "pop": 86780}]
+    aps = [dict(FAKE[0]), {"code": "AIR:MLN", "iata": "MLN", "name": "Melilla", "country": "ES",
+                           "lat": 35.28, "lng": -2.96, "tier_year": 3, "tier_summer": 3,
+                           "zone": "melilla", "note": ""}]
+    results = {"AIR:MAD": {"AIR:MAD": 0, "28079": 2000}, "AIR:MLN": {"AIR:MLN": 0}}
+    aps, rows = compute_airports.aggregate_airports(munis, aps, results)
+    places = {"meta": {"population_year": 2025}, "municipalities": munis}
+    out = compute_airports.build_output(places, aps, rows, results)
+    reach = {a[0]: a[8] for a in out["airports"]}
+    assert reach == {"MAD": 1, "MLN": 0}
+    assert any("Melilla (MLN)" in n for n in out["params"]["notes"])
+    assert not any("Madrid" in n for n in out["params"]["notes"][len(airports.NOTES):])

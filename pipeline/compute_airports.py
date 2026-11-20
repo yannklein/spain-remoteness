@@ -57,8 +57,20 @@ def aggregate_airports(munis, airports, results):
     return aps, out
 
 
-def build_output(places, airports, rows):
+def reach_counts(airports, results):
+    """Number of municipalities that reach each airport within the cap."""
+    return {a["code"]: sum(1 for k in results.get(a["code"], {}) if not k.startswith("AIR:"))
+            for a in airports}
+
+
+def build_output(places, airports, rows, results):
     by_code = {m["code"]: m for m in places["municipalities"]}
+    reach = reach_counts(airports, results)
+    dead = [f"{a['name']} ({a['iata']})" for a in airports if not reach[a["code"]]]
+    notes = list(airport_list.NOTES)
+    if dead:
+        notes.append("No public transport link in TravelTime's data, so never the nearest: "
+                     + ", ".join(dead) + ".")
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "params": {
@@ -67,11 +79,12 @@ def build_output(places, airports, rows):
             "arrival_times": ARRIVAL_TIMES,
             "max_minutes": MAX_SECONDS // 60,
             "population_year": places["meta"].get("population_year"),
-            "notes": list(airport_list.NOTES),
+            "notes": notes,
         },
-        # [iata, name, country, lat, lng, tier_year, tier_summer, note]
+        # [iata, name, country, lat, lng, tier_year, tier_summer, note, reach]
+        # reach = municipalities that get there within the cap (0 = no transit link in the data)
         "airports": [[a["iata"], a["name"], a["country"], a["lat"], a["lng"],
-                      a["tier_year"], a["tier_summer"], a["note"]] for a in airports],
+                      a["tier_year"], a["tier_summer"], a["note"], reach[a["code"]]] for a in airports],
         # code -> [y1, ya1, y2, ya2, y3, ya3, s1, sa1, s2, sa2, s3, sa3, population]
         "m": {c: r + [by_code[c].get("pop")] for c, r in rows.items()},
     }
@@ -138,7 +151,7 @@ def main():
         return
 
     aps, rows = aggregate_airports(munis, dests, results)
-    output = build_output(places, aps, rows)
+    output = build_output(places, aps, rows, results)
     dump_json(output, AIRPORTS_OUTPUT_FILE, compact=True)
     write_csv(AIRPORTS_CSV, *airports_csv_rows(output, munis))
     print(f"Wrote {AIRPORTS_OUTPUT_FILE} and {AIRPORTS_CSV.name} ({client.calls} API calls)")

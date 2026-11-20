@@ -2,8 +2,9 @@ import type { FeatureCollection } from 'geojson'
 
 export type Tier = 1 | 2 | 3
 
-// [iata, name, country, lat, lng, tierYear, tierSummer, note]
-export type Airport = [string, string, string, number, number, number | null, number | null, string]
+// [iata, name, country, lat, lng, tierYear, tierSummer, note, reach]
+// reach = municipalities that get there within the cap; 0 = no public transport link in the data
+export type Airport = [string, string, string, number, number, number | null, number | null, string, number]
 
 export interface AirportsData {
   generated_at: string
@@ -61,14 +62,15 @@ export function airportMarkers(d: AirportsData, tier: Tier, summer: boolean): Fe
       .filter((a) => (tierOf(a, summer) ?? 99) <= tier)
       .map((a) => ({
         type: 'Feature',
-        properties: { name: a[0], iata: a[0], tier: tierOf(a, summer) },
+        properties: { name: a[0], iata: a[0], tier: tierOf(a, summer), reach: a[8] },
         geometry: { type: 'Point', coordinates: [a[4], a[3]] },
       })),
   }
 }
 
 export function airportCounts(d: AirportsData, summer: boolean): [number, number, number] {
-  const n = (t: number) => d.airports.filter((a) => (tierOf(a, summer) ?? 99) <= t).length
+  // only airports somebody can actually reach count
+  const n = (t: number) => d.airports.filter((a) => a[8] > 0 && (tierOf(a, summer) ?? 99) <= t).length
   return [n(1), n(2), n(3)]
 }
 
@@ -78,6 +80,7 @@ export function airportTooltip(
   tier: Tier,
   summer: boolean,
   fmt: (t: number, max: number) => string,
+  at?: [number, number],
 ): string {
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
@@ -88,9 +91,27 @@ export function airportTooltip(
   const ai = p[`${v}a${tier}`] as number
   const a = ai >= 0 ? d.airports[ai] : null
   const max = d.params.max_minutes
-  if (!a) return `${head}<br><span class="muted">no ${AIRPORT_TEXT[tier].noun.replace(/^an? /, '')} within ${max / 60} h</span>`
+  if (!a) {
+    const noun = AIRPORT_TEXT[tier].noun.replace(/^an? /, '')
+    // an eligible airport close by that nobody reaches: say so rather than "no airport"
+    const near = at
+      ? d.airports.filter((x) => x[8] === 0 && (tierOf(x, summer) ?? 99) <= tier && kmBetween(at, [x[4], x[3]]) < 40)
+      : []
+    const why = near.length
+      ? `<br><span class="muted">${near.map((x) => `${x[1]} (${x[0]})`).join(', ')} has no public transport link in TravelTime's data</span>`
+      : ''
+    return `${head}<br><span class="muted">no ${noun} reachable within ${max / 60} h by public transport</span>${why}`
+  }
   const where = COUNTRY[a[2]] ? `${a[0]}, ${COUNTRY[a[2]]}` : a[0]
   return `${head}<br><span class="big">${fmt(t as number, max)}</span><br>to ${a[1]} (${where})`
+}
+
+function kmBetween([lng1, lat1]: [number, number], [lng2, lat2]: [number, number]): number {
+  const r = Math.PI / 180
+  const h =
+    Math.sin(((lat2 - lat1) * r) / 2) ** 2 +
+    Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(((lng2 - lng1) * r) / 2) ** 2
+  return 2 * 6371 * Math.asin(Math.sqrt(h))
 }
 
 /** Share of all people more than 60 min from an airport of this tier (population-weighted). */

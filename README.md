@@ -89,12 +89,14 @@ Details worth knowing:
 - **Arrival points are the airport's bus/rail stop** from OpenStreetMap, not the terminal:
   TravelTime cannot attach a point inside a terminal to its walking network and returned every
   terminal as unreachable. Four stops still did not attach and were moved 300–600 m (noted per airport).
-- **Foreign airports are in the list but never win.** Lisbon, Porto, Faro, Biarritz, Perpignan and
-  Toulouse were included for border areas, but TravelTime has no cross-border buses or trains:
+- **Foreign airports are in the list but never win.** Lisbon, Porto, Faro, Biarritz, Perpignan,
+  Toulouse, Tarbes and Pau were included for border areas, but TravelTime has no cross-border buses or trains:
   no Spanish municipality reaches them (November 2026 check, `--only OPO,LIS,...`). Gibraltar works
   on foot from La Línea and San Roque.
 - **Coverage gaps.** Murcia-Corvera, Lleida-Alguaire, Castellón, Salamanca, El Hierro, La Gomera and
-  Melilla airports are not reachable from their own towns in TravelTime's data. Where an airport bus
+  Melilla airports (and Tarbes and Pau across the border) are not reachable in TravelTime's data. Each
+  airport's `reach` (municipalities that get there) is stored in `airports.json`; the page fades
+  unreachable airports, leaves them out of the counts and names them in the tooltip of nearby places. Where an airport bus
   is missing, the time is mostly walking (Maó to Menorca airport: 86 min).
 - **Timetables are a November weekday's.** Summer-only airport shuttles are not reflected, even
   with seasonal routes counted.
