@@ -24,8 +24,8 @@ import time
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from common import (CACHE_DIR, OUTPUT_FILE, PLACES_FILE, HTTPStatusError,
-                    dump_json, haversine_km, http, load_json, zone)
+from common import (CACHE_DIR, CITIES_CSV, OUTPUT_FILE, PLACES_FILE, HTTPStatusError,
+                    dump_json, haversine_km, http, load_json, write_csv, zone)
 
 API = "https://api.traveltimeapp.com/v4"
 MAX_SECONDS = 10800              # 3 h cap
@@ -176,9 +176,9 @@ def cache_dir(client):
     return CACHE_DIR / tag
 
 
-def compute_all(munis, dests, client, use_cache=True):
+def compute_all(munis, dests, client, use_cache=True, cdir=None):
     """Return {dest_code: {origin_code: seconds}}, using/refreshing the disk cache."""
-    cdir = cache_dir(client)
+    cdir = cdir or cache_dir(client)
     cdir.mkdir(parents=True, exist_ok=True)
     results, todo = {}, []
     for d in dests:
@@ -232,15 +232,36 @@ def aggregate(munis, dests, results):
     return cities, out
 
 
+def cities_csv_rows(output, munis):
+    """One row per municipality: minutes and INE code of the nearest city per tier."""
+    header = ["code", "name", "province", "population",
+              "t1_min", "t1_city", "t2_min", "t2_city", "t3_min", "t3_city"]
+    rows = []
+    for m in munis:
+        r = output["m"].get(m["code"])
+        row = [m["code"], m["name"], m.get("province"), m.get("pop")]
+        for tier in TIERS:
+            t, c = (r[(tier - 1) * 2], r[(tier - 1) * 2 + 1]) if r else (-1, -1)
+            row += [None, None] if t < 0 else [t, output["cities"][c][0]]
+        rows.append(row)
+    return header, rows
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, help="only compute the first N destinations (testing)")
     ap.add_argument("--endpoint", choices=["regular", "fast"], default="regular")
     ap.add_argument("--no-cache", action="store_true")
+    ap.add_argument("--csv-only", action="store_true",
+                    help="rewrite the CSV from the existing JSON, no API calls")
     args = ap.parse_args()
 
     places = load_json(PLACES_FILE)
     munis = places["municipalities"]
+    if args.csv_only:
+        write_csv(CITIES_CSV, *cities_csv_rows(load_json(OUTPUT_FILE), munis))
+        print(f"Wrote {CITIES_CSV}")
+        return
     dests = [m for m in munis if m["tier"] is not None]
     if args.limit:
         dests = sorted(dests, key=lambda d: d["tier"])[:args.limit]
@@ -278,7 +299,8 @@ def main():
     for c, r in rows.items():
         output["m"][c] = r + [1 if by_code[c]["urban"] else 0, by_code[c].get("pop")]
     dump_json(output, OUTPUT_FILE, compact=True)
-    print(f"Wrote {OUTPUT_FILE} ({client.calls} API calls)")
+    write_csv(CITIES_CSV, *cities_csv_rows(output, munis))
+    print(f"Wrote {OUTPUT_FILE} and {CITIES_CSV.name} ({client.calls} API calls)")
 
 
 if __name__ == "__main__":

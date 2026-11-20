@@ -206,3 +206,41 @@ def test_arrival_times_are_madrid_local():
     ts = compute_times.arrival_times(["08:30"])
     hour = int(ts[0][11:13])
     assert hour in (6, 7)                               # 08:30 CET/CEST in UTC
+
+
+def test_zone_prefers_explicit_key():
+    assert zone({"code": "AIR:MLN", "zone": "melilla"}) == "melilla"
+    assert zone({"code": "AIR:TFN", "zone": "island:Tenerife"}) == "island:Tenerife"
+
+
+def test_compute_all_uses_given_cache_dir(monkeypatch, tmp_path):
+    monkeypatch.setenv("TRAVELTIME_APP_ID", "x")
+    monkeypatch.setenv("TRAVELTIME_API_KEY", "y")
+    monkeypatch.setattr(compute_times, "CACHE_DIR", tmp_path / "default")
+    monkeypatch.setattr(compute_times.Client, "post", fake_post)
+    munis = build_places.classify(base(), {})
+    dests = [m for m in munis if m["code"] == "28079"]
+    compute_times.compute_all(munis, dests, compute_times.Client("fast"), use_cache=False, cdir=tmp_path / "x")
+    assert (tmp_path / "x" / "28079.json").exists()
+    assert not (tmp_path / "default").exists()
+
+
+def test_cities_csv_rows():
+    output = {"cities": [["44216", "Teruel", 2, 0, 0, None, 1]],
+              "m": {"44216": [-1, -1, 0, 0, 0, 0, 1, 36000],
+                    "44001": [-1, -1, 35, 0, 35, 0, 0, 100]}}
+    munis = [{"code": "44001", "name": "Ababuj", "province": "Teruel", "pop": 100},
+             {"code": "44216", "name": "Teruel", "province": "Teruel", "pop": 36000}]
+    header, rows = compute_times.cities_csv_rows(output, munis)
+    assert header == ["code", "name", "province", "population",
+                      "t1_min", "t1_city", "t2_min", "t2_city", "t3_min", "t3_city"]
+    assert rows[0] == ["44001", "Ababuj", "Teruel", 100, None, None, 35, "44216", 35, "44216"]
+    assert rows[1][4:6] == [None, None] and rows[1][6:8] == [0, "44216"]
+
+
+def test_write_csv_keeps_codes_as_text(tmp_path):
+    from common import write_csv
+    p = tmp_path / "a.csv"
+    write_csv(p, ["code", "name", "t1_min", "t1_city"], [["01001", "X", None, "28079"]])
+    assert p.read_text(encoding="utf-8").splitlines() == ["code,name,t1_min,t1_city", "01001,X,,28079"]
+    assert p.with_suffix(".csvt").read_text().strip() == '"String","String","Integer","String"'

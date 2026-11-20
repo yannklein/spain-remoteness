@@ -1,3 +1,4 @@
+import csv
 import json
 import math
 import time
@@ -11,6 +12,10 @@ BASE_FILE = DATA / "municipalities_base.json"
 PLACES_FILE = DATA / "places.json"
 OUTPUT_FILE = ROOT / "web" / "public" / "data" / "remoteness.json"
 CACHE_DIR = ROOT / ".cache" / "times"
+CITIES_CSV = ROOT / "web" / "public" / "data" / "remoteness.csv"
+AIRPORTS_OUTPUT_FILE = ROOT / "web" / "public" / "data" / "airports.json"
+AIRPORTS_CSV = ROOT / "web" / "public" / "data" / "airports.csv"
+AIRPORT_CACHE_DIR = ROOT / ".cache" / "airports"
 
 class HTTPStatusError(RuntimeError):
     def __init__(self, code, msg):
@@ -61,8 +66,11 @@ def zone(m):
     """Territory a municipality belongs to: travel never crosses zones.
 
     Each island is its own zone, as are Ceuta and Melilla; everything
-    else is the mainland.
+    else is the mainland. Places that are not municipalities (airports)
+    carry their zone explicitly.
     """
+    if m.get("zone"):
+        return m["zone"]
     if m.get("island"):
         return "island:" + m["island"]
     prov = m["code"][:2]
@@ -85,3 +93,22 @@ def dump_json(obj, path, compact=False):
             json.dump(obj, f, ensure_ascii=False, separators=(",", ":"))
         else:
             json.dump(obj, f, ensure_ascii=False, indent=1)
+
+
+TEXT_COLUMNS = {"code", "name", "province"}
+
+
+def write_csv(path, header, rows):
+    """Flat table for GIS tools: None becomes an empty cell (NULL in QGIS).
+
+    Also writes a QGIS .csvt sidecar so zero-padded codes (01001) stay text.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f, lineterminator="\n")
+        w.writerow(header)
+        for r in rows:
+            w.writerow(["" if v is None else v for v in r])
+    types = ['"String"' if c in TEXT_COLUMNS or c.endswith(("_city", "_airport")) else '"Integer"'
+             for c in header]
+    path.with_suffix(".csvt").write_text(",".join(types) + "\n", encoding="utf-8")
