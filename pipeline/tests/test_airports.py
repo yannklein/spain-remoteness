@@ -62,3 +62,105 @@ def test_destinations_only_eligible_with_prefixed_codes():
     assert "TEV" not in {d["iata"] for d in dests}
     assert set(dests[0]) == {"code", "iata", "name", "country", "lat", "lng",
                              "tier_year", "tier_summer", "zone", "note"}
+
+
+# --- compute_airports -------------------------------------------------------
+
+import compute_airports  # noqa: E402
+import compute_times  # noqa: E402
+from test_pipeline import base, fake_post  # noqa: E402
+
+FAKE = [
+    {"code": "AIR:MAD", "iata": "MAD", "name": "Madrid", "country": "ES", "lat": 40.49, "lng": -3.57,
+     "tier_year": 1, "tier_summer": 1, "zone": "mainland", "note": ""},
+    {"code": "AIR:VLC", "iata": "VLC", "name": "Valencia", "country": "ES", "lat": 39.49, "lng": -0.47,
+     "tier_year": 2, "tier_summer": 2, "zone": "mainland", "note": ""},
+    {"code": "AIR:XXX", "iata": "XXX", "name": "Summer only", "country": "ES", "lat": 40.34, "lng": -1.11,
+     "tier_year": None, "tier_summer": 3, "zone": "mainland", "note": "summer"},   # at Teruel
+    {"code": "AIR:IBZ", "iata": "IBZ", "name": "Eivissa", "country": "ES", "lat": 38.87, "lng": 1.37,
+     "tier_year": 2, "tier_summer": 2, "zone": "island:Eivissa", "note": ""},
+]
+
+
+def run_airports(monkeypatch, tmp_path, post=fake_post):
+    monkeypatch.setenv("TRAVELTIME_APP_ID", "x")
+    monkeypatch.setenv("TRAVELTIME_API_KEY", "y")
+    monkeypatch.setattr(compute_times.Client, "post", post)
+    munis = base()
+    client = compute_times.Client("regular")
+    results = compute_times.compute_all(munis, [dict(a) for a in FAKE], client,
+                                        use_cache=False, cdir=tmp_path)
+    return munis, compute_airports.aggregate_airports(munis, [dict(a) for a in FAKE], results)
+
+
+def test_aggregate_nested_and_summer_only(monkeypatch, tmp_path):
+    _, (aps, rows) = run_airports(monkeypatch, tmp_path)
+    xxx = next(i for i, a in enumerate(aps) if a["iata"] == "XXX")
+    for code, r in rows.items():
+        assert len(r) == 12
+        for base_i in (0, 6):
+            t1, t2, t3 = r[base_i], r[base_i + 2], r[base_i + 4]
+            if t1 >= 0:
+                assert 0 <= t2 <= t1, code
+            if t2 >= 0:
+                assert 0 <= t3 <= t2, code
+        for k in range(3):
+            if r[k * 2] >= 0:
+                assert 0 <= r[6 + k * 2] <= r[k * 2], code   # summer never slower
+        assert xxx not in (r[1], r[3], r[5]), code             # never chosen year-round
+    assert rows["44216"][11] == xxx                            # Teruel: summer tier 3 is XXX
+    assert rows["44216"][5] != xxx
+
+
+def test_no_airport_on_island_or_ceuta(monkeypatch, tmp_path):
+    _, (aps, rows) = run_airports(monkeypatch, tmp_path)
+    assert rows["07024"] == [-1] * 12                          # Formentera
+    assert rows["51001"] == [-1] * 12                          # Ceuta
+    ibz = next(i for i, a in enumerate(aps) if a["iata"] == "IBZ")
+    assert rows["07026"][3] == ibz                             # Eivissa town -> IBZ (tier 2)
+
+
+def test_airport_ids_do_not_collide(monkeypatch, tmp_path):
+    seen = []
+
+    def recording(self, path, body):
+        for s in body["arrival_searches"]:
+            seen.append(s["arrival_location_id"])
+            assert not any(o.startswith("AIR:") for o in s["departure_location_ids"])
+        return fake_post(self, path, body)
+
+    run_airports(monkeypatch, tmp_path, recording)
+    assert seen and all(a.startswith("AIR:") for a in seen)
+
+
+def test_airports_csv(monkeypatch, tmp_path):
+    from common import write_csv
+    munis, (aps, rows) = run_airports(monkeypatch, tmp_path)
+    places = {"meta": {"population_year": 2025}, "municipalities": munis}
+    output = compute_airports.build_output(places, aps, rows)
+    assert output["airports"][0][:3] == [aps[0]["iata"], aps[0]["name"], "ES"]
+    assert len(output["m"]["44216"]) == 13
+    header, csv_rows = compute_airports.airports_csv_rows(output, munis)
+    assert header == ["code", "name", "province", "population",
+                      "y1_min", "y1_airport", "y2_min", "y2_airport", "y3_min", "y3_airport",
+                      "s1_min", "s1_airport", "s2_min", "s2_airport", "s3_min", "s3_airport"]
+    by = {r[0]: r for r in csv_rows}
+    assert by["07024"][4:] == [None] * 12
+    assert by["44216"][15] == "XXX"
+    p = tmp_path / "airports.csv"
+    write_csv(p, header, csv_rows)
+    assert p.with_suffix(".csvt").read_text().startswith('"String"')
+
+
+def test_partial_run_writes_nothing(monkeypatch, tmp_path):
+    monkeypatch.setenv("TRAVELTIME_APP_ID", "x")
+    monkeypatch.setenv("TRAVELTIME_API_KEY", "y")
+    monkeypatch.setattr(compute_times.Client, "post", fake_post)
+    monkeypatch.setattr(compute_airports, "AIRPORTS_OUTPUT_FILE", tmp_path / "airports.json")
+    monkeypatch.setattr(compute_airports, "AIRPORTS_CSV", tmp_path / "airports.csv")
+    monkeypatch.setattr(compute_airports, "AIRPORT_CACHE_DIR", tmp_path / "cache")
+    monkeypatch.setattr(sys, "argv", ["compute_airports.py", "--only", "MAD"])
+    compute_airports.main()
+    assert not (tmp_path / "airports.json").exists()
+    assert not (tmp_path / "airports.csv").exists()
+    assert (tmp_path / "cache").exists()
