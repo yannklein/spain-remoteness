@@ -11,17 +11,25 @@
 
     <aside id="panel">
       <button id="collapse" aria-label="Toggle panel">▾</button>
-      <h1>How far is rural Spain from a city?</h1>
+      <div class="modes" role="radiogroup" aria-label="Map">
+        <button role="radio" data-mode="cities" aria-checked="true">Cities</button>
+        <button role="radio" data-mode="airports">Airports</button>
+      </div>
+      <h1 id="title">How far is rural Spain from a city?</h1>
       <p class="lead">
         Public transport time from each municipality to the nearest <strong id="tier-noun">regional hub</strong>,
         best connection of a weekday.
       </p>
 
-      <div class="tiers" role="radiogroup" aria-label="What counts as a main city">
-        <button role="radio" data-tier="1">Metros<span id="n1"></span></button>
-        <button role="radio" data-tier="2" aria-checked="true">Regional hubs<span id="n2"></span></button>
-        <button role="radio" data-tier="3">All urban<span id="n3"></span></button>
+      <div class="tiers" role="radiogroup" aria-label="Category">
+        <button role="radio" data-tier="1"><span class="tl">Metros</span><span class="n" id="n1"></span></button>
+        <button role="radio" data-tier="2" aria-checked="true"><span class="tl">Regional hubs</span><span class="n" id="n2"></span></button>
+        <button role="radio" data-tier="3"><span class="tl">All urban</span><span class="n" id="n3"></span></button>
       </div>
+      <label id="summer-wrap" class="summer" hidden>
+        <input type="checkbox" id="summer" /> Include seasonal routes
+        <span class="muted">(summer-only, or winter-only in Canarias)</span>
+      </label>
       <p class="tier-help" id="tier-help"></p>
 
       <div id="headline" class="headline" hidden></div>
@@ -32,7 +40,7 @@
 
       <details>
         <summary>How this map is made</summary>
-        <ul>
+        <ul data-for="cities">
           <li><b>Metros</b>: the 6 municipalities over 500k people (Madrid, Barcelona, València, Sevilla, Zaragoza, Málaga).</li>
           <li><b>Regional hubs</b>: the 50 provincial capitals, Ceuta, Melilla, Mérida, Santiago de Compostela, and every municipality over 100k. Suburbs over 100k are labelled with their metro.</li>
           <li><b>All urban</b>: hubs plus every municipality over 50k, the core-city threshold Eurostat uses for Functional Urban Areas.</li>
@@ -41,6 +49,16 @@
           <li>Coverage depends on the timetables TravelTime has. Some local bus networks are missing (e.g. Alcantarilla to Murcia, Petrer to Elda), so a few places look more isolated than they are.</li>
           <li>Boundaries: IGN via <a href="https://github.com/martgnz/es-atlas">es-atlas</a>. Population: INE padrón.</li>
         </ul>
+        <ul data-for="airports" hidden>
+          <li><b>Intercontinental</b>: airports with at least one scheduled flight longer than 4,000 km (the Americas, the Gulf, Asia).</li>
+          <li><b>Europe</b>: airports with at least one scheduled flight to another European country.</li>
+          <li><b>Any airport</b>: any scheduled passenger flight, domestic included. Airports with no scheduled flights (Teruel, Huesca, Ciudad Real, Burgos, Albacete) are left out.</li>
+          <li>Categories are nested. By default only year-round routes count; tick <i>Include seasonal routes</i> to also count summer-only routes (and winter-only ones in Canarias). Routes were checked in November 2026.</li>
+          <li>Times come from the TravelTime API, as for the cities map: public transport incl. walking, the fastest of three Tuesday arrivals (08:30, 11:30, 14:30), from each municipality's town centre to the airport's bus or rail stop (OpenStreetMap), capped at 3 hours. Islands only count airports on the same island.</li>
+          <li>Airports near the border (Lisbon, Porto, Faro, Gibraltar, Biarritz, Toulouse, Perpignan…) are included too.</li>
+          <li>Timetables are a November weekday's: summer-only airport shuttles are not reflected.</li>
+        </ul>
+        <ul data-for="airports" id="airport-notes" hidden></ul>
         <p class="meta" id="meta"></p>
       </details>
 

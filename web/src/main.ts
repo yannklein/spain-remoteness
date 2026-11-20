@@ -4,8 +4,19 @@ import { feature } from 'topojson-client'
 import type { Topology, GeometryCollection } from 'topojson-specification'
 import type { FeatureCollection, Geometry } from 'geojson'
 import './style.css'
+import {
+  AIRPORT_TEXT,
+  airportCounts,
+  airportHeadline,
+  airportMarkers,
+  airportProps,
+  airportTooltip,
+  loadAirports,
+  type AirportsData,
+  type Tier,
+} from './airports'
 
-type Tier = 1 | 2 | 3
+type Mode = 'cities' | 'airports'
 
 // [code, name, tier, lat, lng, metro, population]
 type City = [string, string, number, number, number, string | null, number | null]
@@ -24,10 +35,15 @@ const COLORS = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f95'
 const URBAN = '#b9b7b1'
 const NODATA = '#ecebe8'
 
-const TIER_TEXT: Record<Tier, { noun: string; help: string }> = {
-  1: { noun: 'metro', help: 'Madrid, Barcelona, València, Sevilla, Zaragoza, Málaga.' },
-  2: { noun: 'regional hub', help: 'Provincial and regional capitals plus every city over 100k.' },
-  3: { noun: 'urban area', help: 'Regional hubs plus every municipality over 50k.' },
+const TIER_TEXT: Record<Tier, { label: string; noun: string; help: string }> = {
+  1: { label: 'Metros', noun: 'metro', help: 'Madrid, Barcelona, València, Sevilla, Zaragoza, Málaga.' },
+  2: { label: 'Regional hubs', noun: 'regional hub', help: 'Provincial and regional capitals plus every city over 100k.' },
+  3: { label: 'All urban', noun: 'urban area', help: 'Regional hubs plus every municipality over 50k.' },
+}
+
+const TITLE: Record<Mode, string> = {
+  cities: 'How far is rural Spain from a city?',
+  airports: 'How far is rural Spain from an airport?',
 }
 
 const VIEWS: Record<string, [[number, number], [number, number]]> = {
@@ -45,8 +61,13 @@ const FALLBACK_STYLE: StyleSpecification = {
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T
 
-let tier: Tier = 2
+let mode: Mode = location.hash === '#airports' ? 'airports' : 'cities'
+const tiers: Record<Mode, Tier> = { cities: 2, airports: 2 }
+let tier: Tier = tiers[mode]
+let summer = false
 let data: Remoteness | null = null
+let airports: AirportsData | null | undefined // undefined = not loaded yet
+let geo: FeatureCollection<Geometry, Record<string, unknown>> | null = null
 
 function fmtMinutes(t: number, max = 180): string {
   if (t < 0) return `over ${max / 60} h (or no service)`
@@ -56,13 +77,18 @@ function fmtMinutes(t: number, max = 180): string {
   return m ? `${h} h ${String(m).padStart(2, '0')}` : `${h} h`
 }
 
-function fillColor(t: Tier): ExpressionSpecification {
-  const key = `t${t}`
+/** Feature property holding the minutes shown for the current mode, tier and variant. */
+function valueKey(): string {
+  return mode === 'cities' ? `t${tier}` : `${summer ? 's' : 'y'}${tier}`
+}
+
+/** Colour by minutes in `key`; municipalities that are a city of tier <= greyTier are grey. */
+function fillColor(key: string, greyTier: Tier | null): ExpressionSpecification {
   const steps: (number | string)[] = [COLORS[0]]
   BINS.slice(0, -1).forEach((b, i) => steps.push(b, COLORS[i + 1]))
   return [
     'case',
-    ['all', ['>', ['get', 'dt'], 0], ['<=', ['get', 'dt'], t]], URBAN,
+    ['all', ['>', ['get', 'dt'], 0], ['<=', ['get', 'dt'], greyTier ?? 0]], URBAN,
     ['!', ['has', key]], NODATA,
     ['<', ['get', key], 0], COLORS[6],
     ['step', ['get', key], ...steps] as unknown as ExpressionSpecification,
@@ -81,7 +107,7 @@ async function loadStyle(): Promise<StyleSpecification | string> {
 
 async function loadData() {
   const topo = (await (await fetch('./data/municipalities.topo.json')).json()) as Topology
-  const geo = feature(topo, topo.objects.municipalities as GeometryCollection) as FeatureCollection<
+  const g = feature(topo, topo.objects.municipalities as GeometryCollection) as FeatureCollection<
     Geometry,
     Record<string, unknown>
   >
@@ -96,7 +122,7 @@ async function loadData() {
 
   // tier in which each municipality counts as a main city (tiers are nested)
   const cityTier = new Map((data?.cities ?? []).map((c) => [c[0], c[2]]))
-  for (const f of geo.features) {
+  for (const f of g.features) {
     const code = String(f.id)
     const p: Record<string, unknown> = { code, name: f.properties?.name }
     const row = data?.m[code]
@@ -106,7 +132,25 @@ async function loadData() {
     p.dt = cityTier.get(code) ?? 0
     f.properties = p
   }
-  return { geo, provinces }
+  return { geo: g, provinces }
+}
+
+/** Load airports.json once and merge its values into the municipality features. */
+async function ensureAirports(map: maplibregl.Map) {
+  if (airports !== undefined) return
+  airports = await loadAirports()
+  if (!airports || !geo) return
+  for (const f of geo.features) {
+    const row = airports.m[String(f.id)]
+    if (row) Object.assign(f.properties, airportProps(row))
+  }
+  const src = map.getSource('munis') as maplibregl.GeoJSONSource | undefined
+  src?.setData(geo)
+}
+
+function destGeoJSON(): FeatureCollection {
+  if (mode === 'airports') return airports ? airportMarkers(airports, tier, summer) : { type: 'FeatureCollection', features: [] }
+  return cityGeoJSON(tier)
 }
 
 function cityGeoJSON(t: Tier): FeatureCollection {
@@ -151,28 +195,95 @@ function renderLegend() {
   const labels = ['< 30 min', '30–60', '60–90', '90 min–2 h', '2 h–2 h 30', '2 h 30–3 h', '3 h+ / no service']
   $('#legend').innerHTML =
     COLORS.map((c, i) => `<div><i style="background:${c}"></i>${labels[i]}</div>`).join('') +
-    `<div><i style="background:${URBAN}"></i>City of the selected tier</div>`
+    (mode === 'cities' ? `<div><i style="background:${URBAN}"></i>City of the selected tier</div>` : '')
 }
 
-function setTier(map: maplibregl.Map, t: Tier) {
-  tier = t
-  document.querySelectorAll<HTMLButtonElement>('.tiers button').forEach((b) => {
-    b.setAttribute('aria-checked', String(Number(b.dataset.tier) === t))
+function fmtDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+}
+
+/** Everything in the panel and on the map that depends on mode, tier and the seasonal checkbox. */
+function refresh(map: maplibregl.Map) {
+  const panel = $('#panel')
+  panel.dataset.mode = mode
+  document.querySelectorAll<HTMLButtonElement>('.modes button').forEach((b) => {
+    b.setAttribute('aria-checked', String(b.dataset.mode === mode))
   })
-  $('#tier-noun').textContent = TIER_TEXT[t].noun
-  $('#tier-help').textContent = TIER_TEXT[t].help
-  const h = headline(t)
+  document.querySelectorAll<HTMLElement>('[data-for]').forEach((el) => {
+    el.hidden = el.dataset.for !== mode
+  })
+  $('#title').textContent = TITLE[mode]
+  document.title = TITLE[mode]
+  const text = mode === 'cities' ? TIER_TEXT : AIRPORT_TEXT
+  const counts: (number | null)[] =
+    mode === 'cities'
+      ? [1, 2, 3].map((t) => (data ? data.cities.filter((c) => c[2] <= t).length : null))
+      : airports
+        ? airportCounts(airports, summer)
+        : [null, null, null]
+  document.querySelectorAll<HTMLButtonElement>('.tiers button').forEach((b) => {
+    const t = Number(b.dataset.tier) as Tier
+    b.setAttribute('aria-checked', String(t === tier))
+    b.querySelector('.tl')!.textContent = text[t].label
+    b.querySelector('.n')!.textContent = counts[t - 1] == null ? '' : String(counts[t - 1])
+  })
+  $('#summer-wrap').hidden = mode !== 'airports'
+  $('#tier-noun').textContent = text[tier].noun.replace(/^an? /, '')
+  $('#tier-help').textContent = text[tier].help
+
+  const h = mode === 'cities' ? headline(tier) : airports ? airportHeadline(airports, tier, summer) : null
   const el = $('#headline')
   el.hidden = !h
   if (h) el.innerHTML = h
+
+  const s = $('#status')
+  const missing = mode === 'cities' ? !data : airports === null
+  s.hidden = !missing
+  s.innerHTML =
+    mode === 'cities'
+      ? 'Travel times have not been computed yet. Run the <b>Compute travel times</b> workflow in the GitHub repo (it needs the TravelTime API secrets).'
+      : 'Airport travel times have not been computed yet. Run <code>python3 pipeline/compute_airports.py</code>.'
+
+  const meta = $('#meta')
+  if (mode === 'cities' && data) {
+    meta.textContent =
+      `Computed ${fmtDate(data.generated_at)} · ${data.cities.length} cities · ${data.params.endpoint} endpoint` +
+      (data.params.population_year ? ` · population ${data.params.population_year}` : '') +
+      (data.params.notes.length ? ` · ${data.params.notes.join('; ')}` : '')
+  } else if (mode === 'airports' && airports) {
+    meta.textContent =
+      `Computed ${fmtDate(airports.generated_at)} · ${airports.airports.length} airports` +
+      (airports.params.population_year ? ` · population ${airports.params.population_year}` : '')
+    $('#airport-notes').innerHTML = airports.params.notes.map((n) => `<li>${n}</li>`).join('')
+  } else {
+    meta.textContent = ''
+  }
+
+  renderLegend()
   if (map.getLayer('muni-fill')) {
-    map.setPaintProperty('muni-fill', 'fill-color', fillColor(t))
-    ;(map.getSource('cities') as maplibregl.GeoJSONSource).setData(cityGeoJSON(t))
+    map.setPaintProperty('muni-fill', 'fill-color', fillColor(valueKey(), mode === 'cities' ? tier : null))
+    ;(map.getSource('dests') as maplibregl.GeoJSONSource).setData(destGeoJSON())
   }
   hideTooltip()
 }
 
+function setTier(map: maplibregl.Map, t: Tier) {
+  tier = tiers[mode] = t
+  refresh(map)
+}
+
+async function setMode(map: maplibregl.Map, m: Mode) {
+  mode = m
+  tier = tiers[m]
+  history.replaceState(null, '', m === 'airports' ? '#airports' : location.pathname + location.search)
+  if (m === 'airports') await ensureAirports(map)
+  refresh(map)
+}
+
 function tooltipHTML(p: Record<string, unknown>): string {
+  if (mode === 'airports') {
+    return airports ? airportTooltip(airports, p, tier, summer, fmtMinutes) : `<b>${String(p.name ?? '')}</b>`
+  }
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
   if (p.t1 === undefined) return `<b>${name}</b><br><span class="muted">No travel data</span>`
@@ -206,7 +317,9 @@ function hideTooltip() {
 
 async function main() {
   renderLegend()
-  const [style, { geo, provinces }] = await Promise.all([loadStyle(), loadData()])
+  const [style, loaded] = await Promise.all([loadStyle(), loadData()])
+  geo = loaded.geo
+  const provinces = loaded.provinces
 
   const narrow = window.innerWidth < 700
   if (narrow) $('#panel').classList.add('collapsed')
@@ -232,14 +345,21 @@ async function main() {
     const firstSymbol = map.getStyle().layers.find((l) => l.type === 'symbol')?.id
     map.addSource('munis', {
       type: 'geojson',
-      data: geo,
+      data: geo!,
       promoteId: 'code',
-      attribution: 'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE',
+      attribution:
+        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap',
     })
     map.addSource('provinces', { type: 'geojson', data: provinces })
-    map.addSource('cities', { type: 'geojson', data: cityGeoJSON(tier) })
+    map.addSource('dests', { type: 'geojson', data: destGeoJSON() })
 
-    map.addLayer({ id: 'muni-fill', type: 'fill', source: 'munis', paint: { 'fill-color': fillColor(tier), 'fill-opacity': 0.88 } }, firstSymbol)
+    map.addLayer(
+      {
+        id: 'muni-fill', type: 'fill', source: 'munis',
+        paint: { 'fill-color': fillColor(valueKey(), mode === 'cities' ? tier : null), 'fill-opacity': 0.88 },
+      },
+      firstSymbol,
+    )
     map.addLayer(
       {
         id: 'muni-line', type: 'line', source: 'munis',
@@ -256,7 +376,7 @@ async function main() {
       paint: { 'line-color': '#1f1e1c', 'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 1.6, 0] },
     })
     map.addLayer({
-      id: 'city-dot', type: 'circle', source: 'cities',
+      id: 'city-dot', type: 'circle', source: 'dests',
       paint: {
         'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, ['match', ['get', 'tier'], 1, 4, 2.5], 9, ['match', ['get', 'tier'], 1, 7, 5]],
         'circle-color': '#ffffff',
@@ -266,7 +386,7 @@ async function main() {
     })
     if (typeof style === 'string') {
       map.addLayer({
-        id: 'city-label', type: 'symbol', source: 'cities',
+        id: 'city-label', type: 'symbol', source: 'dests',
         minzoom: 5,
         filter: ['any', ['==', ['get', 'tier'], 1], ['>=', ['zoom'], 6.5]],
         layout: {
@@ -312,6 +432,13 @@ async function main() {
   document.querySelectorAll<HTMLButtonElement>('.tiers button').forEach((b) =>
     b.addEventListener('click', () => setTier(map, Number(b.dataset.tier) as Tier)),
   )
+  document.querySelectorAll<HTMLButtonElement>('.modes button').forEach((b) =>
+    b.addEventListener('click', () => setMode(map, b.dataset.mode as Mode)),
+  )
+  $<HTMLInputElement>('#summer').addEventListener('change', (e) => {
+    summer = (e.target as HTMLInputElement).checked
+    refresh(map)
+  })
   document.querySelectorAll<HTMLButtonElement>('.jump button').forEach((b) =>
     b.addEventListener('click', () => map.fitBounds(VIEWS[b.dataset.view!], { padding: padding() })),
   )
@@ -320,23 +447,7 @@ async function main() {
     map.fitBounds(VIEWS.peninsula, { padding: padding() })
   })
 
-  if (data) {
-    for (const t of [1, 2, 3] as Tier[]) {
-      $(`#n${t}`).textContent = String(data.cities.filter((c) => c[2] <= t).length)
-    }
-    const d = new Date(data.generated_at)
-    $('#meta').textContent =
-      `Computed ${d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} · ` +
-      `${data.cities.length} cities · ${data.params.endpoint} endpoint` +
-      (data.params.population_year ? ` · population ${data.params.population_year}` : '') +
-      (data.params.notes.length ? ` · ${data.params.notes.join('; ')}` : '')
-  } else {
-    const s = $('#status')
-    s.hidden = false
-    s.innerHTML =
-      'Travel times have not been computed yet. Run the <b>Compute travel times</b> workflow in the GitHub repo (it needs the TravelTime API secrets).'
-  }
-  setTier(map, tier)
+  await setMode(map, mode)
 }
 
 main()

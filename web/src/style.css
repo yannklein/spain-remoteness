@@ -10,6 +10,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; height: 100%; }
 #map { position: fixed; inset: 0; background: #f6f5f2; }
 
@@ -45,8 +46,23 @@ html, body { margin: 0; height: 100%; }
   font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-2); cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 1px;
 }
-.tiers button span { font-size: 11px; font-weight: 500; color: var(--muted); }
-.tiers button span:not(:empty)::after { content: ' cities'; }
+.tiers button .n { font-size: 11px; font-weight: 500; color: var(--muted); }
+.tiers button .n:not(:empty)::after { content: ' cities'; }
+#panel[data-mode='airports'] .tiers button .n:not(:empty)::after { content: ' airports'; }
+
+.modes {
+  display: inline-grid; grid-template-columns: 1fr 1fr; margin-bottom: 10px;
+  background: #f1f0ed; border-radius: 7px; padding: 2px; gap: 2px;
+}
+.modes button {
+  border: 0; background: transparent; border-radius: 5px; padding: 4px 12px;
+  font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer;
+}
+.modes button[aria-checked='true'] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+
+.summer { display: block; margin: 8px 0 0; font-size: 13px; cursor: pointer; }
+.summer .muted { color: var(--muted); font-size: 12px; }
+.status code { font-size: 12px; }
 .tiers button[aria-checked='true'] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
 .tier-help { margin: 6px 0 12px; color: var(--muted); font-size: 12.5px; }
 
@@ -91,6 +107,6 @@ details a { color: var(--accent); }
   }
   #panel h1 { font-size: 17px; }
   #collapse { display: block; }
-  #panel.collapsed { max-height: 118px; overflow: hidden; }
+  #panel.collapsed { max-height: 150px; overflow: hidden; }
   #panel.collapsed #collapse { transform: rotate(180deg); }
 }
