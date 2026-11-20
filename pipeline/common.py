@@ -110,6 +110,10 @@ def write_csv(path, header, rows):
         w.writerow(header)
         for r in rows:
             w.writerow(["" if v is None else v for v in r])
-    types = ['"String"' if c in TEXT_COLUMNS or c.endswith(("_city", "_airport")) else '"Integer"'
-             for c in header]
+    def kind(i, c):
+        if c in TEXT_COLUMNS or c.endswith(("_city", "_airport")):
+            return '"String"'
+        return '"Real"' if any(isinstance(r[i], float) for r in rows) else '"Integer"'
+
+    types = [kind(i, c) for i, c in enumerate(header)]
     path.with_suffix(".csvt").write_text(",".join(types) + "\n", encoding="utf-8")
