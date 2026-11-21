@@ -74,7 +74,7 @@ const FALLBACK_STYLE: StyleSpecification = {
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T
 
 let mode: Mode = location.hash === '#airports' ? 'airports' : location.hash === '#internet' ? 'internet' : 'cities'
-const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 2 }
+const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1 }
 let tier: Tier = tiers[mode]
 let summer = false
 let data: Remoteness | null = null

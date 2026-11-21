@@ -87,7 +87,7 @@ mobile_latency_ms,mobile_tests,mobile_devices`. Empty cell = not enough tests.
 
 - The mode switch becomes `Cities | Airports | Internet`, with hash `#internet`.
 - **Title:** "How good is the internet in rural Spain?". **Lead:** "Average measured … speed per municipality, from Speedtest by Ookla, last 4 quarters."
-- The three buttons are **Download | Upload | Latency**. Default: **Upload**, because video calls and sending work are what usually break first on a rural line. Download is the familiar figure, one click away.
+- The three buttons are **Download | Upload | Latency**. Default: **Download** (changed from Upload after review: everyday use is mostly download, and it is the familiar figure). Upload and latency are one click away.
 - **Checkbox "Mobile instead of fixed broadband"**, off by default.
 - **Colour bins**, sequential like the other maps, light = good for remote work, dark = poor:
   - Download (Mbps): ≥ 300 · 100–300 · 50–100 · 25–50 · 10–25 · < 10
