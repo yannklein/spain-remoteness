@@ -244,3 +244,31 @@ def test_write_csv_keeps_codes_as_text(tmp_path):
     write_csv(p, ["code", "name", "t1_min", "t1_city"], [["01001", "X", None, "28079"]])
     assert p.read_text(encoding="utf-8").splitlines() == ["code,name,t1_min,t1_city", "01001,X,,28079"]
     assert p.with_suffix(".csvt").read_text().strip() == '"String","String","Integer","String"'
+
+
+def test_http_retries_dropped_connections(monkeypatch):
+    """TravelTime sometimes closes the connection without a response; that must be retried."""
+    import http.client
+    import common
+    calls = []
+
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b"ok"
+
+    def flaky(req, timeout):
+        calls.append(1)
+        if len(calls) == 1:
+            raise http.client.RemoteDisconnected("Remote end closed connection without response")
+        return Resp()
+
+    monkeypatch.setattr(common.urllib.request, "urlopen", flaky)
+    monkeypatch.setattr(common.time, "sleep", lambda s: None)
+    assert common.http("https://example.invalid/x") == b"ok"
+    assert len(calls) == 2

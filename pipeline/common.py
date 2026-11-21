@@ -4,6 +4,7 @@ import math
 import time
 import urllib.error
 import urllib.request
+from http.client import HTTPException
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -47,7 +48,7 @@ def http(url, data=None, headers=None, timeout=300, retries=4):
             if e.code != 429 and 400 <= e.code < 500:
                 raise HTTPStatusError(e.code, f"HTTP {e.code} for {url}: {detail}") from e
             print(f"  HTTP {e.code}, retrying ({attempt + 1}/{retries}): {detail[:120]}")
-        except (urllib.error.URLError, TimeoutError) as e:
+        except (urllib.error.URLError, TimeoutError, ConnectionError, HTTPException) as e:
             last = e
             print(f"  network error, retrying ({attempt + 1}/{retries}): {e}")
         time.sleep(min(60, 5 * 2 ** attempt))
