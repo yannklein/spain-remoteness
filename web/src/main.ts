@@ -19,6 +19,8 @@ import {
   METRICS,
   internetFill,
   internetHeadline,
+  internetOpacity,
+  POP as INTERNET_POP,
   internetLegend,
   internetProps,
   internetTooltip,
@@ -94,6 +96,10 @@ function fmtMinutes(t: number, max = 180): string {
 /** Feature property holding the minutes shown for the current mode, tier and variant. */
 function valueKey(): string {
   return mode === 'cities' ? `t${tier}` : `${summer ? 's' : 'y'}${tier}`
+}
+
+function currentOpacity(): ExpressionSpecification | number {
+  return mode === 'internet' ? internetOpacity(tier, mobile) : 0.88
 }
 
 function currentFill(): ExpressionSpecification {
@@ -176,7 +182,7 @@ async function ensureInternet(map: maplibregl.Map) {
     const row = internet.m[String(f.id)]
     if (!row) continue
     Object.assign(f.properties, internetProps(row))
-    if (f.properties.pop == null && typeof row[10] === 'number') f.properties.pop = row[10]
+    if (f.properties.pop == null && typeof row[INTERNET_POP] === 'number') f.properties.pop = row[INTERNET_POP]
   }
   ;(map.getSource('munis') as maplibregl.GeoJSONSource | undefined)?.setData(geo)
 }
@@ -230,7 +236,9 @@ function renderLegend() {
   if (mode === 'internet') {
     const labels = internetLegend(tier)
     $('#legend').innerHTML =
-      COLORS.slice(1).map((c, i) => item(c, labels[i])).join('') + item(INTERNET_NODATA, 'Not enough speed tests')
+      COLORS.slice(1).map((c, i) => item(c, labels[i])).join('') +
+      item(INTERNET_NODATA, 'Not enough speed tests') +
+      `<div class="wide"><i style="background:${COLORS[3]};opacity:.45"></i>Paler: estimated from speed tests within 10 km</div>`
     return
   }
   const labels = ['< 30 min', '30–60', '60–90', '90 min–2 h', '2 h–2 h 30', '2 h 30–3 h', '3 h+ / no service']
@@ -310,8 +318,10 @@ function refresh(map: maplibregl.Map) {
   } else if (mode === 'internet' && internet) {
     const q = internet.params.quarters
     const n = Object.values(internet.m).filter((r) => typeof r[mobile ? 5 : 0] === 'number').length
+    const e = Object.values(internet.m).filter((r) => typeof r[mobile ? 14 : 10] === 'number').length
     meta.textContent =
-      `Speed tests ${q[0]} to ${q[q.length - 1]} · ${n.toLocaleString('en')} municipalities with enough ${mobile ? 'mobile' : 'fixed'} tests`
+      `Speed tests ${q[0]} to ${q[q.length - 1]} · ${n.toLocaleString('en')} municipalities measured, ` +
+      `${e.toLocaleString('en')} estimated (${mobile ? 'mobile' : 'fixed'}) · official coverage ${internet.params.coverage?.year ?? ''}`
     $('#internet-period').textContent = `${q[0]} to ${q[q.length - 1]}`
     $('#internet-licence').textContent = internet.params.licence
   } else {
@@ -321,6 +331,7 @@ function refresh(map: maplibregl.Map) {
   renderLegend()
   if (map.getLayer('muni-fill')) {
     map.setPaintProperty('muni-fill', 'fill-color', currentFill())
+    map.setPaintProperty('muni-fill', 'fill-opacity', currentOpacity())
     ;(map.getSource('dests') as maplibregl.GeoJSONSource).setData(destGeoJSON())
   }
   hideTooltip()
@@ -341,7 +352,7 @@ async function setMode(map: maplibregl.Map, m: Mode) {
 }
 
 function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string {
-  if (mode === 'internet') return internetTooltip(p, tier, mobile)
+  if (mode === 'internet') return internetTooltip(p, tier, mobile, internet)
   if (mode === 'airports') {
     return airports ? airportTooltip(airports, p, tier, summer, fmtMinutes, at) : `<b>${String(p.name ?? '')}</b>`
   }
@@ -412,7 +423,7 @@ async function main() {
       data: geo!,
       promoteId: 'code',
       attribution:
-        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla',
+        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID',
     })
     map.addSource('provinces', { type: 'geojson', data: provinces })
     map.addSource('dests', { type: 'geojson', data: destGeoJSON() })
@@ -420,7 +431,7 @@ async function main() {
     map.addLayer(
       {
         id: 'muni-fill', type: 'fill', source: 'munis',
-        paint: { 'fill-color': currentFill(), 'fill-opacity': 0.88 },
+        paint: { 'fill-color': currentFill(), 'fill-opacity': currentOpacity() },
       },
       firstSymbol,
     )
