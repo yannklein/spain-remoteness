@@ -28,8 +28,9 @@ something useful about those places too ("could I work remotely from here?").
   build showed 490 such villages, e.g. Renieblas estimated at 300 Mbps from Soria city with 0% coverage).
   Mobile estimates are kept there.
 - Same evidence rule as measured values (≥ 20 tests, ≥ 5 devices within one quarter), same test-weighted means.
-- Map: same colour scale, drawn **paler** (lower fill opacity), with a legend line "Paler: estimated from
-  speed tests within 10 km". Tooltip: "Estimated from 340 tests within 10 km (no local tests)" or
+- Map: same colour scale in its true colour, with a **white diagonal hatch** on top (changed after review:
+  paler fills read as a better bin on a light-is-better scale). Legend line "Hatched: estimated from speed
+  tests within 10 km". Tooltip: "Estimated from 340 tests within 10 km (no local tests)" or
   "(only 6 local tests)".
 - Headline: counts measured and estimated values together, and says how many people the estimates
   cover and how many remain unknown.

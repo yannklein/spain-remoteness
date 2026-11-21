@@ -30,15 +30,15 @@ export const METRICS: Record<
 > = {
   1: {
     label: 'Download', noun: 'download', key: 'd', unit: 'Mbps', bins: [10, 25, 50, 100, 300], higherIsBetter: true, threshold: 25,
-    help: 'Average measured download speed. 25 Mbps is plenty for video calls; large files want more.',
+    help: 'Average download speed from speed tests. 25 Mbps is plenty for video calls; large files want more.',
   },
   2: {
     label: 'Upload', noun: 'upload', key: 'u', unit: 'Mbps', bins: [3, 10, 20, 50, 100], higherIsBetter: true, threshold: 10,
-    help: 'Average measured upload speed: what video calls and sending work depend on. Under 10 Mbps gets tight.',
+    help: 'Average upload speed from speed tests: what video calls and sending work depend on. Under 10 Mbps gets tight.',
   },
   3: {
     label: 'Latency', noun: 'latency', key: 'l', unit: 'ms', bins: [20, 35, 50, 80, 120], higherIsBetter: false, threshold: 80,
-    help: 'Average measured latency (lower is better). Above 80 ms, calls start to lag.',
+    help: 'Average latency from speed tests (lower is better). Above 80 ms, calls start to lag.',
   },
 }
 
@@ -79,10 +79,25 @@ const estKeyOf = (metric: Tier, mobile: boolean) => `${mobile ? 'm' : 'f'}e${MET
 const shown = (metric: Tier, mobile: boolean): ExpressionSpecification =>
   ['coalesce', ['get', keyOf(metric, mobile)], ['get', estKeyOf(metric, mobile)]] as ExpressionSpecification
 
-/** Measured values opaque, estimates paler. */
-export function internetOpacity(metric: Tier, mobile: boolean): ExpressionSpecification {
-  return ['case', ['==', ['typeof', ['get', keyOf(metric, mobile)]], 'number'], 0.88,
-    ['==', ['typeof', ['get', estKeyOf(metric, mobile)]], 'number'], 0.45, 0.88] as ExpressionSpecification
+/** Municipalities showing an estimate (no measured value): drawn in their true colour, hatched on top. */
+export function internetEstimateFilter(metric: Tier, mobile: boolean): ExpressionSpecification {
+  return ['all',
+    ['!=', ['typeof', ['get', keyOf(metric, mobile)]], 'number'],
+    ['==', ['typeof', ['get', estKeyOf(metric, mobile)]], 'number']] as ExpressionSpecification
+}
+
+/** 8x8 white diagonal hatch, for map.addImage. */
+export function hatchImage(): { width: number; height: number; data: Uint8Array } {
+  const n = 8
+  const data = new Uint8Array(n * n * 4)
+  for (let y = 0; y < n; y++) {
+    for (let x = 0; x < n; x++) {
+      const on = (x + y) % n < 2
+      const i = (y * n + x) * 4
+      data.set(on ? [255, 255, 255, 200] : [0, 0, 0, 0], i)
+    }
+  }
+  return { width: n, height: n, data }
 }
 
 /** 6 colours, colors[0] = best for remote work; grey when there is no value. */

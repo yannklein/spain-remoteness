@@ -133,8 +133,8 @@ actually measure: average download, upload and latency per municipality, for fix
   village's town centre are pooled, with the same evidence rule and weighting. Only tiles located in Spain
   count. No fixed-broadband estimate is made where official coverage says **fewer than 50%** of households
   can get 100 Mbps (e.g. Renieblas, 8 km from Soria: 0%), because the nearby tests then describe the next
-  town. Estimates fill ~3,250 municipalities for fixed broadband and ~4,400 for mobile; they are drawn paler
-  on the map and kept in separate `*_est_*` CSV columns. Measured values are never replaced.
+  town. Estimates fill ~3,250 municipalities for fixed broadband and ~4,400 for mobile; they are drawn hatched (true colour,
+  white diagonal lines) on the map and kept in separate `*_est_*` CSV columns. Measured values are never replaced.
 - **Official coverage (every municipality):** the share of households that *can* get ≥ 100 Mbps, ≥ 1 Gbps
   and 5G, latest year (2025, situation at 30 June). Source: Ministerio para la Transformación Digital y de
   la Función Pública (SETID), "Cobertura de banda ancha en España 2021–2025" (municipal file, downloaded

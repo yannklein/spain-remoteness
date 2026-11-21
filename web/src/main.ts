@@ -19,7 +19,8 @@ import {
   METRICS,
   internetFill,
   internetHeadline,
-  internetOpacity,
+  internetEstimateFilter,
+  hatchImage,
   POP as INTERNET_POP,
   internetLegend,
   internetProps,
@@ -98,8 +99,11 @@ function valueKey(): string {
   return mode === 'cities' ? `t${tier}` : `${summer ? 's' : 'y'}${tier}`
 }
 
-function currentOpacity(): ExpressionSpecification | number {
-  return mode === 'internet' ? internetOpacity(tier, mobile) : 0.88
+/** Hatch layer on top of municipalities whose value is an estimate (internet mode only). */
+function applyEstimateLayer(map: maplibregl.Map) {
+  if (!map.getLayer('muni-est')) return
+  map.setLayoutProperty('muni-est', 'visibility', mode === 'internet' ? 'visible' : 'none')
+  if (mode === 'internet') map.setFilter('muni-est', internetEstimateFilter(tier, mobile))
 }
 
 function currentFill(): ExpressionSpecification {
@@ -238,7 +242,7 @@ function renderLegend() {
     $('#legend').innerHTML =
       COLORS.slice(1).map((c, i) => item(c, labels[i])).join('') +
       item(INTERNET_NODATA, 'Not enough speed tests') +
-      `<div class="wide"><i style="background:${COLORS[3]};opacity:.45"></i>Paler: estimated from speed tests within 10 km</div>`
+      `<div class="wide"><i class="hatched" style="background-color:${COLORS[3]}"></i>Hatched: estimated from speed tests within ${internet?.params.estimate_radius_km ?? 10} km</div>`
     return
   }
   const labels = ['< 30 min', '30–60', '60–90', '90 min–2 h', '2 h–2 h 30', '2 h 30–3 h', '3 h+ / no service']
@@ -281,7 +285,7 @@ function refresh(map: maplibregl.Map) {
   const noun = `<strong>${text[tier].noun.replace(/^an? /, '')}</strong>`
   $('#lead').innerHTML =
     mode === 'internet'
-      ? `Average measured ${noun}${tier === 3 ? '' : ' speed'} per municipality, from Speedtest by Ookla, last 4 quarters.`
+      ? `Average ${noun}${tier === 3 ? '' : ' speed'} per municipality from Speedtest by Ookla, measured locally or estimated from nearby tests (hatched), last 4 quarters.`
       : `Public transport time from each municipality to the nearest ${noun}, best connection of a weekday.`
   $('#tier-help').textContent = text[tier].help
 
@@ -331,7 +335,7 @@ function refresh(map: maplibregl.Map) {
   renderLegend()
   if (map.getLayer('muni-fill')) {
     map.setPaintProperty('muni-fill', 'fill-color', currentFill())
-    map.setPaintProperty('muni-fill', 'fill-opacity', currentOpacity())
+    applyEstimateLayer(map)
     ;(map.getSource('dests') as maplibregl.GeoJSONSource).setData(destGeoJSON())
   }
   hideTooltip()
@@ -431,7 +435,17 @@ async function main() {
     map.addLayer(
       {
         id: 'muni-fill', type: 'fill', source: 'munis',
-        paint: { 'fill-color': currentFill(), 'fill-opacity': currentOpacity() },
+        paint: { 'fill-color': currentFill(), 'fill-opacity': 0.88 },
+      },
+      firstSymbol,
+    )
+    map.addImage('hatch', hatchImage())
+    map.addLayer(
+      {
+        id: 'muni-est', type: 'fill', source: 'munis',
+        filter: internetEstimateFilter(tier, mobile),
+        layout: { visibility: mode === 'internet' ? 'visible' : 'none' },
+        paint: { 'fill-pattern': 'hatch' },
       },
       firstSymbol,
     )
