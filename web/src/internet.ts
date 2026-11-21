@@ -10,6 +10,7 @@ export interface InternetData {
     min_tests: number
     min_devices: number
     estimate_radius_km: number
+    estimate_min_coverage_pct?: number
     coverage: { source: string; year: number | null }
     population_year: number | null
     notes: string[]
@@ -139,11 +140,19 @@ export function internetTooltip(p: Record<string, unknown>, metric: Tier, mobile
       cov
     )
   }
-  const local = tests ? `only ${tests.toLocaleString('en')} local tests` : 'no local tests'
+  const local = tests ? `only ${tests.toLocaleString('en')} local test${tests === 1 ? '' : 's'}` : 'no local tests'
   if (typeof p[`${t}ed`] === 'number') {
     return (
       `${head}<br><span class="muted">${kind}, estimated</span>` + block(`${t}e`) +
       `<br><span class="muted">from ${num(`${t}et`).toLocaleString('en')} tests within ${km} km (${local})</span>` +
+      cov
+    )
+  }
+  const minCov = d?.params.estimate_min_coverage_pct ?? 50
+  if (!mobile && typeof p.c100 === 'number' && p.c100 < minCov && num('fet') > 0) {
+    return (
+      `${head}<br><span class="muted">${kind}: ${local}. Only ${p.c100}% of households here can get ≥100 Mbps ` +
+      `(official), so speeds measured nearby don't apply.</span>` +
       cov
     )
   }

@@ -179,3 +179,16 @@ def test_output_row_layout(tmp_path):
     types = dict(zip(header, p.with_suffix(".csvt").read_text().strip().split(",")))
     assert types["fixed_est_down_mbps"] == '"Real"' and types["coverage_100mbps_pct"] == '"Integer"'
     assert types["fixed_est_tests"] == '"Integer"'
+
+
+def test_no_fixed_estimate_where_fibre_is_not_available():
+    """A village where most homes can't get 100 Mbps must not borrow the next town's fixed speeds."""
+    places = load_json(PLACES_FILE)
+    a, b = places["municipalities"][0]["code"], places["municipalities"][1]["code"]
+    est = {a: {"fixed": [300.0, 200.0, 20, 334], "mobile": [80.0, 20.0, 40, 50]},
+           b: {"fixed": [150.0, 90.0, 25, 100]}}
+    cov = {a: [0, 0, 99], b: [50, 40, 90]}
+    m = ci.build_output(places, {}, [(2026, 1)], est=est, coverage=cov, coverage_year=2025)["m"]
+    assert m[a][10:14] == [None, None, None, 334]       # fixed estimate dropped, nearby test count kept
+    assert m[a][14:18] == [80.0, 20.0, 40, 50]          # mobile estimate kept
+    assert m[b][10:14] == [150.0, 90.0, 25, 100]        # 50% coverage is enough

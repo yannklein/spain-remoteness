@@ -28,6 +28,9 @@ BUCKET = "https://ookla-open-data.s3.amazonaws.com/"
 PREFIX = "parquet/performance/"
 BBOX = (-18.5, 27.4, 4.5, 44.0)
 ESTIMATE_KM = 10
+# No fixed estimate where official coverage says most homes can't get 100 Mbps:
+# the nearby tests then describe the next town, not the village.
+ESTIMATE_MIN_COVERAGE = 50
 COVERAGE_URL = ("https://digital.gob.es/content/dam/portal-mtdfp/avance-digital/telecomunicacion-e-infraestructuras-digitales/"
                 "areas_interes/banda-ancha/cobertura/documents/"
                 "Cobertura_BA_Espa%C3%B1a_2021-2025_MUN_PROV_CCAA_Nacional_datosgob_DEF.xlsx")
@@ -190,10 +193,14 @@ def build_output(places, agg, quarters, est=None, coverage=None, coverage_year=N
         a = agg.get(c, {})
         row = list(a.get("fixed", empty)) + list(a.get("mobile", empty))
         e = est.get(c, {})
+        cov = list(coverage.get(c, [None, None, None]))
         for i, kind in enumerate(("fixed", "mobile")):
             measured = row[i * 5] is not None
-            row += [None] * 4 if measured else list(e.get(kind, [None, None, None, None]))
-        row += list(coverage.get(c, [None, None, None])) + [mu.get("pop")]
+            vals = [None] * 4 if measured else list(e.get(kind, [None, None, None, None]))
+            if kind == "fixed" and cov[0] is not None and cov[0] < ESTIMATE_MIN_COVERAGE:
+                vals[:3] = [None, None, None]
+            row += vals
+        row += cov + [mu.get("pop")]
         m[c] = row
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -204,6 +211,7 @@ def build_output(places, agg, quarters, est=None, coverage=None, coverage_year=N
             "min_tests": MIN_TESTS,
             "min_devices": MIN_DEVICES,
             "estimate_radius_km": ESTIMATE_KM,
+            "estimate_min_coverage_pct": ESTIMATE_MIN_COVERAGE,
             "coverage": {"source": COVERAGE_SOURCE, "year": coverage_year},
             "population_year": places["meta"].get("population_year"),
             "notes": [],

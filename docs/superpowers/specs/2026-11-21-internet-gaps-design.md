@@ -24,6 +24,9 @@ something useful about those places too ("could I work remotely from here?").
   are never replaced.
 - Pool: every tile whose centre is **within 10 km of the municipality's town centre** (`data/places.json`
   lat/lng) **and** located in a Spanish municipality, so no Portuguese or French tiles. Same 4 quarters.
+- **No fixed estimate where official ≥ 100 Mbps coverage is under 50%** (decided with the user after the
+  build showed 490 such villages, e.g. Renieblas estimated at 300 Mbps from Soria city with 0% coverage).
+  Mobile estimates are kept there.
 - Same evidence rule as measured values (≥ 20 tests, ≥ 5 devices within one quarter), same test-weighted means.
 - Map: same colour scale, drawn **paler** (lower fill opacity), with a legend line "Paler: estimated from
   speed tests within 10 km". Tooltip: "Estimated from 340 tests within 10 km (no local tests)" or
