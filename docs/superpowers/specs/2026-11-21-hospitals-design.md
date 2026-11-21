@@ -12,14 +12,14 @@ same pattern as the airports map: JSON + CSV per municipality, a mode on the pag
 
 | Tier | Name | Rule (from the Catálogo Nacional de Hospitales 2025) |
 |---|---|---|
-| 1 | Major hospital | tier 2 **and** at least one haemodynamics room (`HEM` > 0, cath lab: heart attacks, strokes, major trauma) |
+| 1 | Major hospital | tier 2 **and** at least one haemodynamics room (`HEM` > 0, cath lab: heart attacks, strokes, major trauma) **and** ≥ 100 beds |
 | 2 | Public hospital (default) | general hospital (`Cód. Clase de Centro` = C11) that is **public**: functional dependency 1–8, **or** concierto "Red de utilización pública (RUP)" or "Concierto sustitutorio" (e.g. Figueres, Olot, Palamós, private on paper but in Catalonia's public network) |
 | 3 | Any hospital | any general hospital (C11), private included |
 
 - Left out: specialised (C12: mutual-insurance trauma clinics, oncology, standalone maternity/children's), long-stay (C13), mental health (C14), other inpatient centres (C190).
   - Call: excluding C12 drops public maternity/children's hospitals, but those sit inside complexes with a general hospital, so travel times barely change.
 - Equipment and concierto marked `DC` ("dato en complejo") are read from the hospital's complex row (`CODIDCOM`).
-- Counts in the 2025 file: 549 general hospitals; about 350 public by the rule above; about 140 with a cath lab.
+- Counts in the 2025 file: 549 general hospitals; 321 public by the rule above; 106 major (cath lab at the site and ≥ 100 beds; a complex's lab counts for its largest site only).
 
 ## Approaches considered
 
