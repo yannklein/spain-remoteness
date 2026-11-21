@@ -269,3 +269,47 @@ def test_moved_hospitals_lose_their_cache(tmp_path):
 def test_probe_only_override_is_not_a_position():
     over = {"7": {"unattachable_at": [40.0, -3.0]}}
     assert ph.apply_override({"codcnh": "7", "muni": "1"}, over, []) is None
+
+
+# --- review regressions: town names and ties --------------------------------
+
+def hosp(name, muni, town, siblings=1):
+    return {"codcnh": "c", "name": name, "muni": muni, "muni_name": town, "siblings": siblings}
+
+
+def test_town_name_alone_is_not_evidence():
+    clinic = hosp("Hospital Clínic de Barcelona", "08019", "Barcelona", siblings=30)
+    nens = osm("w1", "Hospital de Nens de Barcelona", "08019")
+    right = osm("w2", "Hospital Clínic de Barcelona", "08019")
+    assert ph.match(clinic, [nens, right])["id"] == "w2"          # best fit, not first found
+    assert ph.match(clinic, [nens]) is None
+    mutua = hosp("Hospital Universitari Mútua de Terrassa", "08279", "Terrassa", siblings=3)
+    assert ph.match(mutua, [osm("w3", "Hospital de Terrassa", "08279")]) is None
+    assert ph.match(mutua, [osm("w3", "Hospital de Terrassa", "08279"),
+                            osm("w4", "Hospital Universitari Mútua Terrassa", "08279")])["id"] == "w4"
+
+
+def test_similar_words_need_a_real_suffix():
+    caceres = hosp("Hospital Universitario de Cáceres", "10037", "Cáceres", siblings=4)
+    assert ph.match(caceres, [osm("w1", "Clínica Cacereña", "10037")]) is None
+    assert ph.match(caceres, [osm("w1", "Clínica Cacereña", "10037"),
+                              osm("w2", "Hospital Universitario de Cáceres", "10037")])["id"] == "w2"
+
+
+def test_health_centres_are_not_hospitals():
+    h = hosp("Hospital Universitario Torrecárdenas", "04013", "Almería", siblings=5)
+    assert ph.match(h, [osm("w1", "Centro de Salud Mediterráneo Torrecárdenas", "04013")]) is None
+
+
+def test_town_only_name_matches_the_only_town_hospital():
+    zum = hosp("Hospital de Zumarraga (Osi Goierri - Alto Urola)", "20080", "Zumarraga")
+    assert ph.match(zum, [osm("w1", "Zumarragako Ospitalea", "20080")])["id"] == "w1"
+    villa = hosp("Hospital General de Villarrobledo", "02081", "Villarrobledo")
+    assert ph.match(villa, [osm("w2", "Hospital de Villarrobledo", "02081")])["id"] == "w2"
+
+
+def test_hospital_code_column_stays_text(tmp_path):
+    from common import write_csv
+    p = tmp_path / "h.csv"
+    write_csv(p, ["code", "t1_min", "t1_hospital"], [["01001", 30, "010090"]])
+    assert p.with_suffix(".csvt").read_text().strip() == '"String","Integer","String"'

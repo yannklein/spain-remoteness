@@ -112,8 +112,8 @@
  },
  "290287": {
   "unattachable_at": [
-   36.506945,
-   -4.826211
+   36.506731,
+   -4.828488
   ]
  },
  "290506": {
@@ -295,5 +295,18 @@
    42.670115,
    -2.988044
   ]
+ },
+ "240212": {
+  "unattachable_at": [
+   42.552258,
+   -6.611942
+  ]
+ },
+ "030406": {
+  "lat": 38.842768,
+  "lng": 0.094823,
+  "exact": true,
+  "source": "osm+nudged200",
+  "note": "moved 200 m so TravelTime attaches (Hospital Internacional Hcb Denia)"
  }
 }

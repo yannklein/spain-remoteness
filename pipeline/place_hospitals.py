@@ -47,8 +47,14 @@ def normalise(name):
     return " ".join(t for t in tokens if t not in GENERIC)
 
 
+# word endings that still name the same place (Basque genitives: Zumarraga / Zumarragako, Bidasoa / Bidasoko)
+SUFFIXES = {"", "a", "o", "e", "n", "k", "ko", "ako", "eko", "oko", "go", "ren"}
+# OSM "hospitals" that are not hospitals
+NOT_HOSPITALS = ("centro de salud", "centre d atencio primaria", "cap ", "urgencias", "policlinico",
+                 "centro pet", "consultorio", "ambulatorio")
+
+
 def _same_word(a, b):
-    """Equal, or sharing a long beginning: Basque genitives (Zumarraga / Zumarragako, Bidasoa / Bidasoko)."""
     if a == b:
         return True
     n = 0
@@ -56,27 +62,57 @@ def _same_word(a, b):
         if x != y:
             break
         n += 1
-    return n >= 5 and n >= 0.7 * min(len(a), len(b))
+    return n >= 5 and a[n:] in SUFFIXES and b[n:] in SUFFIXES
 
 
-def _overlap(a, b):
-    ta, tb = set(normalise(a).split()), set(normalise(b).split())
-    if not ta or not tb:
-        return 0.0
-    small, big = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
-    return sum(1 for w in small if any(_same_word(w, v) for v in big)) / len(small)
+def _tokens(name, town):
+    """(all distinctive words, the same without the town's name)."""
+    words = set(normalise(name).split())
+    town_words = set(normalise(town).split()) if town else set()
+    return words, {w for w in words if not any(_same_word(w, t) for t in town_words)}
+
+
+def _plain(name):
+    return " ".join(re.findall(r"[a-z0-9]+", unicodedata.normalize("NFKD", name or "").encode("ascii", "ignore").decode().lower()))
+
+
+def _score(a, b):
+    """(F1 of matched words, overlap on the smaller set)."""
+    if not a or not b:
+        return 0.0, 0.0
+    small, big = (a, b) if len(a) <= len(b) else (b, a)
+    m = sum(1 for w in small if any(_same_word(w, v) for v in big))
+    return 2 * m / (len(a) + len(b)), m / len(small)
 
 
 def match(hosp, osm_hospitals):
-    """Best-named OSM hospital in the same municipality, or None."""
-    best, score = None, 0.0
-    for o in osm_hospitals:
-        if o["muni"] != hosp["muni"]:
+    """Best-fitting OSM hospital in the same municipality, or None.
+
+    The town's name is not evidence: "Hospital Clínic de Barcelona" must not match
+    "Hospital de Nens de Barcelona". A hospital named only after its town matches an
+    OSM hospital also named only after the town, and only when it is the town's only
+    catalogue hospital (hosp["siblings"] == 1).
+    """
+    town = hosp.get("muni_name")
+    words, own = _tokens(hosp["name"], town)
+    cands = [o for o in osm_hospitals
+             if o["muni"] == hosp["muni"] and not _plain(o.get("name", "")).startswith(NOT_HOSPITALS)]
+    best, key = None, (0.0, 0.0)
+    for o in cands:
+        o_words, o_own = _tokens(o.get("name", ""), town)
+        if own and o_own:
+            f1, overlap = _score(own, o_own)
+        elif not own and not o_own and o_words:
+            f1, overlap = _score(words, o_words)
+        else:
             continue
-        s = _overlap(hosp["name"], o.get("name", ""))
-        if s > score:
-            best, score = o, s
-    return best if score >= MIN_OVERLAP else None
+        if overlap >= MIN_OVERLAP and (f1, overlap) > key:
+            best, key = o, (f1, overlap)
+    if best is None and hosp.get("siblings", 1) == 1:
+        town_only = [o for o in cands if o.get("name") and not _tokens(o["name"], town)[1]]
+        if len(town_only) == 1:
+            best = town_only[0]
+    return best
 
 
 def apply_override(h, overrides, osm_hospitals):
@@ -191,6 +227,11 @@ def main():
         o["muni"] = index.locate(o["lng"], o["lat"])
     print(f"{len(hosps)} catalogue hospitals, {len(osm)} OSM hospitals")
 
+    from collections import Counter as _C
+    per_muni = _C(h["muni"] for h in hosps)
+    for h in hosps:
+        h["muni_name"] = places.get(h["muni"], {}).get("name", "")
+        h["siblings"] = per_muni[h["muni"]]
     overrides = load_json(OVERRIDES) if OVERRIDES.exists() else {}
     anchors = {}  # codcnh -> {"lat","lng","entrances","osm_id","via"}
     for h in hosps:
@@ -222,6 +263,7 @@ def main():
             source = overrides[h["codcnh"]].get("source", "override")
         elif a["via"] in ("nominatim", "postcode", "override"):
             source = f"{a['via']}+stop" if source == "stop" else a["via"]
+        h = {k: v for k, v in h.items() if k not in ("muni_name", "siblings")}
         out.append(dict(h, lat=round(lat, 6), lng=round(lng, 6), point_source=source,
                         osm_id=a["osm_id"], stop_name=stop_name))
     dump_json(out, OUTPUT)

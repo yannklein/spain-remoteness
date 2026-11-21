@@ -216,8 +216,8 @@
   "tier": 1,
   "lat": 39.996903,
   "lng": -0.037696,
-  "point_source": "stop",
-  "osm_id": "w29192535",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Avinguda Benicasim, 4A"
  },
  {
@@ -282,10 +282,10 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 38.971161,
-  "lng": -3.929208,
-  "point_source": "stop",
-  "osm_id": "w263367113",
+  "lat": 38.979692,
+  "lng": -3.939117,
+  "point_source": "nominatim",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -690,11 +690,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 43.329927,
-  "lng": -8.398393,
+  "lat": 43.343854,
+  "lng": -8.387915,
   "point_source": "stop",
-  "osm_id": "w188367628",
-  "stop_name": "Lugar de Penarredonda"
+  "osm_id": "w297600844",
+  "stop_name": "CHUAC, glorieta"
  },
  {
   "codcnh": "150177",
@@ -778,7 +778,7 @@
   "lat": 42.869169,
   "lng": -8.565346,
   "point_source": "stop",
-  "osm_id": "r1396282",
+  "osm_id": "r22047981",
   "stop_name": "Hospital Clínico"
  },
  {
@@ -1304,8 +1304,8 @@
   "tier": 1,
   "lat": 43.293159,
   "lng": -1.968969,
-  "point_source": "stop",
-  "osm_id": "w26734628",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Hospital Donostia II"
  },
  {
@@ -1642,11 +1642,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 37.775016,
-  "lng": -3.793539,
-  "point_source": "stop",
-  "osm_id": "w194834413",
-  "stop_name": "Juan Pg Higueras - C. Diagnost"
+  "lat": 37.783882,
+  "lng": -3.827114,
+  "point_source": "osm",
+  "osm_id": "w196669373",
+  "stop_name": null
  },
  {
   "codcnh": "230063",
@@ -1710,11 +1710,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 37.775016,
-  "lng": -3.793539,
+  "lat": 37.795618,
+  "lng": -3.779414,
   "point_source": "stop",
-  "osm_id": "w194834413",
-  "stop_name": "Juan Pg Higueras - C. Diagnost"
+  "osm_id": "w550924988",
+  "stop_name": "Carretera de Madrid - Hospital"
  },
  {
   "codcnh": "230011",
@@ -1863,11 +1863,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 42.554212,
-  "lng": -6.611669,
-  "point_source": "stop",
-  "osm_id": "w54664790",
-  "stop_name": "Clinica Ponferrada"
+  "lat": 42.552258,
+  "lng": -6.611942,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Clínica Ponferrada"
  },
  {
   "codcnh": "240135",
@@ -2001,8 +2001,8 @@
   "tier": 2,
   "lat": 42.353394,
   "lng": 1.457521,
-  "point_source": "nominatim+stop",
-  "osm_id": null,
+  "point_source": "stop",
+  "osm_id": "n719553597",
   "stop_name": "Institut Seu"
  },
  {
@@ -2137,8 +2137,8 @@
   "tier": 3,
   "lat": 43.011909,
   "lng": -7.561999,
-  "point_source": "stop",
-  "osm_id": "w308897893",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Rúa Montevideo 7 (Sanatorio NSOG)"
  },
  {
@@ -2169,11 +2169,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 43.011909,
-  "lng": -7.561999,
-  "point_source": "stop",
-  "osm_id": "w308897893",
-  "stop_name": "Rúa Montevideo 7 (Sanatorio NSOG)"
+  "lat": 42.991312,
+  "lng": -7.590829,
+  "point_source": "postcode",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "270109",
@@ -2186,10 +2186,10 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 42.527313,
-  "lng": -7.519349,
-  "point_source": "osm",
-  "osm_id": "w149325394",
+  "lat": 42.527291,
+  "lng": -7.519589,
+  "point_source": "nominatim",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -2393,7 +2393,7 @@
   "lat": 40.320908,
   "lng": -3.767693,
   "point_source": "stop",
-  "osm_id": "n6517852252",
+  "osm_id": "w394891295",
   "stop_name": "Av. Fuenlabrada - Hospital Severo Ochoa"
  },
  {
@@ -2747,11 +2747,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.462615,
-  "lng": -3.684557,
+  "lat": 40.458801,
+  "lng": -3.67828,
   "point_source": "stop",
-  "osm_id": "w382850086",
-  "stop_name": "Madre Molas"
+  "osm_id": "w436025991",
+  "stop_name": "República Dominicana"
  },
  {
   "codcnh": "280357",
@@ -2764,11 +2764,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.43957,
-  "lng": -3.673774,
+  "lat": 40.36242,
+  "lng": -3.77559,
   "point_source": "stop",
-  "osm_id": "w307772121",
-  "stop_name": "Cartagena"
+  "osm_id": "w28779346",
+  "stop_name": "Pinar De San José - Centro De Acogida"
  },
  {
   "codcnh": "280323",
@@ -2883,11 +2883,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 40.474501,
-  "lng": -3.697401,
+  "lat": 40.440666,
+  "lng": -3.718125,
   "point_source": "stop",
-  "osm_id": "w15584594",
-  "stop_name": null
+  "osm_id": "w394889274",
+  "stop_name": "Hospital Clínico"
  },
  {
   "codcnh": "280014",
@@ -3002,11 +3002,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 40.31539,
-  "lng": -3.876695,
-  "point_source": "stop",
-  "osm_id": "w31824054",
-  "stop_name": "Río Ebro - Hospital de Móstoles"
+  "lat": 40.340118,
+  "lng": -3.867092,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Orquídea - Gladiolo"
  },
  {
   "codcnh": "281304",
@@ -3036,11 +3036,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 40.403368,
-  "lng": -3.784648,
+  "lat": 40.398106,
+  "lng": -3.789562,
   "point_source": "stop",
-  "osm_id": "w460091643",
-  "stop_name": "Av. Carrera - Hospital"
+  "osm_id": "w586137133",
+  "stop_name": "Pº Príncipe - Telemadrid"
  },
  {
   "codcnh": "281467",
@@ -3138,11 +3138,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.570653,
-  "lng": -3.925575,
-  "point_source": "stop",
-  "osm_id": "w143437105",
-  "stop_name": "Av. Castillo Olivares - Hospital Madrid"
+  "lat": 40.569592,
+  "lng": -3.926727,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "281236",
@@ -3274,11 +3274,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 36.684554,
-  "lng": -4.458296,
+  "lat": 36.68499,
+  "lng": -4.457992,
   "point_source": "stop",
-  "osm_id": "r7758827",
-  "stop_name": "Palacio de los Deportes"
+  "osm_id": "w1068106954",
+  "stop_name": "Palacios de los Deportes"
  },
  {
   "codcnh": "290108",
@@ -3342,11 +3342,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 36.722766,
-  "lng": -4.450298,
-  "point_source": "stop",
-  "osm_id": "w75731778",
-  "stop_name": "Carlos Haya - Hospital Regional"
+  "lat": 36.723525,
+  "lng": -4.454278,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Carlos Haya - Ortega Prados"
  },
  {
   "codcnh": "290038",
@@ -3512,11 +3512,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 36.506945,
-  "lng": -4.826211,
+  "lat": 36.506731,
+  "lng": -4.828488,
   "point_source": "stop",
-  "osm_id": "n4884077374",
-  "stop_name": "Hospital Costa del Sol"
+  "osm_id": "w980102202",
+  "stop_name": "Hospital Costa del Sol (N-340)"
  },
  {
   "codcnh": "290506",
@@ -3701,8 +3701,8 @@
   "tier": 3,
   "lat": 37.978566,
   "lng": -1.119483,
-  "point_source": "stop",
-  "osm_id": "w28445357",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Carmen Conde"
  },
  {
@@ -3886,11 +3886,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.636114,
-  "lng": -0.899813,
-  "point_source": "stop",
-  "osm_id": "w408562298",
-  "stop_name": "Paseo Isabel La Católica / Hospital Infantil"
+  "lat": 41.652045,
+  "lng": -0.880835,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Plaza de España"
  },
  {
   "codcnh": "500055",
@@ -3923,8 +3923,8 @@
   "lat": 41.651405,
   "lng": -0.885871,
   "point_source": "stop+nudged0",
-  "osm_id": "r6596992",
-  "stop_name": "Av. César Augusto 20-22 / Teatro Fleta"
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "500016",
@@ -4073,11 +4073,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 43.550566,
-  "lng": -5.701168,
+  "lat": 43.549868,
+  "lng": -5.700166,
   "point_source": "stop",
-  "osm_id": "n9320582716",
-  "stop_name": "Hospital de Jove - Consultas Externas"
+  "osm_id": "w17960370",
+  "stop_name": "Hospital de Jove"
  },
  {
   "codcnh": "330175",
@@ -4226,11 +4226,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 43.36783,
-  "lng": -5.856569,
+  "lat": 43.374565,
+  "lng": -5.831157,
   "point_source": "stop",
-  "osm_id": "w328624148",
-  "stop_name": "Naranjo de Bulnes"
+  "osm_id": "r7078001",
+  "stop_name": "HUCA 2"
  },
  {
   "codcnh": "330306",
@@ -4328,11 +4328,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 28.149192,
-  "lng": -15.425865,
-  "point_source": "stop",
-  "osm_id": "n7726439384",
-  "stop_name": "Juan Rejón, 67"
+  "lat": 28.125646,
+  "lng": -15.429269,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "León y Castillo (Oficinas Municipales)"
  },
  {
   "codcnh": "350173",
@@ -4345,11 +4345,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 28.095847,
-  "lng": -15.425234,
+  "lat": 28.099474,
+  "lng": -15.412384,
   "point_source": "stop",
-  "osm_id": "n2678542693",
-  "stop_name": "Severo Ochoa"
+  "osm_id": "w518380717",
+  "stop_name": null
  },
  {
   "codcnh": "350154",
@@ -4447,11 +4447,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 28.082927,
-  "lng": -15.417335,
+  "lat": 28.081215,
+  "lng": -15.416546,
   "point_source": "stop",
-  "osm_id": "r11551897",
-  "stop_name": "calle doña luisa"
+  "osm_id": "r11558015",
+  "stop_name": "Av. Marítima del Sur (hospital Materno Insular)"
  },
  {
   "codcnh": "350252",
@@ -4634,11 +4634,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 42.229533,
-  "lng": -8.729055,
-  "point_source": "stop",
-  "osm_id": "r5554495",
-  "stop_name": "Avda. da Hispanidade 38"
+  "lat": 42.196598,
+  "lng": -8.729785,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Rúa de Manuel Cominges 135"
  },
  {
   "codcnh": "360353",
@@ -4702,11 +4702,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 40.962395,
-  "lng": -5.674689,
-  "point_source": "stop",
-  "osm_id": "w695864413",
-  "stop_name": "Paseo de San Vicente, s/n (Río)"
+  "lat": 40.966595,
+  "lng": -5.6703,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "380282",
@@ -4736,11 +4736,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 28.068145,
-  "lng": -16.704852,
+  "lat": 28.057212,
+  "lng": -16.723725,
   "point_source": "stop",
-  "osm_id": "w443455833",
-  "stop_name": "Hosp. del sur El Mojón"
+  "osm_id": "w1431366219",
+  "stop_name": "El Camisón"
  },
  {
   "codcnh": "380348",
@@ -4840,8 +4840,8 @@
   "tier": 2,
   "lat": 28.103594,
   "lng": -17.128281,
-  "point_source": "nominatim+stop",
-  "osm_id": null,
+  "point_source": "stop",
+  "osm_id": "w251369866",
   "stop_name": null
  },
  {
@@ -4874,8 +4874,8 @@
   "tier": 3,
   "lat": 28.47053,
   "lng": -16.26694,
-  "point_source": "stop",
-  "osm_id": "w129927980",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Hospital Quirón"
  },
  {
@@ -4908,8 +4908,8 @@
   "tier": 3,
   "lat": 28.470668,
   "lng": -16.2598,
-  "point_source": "stop",
-  "osm_id": "r2598550",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Sagrado Corazón"
  },
  {
@@ -4940,11 +4940,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 28.454704,
-  "lng": -16.284236,
+  "lat": 28.456669,
+  "lng": -16.288524,
   "point_source": "stop",
-  "osm_id": "w77557430",
-  "stop_name": "Centro de Salud Ofra"
+  "osm_id": "r2562826",
+  "stop_name": "Residencia de Mayores"
  },
  {
   "codcnh": "380027",
@@ -5059,11 +5059,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.943384,
-  "lng": -4.13067,
+  "lat": 40.952703,
+  "lng": -4.123712,
   "point_source": "stop",
-  "osm_id": "w297304432",
-  "stop_name": "Futuro complejo asistencial y educativo"
+  "osm_id": "w1147390405",
+  "stop_name": null
  },
  {
   "codcnh": "400019",
@@ -5076,11 +5076,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 40.943384,
-  "lng": -4.13067,
-  "point_source": "stop",
-  "osm_id": "w297304432",
-  "stop_name": "Futuro complejo asistencial y educativo"
+  "lat": 40.947939,
+  "lng": -4.117154,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "410227",
@@ -5348,11 +5348,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 37.361104,
-  "lng": -5.981419,
+  "lat": 37.36215,
+  "lng": -5.976828,
   "point_source": "stop",
-  "osm_id": "n1924304853",
-  "stop_name": "Manuel Siurot (Hospital V.Rocío)"
+  "osm_id": "w39991557",
+  "stop_name": "Marqués Luca de Tena (Virgen del Rocío)"
  },
  {
   "codcnh": "410055",
@@ -5382,11 +5382,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 37.405472,
-  "lng": -5.986611,
+  "lat": 37.407248,
+  "lng": -5.985544,
   "point_source": "stop",
-  "osm_id": "w263022698",
-  "stop_name": "San Juan de Ribera (Policlínico)"
+  "osm_id": "w447895775",
+  "stop_name": "Hospital Macarena"
  },
  {
   "codcnh": "410386",
@@ -5484,11 +5484,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.153193,
-  "lng": 1.112279,
-  "point_source": "stop",
-  "osm_id": "w1027366090",
-  "stop_name": "Camí de Tarragona 1"
+  "lat": 41.155803,
+  "lng": 1.106701,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Plaça Prim"
  },
  {
   "codcnh": "430094",
@@ -5739,11 +5739,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 39.860499,
-  "lng": -3.961368,
+  "lat": 39.884106,
+  "lng": -4.041008,
   "point_source": "stop",
-  "osm_id": "w155514670",
-  "stop_name": "Hospital Universitario"
+  "osm_id": "w677742300",
+  "stop_name": "Hospital Tres Culturas"
  },
  {
   "codcnh": "450020",
@@ -5792,8 +5792,8 @@
   "tier": 1,
   "lat": 39.860499,
   "lng": -3.961368,
-  "point_source": "stop",
-  "osm_id": "w155514670",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Hospital Universitario"
  },
  {
@@ -5945,8 +5945,8 @@
   "tier": 2,
   "lat": 39.487365,
   "lng": -1.089933,
-  "point_source": "nominatim+stop",
-  "osm_id": null,
+  "point_source": "stop",
+  "osm_id": "w127093484",
   "stop_name": "Requena, C/ Casablanca - Hospital de Requena"
  },
  {
@@ -6045,11 +6045,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 39.478705,
-  "lng": -0.363969,
-  "point_source": "stop",
-  "osm_id": "w105443286",
-  "stop_name": "Hospital Clínic - Facultat Medicina"
+  "lat": 39.470706,
+  "lng": -0.334453,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Estació del Cabanyal"
  },
  {
   "codcnh": "460060",
@@ -6062,11 +6062,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 39.478705,
-  "lng": -0.363969,
-  "point_source": "stop",
-  "osm_id": "w105443286",
-  "stop_name": "Hospital Clínic - Facultat Medicina"
+  "lat": 39.469984,
+  "lng": -0.375981,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Plaça de l'Ajuntament - Correus"
  },
  {
   "codcnh": "460023",
@@ -6113,11 +6113,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 39.478705,
-  "lng": -0.363969,
-  "point_source": "stop",
-  "osm_id": "w105443286",
-  "stop_name": "Hospital Clínic - Facultat Medicina"
+  "lat": 39.470706,
+  "lng": -0.334453,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Estació del Cabanyal"
  },
  {
   "codcnh": "460039",
@@ -6198,11 +6198,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 41.655595,
-  "lng": -4.719982,
+  "lat": 41.654274,
+  "lng": -4.723984,
   "point_source": "stop",
-  "osm_id": "w4594686",
-  "stop_name": "Avenida Ramón y Cajal 3 Hospital Clínico"
+  "osm_id": "w70995225",
+  "stop_name": "Calle Angustias 5 Teatro Calderón"
  },
  {
   "codcnh": "470113",
@@ -6368,11 +6368,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 43.263951,
-  "lng": -2.935675,
+  "lat": 43.267768,
+  "lng": -2.951451,
   "point_source": "stop",
-  "osm_id": "n2666667157",
-  "stop_name": "Elcano 3"
+  "osm_id": "w163700510",
+  "stop_name": "General Eraso / Clínica IMQ"
  },
  {
   "codcnh": "480123",
@@ -6404,8 +6404,8 @@
   "tier": 1,
   "lat": 43.260137,
   "lng": -2.952969,
-  "point_source": "stop",
-  "osm_id": "w59267419",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Hospital Basurto"
  },
  {
@@ -6606,11 +6606,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 39.46908,
-  "lng": -6.369266,
+  "lat": 39.475523,
+  "lng": -6.329987,
   "point_source": "stop",
-  "osm_id": "w48625801",
-  "stop_name": "Rda. S. Francisco 4 (cruce c/Romero Ruiz)"
+  "osm_id": "r20667768",
+  "stop_name": "Hospital Universitario"
  },
  {
   "codcnh": "100015",
@@ -6674,11 +6674,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.030599,
-  "lng": -6.086084,
+  "lat": 40.031777,
+  "lng": -6.085481,
   "point_source": "nominatim+stop",
   "osm_id": null,
-  "stop_name": "Leonor de Plantagenet"
+  "stop_name": "Cristo de las Batallas"
  },
  {
   "codcnh": "100067",
@@ -6844,11 +6844,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 36.699414,
-  "lng": -6.148826,
-  "point_source": "stop",
-  "osm_id": "w184294924",
-  "stop_name": null
+  "lat": 36.674312,
+  "lng": -6.147093,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "José de Soto"
  },
  {
   "codcnh": "110125",
@@ -7235,11 +7235,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 38.352295,
-  "lng": -0.476284,
+  "lat": 38.358671,
+  "lng": -0.468051,
   "point_source": "stop",
-  "osm_id": "w22749866",
-  "stop_name": "Vázquez de Mella - Tram Station"
+  "osm_id": "w22822488",
+  "stop_name": "Colegio Calasancio"
  },
  {
   "codcnh": "030226",
@@ -7320,11 +7320,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 38.832941,
-  "lng": 0.06008,
-  "point_source": "stop",
-  "osm_id": "w176639640",
-  "stop_name": "Hospital de Dénia"
+  "lat": 38.842768,
+  "lng": 0.094823,
+  "point_source": "osm+nudged200",
+  "osm_id": "w1044091602",
+  "stop_name": null
  },
  {
   "codcnh": "030128",
@@ -7337,11 +7337,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 38.832941,
-  "lng": 0.06008,
+  "lat": 38.838387,
+  "lng": 0.093441,
   "point_source": "stop",
-  "osm_id": "w176639640",
-  "stop_name": "Hospital de Dénia"
+  "osm_id": "w112575130",
+  "stop_name": "C/ Madrigueres, 7 (Clínica San Carlos)"
  },
  {
   "codcnh": "030340",
@@ -7458,8 +7458,8 @@
   "tier": 1,
   "lat": 38.389337,
   "lng": -0.435314,
-  "point_source": "nominatim+stop",
-  "osm_id": null,
+  "point_source": "stop",
+  "osm_id": "r1871249",
   "stop_name": "UMH San Juan"
  },
  {
@@ -7473,11 +7473,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 37.964385,
-  "lng": -0.717228,
-  "point_source": "stop",
-  "osm_id": "r14938451",
-  "stop_name": "Hospital"
+  "lat": 37.976179,
+  "lng": -0.685052,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "030339",
@@ -7541,11 +7541,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 36.856811,
-  "lng": -2.445875,
+  "lat": 36.818564,
+  "lng": -2.438111,
   "point_source": "stop",
-  "osm_id": "w646505111",
-  "stop_name": "Colegio Almería Norte"
+  "osm_id": "w672747764",
+  "stop_name": "Redonda Nueva Almería"
  },
  {
   "codcnh": "040127",
@@ -7575,11 +7575,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 36.856811,
-  "lng": -2.445875,
+  "lat": 36.861863,
+  "lng": -2.441359,
   "point_source": "stop",
-  "osm_id": "w646505111",
-  "stop_name": "Colegio Almería Norte"
+  "osm_id": "w854167973",
+  "stop_name": null
  },
  {
   "codcnh": "040138",
@@ -7711,11 +7711,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 38.886407,
-  "lng": -7.000187,
-  "point_source": "stop",
-  "osm_id": "r9605052",
-  "stop_name": "Facultad de Medicina"
+  "lat": 38.886237,
+  "lng": -6.99844,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Federico Mayor Zaragoza (Urbanización Guadiana)"
  },
  {
   "codcnh": "060172",
@@ -7796,10 +7796,10 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 38.9627,
-  "lng": -5.827494,
+  "lat": 38.969157,
+  "lng": -5.820545,
   "point_source": "osm",
-  "osm_id": "w913547850",
+  "osm_id": "w1179844522",
   "stop_name": null
  },
  {
@@ -7898,11 +7898,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 39.992087,
-  "lng": 3.836386,
+  "lat": 40.004098,
+  "lng": 3.840422,
   "point_source": "stop",
-  "osm_id": "w1450021866",
-  "stop_name": "Son Oleo (t.)"
+  "osm_id": "n1860507014",
+  "stop_name": "Contramurada, 36"
  },
  {
   "codcnh": "070244",
@@ -8119,11 +8119,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 39.578655,
-  "lng": 2.626781,
+  "lat": 39.583613,
+  "lng": 2.630396,
   "point_source": "stop",
-  "osm_id": "w375010710",
-  "stop_name": "Av. Picasso, 62"
+  "osm_id": "w870500186",
+  "stop_name": "Policlínica"
  },
  {
   "codcnh": "070344",
@@ -8187,11 +8187,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 39.598627,
-  "lng": 2.64095,
-  "point_source": "stop",
-  "osm_id": "w360678688",
-  "stop_name": "Hospital Palmaplanas"
+  "lat": 39.569402,
+  "lng": 2.650262,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Plaça de Cort"
  },
  {
   "codcnh": "070399",
@@ -8323,11 +8323,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 41.389831,
-  "lng": 2.128349,
+  "lat": 41.401401,
+  "lng": 2.151091,
   "point_source": "stop",
-  "osm_id": "w652138716",
-  "stop_name": "Gran Via Carles III - Av. Diagonal"
+  "osm_id": "w658399548",
+  "stop_name": "Riera de Cassoles - Via Augusta"
  },
  {
   "codcnh": "080229",
@@ -8374,11 +8374,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 41.389831,
-  "lng": 2.128349,
-  "point_source": "stop",
-  "osm_id": "w652138716",
-  "stop_name": "Gran Via Carles III - Av. Diagonal"
+  "lat": 41.384003,
+  "lng": 2.178646,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Jaume I"
  },
  {
   "codcnh": "080399",
@@ -8391,11 +8391,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 41.389831,
-  "lng": 2.128349,
+  "lat": 41.415371,
+  "lng": 2.138426,
   "point_source": "stop",
-  "osm_id": "w652138716",
-  "stop_name": "Gran Via Carles III - Av. Diagonal"
+  "osm_id": "w1063490692",
+  "stop_name": "Esteve Terradas - Pl Alfonso Comín"
  },
  {
   "codcnh": "080370",
@@ -8425,11 +8425,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 41.397101,
-  "lng": 2.172537,
+  "lat": 41.389831,
+  "lng": 2.128349,
   "point_source": "stop",
-  "osm_id": "n12543414503",
-  "stop_name": "Pg Sant Joan - Consell de Cent"
+  "osm_id": "w652138716",
+  "stop_name": "Gran Via Carles III - Av. Diagonal"
  },
  {
   "codcnh": "080478",
@@ -8595,11 +8595,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 41.397101,
-  "lng": 2.172537,
+  "lat": 41.389831,
+  "lng": 2.128349,
   "point_source": "stop",
-  "osm_id": "n12543414503",
-  "stop_name": "Pg Sant Joan - Consell de Cent"
+  "osm_id": "w652138716",
+  "stop_name": "Gran Via Carles III - Av. Diagonal"
  },
  {
   "codcnh": "080057",
@@ -8646,11 +8646,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.389831,
-  "lng": 2.128349,
+  "lat": 41.399901,
+  "lng": 2.141822,
   "point_source": "stop",
-  "osm_id": "w652138716",
-  "stop_name": "Gran Via Carles III - Av. Diagonal"
+  "osm_id": "r21371286",
+  "stop_name": "Muntaner - Plató"
  },
  {
   "codcnh": "080214",
@@ -8765,11 +8765,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 41.612919,
-  "lng": 2.295395,
-  "point_source": "stop",
-  "osm_id": "n504757041",
-  "stop_name": "Hospital"
+  "lat": 41.607336,
+  "lng": 2.290468,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Centre - Estació bus"
  },
  {
   "codcnh": "080734",
@@ -8784,8 +8784,8 @@
   "tier": 2,
   "lat": 41.612919,
   "lng": 2.295395,
-  "point_source": "stop",
-  "osm_id": "n504757041",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Hospital"
  },
  {
@@ -8920,8 +8920,8 @@
   "tier": 2,
   "lat": 41.555579,
   "lng": 2.429155,
-  "point_source": "stop",
-  "osm_id": "w34149199",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -8969,11 +8969,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 41.546082,
-  "lng": 2.11605,
-  "point_source": "stop",
-  "osm_id": "n6053107259",
-  "stop_name": "Estació Centre"
+  "lat": 41.556717,
+  "lng": 2.109401,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Hospital Parc Taulí"
  },
  {
   "codcnh": "080983",
@@ -9005,8 +9005,8 @@
   "tier": 2,
   "lat": 41.687617,
   "lng": 2.4862,
-  "point_source": "stop",
-  "osm_id": "r5335075",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Hospital/CAP de Sant Celoni (sentit Palautordera)"
  },
  {
@@ -9139,11 +9139,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 41.556189,
-  "lng": 2.052504,
+  "lat": 41.563545,
+  "lng": 2.01714,
   "point_source": "stop",
-  "osm_id": "w27867346",
-  "stop_name": "Hospital"
+  "osm_id": "w28176308",
+  "stop_name": "Doctor Robert"
  },
  {
   "codcnh": "081094",
@@ -9156,11 +9156,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 41.556189,
-  "lng": 2.052504,
+  "lat": 41.563545,
+  "lng": 2.01714,
   "point_source": "stop",
-  "osm_id": "w27867346",
-  "stop_name": "Hospital"
+  "osm_id": "w28176308",
+  "stop_name": "Doctor Robert"
  },
  {
   "codcnh": "081075",
@@ -9292,11 +9292,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 42.36103,
-  "lng": -3.685184,
+  "lat": 42.344374,
+  "lng": -3.683262,
   "point_source": "stop",
-  "osm_id": "w694027076",
-  "stop_name": "Hospital Universitario"
+  "osm_id": "w694030127",
+  "stop_name": "Cruz Roja"
  },
  {
   "codcnh": "090155",
@@ -9311,8 +9311,8 @@
   "tier": 1,
   "lat": 42.36103,
   "lng": -3.685184,
-  "point_source": "stop",
-  "osm_id": "w694027076",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Hospital Universitario"
  },
  {
