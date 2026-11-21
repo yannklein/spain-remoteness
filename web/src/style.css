@@ -49,13 +49,14 @@ html, body { margin: 0; height: 100%; }
 .tiers button .n { font-size: 11px; font-weight: 500; color: var(--muted); }
 .tiers button .n:not(:empty)::after { content: ' cities'; }
 #panel[data-mode='airports'] .tiers button .n:not(:empty)::after { content: ' airports'; }
+#panel[data-mode='hospitals'] .tiers button .n:not(:empty)::after { content: ' hospitals'; }
 
 .modes {
-  display: inline-grid; grid-template-columns: 1fr 1fr 1fr; margin-bottom: 10px;
+  display: inline-grid; grid-template-columns: repeat(4, auto); margin-bottom: 10px;
   background: #f1f0ed; border-radius: 7px; padding: 2px; gap: 2px;
 }
 .modes button {
-  border: 0; background: transparent; border-radius: 5px; padding: 4px 12px;
+  border: 0; background: transparent; border-radius: 5px; padding: 4px 9px;
   font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer;
 }
 .modes button[aria-checked='true'] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }

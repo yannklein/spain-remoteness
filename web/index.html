@@ -15,6 +15,7 @@
         <button role="radio" data-mode="cities" aria-checked="true">Cities</button>
         <button role="radio" data-mode="airports">Airports</button>
         <button role="radio" data-mode="internet">Internet</button>
+        <button role="radio" data-mode="hospitals">Hospitals</button>
       </div>
       <h1 id="title">How far is rural Spain from a city?</h1>
       <p class="lead" id="lead">
@@ -63,6 +64,13 @@
           <li>Timetables are a November weekday's: summer-only airport shuttles are not reflected.</li>
         </ul>
         <ul data-for="airports" id="airport-notes" hidden></ul>
+        <ul data-for="hospitals" hidden>
+          <li>Hospitals come from the Ministry of Health’s national hospital catalogue (Catálogo Nacional de Hospitales 2025, situation at 31 December 2024). Only general hospitals count; psychiatric, long-stay, rehabilitation and other specialised centres are left out.</li>
+          <li><b>Major</b>: public hospitals with a cardiac catheterisation lab and at least 100 beds (heart attacks, strokes, major trauma, most specialists). <b>Public</b>: any public general hospital, including those run by foundations and consortia in Catalonia’s public network. <b>Any</b>: private clinics too.</li>
+          <li>Times come from the TravelTime API, as for the other maps: public transport incl. walking, the fastest of three Tuesday arrivals (08:30, 11:30, 14:30), from each municipality’s town centre to the hospital’s nearest bus or rail stop (OpenStreetMap), capped at 3 hours.</li>
+          <li>The catalogue doesn’t say which private clinics have a 24 h emergency department, so “Any” may include some that don’t.</li>
+        </ul>
+        <ul data-for="hospitals" id="hospital-notes" hidden></ul>
         <ul data-for="internet" hidden>
           <li>Speeds people actually measured with Speedtest by Ookla, <span id="internet-period">over the last 4 quarters</span>, pooled. Ookla publishes ~600 m tiles with average download, upload and latency and the number of tests behind them.</li>
           <li>Each tile counts for the municipality containing its centre. Values are averages weighted by the number of tests.</li>

@@ -28,8 +28,18 @@ import {
   loadInternet,
   type InternetData,
 } from './internet'
+import {
+  HOSPITAL_TEXT,
+  hospitalCounts,
+  hospitalHeadline,
+  hospitalMarkers,
+  hospitalProps,
+  hospitalTooltip,
+  loadHospitals,
+  type HospitalsData,
+} from './hospitals'
 
-type Mode = 'cities' | 'airports' | 'internet'
+type Mode = 'cities' | 'airports' | 'internet' | 'hospitals'
 
 // [code, name, tier, lat, lng, metro, population]
 type City = [string, string, number, number, number, string | null, number | null]
@@ -58,6 +68,7 @@ const TITLE: Record<Mode, string> = {
   cities: 'How far is rural Spain from a city?',
   airports: 'How far is rural Spain from an airport?',
   internet: 'How good is the internet in rural Spain?',
+  hospitals: 'How far is rural Spain from a hospital?',
 }
 const INTERNET_NODATA = '#c4c2bc'
 
@@ -76,13 +87,16 @@ const FALLBACK_STYLE: StyleSpecification = {
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T
 
-let mode: Mode = location.hash === '#airports' ? 'airports' : location.hash === '#internet' ? 'internet' : 'cities'
-const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1 }
+const MODES: Mode[] = ['cities', 'airports', 'internet', 'hospitals']
+let mode: Mode = MODES.find((m) => location.hash === `#${m}`) ?? 'cities'
+const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1, hospitals: 2 }
 let tier: Tier = tiers[mode]
 let summer = false
 let data: Remoteness | null = null
 let airports: AirportsData | null | undefined // undefined = not loaded yet
 let internet: InternetData | null | undefined
+let hospitals: HospitalsData | null | undefined
+const muniNames = new Map<string, string>()
 let mobile = false
 let geo: FeatureCollection<Geometry, Record<string, unknown>> | null = null
 
@@ -96,6 +110,7 @@ function fmtMinutes(t: number, max = 180): string {
 
 /** Feature property holding the minutes shown for the current mode, tier and variant. */
 function valueKey(): string {
+  if (mode === 'hospitals') return `hm${tier}`
   return mode === 'cities' ? `t${tier}` : `${summer ? 's' : 'y'}${tier}`
 }
 
@@ -160,11 +175,24 @@ async function loadData() {
     }
     p.dt = cityTier.get(code) ?? 0
     f.properties = p
+    muniNames.set(code, String(p.name ?? ''))
   }
   return { geo: g, provinces }
 }
 
 /** Load airports.json once and merge its values into the municipality features. */
+/** Load hospitals.json once and merge its values into the municipality features. */
+async function ensureHospitals(map: maplibregl.Map) {
+  if (hospitals !== undefined) return
+  hospitals = await loadHospitals()
+  if (!hospitals || !geo) return
+  for (const f of geo.features) {
+    const row = hospitals.m[String(f.id)]
+    if (row) Object.assign(f.properties, hospitalProps(row))
+  }
+  ;(map.getSource('munis') as maplibregl.GeoJSONSource | undefined)?.setData(geo)
+}
+
 async function ensureAirports(map: maplibregl.Map) {
   if (airports !== undefined) return
   airports = await loadAirports()
@@ -193,6 +221,7 @@ async function ensureInternet(map: maplibregl.Map) {
 
 function destGeoJSON(): FeatureCollection {
   if (mode === 'internet') return { type: 'FeatureCollection', features: [] }
+  if (mode === 'hospitals') return hospitals ? hospitalMarkers(hospitals, tier) : { type: 'FeatureCollection', features: [] }
   if (mode === 'airports') return airports ? airportMarkers(airports, tier, summer) : { type: 'FeatureCollection', features: [] }
   return cityGeoJSON(tier)
 }
@@ -267,13 +296,15 @@ function refresh(map: maplibregl.Map) {
   })
   $('#title').textContent = TITLE[mode]
   document.title = TITLE[mode]
-  const text = mode === 'cities' ? TIER_TEXT : mode === 'airports' ? AIRPORT_TEXT : METRICS
+  const text = { cities: TIER_TEXT, airports: AIRPORT_TEXT, internet: METRICS, hospitals: HOSPITAL_TEXT }[mode]
   const counts: (number | null)[] =
     mode === 'cities'
       ? [1, 2, 3].map((t) => (data ? data.cities.filter((c) => c[2] <= t).length : null))
       : mode === 'airports' && airports
         ? airportCounts(airports, summer)
-        : [null, null, null]
+        : mode === 'hospitals' && hospitals
+          ? hospitalCounts(hospitals)
+          : [null, null, null]
   document.querySelectorAll<HTMLButtonElement>('.tiers button').forEach((b) => {
     const t = Number(b.dataset.tier) as Tier
     b.setAttribute('aria-checked', String(t === tier))
@@ -294,18 +325,21 @@ function refresh(map: maplibregl.Map) {
       ? headline(tier)
       : mode === 'airports'
         ? airports ? airportHeadline(airports, tier, summer) : null
-        : internet ? internetHeadline(internet, tier, mobile) : null
+        : mode === 'hospitals'
+          ? hospitals ? hospitalHeadline(hospitals, tier) : null
+          : internet ? internetHeadline(internet, tier, mobile) : null
   const el = $('#headline')
   el.hidden = !h
   if (h) el.innerHTML = h
 
   const s = $('#status')
-  const missing = mode === 'cities' ? !data : mode === 'airports' ? airports === null : internet === null
+  const missing = { cities: !data, airports: airports === null, internet: internet === null, hospitals: hospitals === null }[mode]
   s.hidden = !missing
   s.innerHTML = {
     cities: 'Travel times have not been computed yet. Run <code>python3 pipeline/compute_times.py</code>.',
     airports: 'Airport travel times have not been computed yet. Run <code>python3 pipeline/compute_airports.py</code>.',
     internet: 'Internet speeds have not been computed yet. Run <code>python3 pipeline/compute_internet.py</code>.',
+    hospitals: 'Hospital travel times have not been computed yet. Run <code>python3 pipeline/compute_hospitals.py</code>.',
   }[mode]
 
   const meta = $('#meta')
@@ -319,6 +353,11 @@ function refresh(map: maplibregl.Map) {
       `Computed ${fmtDate(airports.generated_at)} · ${airports.airports.length} airports` +
       (airports.params.population_year ? ` · population ${airports.params.population_year}` : '')
     $('#airport-notes').innerHTML = airports.params.notes.map((n) => `<li>${n}</li>`).join('')
+  } else if (mode === 'hospitals' && hospitals) {
+    meta.textContent =
+      `Computed ${fmtDate(hospitals.generated_at)} · ${hospitals.hospitals.length} hospitals · ${hospitals.params.source}` +
+      (hospitals.params.population_year ? ` · population ${hospitals.params.population_year}` : '')
+    $('#hospital-notes').innerHTML = hospitals.params.notes.map((n) => `<li>${n}</li>`).join('')
   } else if (mode === 'internet' && internet) {
     const q = internet.params.quarters
     const n = Object.values(internet.m).filter((r) => typeof r[mobile ? 5 : 0] === 'number').length
@@ -352,11 +391,17 @@ async function setMode(map: maplibregl.Map, m: Mode) {
   history.replaceState(null, '', m === 'cities' ? location.pathname + location.search : `#${m}`)
   if (m === 'airports') await ensureAirports(map)
   if (m === 'internet') await ensureInternet(map)
+  if (m === 'hospitals') await ensureHospitals(map)
   refresh(map)
 }
 
 function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string {
   if (mode === 'internet') return internetTooltip(p, tier, mobile, internet)
+  if (mode === 'hospitals') {
+    return hospitals
+      ? hospitalTooltip(hospitals, p, tier, fmtMinutes, (c) => muniNames.get(c) ?? '')
+      : `<b>${String(p.name ?? '')}</b>`
+  }
   if (mode === 'airports') {
     return airports ? airportTooltip(airports, p, tier, summer, fmtMinutes, at) : `<b>${String(p.name ?? '')}</b>`
   }
@@ -427,7 +472,7 @@ async function main() {
       data: geo!,
       promoteId: 'code',
       attribution:
-        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID',
+        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID · Hospitals © Ministerio de Sanidad',
     })
     map.addSource('provinces', { type: 'geojson', data: provinces })
     map.addSource('dests', { type: 'geojson', data: destGeoJSON() })
