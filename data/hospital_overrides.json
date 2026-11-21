@@ -1,3 +1,299 @@
 {
- "150336": {"lat": 42.59384, "lng": -8.99940, "note": "Hospital da Barbanza (Ribeira): not tagged amenity=hospital in OSM; position from Nominatim 'Hospital da Barbanza', Nov 2026"}
+ "150336": {
+  "lat": 42.59384,
+  "lng": -8.9994,
+  "note": "Hospital da Barbanza (Ribeira): not tagged amenity=hospital in OSM; position from Nominatim 'Hospital da Barbanza', Nov 2026"
+ },
+ "130071": {
+  "unattachable_at": [
+   38.705672,
+   -4.109764
+  ]
+ },
+ "130128": {
+  "unattachable_at": [
+   39.174026,
+   -3.007111
+  ]
+ },
+ "140263": {
+  "unattachable_at": [
+   37.701387,
+   -5.269284
+  ]
+ },
+ "140252": {
+  "unattachable_at": [
+   37.388659,
+   -4.508937
+  ]
+ },
+ "140195": {
+  "unattachable_at": [
+   37.565048,
+   -4.648865
+  ]
+ },
+ "140218": {
+  "unattachable_at": [
+   37.399672,
+   -4.751723
+  ]
+ },
+ "150130": {
+  "lat": 43.508764,
+  "lng": -8.258974,
+  "exact": true,
+  "source": "postcode+nudged400",
+  "note": "moved so TravelTime attaches (Complexo Hospitalario Universitario de Ferrol)"
+ },
+ "160053": {
+  "lat": 40.071094,
+  "lng": -2.140889,
+  "exact": true,
+  "source": "stop+nudged600",
+  "note": "moved so TravelTime attaches (Hospital Recoletas Cuenca, S.L.U.)"
+ },
+ "160014": {
+  "unattachable_at": [
+   40.076913,
+   -2.148478
+  ]
+ },
+ "180093": {
+  "unattachable_at": [
+   37.499992,
+   -2.75194
+  ]
+ },
+ "180122": {
+  "unattachable_at": [
+   37.309995,
+   -3.146754
+  ]
+ },
+ "230145": {
+  "unattachable_at": [
+   38.040553,
+   -4.03144
+  ]
+ },
+ "230206": {
+  "lat": 37.919111,
+  "lng": -3.009617,
+  "exact": true,
+  "source": "osm+nudged600",
+  "note": "moved so TravelTime attaches (Centro Hospitalario de Alta Resolución de Cazorla)"
+ },
+ "230026": {
+  "lat": 37.776013,
+  "lng": -3.817956,
+  "exact": true,
+  "source": "osm+nudged600",
+  "note": "moved so TravelTime attaches (Hospital Doctor Sagaz)"
+ },
+ "290528": {
+  "unattachable_at": [
+   36.41177,
+   -5.197007
+  ]
+ },
+ "290494": {
+  "unattachable_at": [
+   36.507478,
+   -4.804722
+  ]
+ },
+ "290359": {
+  "unattachable_at": [
+   36.486715,
+   -4.969097
+  ]
+ },
+ "290287": {
+  "unattachable_at": [
+   36.506945,
+   -4.826211
+  ]
+ },
+ "290506": {
+  "unattachable_at": [
+   36.722408,
+   -5.146095
+  ]
+ },
+ "300281": {
+  "lat": 38.231629,
+  "lng": -1.412815,
+  "exact": true,
+  "source": "stop+nudged400",
+  "note": "moved so TravelTime attaches (Hospital de La Vega Lorenzo Guirao)"
+ },
+ "300256": {
+  "unattachable_at": [
+   37.64419,
+   -1.734314
+  ]
+ },
+ "300011": {
+  "unattachable_at": [
+   37.934554,
+   -1.162828
+  ]
+ },
+ "500218": {
+  "unattachable_at": [
+   41.639419,
+   -0.948559
+  ]
+ },
+ "500055": {
+  "lat": 41.688665,
+  "lng": -0.86746,
+  "exact": true,
+  "source": "stop+nudged600",
+  "note": "moved so TravelTime attaches (Hospital Royo Villanova)"
+ },
+ "500074": {
+  "lat": 41.651405,
+  "lng": -0.885871,
+  "exact": true,
+  "source": "stop+nudged0",
+  "note": "moved 0 m so TravelTime attaches (Hospital Nuestra Señora de Gracia)"
+ },
+ "510039": {
+  "unattachable_at": [
+   35.881146,
+   -5.341025
+  ]
+ },
+ "520018": {
+  "lat": 35.287297,
+  "lng": -2.946887,
+  "exact": true,
+  "source": "nominatim+stop+nudged200",
+  "note": "moved so TravelTime attaches (Hospital Comarcal)"
+ },
+ "370074": {
+  "unattachable_at": [
+   40.927062,
+   -5.74041
+  ]
+ },
+ "380244": {
+  "unattachable_at": [
+   28.103594,
+   -17.128281
+  ]
+ },
+ "390149": {
+  "lat": 43.362433,
+  "lng": -4.072757,
+  "exact": true,
+  "source": "stop+nudged200",
+  "note": "moved so TravelTime attaches (Hospital Sierrallana)"
+ },
+ "410454": {
+  "lat": 36.912993,
+  "lng": -6.072084,
+  "exact": true,
+  "source": "stop+nudged200",
+  "note": "moved so TravelTime attaches (Hospital de Alta Resolución de Lebrija)"
+ },
+ "440048": {
+  "lat": 41.05602,
+  "lng": -0.133328,
+  "exact": true,
+  "source": "osm+nudged400",
+  "note": "moved so TravelTime attaches (Hospital de Alcañiz)"
+ },
+ "450067": {
+  "unattachable_at": [
+   39.963799,
+   -4.80627
+  ]
+ },
+ "460333": {
+  "unattachable_at": [
+   39.088094,
+   -0.354955
+  ]
+ },
+ "470091": {
+  "unattachable_at": [
+   41.295038,
+   -4.911683
+  ]
+ },
+ "500153": {
+  "unattachable_at": [
+   41.336034,
+   -1.646006
+  ]
+ },
+ "100041": {
+  "lat": 39.99103,
+  "lng": -6.540044,
+  "exact": true,
+  "source": "osm+nudged200",
+  "note": "moved so TravelTime attaches (Hospital Ciudad de Coria)"
+ },
+ "100054": {
+  "unattachable_at": [
+   39.888095,
+   -5.560969
+  ]
+ },
+ "100067": {
+  "unattachable_at": [
+   40.049008,
+   -6.085411
+  ]
+ },
+ "110259": {
+  "lat": 36.110541,
+  "lng": -5.448836,
+  "exact": true,
+  "source": "stop+nudged400",
+  "note": "moved so TravelTime attaches (Hospital Punta de Europa)"
+ },
+ "110051": {
+  "lat": 36.534038,
+  "lng": -6.303177,
+  "exact": true,
+  "source": "stop+nudged200",
+  "note": "moved so TravelTime attaches (Hospital San Rafael)"
+ },
+ "020096": {
+  "lat": 38.508003,
+  "lng": -1.689278,
+  "exact": true,
+  "source": "osm+nudged400",
+  "note": "moved so TravelTime attaches (Hospital de Hellín)"
+ },
+ "030328": {
+  "lat": 38.540762,
+  "lng": -0.110578,
+  "exact": true,
+  "source": "nominatim+stop+nudged400",
+  "note": "moved so TravelTime attaches (Hospital IMED Levante)"
+ },
+ "030298": {
+  "unattachable_at": [
+   37.964385,
+   -0.717228
+  ]
+ },
+ "030339": {
+  "unattachable_at": [
+   37.964385,
+   -0.717228
+  ]
+ },
+ "090098": {
+  "unattachable_at": [
+   42.670115,
+   -2.988044
+  ]
+ }
 }

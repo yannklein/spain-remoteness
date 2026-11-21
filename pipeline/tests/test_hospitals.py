@@ -213,3 +213,59 @@ def test_overrides_place_named_osm_hospital(tmp_path):
     a = ph.apply_override({"codcnh": "36038", "muni": "36038"}, over, cands)
     assert (a["lat"], a["lng"]) == (42.43, -8.66)
     assert ph.apply_override({"codcnh": "x", "muni": "1"}, over, cands) is None
+
+
+def test_ring_points_start_at_the_point_and_widen():
+    import nudge_hospitals as nh
+    from common import haversine_km
+    pts = nh.ring(40.0, -3.0)
+    assert pts[0] == (0, 40.0, -3.0)
+    dists = [round(haversine_km(40.0, -3.0, lat, lng) * 1000) for _, lat, lng in pts[1:]]
+    assert dists == sorted(dists) and 190 <= dists[0] <= 210 and 590 <= dists[-1] <= 610
+    assert len(pts) == 1 + 3 * 8
+
+
+def test_first_attaching_point_is_chosen():
+    import nudge_hospitals as nh
+    tried = []
+
+    def reach(lat, lng):
+        tried.append((lat, lng))
+        return 25 if len(tried) == 4 else None
+
+    got = nh.first_reachable(nh.ring(40.0, -3.0), reach)
+    assert got[1:3] == tried[3] and got[3] == 25 and len(tried) == 4
+    assert nh.first_reachable(nh.ring(40.0, -3.0), lambda a, b: None) is None
+
+
+def test_common_religious_words_do_not_make_a_match():
+    h = {"codcnh": "1", "name": "Hospital Nuestra Señora de Gracia", "muni": "50297"}
+    assert ph.match(h, [osm("w", "Centro Neuropsiquiátrico Nuestra Señora del Carmen", "50297")]) is None
+    h = {"codcnh": "2", "name": "Hospital Virgen de La Luz", "muni": "16078"}
+    assert ph.match(h, [osm("w", "Hospital Virgen del Puerto", "16078")]) is None
+
+
+def test_exact_override_skips_stop_snapping():
+    over = {"9": {"lat": 40.0, "lng": -3.0, "exact": True}}
+    a = ph.apply_override({"codcnh": "9", "muni": "1"}, over, [])
+    assert a["exact"] is True
+    stop = {"lat": 40.001, "lng": -3.0, "name": "Parada"}
+    assert ph.place_anchor(a, [stop])[:3] == (40.0, -3.0, "override")
+
+
+def test_moved_hospitals_lose_their_cache(tmp_path):
+    cdir = tmp_path / "c"
+    cdir.mkdir()
+    (cdir / "HOS:A.json").write_text("{}")
+    (cdir / "HOS:B.json").write_text("{}")
+    pos = tmp_path / "positions.json"
+    pos.write_text('{"HOS:A": [40.0, -3.0], "HOS:B": [41.0, -2.0]}')
+    dests = [{"code": "HOS:A", "lat": 40.0, "lng": -3.0}, {"code": "HOS:B", "lat": 41.1, "lng": -2.0}]
+    chos.invalidate_moved(dests, cdir, pos)
+    assert (cdir / "HOS:A.json").exists() and not (cdir / "HOS:B.json").exists()
+    assert __import__("json").loads(pos.read_text())["HOS:B"] == [41.1, -2.0]
+
+
+def test_probe_only_override_is_not_a_position():
+    over = {"7": {"unattachable_at": [40.0, -3.0]}}
+    assert ph.apply_override({"codcnh": "7", "muni": "1"}, over, []) is None

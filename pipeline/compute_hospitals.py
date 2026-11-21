@@ -11,6 +11,7 @@ Usage: python pipeline/compute_hospitals.py [--limit N] [--only CODCNH,...] [--n
 """
 
 import argparse
+import json
 import sys
 from datetime import datetime, timezone
 
@@ -34,6 +35,18 @@ def destinations(placed, places):
         m = by.get(h["muni"], {"code": h["muni"]})
         out.append(dict(h, code="HOS:" + h["codcnh"], zone=zone(m)))
     return out
+
+
+def invalidate_moved(dests, cdir, positions_file):
+    """Drop cached results of hospitals whose arrival point changed since they were computed."""
+    pos = json.loads(positions_file.read_text()) if positions_file.exists() else {}
+    for d in dests:
+        now = [d["lat"], d["lng"]]
+        if pos.get(d["code"]) not in (None, now):
+            (cdir / f"{d['code']}.json").unlink(missing_ok=True)
+        pos[d["code"]] = now
+    positions_file.parent.mkdir(parents=True, exist_ok=True)
+    positions_file.write_text(json.dumps(pos))
 
 
 def _order(h):
@@ -121,6 +134,8 @@ def main():
 
     client = Client("regular")
     cdir = CACHE_DIR / cache_dir(client).name
+    cdir.mkdir(parents=True, exist_ok=True)
+    invalidate_moved(dests, cdir, cdir / "positions.json")
     try:
         results = compute_all(munis, dests, client, use_cache=not args.no_cache, cdir=cdir)
     except HTTPStatusError as e:

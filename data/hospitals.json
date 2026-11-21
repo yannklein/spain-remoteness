@@ -78,11 +78,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 42.805033,
-  "lng": -1.673241,
+  "lat": 42.80644,
+  "lng": -1.667388,
   "point_source": "nominatim+stop",
   "osm_id": null,
-  "stop_name": "Barañáin, Avenida Pamplona, 1"
+  "stop_name": "Calle Irunlarrea, Centro de Consultas de Especialidades Principe de Viana"
  },
  {
   "codcnh": "310137",
@@ -724,9 +724,9 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 43.511305,
-  "lng": -8.262477,
-  "point_source": "postcode",
+  "lat": 43.508764,
+  "lng": -8.258974,
+  "point_source": "postcode+nudged400",
   "osm_id": null,
   "stop_name": null
  },
@@ -792,10 +792,10 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.067283,
-  "lng": -2.145869,
-  "point_source": "stop",
-  "osm_id": "n7238494137",
+  "lat": 40.071094,
+  "lng": -2.140889,
+  "point_source": "stop+nudged600",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -1625,10 +1625,10 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 37.9153,
-  "lng": -3.014448,
-  "point_source": "osm",
-  "osm_id": "w666347900",
+  "lat": 37.919111,
+  "lng": -3.009617,
+  "point_source": "osm+nudged600",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -1693,10 +1693,10 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 37.770623,
+  "lat": 37.776013,
   "lng": -3.817956,
-  "point_source": "osm",
-  "osm_id": "w591642413",
+  "point_source": "osm+nudged600",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -2001,8 +2001,8 @@
   "tier": 2,
   "lat": 42.353394,
   "lng": 1.457521,
-  "point_source": "stop",
-  "osm_id": "n719553597",
+  "point_source": "nominatim+stop",
+  "osm_id": null,
   "stop_name": "Institut Seu"
  },
  {
@@ -2475,11 +2475,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.452234,
-  "lng": -3.681172,
-  "point_source": "stop",
-  "osm_id": "w27125328",
-  "stop_name": "Hospital San Rafael"
+  "lat": 40.43264,
+  "lng": -3.67954,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Núñez de Balboa"
  },
  {
   "codcnh": "280604",
@@ -2781,11 +2781,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 40.429271,
-  "lng": -3.701929,
-  "point_source": "nominatim+stop",
-  "osm_id": null,
-  "stop_name": "Bilbao"
+  "lat": 40.3826,
+  "lng": -3.758106,
+  "point_source": "stop",
+  "osm_id": "w190760445",
+  "stop_name": null
  },
  {
   "codcnh": "280724",
@@ -2883,11 +2883,11 @@
   "public": true,
   "cath_lab": true,
   "tier": 1,
-  "lat": 40.440666,
-  "lng": -3.718125,
+  "lat": 40.474501,
+  "lng": -3.697401,
   "point_source": "stop",
-  "osm_id": "w394889274",
-  "stop_name": "Hospital Clínico"
+  "osm_id": "w15584594",
+  "stop_name": null
  },
  {
   "codcnh": "280014",
@@ -3648,11 +3648,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 38.229088,
-  "lng": -1.409581,
-  "point_source": "stop",
-  "osm_id": "w303005581",
-  "stop_name": "Hospital Lorenzo Guirao"
+  "lat": 38.231629,
+  "lng": -1.412815,
+  "point_source": "stop+nudged400",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "300256",
@@ -3903,11 +3903,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.692476,
-  "lng": -0.862356,
-  "point_source": "stop",
-  "osm_id": "w1000842834",
-  "stop_name": "Hospital Royo Villanova"
+  "lat": 41.688665,
+  "lng": -0.86746,
+  "point_source": "stop+nudged600",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "500074",
@@ -3920,11 +3920,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.677622,
-  "lng": -0.986685,
-  "point_source": "osm",
-  "osm_id": "w163042051",
-  "stop_name": null
+  "lat": 41.651405,
+  "lng": -0.885871,
+  "point_source": "stop+nudged0",
+  "osm_id": "r6596992",
+  "stop_name": "Av. César Augusto 20-22 / Teatro Fleta"
  },
  {
   "codcnh": "500016",
@@ -3988,11 +3988,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 35.286027,
-  "lng": -2.948443,
-  "point_source": "nominatim+stop",
+  "lat": 35.287297,
+  "lng": -2.946887,
+  "point_source": "nominatim+stop+nudged200",
   "osm_id": null,
-  "stop_name": "Res. Estudiantes - Estadio AC"
+  "stop_name": null
  },
  {
   "codcnh": "320150",
@@ -5043,10 +5043,10 @@
   "cath_lab": false,
   "tier": 2,
   "lat": 43.362433,
-  "lng": -4.075228,
-  "point_source": "stop",
-  "osm_id": "w75060104",
-  "stop_name": "Hospital Sierrallana"
+  "lng": -4.072757,
+  "point_source": "stop+nudged200",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "400045",
@@ -5127,11 +5127,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 37.391472,
-  "lng": -6.061059,
+  "lat": 37.386956,
+  "lng": -6.060621,
   "point_source": "nominatim+stop",
   "osm_id": null,
-  "stop_name": "Hospital Nisa"
+  "stop_name": "Plácido Fernández"
  },
  {
   "codcnh": "410233",
@@ -5161,11 +5161,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 36.911196,
+  "lat": 36.912993,
   "lng": -6.072084,
-  "point_source": "stop",
-  "osm_id": "w377858191",
-  "stop_name": "Hospital de Lebrija"
+  "point_source": "stop+nudged200",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "410248",
@@ -5212,11 +5212,11 @@
   "public": false,
   "cath_lab": true,
   "tier": 3,
-  "lat": 37.326432,
-  "lng": -5.96593,
-  "point_source": "stop",
-  "osm_id": "w293579441",
-  "stop_name": "Ambulatorio Bellavista"
+  "lat": 37.387058,
+  "lng": -5.976109,
+  "point_source": "nominatim+stop",
+  "osm_id": null,
+  "stop_name": "Luis Montoto (Dr. Felipe Martinez)"
  },
  {
   "codcnh": "410135",
@@ -5518,8 +5518,8 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.22602,
-  "lng": 1.537344,
+  "lat": 41.226085,
+  "lng": 1.538195,
   "point_source": "nominatim",
   "osm_id": null,
   "stop_name": null
@@ -5654,10 +5654,10 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.059613,
+  "lat": 41.05602,
   "lng": -0.133328,
-  "point_source": "osm",
-  "osm_id": "w1235592837",
+  "point_source": "osm+nudged400",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -6641,9 +6641,9 @@
   "cath_lab": false,
   "tier": 2,
   "lat": 39.99103,
-  "lng": -6.542389,
-  "point_source": "osm",
-  "osm_id": "w642649534",
+  "lng": -6.540044,
+  "point_source": "osm+nudged200",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -6674,11 +6674,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 40.033076,
-  "lng": -6.084726,
+  "lat": 40.030599,
+  "lng": -6.086084,
   "point_source": "nominatim+stop",
   "osm_id": null,
-  "stop_name": "Ambulatorio Central"
+  "stop_name": "Leonor de Plantagenet"
  },
  {
   "codcnh": "100067",
@@ -6709,9 +6709,9 @@
   "cath_lab": true,
   "tier": 1,
   "lat": 36.110541,
-  "lng": -5.444388,
-  "point_source": "stop",
-  "osm_id": "w1308593965",
+  "lng": -5.448836,
+  "point_source": "stop+nudged400",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -6743,10 +6743,10 @@
   "cath_lab": true,
   "tier": 1,
   "lat": 36.534038,
-  "lng": -6.305413,
-  "point_source": "stop",
-  "osm_id": "r7842767",
-  "stop_name": "Hotel Atlántico"
+  "lng": -6.303177,
+  "point_source": "stop+nudged200",
+  "osm_id": null,
+  "stop_name": null
  },
  {
   "codcnh": "110048",
@@ -7150,10 +7150,10 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 38.50441,
+  "lat": 38.508003,
   "lng": -1.689278,
-  "point_source": "osm",
-  "osm_id": "w159798577",
+  "point_source": "osm+nudged400",
+  "osm_id": null,
   "stop_name": null
  },
  {
@@ -7304,10 +7304,10 @@
   "cath_lab": true,
   "tier": 3,
   "lat": 38.540762,
-  "lng": -0.105984,
-  "point_source": "nominatim+stop",
+  "lng": -0.110578,
+  "point_source": "nominatim+stop+nudged400",
   "osm_id": null,
-  "stop_name": "C/ Ramón y Cajal, 5 (Hospital Levante)"
+  "stop_name": null
  },
  {
   "codcnh": "030406",
@@ -8289,11 +8289,11 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 41.425224,
-  "lng": 2.140708,
-  "point_source": "stop",
-  "osm_id": "w34210749",
-  "stop_name": "Hospital Sant Rafael"
+  "lat": 41.384003,
+  "lng": 2.178646,
+  "point_source": "postcode+stop",
+  "osm_id": null,
+  "stop_name": "Jaume I"
  },
  {
   "codcnh": "080155",
@@ -8714,11 +8714,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 42.107426,
-  "lng": 1.853451,
+  "lat": 42.104646,
+  "lng": 1.850464,
   "point_source": "nominatim+stop",
   "osm_id": null,
-  "stop_name": "Hospital"
+  "stop_name": "Tanatori"
  },
  {
   "codcnh": "080706",
@@ -9241,8 +9241,8 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 41.311229,
-  "lng": 2.016115,
+  "lat": 41.311267,
+  "lng": 2.01636,
   "point_source": "nominatim+stop",
   "osm_id": null,
   "stop_name": "Hospital de Viladecans"

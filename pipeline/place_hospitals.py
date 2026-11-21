@@ -34,6 +34,8 @@ GENERIC = {
     # Basque / Galician / Catalan generic words
     "ospitalea", "ospitala", "osi", "organizacion", "sanitaria", "integrada", "complexo", "publico", "publica",
     "da", "do", "das", "dos", "alto",
+    # too common in Spanish hospital names to tell hospitals apart
+    "nuestra", "senora", "virgen", "san", "santa", "sant", "santo",
 }
 OVERRIDES = DATA / "hospital_overrides.json"  # keyed by CODCNH (catalogue code), not municipality
 OSM_CACHE = catalogue.CACHE / "osm_hospitals.json"
@@ -82,9 +84,19 @@ def apply_override(h, overrides, osm_hospitals):
     o = overrides.get(h["codcnh"])
     if not o:
         return None
+    if "osm_name" not in o and "lat" not in o:  # only a probe record (see nudge_hospitals.py)
+        return None
     if "osm_name" in o:
         return next((dict(c, osm_id=c["id"], via="override") for c in osm_hospitals if c.get("name") == o["osm_name"]), None)
-    return {"lat": o["lat"], "lng": o["lng"], "entrances": [], "osm_id": None, "via": "override", "id": None}
+    return {"lat": o["lat"], "lng": o["lng"], "entrances": [], "osm_id": None, "via": "override", "id": None,
+            "exact": bool(o.get("exact"))}
+
+
+def place_anchor(a, stops):
+    """Arrival point for an anchor: exact overrides are used as-is (e.g. a point moved so it attaches)."""
+    if a.get("exact"):
+        return a["lat"], a["lng"], "override", None
+    return pick_point(a, stops)
 
 
 def pick_point(h, stops):
@@ -205,8 +217,10 @@ def main():
         a = anchors.get(h["codcnh"])
         if not a:
             continue
-        lat, lng, source, stop_name = pick_point(a, stops)
-        if a["via"] in ("nominatim", "postcode", "override"):
+        lat, lng, source, stop_name = place_anchor(a, stops)
+        if a.get("exact"):
+            source = overrides[h["codcnh"]].get("source", "override")
+        elif a["via"] in ("nominatim", "postcode", "override"):
             source = f"{a['via']}+stop" if source == "stop" else a["via"]
         out.append(dict(h, lat=round(lat, 6), lng=round(lng, 6), point_source=source,
                         osm_id=a["osm_id"], stop_name=stop_name))

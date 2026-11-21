@@ -159,6 +159,45 @@ python3 pipeline/compute_internet.py --quarters 2025-1,2025-2,2025-3,2025-4
 
 Quarter extracts for Spain are cached in `.cache/internet/`.
 
+## Hospitals map
+
+The **Hospitals** view (`#hospitals`) answers "if I work remotely here and need a hospital, how far is it?",
+with the same public transport method as the cities and airports maps.
+
+| Category | Rule (Catálogo Nacional de Hospitales 2025, Ministerio de Sanidad) |
+|---|---|
+| **Major** | public general hospital with a cardiac cath lab (`HEM` > 0) and ≥ 100 beds |
+| **Public** (default) | public general hospital: run by a public body, or in the public network by agreement ("Red de utilización pública", "Concierto sustitutorio": e.g. Figueres, Olot, Palamós) |
+| **Any** | any general hospital, private clinics included |
+
+Specialised, long-stay, mental-health and other inpatient centres are left out. Currently 106 major,
+321 public and 549 general hospitals.
+
+- **Placing hospitals** (`pipeline/place_hospitals.py` → `data/hospitals.json`): the catalogue has addresses,
+  not coordinates. Each hospital is matched by name to an OpenStreetMap hospital in the same municipality
+  (Basque/Galician name forms handled); its arrival point is the nearest bus/rail stop within 400 m (TravelTime
+  can't attach points inside a campus), else an entrance, else the OSM centre. Unmatched hospitals are placed
+  from their address or postcode with Nominatim; `data/hospital_overrides.json` (keyed by CODCNH) fixes the rest
+  by hand. `point_source` in `data/hospitals.json` says how each was placed.
+- **Complexes:** the catalogue reports equipment once per hospital complex; its cath lab is assigned to the
+  complex's largest site only. Formentera's 13-bed hospital reports a cath lab and is excluded from "major" by
+  the 100-bed rule.
+- **Points that don't attach** (`pipeline/nudge_hospitals.py`): hospitals nobody reaches are probed on rings of
+  200/400/600 m from their own town; the first reachable point is kept as an exact override in
+  `data/hospital_overrides.json` (16 hospitals moved). Positions already probed without success are recorded so
+  they aren't probed again.
+- **Coverage gaps:** 30 hospitals stay unreachable in TravelTime's data even after that, mostly where local
+  buses are missing (e.g. Virgen de la Arrixaca in Murcia, Costa del Sol in Marbella, Ceuta's hospital).
+  Places near them fall back to the next hospital; the list is in `hospitals.json` `params.notes` and on the page.
+  Ceuta therefore shows no hospital within 3 h.
+- **Caveat:** the catalogue doesn't say which private clinics have a 24 h emergency department.
+
+```bash
+python3 pipeline/place_hospitals.py      # catalogue + OSM + Nominatim -> data/hospitals.json (a few minutes)
+python3 pipeline/compute_hospitals.py    # TravelTime, ~2,700 searches (~25 min), cached in .cache/hospitals/
+python3 pipeline/nudge_hospitals.py      # move points of unreached hospitals, then run compute_hospitals.py again
+```
+
 ## Using the data in QGIS
 
 Both datasets come as a flat CSV, one row per municipality, next to the JSON:
@@ -168,6 +207,8 @@ Both datasets come as a flat CSV, one row per municipality, next to the JSON:
 - `web/public/data/airports.csv`: `y1_min`..`y3_min` (year-round) and `s1_min`..`s3_min` (with seasonal
   routes) minutes to the nearest intercontinental / Europe / any airport, `*_airport` its IATA code.
 
+- `web/public/data/hospitals.csv`: `t1_min`..`t3_min` minutes to the nearest major / public / any hospital,
+  `t*_hospital` its catalogue code (CODCNH, see `data/hospitals.json`).
 - `web/public/data/internet.csv`: `fixed_down_mbps`, `fixed_up_mbps`, `fixed_latency_ms`, `fixed_tests`,
   `fixed_devices` and the same for `mobile_*` (measured; empty = not enough local tests), then
   `fixed_est_*` / `mobile_est_*` (estimated from tests within 10 km, only where there is no measured value)
@@ -220,5 +261,6 @@ cd web && npm install && npm run dev
 - Town centres: © OpenStreetMap contributors (ODbL)
 - Travel times: [TravelTime API](https://traveltime.com)
 - Internet speeds: [Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps](https://github.com/teamookla/ookla-open-data) (CC BY-NC-SA 4.0)
+- Hospitals: Ministerio de Sanidad, [Catálogo Nacional de Hospitales](https://www.sanidad.gob.es/estadEstudios/estadisticas/sisInfSanSNS/ofertaRecursos/hospitales/home.htm) (2025); hospital positions © OpenStreetMap contributors (ODbL) and Nominatim
 - Broadband coverage: Ministerio para la Transformación Digital y de la Función Pública (SETID), [Información de cobertura](https://digital.gob.es/telecomunicaciones-infraestructuras-digitales/areas-interes/banda-ancha/informacion-cobertura)
 - Basemap: [OpenFreeMap](https://openfreemap.org) Positron
