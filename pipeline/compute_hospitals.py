@@ -54,12 +54,20 @@ def _order(h):
 
 
 def aggregate_hospitals(munis, hospitals, results):
-    """Per municipality [t1, h1, t2, h2, t3, h3]: minutes (-1 = none within the cap), hospital index (-1)."""
+    """Per municipality [t1, h1, t2, h2, t3, h3]: minutes (-1 = none within the cap), hospital index (-1).
+
+    A municipality that contains a hospital of the tier counts as close: 0 minutes to its own
+    hospital (the best-ranked one), even when TravelTime has no transit to it (user decision).
+    """
     hs = sorted(hospitals, key=_order)
     out = {}
     for m in munis:
         row = []
         for tier in TIERS:
+            own = next((i for i, h in enumerate(hs) if h["muni"] == m["code"] and h["tier"] <= tier), None)
+            if own is not None:
+                row += [0, own]
+                continue
             best_t, best_i = None, -1
             for i, h in enumerate(hs):
                 if h["tier"] > tier:

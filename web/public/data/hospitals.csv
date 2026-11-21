@@ -43,7 +43,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 01056,Harana,Araba,212,117,010090,117,010090,117,010090
 01057,Villabuena de Álava,Araba,276,74,260027,74,260027,74,260027
 01058,Legutio,Araba,2094,43,010090,43,010090,43,010090
-01059,Vitoria-Gasteiz,Araba,260699,7,010090,7,010090,7,010053
+01059,Vitoria-Gasteiz,Araba,260699,0,010090,0,010090,0,010090
 01060,Yécora,Araba,278,78,260027,78,260027,78,260027
 01061,Zalduondo,Araba,195,55,010090,55,010090,55,010090
 01062,Zambrana,Araba,452,103,010090,94,260048,94,260048
@@ -52,13 +52,13 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 01902,Lantarón,Araba,929,108,010090,108,010090,83,010040
 02001,Abengibre,Albacete,753,,,,,,
 02002,Alatoz,Albacete,504,129,020030,129,020030,129,020030
-02003,Albacete,Albacete,175400,17,020030,13,020117,11,020061
+02003,Albacete,Albacete,175400,0,020030,0,020030,0,020030
 02004,Albatana,Albacete,644,,,,,,
 02005,Alborea,Albacete,672,,,,,,
 02006,Alcadozo,Albacete,635,,,,,,
 02007,Alcalá del Júcar,Albacete,1130,,,,,,
 02008,Alcaraz,Albacete,1283,,,,,,
-02009,Almansa,Albacete,24615,144,460018,14,020136,14,020136
+02009,Almansa,Albacete,24615,144,460018,0,020136,0,020136
 02010,Alpera,Albacete,2278,,,,,,
 02011,Ayna,Albacete,577,,,,,,
 02012,Balazote,Albacete,2356,,,,,,
@@ -86,7 +86,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 02034,Fuentealbilla,Albacete,1804,75,020030,75,020030,75,020030
 02035,La Gineta,Albacete,2656,,,,,,
 02036,Golosalvo,Albacete,79,66,020030,66,020030,66,020030
-02037,Hellín,Albacete,30836,129,020030,13,020096,13,020096
+02037,Hellín,Albacete,30836,129,020030,0,020096,0,020096
 02038,La Herrera,Albacete,308,,,,,,
 02039,Higueruela,Albacete,1133,,,,,,
 02040,Hoya-Gonzalo,Albacete,582,,,,,,
@@ -145,12 +145,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 03006,Alcalalí,Alacant,1428,113,030340,113,030340,113,030340
 03007,Alcosser,Alacant,263,,,,,,
 03008,Alcoleja,Alacant,184,,,54,030067,54,030067
-03009,Alcoi,Alacant,61468,86,030015,36,030067,29,030089
+03009,Alcoi,Alacant,61468,86,030015,0,030067,0,030067
 03010,Alfafara,Alacant,419,,,,,,
 03011,l'Alfàs del Pi,Alacant,21080,123,030015,123,030015,123,030015
 03012,Algorfa,Alacant,3788,,,,,,
 03013,Algueña,Alacant,1328,,,,,,
-03014,Alacant,Alacant,366221,23,030015,23,030015,21,030041
+03014,Alacant,Alacant,366221,0,030015,0,030015,0,030015
 03015,Almoradí,Alacant,22965,112,030373,57,030211,57,030211
 03016,Almudaina,Alacant,128,,,87,030067,87,030067
 03017,l'Alqueria d'Asnar,Alacant,519,,,49,030067,49,030067
@@ -167,7 +167,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 03028,Beniarrés,Alacant,1117,,,,,,
 03029,Benigembla,Alacant,590,,,,,,
 03030,Benidoleig,Alacant,1245,76,030340,76,030340,76,030340
-03031,Benidorm,Alacant,77327,99,030250,39,030204,5,030092
+03031,Benidorm,Alacant,77327,99,030250,39,030204,0,030092
 03032,Benifallim,Alacant,130,,,43,030067,43,030067
 03033,Benifato,Alacant,162,,,,,,
 03034,Benijófar,Alacant,3679,,,,,,
@@ -199,10 +199,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 03060,Quatretondeta,Alacant,130,,,,,,
 03061,Daya Nueva,Alacant,1885,,,102,030211,102,030211
 03062,Daya Vieja,Alacant,698,115,030015,80,030211,80,030211
-03063,Dénia,Alacant,47261,40,030340,40,030340,15,030406
+03063,Dénia,Alacant,47261,0,030340,0,030340,0,030340
 03064,Dolores,Alacant,8326,,,97,030211,97,030211
-03065,Elx,Alacant,245557,23,030373,23,030373,23,030373
-03066,Elda,Alacant,55222,129,030015,129,030015,129,030015
+03065,Elx,Alacant,245557,0,030152,0,030152,0,030152
+03066,Elda,Alacant,55222,129,030015,0,030165,0,030165
 03067,Fageca,Alacant,100,,,,,,
 03068,Famorca,Alacant,44,,,,,,
 03069,Finestrat,Alacant,9919,,,,,,
@@ -234,7 +234,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 03096,Onil,Alacant,8114,95,030015,83,030067,83,030067
 03097,Orba,Alacant,2399,80,030340,80,030340,80,030340
 03098,Orxeta,Alacant,906,,,,,,
-03099,Orihuela,Alacant,84560,75,030373,34,030211,34,030211
+03099,Orihuela,Alacant,84560,75,030373,0,030211,0,030211
 03100,Parcent,Alacant,1037,109,030340,109,030340,109,030340
 03101,Pedreguer,Alacant,8849,56,030340,56,030340,56,030340
 03102,Pego,Alacant,10791,89,030340,45,460207,45,460207
@@ -253,7 +253,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 03116,Salinas,Alacant,1828,,,,,,
 03117,Sanet y Negrals,Alacant,712,82,030340,82,030340,82,030340
 03118,San Fulgencio,Alacant,9769,99,030015,99,030015,99,030015
-03119,Sant Joan d'Alacant,Alacant,26834,13,030250,13,030250,13,030250
+03119,Sant Joan d'Alacant,Alacant,26834,0,030250,0,030250,0,030250
 03120,San Miguel de Salinas,Alacant,7177,,,,,,
 03121,Santa Pola,Alacant,39709,62,030373,62,030373,62,030373
 03122,Sant Vicent del Raspeig,Alacant,60247,37,030015,37,030015,37,030015
@@ -266,13 +266,13 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 03130,Tollos,Alacant,32,,,,,,
 03131,Tormos,Alacant,323,93,030340,93,030340,93,030340
 03132,la Torre de les Maçanes,Alacant,749,111,030015,111,030015,111,030015
-03133,Torrevieja,Alacant,98533,161,030015,161,030015,5,030298
+03133,Torrevieja,Alacant,98533,0,030339,0,030339,0,030339
 03134,la Vall d'Alcalà,Alacant,159,,,,,,
 03135,la Vall d'Ebo,Alacant,231,,,,,,
 03136,la Vall de Gallinera,Alacant,583,151,030340,151,030340,151,030340
 03137,la Vall de Laguar,Alacant,905,88,030340,88,030340,88,030340
 03138,el Verger,Alacant,5508,36,030340,36,030340,36,030340
-03139,la Vila Joiosa,Alacant,37449,75,030250,28,030204,28,030204
+03139,la Vila Joiosa,Alacant,37449,75,030250,0,030204,0,030204
 03140,Villena,Alacant,34712,140,030015,84,030165,84,030165
 03901,els Poblets,Alacant,2757,44,030340,44,030340,44,030340
 03902,Pilar de la Horadada,Alacant,24316,,,,,,
@@ -290,7 +290,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 04010,Alhabia,Almería,743,,,,,,
 04011,Alhama de Almería,Almería,3975,126,040010,126,040010,126,040010
 04012,Alicún,Almería,206,,,,,,
-04013,Almería,Almería,205468,35,040010,35,040010,29,040101
+04013,Almería,Almería,205468,0,040010,0,040010,0,040010
 04014,Almócita,Almería,208,,,,,,
 04015,Alsodux,Almería,126,,,,,,
 04016,Antas,Almería,3472,,,113,040084,113,040084
@@ -326,7 +326,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 04050,Gérgal,Almería,1211,,,,,,
 04051,Huécija,Almería,526,,,,,,
 04052,Huércal de Almería,Almería,18660,39,040010,39,040010,39,040010
-04053,Huércal-Overa,Almería,20860,,,,,,
+04053,Huércal-Overa,Almería,20860,,,0,040084,0,040084
 04054,Íllar,Almería,492,,,,,,
 04055,Instinción,Almería,507,,,,,,
 04056,Laroya,Almería,197,,,,,,
@@ -378,7 +378,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 04102,Vícar,Almería,29342,,,,,,
 04103,Zurgena,Almería,3059,,,,,,
 04901,Las Tres Villas,Almería,547,,,,,,
-04902,El Ejido,Almería,91440,112,040010,22,040118,22,040118
+04902,El Ejido,Almería,91440,112,040010,0,040118,0,040118
 04903,La Mojonera,Almería,8793,91,040010,33,040118,33,040118
 04904,Balanegra,Almería,3055,151,040010,32,040118,32,040118
 05001,Adanero,Ávila,207,,,,,,
@@ -394,7 +394,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 05016,Arévalo,Ávila,7851,,,,,,
 05017,Aveinte,Ávila,67,140,370037,63,050013,63,050013
 05018,Avellaneda,Ávila,23,,,,,,
-05019,Ávila,Ávila,59107,121,281359,14,050034,13,050049
+05019,Ávila,Ávila,59107,121,281359,0,050013,0,050013
 05021,El Barco de Ávila,Ávila,2308,,,,,,
 05022,El Barraco,Ávila,2086,,,59,050013,59,050013
 05023,Barromán,Ávila,174,,,,,,
@@ -639,11 +639,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 06008,Alconera,Badajoz,748,,,52,060208,52,060208
 06009,Aljucén,Badajoz,252,150,060021,150,060021,150,060021
 06010,Almendral,Badajoz,1202,106,060021,56,060220,56,060220
-06011,Almendralejo,Badajoz,34587,,,,,,
+06011,Almendralejo,Badajoz,34587,,,0,060242,0,060242
 06012,Arroyo de San Serván,Badajoz,4001,67,060129,67,060129,67,060129
 06013,Atalaya,Badajoz,258,,,84,060208,84,060208
 06014,Azuaga,Badajoz,7587,,,62,060114,62,060114
-06015,Badajoz,Badajoz,150209,23,060021,19,060220,19,060220
+06015,Badajoz,Badajoz,150209,0,060021,0,060021,0,060021
 06016,Barcarrota,Badajoz,3456,115,060021,65,060220,65,060220
 06017,Baterno,Badajoz,231,,,63,060231,63,060231
 06018,Benquerencia de la Serena,Badajoz,771,171,060129,91,060093,91,060093
@@ -672,7 +672,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 06041,Cristina,Badajoz,549,129,060129,129,060129,129,060129
 06042,Cheles,Badajoz,1175,,,,,,
 06043,Don Álvaro,Badajoz,841,139,060129,139,060129,139,060129
-06044,Don Benito,Badajoz,37986,88,060129,58,060093,58,060093
+06044,Don Benito,Badajoz,37986,88,060129,0,060093,0,060093
 06045,Entrín Bajo,Badajoz,548,65,060021,65,060021,65,060021
 06046,Esparragalejo,Badajoz,1506,30,060129,30,060129,30,060129
 06047,Esparragosa de la Serena,Badajoz,912,,,89,060140,89,060140
@@ -702,7 +702,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 06071,La Lapa,Badajoz,298,,,68,060208,68,060208
 06072,Lobón,Badajoz,2756,72,060021,42,060220,42,060220
 06073,Llera,Badajoz,781,,,125,060242,125,060242
-06074,Llerena,Badajoz,5642,,,12,060114,12,060114
+06074,Llerena,Badajoz,5642,,,0,060114,0,060114
 06075,Magacela,Badajoz,502,,,35,060140,35,060140
 06076,Maguilla,Badajoz,919,,,,,,
 06077,Malcocinado,Badajoz,343,,,84,060114,84,060114
@@ -711,7 +711,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 06080,Medellín,Badajoz,2241,65,060129,65,060129,30,060297
 06081,Medina de las Torres,Badajoz,1160,,,78,060208,78,060208
 06082,Mengabril,Badajoz,504,135,060129,85,060093,85,060093
-06083,Mérida,Badajoz,60225,54,060129,54,060129,54,060129
+06083,Mérida,Badajoz,60225,0,060129,0,060129,0,060129
 06084,Mirandilla,Badajoz,1232,29,060129,29,060129,29,060129
 06085,Monesterio,Badajoz,4245,142,060129,142,060129,142,060129
 06086,Montemolín,Badajoz,1231,,,,,,
@@ -755,7 +755,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 06124,Segura de León,Badajoz,1758,,,167,060208,167,060208
 06125,Siruela,Badajoz,1766,,,48,060231,48,060231
 06126,Solana de los Barros,Badajoz,2522,92,060021,92,060021,92,060021
-06127,Talarrubias,Badajoz,3251,,,23,060231,23,060231
+06127,Talarrubias,Badajoz,3251,,,0,060231,0,060231
 06128,Talavera la Real,Badajoz,5288,61,060021,32,060220,32,060220
 06129,Táliga,Badajoz,650,,,,,,
 06130,Tamurejo,Badajoz,190,,,53,060231,53,060231
@@ -781,12 +781,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 06150,Villagarcía de la Torre,Badajoz,909,,,51,060114,51,060114
 06151,Villagonzalo,Badajoz,1226,120,060129,120,060129,120,060129
 06152,Villalba de los Barros,Badajoz,1429,158,060021,158,060021,158,060021
-06153,Villanueva de la Serena,Badajoz,25773,99,060129,7,060140,7,060140
+06153,Villanueva de la Serena,Badajoz,25773,99,060129,0,060140,0,060140
 06154,Villanueva del Fresno,Badajoz,3247,,,,,,
 06155,Villar del Rey,Badajoz,2064,,,,,,
 06156,Villar de Rena,Badajoz,1326,144,060129,144,060129,144,060129
 06157,Villarta de los Montes,Badajoz,375,,,152,060231,152,060231
-06158,Zafra,Badajoz,16735,111,060129,12,060208,12,060208
+06158,Zafra,Badajoz,16735,111,060129,0,060208,0,060208
 06159,Zahínos,Badajoz,2766,,,,,,
 06160,Zalamea de la Serena,Badajoz,3371,,,67,060140,67,060140
 06161,Zarza-Capilla,Badajoz,295,,,93,060231,93,060231
@@ -808,7 +808,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 07012,Campanet,Illes Balears,2859,90,070333,20,070377,20,070377
 07013,Campos,Illes Balears,12485,72,070333,67,070309,67,070309
 07014,Capdepera,Illes Balears,13135,140,070399,55,070309,55,070309
-07015,Ciutadella de Menorca,Illes Balears,32431,,,,,9,070456
+07015,Ciutadella de Menorca,Illes Balears,32431,,,,,0,070456
 07016,Consell,Illes Balears,4521,73,070399,73,070399,73,070399
 07017,Costitx,Illes Balears,1591,89,070333,19,070377,19,070377
 07018,Deià,Illes Balears,741,47,070399,47,070399,47,070399
@@ -817,23 +817,23 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 07021,Estellencs,Illes Balears,369,67,070399,67,070399,67,070399
 07022,Felanitx,Illes Balears,19146,82,070333,52,070309,52,070309
 07023,Ferreries,Illes Balears,5170,,,,,,
-07024,Formentera,Illes Balears,11661,,,10,070366,10,070366
+07024,Formentera,Illes Balears,11661,,,0,070366,0,070366
 07025,Fornalutx,Illes Balears,743,111,070399,111,070399,111,070399
-07026,Eivissa,Illes Balears,55337,14,070184,14,070184,7,070201
-07027,Inca,Illes Balears,36262,56,070333,30,070377,30,070377
+07026,Eivissa,Illes Balears,55337,0,070184,0,070184,0,070184
+07027,Inca,Illes Balears,36262,56,070333,0,070377,0,070377
 07028,Lloret de Vistalegre,Illes Balears,1691,62,070333,62,070333,62,070333
 07029,Lloseta,Illes Balears,6463,51,070333,40,070377,40,070377
 07030,Llubí,Illes Balears,2589,97,070399,57,070377,57,070377
-07031,Llucmajor,Illes Balears,40502,58,070333,58,070333,51,070434
-07032,Maó,Illes Balears,30666,,,21,070388,21,070388
-07033,Manacor,Illes Balears,49153,67,070333,18,070309,18,070309
+07031,Llucmajor,Illes Balears,40502,58,070333,58,070333,0,070423
+07032,Maó,Illes Balears,30666,,,0,070388,0,070388
+07033,Manacor,Illes Balears,49153,67,070333,0,070309,0,070309
 07034,Mancor de la Vall,Illes Balears,1692,83,070333,48,070377,48,070377
 07035,Maria de la Salut,Illes Balears,2461,104,070333,79,070377,79,070377
 07036,Marratxí,Illes Balears,40422,35,070333,35,070333,35,070333
 07037,Es Mercadal,Illes Balears,6459,,,,,,
 07038,Montuïri,Illes Balears,3289,44,070333,44,070333,44,070333
 07039,Muro,Illes Balears,8398,105,070399,25,070377,0,070260
-07040,Palma,Illes Balears,434786,29,070333,29,070333,1,070434
+07040,Palma,Illes Balears,434786,0,070399,0,070399,0,070399
 07041,Petra,Illes Balears,3231,90,070333,50,070377,50,070377
 07042,Pollença,Illes Balears,17807,113,070399,53,070377,53,070377
 07043,Porreres,Illes Balears,5892,59,070333,59,070333,59,070333
@@ -875,14 +875,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08012,Avinyó,Barcelona,2322,136,080752,66,080863,66,080863
 08013,Avinyonet del Penedès,Barcelona,1782,91,080752,91,080752,91,080752
 08014,Aiguafreda,Barcelona,2569,125,081347,65,081108,65,081108
-08015,Badalona,Barcelona,231542,27,080057,5,080673,5,080673
+08015,Badalona,Barcelona,231542,0,080667,0,080667,0,080667
 08016,Bagà,Barcelona,2161,156,080109,69,080692,69,080692
 08017,Balenyà,Barcelona,4021,109,080291,49,081108,49,081108
 08018,Balsareny,Barcelona,3380,83,080109,64,080692,64,080692
-08019,Barcelona,Barcelona,1731649,18,080291,18,080291,3,080142
+08019,Barcelona,Barcelona,1731649,0,081347,0,081347,0,081347
 08020,Begues,Barcelona,7561,74,080752,39,081141,39,081141
 08021,Bellprat,Barcelona,69,,,,,,
-08022,Berga,Barcelona,17473,108,080109,14,080692,14,080692
+08022,Berga,Barcelona,17473,108,080109,0,080692,0,080692
 08023,Bigues i Riells del Fai,Barcelona,10139,76,080291,50,080734,50,080734
 08024,Borredà,Barcelona,433,159,080109,34,080692,34,080692
 08025,El Bruc,Barcelona,2290,84,080109,48,080898,48,080898
@@ -895,7 +895,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08032,Caldes d'Estrac,Barcelona,3356,58,080057,43,081326,43,081326
 08033,Caldes de Montbui,Barcelona,18567,54,080958,49,080734,49,080734
 08034,Calders,Barcelona,1122,105,080958,59,080863,59,080863
-08035,Calella,Barcelona,20864,84,080291,5,080706,5,080706
+08035,Calella,Barcelona,20864,84,080291,0,080706,0,080706
 08036,Calonge de Segarra,Barcelona,179,,,,,,
 08037,Calldetenes,Barcelona,2733,106,080291,58,081108,18,081115
 08038,Callús,Barcelona,2180,136,081347,75,080863,26,080832
@@ -937,7 +937,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08074,Cubelles,Barcelona,17673,66,080752,51,081038,51,081038
 08075,Dosrius,Barcelona,6287,87,081347,59,081326,59,081326
 08076,Esparreguera,Barcelona,22665,58,080109,24,080898,24,080898
-08077,Esplugues de Llobregat,Barcelona,48221,19,080109,14,080771,8,082167
+08077,Esplugues de Llobregat,Barcelona,48221,19,080109,14,080771,0,082167
 08078,L'Espunyola,Barcelona,260,136,080109,57,080692,57,080692
 08079,L'Estany,Barcelona,390,111,080958,111,080958,111,080958
 08080,Fígols,Barcelona,40,166,080109,45,080692,45,080692
@@ -956,13 +956,13 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08093,Gisclareny,Barcelona,28,,,104,080692,104,080692
 08094,La Granada,Barcelona,2287,72,080109,21,081430,21,081430
 08095,Granera,Barcelona,84,106,080958,106,080958,105,081402
-08096,Granollers,Barcelona,65341,49,080958,14,080734,4,081402
+08096,Granollers,Barcelona,65341,49,080958,0,080734,0,080734
 08097,Gualba,Barcelona,1766,151,081347,30,081000,30,081000
 08098,Sant Salvador de Guardiola,Barcelona,3612,154,081347,94,080863,34,080832
 08099,Guardiola de Berguedà,Barcelona,964,154,080109,67,080692,67,080692
 08100,Gurb,Barcelona,2741,109,081347,30,081108,30,081108
-08101,L'Hospitalet de Llobregat,Barcelona,289510,16,080752,16,080752,16,080752
-08102,Igualada,Barcelona,42085,81,080109,16,081885,16,081885
+08101,L'Hospitalet de Llobregat,Barcelona,289510,0,080752,0,080752,0,080752
+08102,Igualada,Barcelona,42085,81,080109,0,081885,0,081885
 08103,Jorba,Barcelona,850,121,081347,21,081885,21,081885
 08104,La Llacuna,Barcelona,959,124,080109,84,081885,84,081885
 08105,La Llagosta,Barcelona,13280,42,080291,29,080174,29,080174
@@ -973,18 +973,18 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08110,Malgrat de Mar,Barcelona,19714,80,170010,41,080706,41,080706
 08111,Malla,Barcelona,285,,,,,,
 08112,Manlleu,Barcelona,21425,112,080291,32,081108,32,081108
-08113,Manresa,Barcelona,80974,90,080958,13,080863,11,080832
-08114,Martorell,Barcelona,29175,56,080109,6,080898,6,080898
+08113,Manresa,Barcelona,80974,90,080958,0,080863,0,080863
+08114,Martorell,Barcelona,29175,56,080109,0,080898,0,080898
 08115,Martorelles,Barcelona,4992,54,080291,39,080945,39,080945
 08116,Les Masies de Roda,Barcelona,758,125,081347,73,081108,73,081108
 08117,Les Masies de Voltregà,Barcelona,3345,135,081347,55,081108,55,081108
 08118,El Masnou,Barcelona,24761,33,080057,26,080673,26,080673
 08119,Masquefa,Barcelona,10120,80,080752,40,081683,40,081683
 08120,Matadepera,Barcelona,9776,38,081094,38,081094,38,081094
-08121,Mataró,Barcelona,131683,55,080057,23,081326,23,081326
+08121,Mataró,Barcelona,131683,55,080057,0,081326,0,081326
 08122,Mediona,Barcelona,2658,108,080109,108,080109,108,080109
 08123,Molins de Rei,Barcelona,27300,34,080109,27,082066,27,082066
-08124,Mollet del Vallès,Barcelona,52990,44,080958,16,080945,16,080945
+08124,Mollet del Vallès,Barcelona,52990,44,080958,0,080945,0,080945
 08125,Montcada i Reixac,Barcelona,37460,36,080291,26,080174,26,080174
 08126,Montgat,Barcelona,12879,34,080057,18,080673,18,080673
 08127,Monistrol de Montserrat,Barcelona,3250,58,080109,35,080863,35,080863
@@ -1045,7 +1045,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08183,Roda de Ter,Barcelona,6937,129,081347,71,081108,71,081108
 08184,Rubí,Barcelona,82823,25,081017,25,081017,25,081017
 08185,Rubió,Barcelona,225,,,,,,
-08187,Sabadell,Barcelona,225368,14,080958,14,080958,14,080958
+08187,Sabadell,Barcelona,225368,0,080958,0,080958,0,080958
 08188,Sagàs,Barcelona,154,,,,,,
 08189,Sant Pere Sallavinera,Barcelona,177,,,97,080863,97,080863
 08190,Saldes,Barcelona,302,,,108,080692,108,080692
@@ -1058,12 +1058,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08197,Sant Andreu de Llavaneres,Barcelona,11938,65,080057,27,081326,27,081326
 08198,Sant Antoni de Vilamajor,Barcelona,6724,95,081347,67,080734,67,080734
 08199,Sant Bartomeu del Grau,Barcelona,933,120,081347,61,081108,61,081108
-08200,Sant Boi de Llobregat,Barcelona,85610,29,080752,12,080983,12,080983
+08200,Sant Boi de Llobregat,Barcelona,85610,29,080752,0,080983,0,080983
 08201,Sant Boi de Lluçanès,Barcelona,602,152,081347,152,081347,152,081347
-08202,Sant Celoni,Barcelona,18977,64,170010,8,081000,8,081000
+08202,Sant Celoni,Barcelona,18977,64,170010,0,081000,0,081000
 08203,Sant Cebrià de Vallalta,Barcelona,3872,121,081347,61,080706,61,080706
 08204,Sant Climent de Llobregat,Barcelona,4187,76,081347,46,080983,46,080983
-08205,Sant Cugat del Vallès,Barcelona,97983,25,081017,25,081017,18,080137
+08205,Sant Cugat del Vallès,Barcelona,97983,0,081017,0,081017,0,081017
 08206,Sant Cugat Sesgarrigues,Barcelona,1038,132,081347,76,081430,76,081430
 08207,Sant Esteve de Palautordera,Barcelona,3099,85,080291,48,080734,48,080734
 08208,Sant Esteve Sesrovires,Barcelona,8121,73,080752,0,081683,0,081683
@@ -1075,7 +1075,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08214,Vilassar de Dalt,Barcelona,9404,56,080291,47,081326,47,081326
 08215,Sant Hipòlit de Voltregà,Barcelona,3666,117,081347,32,081108,32,081108
 08216,Sant Jaume de Frontanyà,Barcelona,25,,,61,080692,61,080692
-08217,Sant Joan Despí,Barcelona,35926,32,080109,18,082066,18,082066
+08217,Sant Joan Despí,Barcelona,35926,32,080109,0,082066,0,082066
 08218,Sant Joan de Vilatorrada,Barcelona,11133,88,080958,50,080863,20,080832
 08219,Vilassar de Mar,Barcelona,21227,50,080057,24,081326,24,081326
 08220,Sant Julià de Vilatorta,Barcelona,3323,138,081347,68,081108,28,081115
@@ -1089,7 +1089,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08228,Sant Martí Sesgueioles,Barcelona,353,123,250019,81,080863,81,080863
 08229,Sant Mateu de Bages,Barcelona,641,,,95,080863,95,080863
 08230,Premià de Dalt,Barcelona,10632,72,080291,52,081326,52,081326
-08231,Sant Pere de Ribes,Barcelona,32705,51,080752,15,081038,15,081038
+08231,Sant Pere de Ribes,Barcelona,32705,51,080752,0,081038,0,081038
 08232,Sant Pere de Riudebitlles,Barcelona,2516,84,080109,72,081430,72,081430
 08233,Sant Pere de Torelló,Barcelona,2596,173,081347,73,081108,73,081108
 08234,Sant Pere de Vilamajor,Barcelona,5074,97,081347,69,080734,69,080734
@@ -1103,7 +1103,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08242,Marganell,Barcelona,309,,,61,080863,61,080863
 08243,Santa Cecília de Voltregà,Barcelona,197,,,,,,
 08244,Santa Coloma de Cervelló,Barcelona,8273,40,080752,20,080983,20,080983
-08245,Santa Coloma de Gramenet,Barcelona,123981,29,080291,20,081069,20,081069
+08245,Santa Coloma de Gramenet,Barcelona,123981,29,080291,0,081069,0,081069
 08246,Santa Eugènia de Berga,Barcelona,2348,116,081347,26,081108,26,081108
 08247,Santa Eulàlia de Riuprimer,Barcelona,1516,,,71,081108,71,081108
 08248,Santa Eulàlia de Ronçana,Barcelona,7953,70,080291,47,080734,30,081402
@@ -1137,7 +1137,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08276,Tagamanent,Barcelona,328,125,081347,65,081108,65,081108
 08277,Talamanca,Barcelona,209,,,49,080863,49,080863
 08278,Taradell,Barcelona,6854,123,081347,34,081108,34,081108
-08279,Terrassa,Barcelona,233270,8,081094,4,081728,4,081728
+08279,Terrassa,Barcelona,233270,0,081094,0,081094,0,081094
 08280,Tavertet,Barcelona,128,,,172,081108,172,081108
 08281,Teià,Barcelona,6898,63,080057,63,080057,63,080057
 08282,Tiana,Barcelona,9331,42,080057,27,080673,27,080673
@@ -1156,14 +1156,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 08295,Vallirana,Barcelona,16245,45,080109,45,080109,45,080109
 08296,Vallromanes,Barcelona,2778,72,080958,45,080734,45,080734
 08297,Veciana,Barcelona,168,,,,,,
-08298,Vic,Barcelona,50796,79,080291,14,081108,7,081115
+08298,Vic,Barcelona,50796,79,080291,0,081108,0,081108
 08299,Vilada,Barcelona,432,137,080109,17,080692,17,080692
 08300,Viladecavalls,Barcelona,7817,36,081094,36,081094,36,081094
-08301,Viladecans,Barcelona,67587,40,080752,9,081141,9,081141
+08301,Viladecans,Barcelona,67587,40,080752,0,081141,0,081141
 08302,Vilanova del Camí,Barcelona,12936,72,080109,20,081885,20,081885
 08303,Vilanova de Sau,Barcelona,325,,,,,,
 08304,Vilobí del Penedès,Barcelona,1154,86,080109,32,081430,32,081430
-08305,Vilafranca del Penedès,Barcelona,42607,59,080109,17,081430,17,081430
+08305,Vilafranca del Penedès,Barcelona,42607,59,080109,0,081430,0,081430
 08306,Vilalba Sasserra,Barcelona,794,74,080291,39,081000,39,081000
 08307,Vilanova i la Geltrú,Barcelona,71641,68,080109,29,081038,29,081038
 08308,Viver i Serrateix,Barcelona,178,110,080109,110,080109,110,080109
@@ -1184,7 +1184,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 09014,Los Altos,Burgos,177,,,,,,
 09016,Ameyugo,Burgos,107,,,,,,
 09017,Anguix,Burgos,166,,,,,,
-09018,Aranda de Duero,Burgos,33956,123,090155,6,090079,6,090079
+09018,Aranda de Duero,Burgos,33956,123,090155,0,090079,0,090079
 09019,Arandilla,Burgos,157,,,,,,
 09020,Arauzo de Miel,Burgos,260,,,,,,
 09021,Arauzo de Salce,Burgos,44,,,,,,
@@ -1219,7 +1219,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 09056,Briviesca,Burgos,6728,,,,,,
 09057,Bugedo,Burgos,193,,,,,,
 09058,Buniel,Burgos,632,,,,,,
-09059,Burgos,Burgos,177402,20,090155,20,090155,16,090047
+09059,Burgos,Burgos,177402,0,090155,0,090155,0,090155
 09060,Busto de Bureba,Burgos,140,,,,,,
 09061,Cabañes de Esgueva,Burgos,145,,,,,,
 09062,Cabezón de la Sierra,Burgos,33,,,,,,
@@ -1340,7 +1340,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 09216,Merindad de Valdeporres,Burgos,412,,,,,,
 09217,Merindad de Valdivielso,Burgos,384,,,,,,
 09218,Milagros,Burgos,409,,,77,090079,77,090079
-09219,Miranda de Ebro,Burgos,36622,68,010090,68,010090,57,010040
+09219,Miranda de Ebro,Burgos,36622,68,010090,0,090098,0,090098
 09220,Miraveche,Burgos,92,,,,,,
 09221,Modúbar de la Emparedada,Burgos,773,,,,,,
 09223,Monasterio de la Sierra,Burgos,38,,,,,,
@@ -1579,7 +1579,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 10034,Cabezabellosa,Cáceres,317,153,100015,153,100015,153,100015
 10035,Cabezuela del Valle,Cáceres,2049,,,,,,
 10036,Cabrero,Cáceres,353,,,,,131,100106
-10037,Cáceres,Cáceres,96651,12,100015,12,100015,10,100113
+10037,Cáceres,Cáceres,96651,0,100015,0,100015,0,100015
 10038,Cachorrilla,Cáceres,83,,,122,100041,122,100041
 10039,Cadalso,Cáceres,394,,,,,,
 10040,Calzadilla,Cáceres,450,,,53,100041,53,100041
@@ -1609,7 +1609,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 10064,Cilleros,Cáceres,1547,,,,,,
 10065,Collado de la Vera,Cáceres,274,,,,,,
 10066,Conquista de la Sierra,Cáceres,193,163,100015,88,100115,88,100115
-10067,Coria,Cáceres,12001,174,060129,14,100041,14,100041
+10067,Coria,Cáceres,12001,174,060129,0,100041,0,100041
 10068,Cuacos de Yuste,Cáceres,809,169,100015,169,100015,169,100015
 10069,La Cumbre,Cáceres,815,154,100015,154,100015,154,100015
 10070,Deleitosa,Cáceres,681,,,,,,
@@ -1672,7 +1672,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 10128,Moraleja,Cáceres,6562,,,75,100041,75,100041
 10129,Morcillo,Cáceres,378,,,48,100041,48,100041
 10130,Navaconcejo,Cáceres,2037,,,,,,
-10131,Navalmoral de la Mata,Cáceres,17352,,,173,100041,116,450089
+10131,Navalmoral de la Mata,Cáceres,17352,,,0,100054,0,100054
 10132,Navalvillar de Ibor,Cáceres,374,,,,,,
 10133,Navas del Madroño,Cáceres,1254,86,100015,86,100015,86,100015
 10134,Navezuelas,Cáceres,668,,,,,,
@@ -1689,7 +1689,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 10145,Piedras Albas,Cáceres,125,,,106,100041,106,100041
 10146,Pinofranqueado,Cáceres,1783,,,91,100041,91,100041
 10147,Piornal,Cáceres,1443,,,,,146,100106
-10148,Plasencia,Cáceres,40132,133,100015,103,100041,7,100106
+10148,Plasencia,Cáceres,40132,133,100015,0,100067,0,100067
 10149,Plasenzuela,Cáceres,536,78,100015,78,100015,78,100015
 10150,Portaje,Cáceres,379,,,109,100041,109,100041
 10151,Portezuelo,Cáceres,196,,,68,100041,68,100041
@@ -1769,44 +1769,44 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 11001,Alcalá de los Gazules,Cádiz,5230,,,,,,
 11002,Alcalá del Valle,Cádiz,4864,,,,,,
 11003,Algar,Cádiz,1452,,,,,,
-11004,Algeciras,Cádiz,126589,69,110259,69,110259,33,110282
+11004,Algeciras,Cádiz,126589,0,110259,0,110259,0,110259
 11005,Algodonales,Cádiz,5425,,,,,,
 11006,Arcos de la Frontera,Cádiz,31267,102,110110,102,110110,102,110110
 11007,Barbate,Cádiz,22635,104,110327,89,110213,89,110213
-11008,Los Barrios,Cádiz,24449,124,110259,124,110259,64,110282
+11008,Los Barrios,Cádiz,24449,124,110259,124,110259,0,110282
 11009,Benaocaz,Cádiz,742,,,,,,
 11010,Bornos,Cádiz,7510,,,,,,
 11011,El Bosque,Cádiz,2242,,,,,,
-11012,Cádiz,Cádiz,109950,13,110051,13,110051,6,110048
+11012,Cádiz,Cádiz,109950,0,110327,0,110327,0,110327
 11013,Castellar de la Frontera,Cádiz,2984,115,110259,107,110316,85,110282
 11014,Conil de la Frontera,Cádiz,24102,73,110327,48,110213,48,110213
-11015,Chiclana de la Frontera,Cádiz,90864,39,110327,39,110327,3,110260
+11015,Chiclana de la Frontera,Cádiz,90864,39,110327,39,110327,0,110248
 11016,Chipiona,Cádiz,20076,99,110327,39,110223,39,110223
 11017,Espera,Cádiz,3755,,,,,,
 11018,El Gastor,Cádiz,1675,,,,,,
 11019,Grazalema,Cádiz,1977,,,,,,
-11020,Jerez de la Frontera,Cádiz,213634,45,110110,45,110110,30,110239
+11020,Jerez de la Frontera,Cádiz,213634,0,110110,0,110110,0,110110
 11021,Jimena de la Frontera,Cádiz,6719,140,110259,129,110316,110,110282
-11022,La Línea de la Concepción,Cádiz,64499,149,110259,112,110316,74,110282
+11022,La Línea de la Concepción,Cádiz,64499,149,110259,0,110316,0,110316
 11023,Medina Sidonia,Cádiz,11838,39,110184,39,110184,39,110184
 11024,Olvera,Cádiz,7842,,,,,,
 11025,Paterna de Rivera,Cádiz,5539,,,,,,
 11026,Prado del Rey,Cádiz,5692,,,,,,
-11027,El Puerto de Santa María,Cádiz,89983,22,110162,22,110162,22,110162
-11028,Puerto Real,Cádiz,42527,14,110184,14,110184,14,110184
+11027,El Puerto de Santa María,Cádiz,89983,0,110162,0,110162,0,110162
+11028,Puerto Real,Cádiz,42527,0,110184,0,110184,0,110184
 11029,Puerto Serrano,Cádiz,6877,,,,,,
 11030,Rota,Cádiz,29289,40,110162,40,110162,40,110162
-11031,San Fernando,Cádiz,93338,36,110327,15,110305,15,110305
-11032,Sanlúcar de Barrameda,Cádiz,70012,77,110110,15,110223,15,110223
+11031,San Fernando,Cádiz,93338,36,110327,0,110305,0,110305
+11032,Sanlúcar de Barrameda,Cádiz,70012,77,110110,0,110223,0,110223
 11033,San Roque,Cádiz,34310,106,110259,78,110316,35,110282
 11034,Setenil de las Bodegas,Cádiz,2634,,,,,,
 11035,Tarifa,Cádiz,18613,66,110259,66,110259,66,110259
 11036,Torre Alháquime,Cádiz,781,,,,,,
 11037,Trebujena,Cádiz,6999,,,,,,
 11038,Ubrique,Cádiz,16615,,,,,,
-11039,Vejer de la Frontera,Cádiz,13131,92,110327,77,110213,77,110213
+11039,Vejer de la Frontera,Cádiz,13131,92,110327,0,110213,0,110213
 11040,Villaluenga del Rosario,Cádiz,463,,,,,,
-11041,Villamartín,Cádiz,12184,,,6,110218,6,110218
+11041,Villamartín,Cádiz,12184,,,0,110218,0,110218
 11042,Zahara,Cádiz,1344,,,,,,
 11901,Benalup-Casas Viejas,Cádiz,7236,,,,,,
 11902,San José del Valle,Cádiz,4419,,,,,,
@@ -1846,7 +1846,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 12037,Castell de Cabres,Castelló,21,,,,,,
 12038,Castellfort,Castelló,178,,,,,,
 12039,Castellnovo,Castelló,912,,,,,,
-12040,Castelló de la Plana,Castelló,183711,17,120017,11,120043,2,120159
+12040,Castelló de la Plana,Castelló,183711,0,120017,0,120017,0,120017
 12041,Castillo de Villamalefa,Castelló,110,,,,,,
 12042,Catí,Castelló,719,,,,,,
 12043,Caudiel,Castelló,735,155,460018,155,460018,155,460018
@@ -1936,10 +1936,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 12132,Vilanova d'Alcolea,Castelló,584,133,460060,133,460060,133,460060
 12133,Villanueva de Viver,Castelló,94,,,,,,
 12134,Vilar de Canes,Castelló,156,,,,,,
-12135,Vila-real,Castelló,53623,50,120017,15,120136,15,120136
+12135,Vila-real,Castelló,53623,50,120017,0,120136,0,120136
 12136,la Vilavella,Castelló,3054,75,120017,30,120136,30,120136
 12137,Villores,Castelló,51,,,,,,
-12138,Vinaròs,Castelló,30529,122,120017,17,120115,17,120115
+12138,Vinaròs,Castelló,30529,122,120017,0,120115,0,120115
 12139,Vistabella del Maestrat,Castelló,354,,,,,,
 12140,Viver,Castelló,1729,,,,,,
 12141,Zorita del Maestrazgo,Castelló,118,,,,,,
@@ -1950,7 +1950,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 13002,Agudo,Ciudad Real,1605,,,,,,
 13003,Alamillo,Ciudad Real,450,,,,,,
 13004,Albaladejo,Ciudad Real,984,,,,,,
-13005,Alcázar de San Juan,Ciudad Real,31914,177,280035,94,020147,94,020147
+13005,Alcázar de San Juan,Ciudad Real,31914,177,280035,0,130052,0,130052
 13006,Alcoba,Ciudad Real,558,,,,,,
 13007,Alcolea de Calatrava,Ciudad Real,1360,,,,,,
 13008,Alcubillas,Ciudad Real,417,,,57,130087,57,130087
@@ -1979,7 +1979,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 13031,Carrión de Calatrava,Ciudad Real,3239,37,130127,37,130127,37,130127
 13032,Carrizosa,Ciudad Real,1097,,,76,130065,76,130065
 13033,Castellar de Santiago,Ciudad Real,1714,,,,,,
-13034,Ciudad Real,Ciudad Real,76217,24,130127,24,130127,21,130049
+13034,Ciudad Real,Ciudad Real,76217,0,130127,0,130127,0,130127
 13035,Corral de Calatrava,Ciudad Real,1154,148,280246,148,280246,148,280246
 13036,Los Cortijos,Ciudad Real,848,,,,,,
 13037,Cózar,Ciudad Real,903,165,130127,165,130127,165,130127
@@ -1998,7 +1998,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 13050,Las Labores,Ciudad Real,550,,,,,,
 13051,Luciana,Ciudad Real,350,,,,,,
 13052,Malagón,Ciudad Real,7827,101,130127,101,130127,101,130127
-13053,Manzanares,Ciudad Real,17728,,,14,130065,14,130065
+13053,Manzanares,Ciudad Real,17728,,,0,130065,0,130065
 13054,Membrilla,Ciudad Real,5793,,,43,130065,43,130065
 13055,Mestanza,Ciudad Real,634,,,,,,
 13056,Miguelturra,Ciudad Real,15924,61,130127,61,130127,61,130127
@@ -2016,7 +2016,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 13068,Puebla de Don Rodrigo,Ciudad Real,1148,,,,,,
 13069,Puebla del Príncipe,Ciudad Real,648,,,,,,
 13070,Puerto Lápice,Ciudad Real,824,166,280035,126,130065,126,130065
-13071,Puertollano,Ciudad Real,45565,57,130127,57,130127,57,130127
+13071,Puertollano,Ciudad Real,45565,57,130127,0,130071,0,130071
 13072,Retuerta del Bullaque,Ciudad Real,854,,,,,,
 13073,Saceruela,Ciudad Real,520,,,,,,
 13074,San Carlos del Valle,Ciudad Real,1055,,,,,,
@@ -2027,12 +2027,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 13079,La Solana,Ciudad Real,15242,,,57,130065,57,130065
 13080,Solana del Pino,Ciudad Real,333,,,,,,
 13081,Terrinches,Ciudad Real,574,,,,,,
-13082,Tomelloso,Ciudad Real,37060,,,130,130052,130,130052
+13082,Tomelloso,Ciudad Real,37060,,,0,130128,0,130128
 13083,Torralba de Calatrava,Ciudad Real,3068,50,130127,50,130127,50,130127
 13084,Torre de Juan Abad,Ciudad Real,928,,,,,,
 13085,Torrenueva,Ciudad Real,2645,,,,,,
 13086,Valdemanco del Esteras,Ciudad Real,157,,,,,,
-13087,Valdepeñas,Ciudad Real,30782,,,,,,
+13087,Valdepeñas,Ciudad Real,30782,,,0,130087,0,130087
 13088,Valenzuela de Calatrava,Ciudad Real,638,,,,,,
 13089,Villahermosa,Ciudad Real,1712,,,110,130065,110,130065
 13090,Villamanrique,Ciudad Real,1050,,,,,,
@@ -2060,7 +2060,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 14010,Benamejí,Córdoba,4895,161,290022,106,290154,106,290154
 14011,Los Blázquez,Córdoba,619,,,,,,
 14012,Bujalance,Córdoba,7065,82,140230,82,140230,82,140230
-14013,Cabra,Córdoba,19995,,,12,140116,12,140116
+14013,Cabra,Córdoba,19995,,,0,140116,0,140116
 14014,Cañete de las Torres,Córdoba,2766,88,140230,88,140230,88,140230
 14015,Carcabuey,Córdoba,2302,,,,,,
 14016,Cardeña,Córdoba,1387,,,,,,
@@ -2068,7 +2068,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 14018,El Carpio,Córdoba,4327,95,140230,95,140230,95,140230
 14019,Castro del Río,Córdoba,7597,73,140076,73,140076,73,140076
 14020,Conquista,Córdoba,367,,,,,,
-14021,Córdoba,Córdoba,323262,15,140076,15,140076,15,140076
+14021,Córdoba,Córdoba,323262,0,140230,0,140230,0,140230
 14022,Doña Mencía,Córdoba,4465,,,168,290154,168,290154
 14023,Dos Torres,Córdoba,2340,,,,,,
 14024,Encinas Reales,Córdoba,2208,166,290022,111,290154,111,290154
@@ -2085,11 +2085,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 14035,Hinojosa del Duque,Córdoba,6534,,,,,,
 14036,Hornachuelos,Córdoba,4383,,,,,,
 14037,Iznájar,Córdoba,3676,,,,,,
-14038,Lucena,Córdoba,43408,121,290022,121,290022,121,290022
+14038,Lucena,Córdoba,43408,121,290022,121,290022,0,140252
 14039,Luque,Córdoba,2796,,,,,,
 14040,Montalbán de Córdoba,Córdoba,4401,,,,,,
 14041,Montemayor,Córdoba,3859,57,140076,57,140076,57,140076
-14042,Montilla,Córdoba,22305,,,,,,
+14042,Montilla,Córdoba,22305,,,0,140195,0,140195
 14043,Montoro,Córdoba,9004,115,140230,115,140230,115,140230
 14044,Monturque,Córdoba,1929,,,,,,
 14045,Moriles,Córdoba,3667,,,,,,
@@ -2099,11 +2099,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 14049,Palma del Río,Córdoba,20438,,,,,,
 14050,Pedro Abad,Córdoba,2794,101,140230,101,140230,101,140230
 14051,Pedroche,Córdoba,1441,,,,,,
-14052,Peñarroya-Pueblonuevo,Córdoba,10244,,,11,140229,11,140229
+14052,Peñarroya-Pueblonuevo,Córdoba,10244,,,0,140229,0,140229
 14053,Posadas,Córdoba,7273,61,140230,61,140230,61,140230
-14054,Pozoblanco,Córdoba,16931,,,9,140121,9,140121
+14054,Pozoblanco,Córdoba,16931,,,0,140121,0,140121
 14055,Priego de Córdoba,Córdoba,21764,129,180016,114,230184,114,230184
-14056,Puente Genil,Córdoba,29963,,,,,,
+14056,Puente Genil,Córdoba,29963,,,0,140218,0,140218
 14057,La Rambla,Córdoba,7412,,,,,,
 14058,Rute,Córdoba,9824,,,,,,
 14059,San Sebastián de los Ballesteros,Córdoba,865,59,140230,59,140230,59,140230
@@ -2147,19 +2147,19 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 15020,Carnota,A Coruña,3780,,,42,150341,42,150341
 15021,Carral,A Coruña,6840,66,150011,66,150011,66,150011
 15022,Cedeira,A Coruña,6547,156,150011,156,150011,106,150177
-15023,Cee,A Coruña,7731,,,9,150341,9,150341
+15023,Cee,A Coruña,7731,,,0,150341,0,150341
 15024,Cerceda,A Coruña,5116,76,150011,76,150011,76,150011
 15025,Cerdido,A Coruña,1006,,,,,,
 15027,Coirós,A Coruña,1945,93,150011,93,150011,67,150063
 15028,Corcubión,A Coruña,1659,,,14,150341,14,150341
 15029,Coristanco,A Coruña,5710,72,150011,72,150011,72,150011
-15030,A Coruña,A Coruña,251543,23,150011,23,150011,19,150354
+15030,A Coruña,A Coruña,251543,0,150011,0,150011,0,150011
 15031,Culleredo,A Coruña,31254,44,150011,44,150011,44,150063
 15032,Curtis,A Coruña,4242,144,150200,144,150200,144,150200
 15033,Dodro,A Coruña,2589,60,150200,60,150200,60,150200
 15034,Dumbría,A Coruña,2716,,,40,150341,40,150341
 15035,Fene,A Coruña,12467,52,150011,52,150011,22,150177
-15036,Ferrol,A Coruña,64367,67,150011,33,150130,19,150177
+15036,Ferrol,A Coruña,64367,67,150011,0,150130,0,150130
 15037,Fisterra,A Coruña,4666,168,150200,33,150341,33,150341
 15038,Frades,A Coruña,2117,131,150200,131,150200,131,150200
 15039,Irixoa,A Coruña,1343,,,,,,
@@ -2195,12 +2195,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 15070,As Pontes de García Rodríguez,A Coruña,9796,119,150011,119,150011,64,150177
 15071,Porto do Son,A Coruña,9060,81,150200,35,150336,35,150336
 15072,Rianxo,A Coruña,10758,95,150200,95,150200,95,150200
-15073,Ribeira,A Coruña,27102,98,150200,28,150336,28,150336
+15073,Ribeira,A Coruña,27102,98,150200,0,150336,0,150336
 15074,Rois,A Coruña,4358,54,150200,54,150200,54,150200
 15075,Sada,A Coruña,17421,50,150011,50,150011,50,150011
 15076,San Sadurniño,A Coruña,2738,164,150200,164,150200,164,150200
 15077,Santa Comba,A Coruña,9442,125,150200,125,150200,125,150200
-15078,Santiago de Compostela,A Coruña,100965,27,150200,27,150200,11,150365
+15078,Santiago de Compostela,A Coruña,100965,0,150200,0,150200,0,150200
 15079,Santiso,A Coruña,1430,177,150200,177,150200,177,150200
 15080,Sobrado,A Coruña,1830,,,,,,
 15081,As Somozas,A Coruña,1042,,,,,,
@@ -2286,7 +2286,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 16072,Castillo de Garcimuñoz,Cuenca,129,,,,,,
 16073,Cervera del Llano,Cuenca,220,,,,,,
 16074,La Cierva,Cuenca,39,,,,,,
-16078,Cuenca,Cuenca,53600,,,,,15,160053
+16078,Cuenca,Cuenca,53600,0,160014,0,160014,0,160014
 16079,Cueva del Hierro,Cuenca,27,,,,,,
 16081,Chumillas,Cuenca,49,,,,,,
 16082,Enguídanos,Cuenca,274,,,,,,
@@ -2470,14 +2470,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 17012,Avinyonet de Puigventós,Girona,1671,104,170010,46,170123,44,170031
 17013,Begur,Girona,4291,92,170010,48,170195,48,170195
 17014,La Vajol,Girona,112,,,,,,
-17015,Banyoles,Girona,20865,47,170010,6,170097,6,170097
+17015,Banyoles,Girona,20865,47,170010,0,170097,0,170097
 17016,Bàscara,Girona,1049,27,170010,27,170010,27,170010
 17018,Bellcaire d'Empordà,Girona,723,81,170010,81,170010,77,170031
 17019,Besalú,Girona,2592,89,170010,29,170097,29,170097
 17020,Bescanó,Girona,5088,38,170010,37,170301,37,170301
 17021,Beuda,Girona,203,170,170010,170,170010,170,170010
 17022,La Bisbal d'Empordà,Girona,11757,59,170010,59,170010,59,170010
-17023,Blanes,Girona,42699,65,170059,35,170237,35,170237
+17023,Blanes,Girona,42699,65,170059,0,170237,0,170237
 17024,Bolvir,Girona,493,,,20,170334,20,170334
 17025,Bordils,Girona,1841,46,170010,46,170010,46,170010
 17026,Borrassà,Girona,804,144,170010,71,170123,46,170031
@@ -2490,7 +2490,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 17033,Caldes de Malavella,Girona,8673,44,170010,40,170301,39,170062
 17034,Calonge i Sant Antoni,Girona,12335,117,170010,40,170195,40,170195
 17035,Camós,Girona,701,69,170010,29,170097,29,170097
-17036,Campdevànol,Girona,3241,134,080291,4,170118,4,170118
+17036,Campdevànol,Girona,3241,134,080291,0,170118,0,170118
 17037,Campelles,Girona,163,,,94,170118,94,170118
 17038,Campllong,Girona,534,74,170010,46,170301,46,170301
 17039,Camprodon,Girona,2570,110,170010,64,170176,64,170176
@@ -2517,7 +2517,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 17063,Espinelves,Girona,261,142,081347,72,081108,72,081108
 17064,Espolla,Girona,398,149,170059,149,170059,149,170059
 17065,Esponellà,Girona,446,,,60,170097,60,170097
-17066,Figueres,Girona,49689,52,170010,13,170123,7,170031
+17066,Figueres,Girona,49689,52,170010,0,170123,0,170123
 17067,Flaçà,Girona,1175,44,170010,44,170010,31,170062
 17068,Foixà,Girona,298,88,170010,88,170010,88,170010
 17069,Fontanals de Cerdanya,Girona,516,,,70,170334,70,170334
@@ -2529,7 +2529,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 17076,Garrigoles,Girona,182,140,170010,140,170010,140,170010
 17077,Garriguella,Girona,989,89,170010,89,170010,89,170010
 17078,Ger,Girona,501,,,25,170334,25,170334
-17079,Girona,Girona,108666,14,170010,14,170010,4,170062
+17079,Girona,Girona,108666,0,170010,0,170010,0,170010
 17080,Gombrèn,Girona,206,,,21,170118,21,170118
 17081,Gualta,Girona,438,,,,,,
 17082,Guils de Cerdanya,Girona,557,,,,,,
@@ -2561,11 +2561,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 17110,Mont-ras,Girona,1690,121,170010,29,170195,29,170195
 17111,Navata,Girona,1507,100,170010,44,170123,40,170031
 17112,Ogassa,Girona,222,,,84,170118,84,170118
-17114,Olot,Girona,39519,64,170010,9,170176,9,170176
+17114,Olot,Girona,39519,64,170010,0,170176,0,170176
 17115,Ordis,Girona,409,140,170010,79,170123,54,170031
 17116,Osor,Girona,430,76,170010,76,170010,76,170010
 17117,Palafrugell,Girona,24543,114,080752,33,170195,33,170195
-17118,Palamós,Girona,18933,122,170010,6,170195,6,170195
+17118,Palamós,Girona,18933,122,170010,0,170195,0,170195
 17119,Palau de Santa Eulàlia,Girona,124,,,,,,
 17120,Palau-saverdera,Girona,1535,69,170010,64,170123,64,170123
 17121,Palau-sator,Girona,311,69,170010,69,170010,69,170010
@@ -2585,7 +2585,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 17138,Portbou,Girona,1131,93,170010,64,170123,64,170123
 17139,Les Preses,Girona,1948,126,170010,13,170176,13,170176
 17140,El Port de la Selva,Girona,1053,108,170010,96,170123,71,170031
-17141,Puigcerdà,Girona,10035,,,12,170334,12,170334
+17141,Puigcerdà,Girona,10035,,,0,170334,0,170334
 17142,Quart,Girona,4165,44,170010,44,170010,30,170062
 17143,Rabós,Girona,232,165,170059,165,170059,165,170059
 17144,Regencós,Girona,275,84,170010,52,170195,52,170195
@@ -2599,7 +2599,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 17152,Roses,Girona,20365,82,170010,61,170123,46,170031
 17153,Rupià,Girona,325,93,170010,93,170010,93,170010
 17154,Sales de Llierca,Girona,164,,,,,,
-17155,Salt,Girona,34491,33,170010,8,170301,8,170301
+17155,Salt,Girona,34491,33,170010,0,170301,0,170301
 17157,Sant Andreu Salou,Girona,161,125,170010,65,170301,65,170301
 17158,Sant Climent Sescebes,Girona,690,143,170059,143,170059,143,170059
 17159,Sant Feliu de Buixalleu,Girona,882,,,,,,
@@ -2696,7 +2696,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 18020,Arenas del Rey,Granada,608,,,,,,
 18021,Armilla,Granada,25300,14,180150,14,180150,14,180150
 18022,Atarfe,Granada,20914,44,180016,44,180016,44,180016
-18023,Baza,Granada,20587,,,,,,
+18023,Baza,Granada,20587,,,0,180093,0,180093
 18024,Beas de Granada,Granada,1007,61,180016,61,180016,61,180016
 18025,Beas de Guadix,Granada,318,,,,,,
 18027,Benalúa,Granada,3381,,,,,,
@@ -2749,9 +2749,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 18084,Gójar,Granada,6371,37,180150,37,180150,37,180150
 18085,Gor,Granada,766,,,,,,
 18086,Gorafe,Granada,368,,,,,,
-18087,Granada,Granada,233975,17,180016,15,180191,9,180055
+18087,Granada,Granada,233975,0,180016,0,180016,0,180016
 18088,Guadahortuna,Granada,1829,,,,,,
-18089,Guadix,Granada,18881,,,,,,
+18089,Guadix,Granada,18881,,,0,180122,0,180122
 18093,Gualchos,Granada,5284,97,180107,97,180107,97,180107
 18094,Güéjar Sierra,Granada,2915,119,180016,119,180016,59,180146
 18095,Güevéjar,Granada,2723,62,180016,62,180016,62,180016
@@ -2777,7 +2777,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 18119,Lecrín,Granada,2244,52,180016,52,180016,52,180016
 18120,Lentegí,Granada,368,,,,,,
 18121,Lobras,Granada,139,,,,,,
-18122,Loja,Granada,20951,,,12,180133,12,180133
+18122,Loja,Granada,20951,,,0,180133,0,180133
 18123,Lugros,Granada,306,,,,,,
 18124,Lújar,Granada,491,,,,,,
 18126,La Malahá,Granada,1928,77,180016,77,180016,77,180016
@@ -2790,7 +2790,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 18136,Montejícar,Granada,1989,,,,,,
 18137,Montillana,Granada,1054,,,,,,
 18138,Moraleda de Zafayona,Granada,3214,77,180016,77,180016,77,180016
-18140,Motril,Granada,59862,,,,,,
+18140,Motril,Granada,59862,0,180107,0,180107,0,180107
 18141,Murtas,Granada,431,,,,,,
 18143,Nigüelas,Granada,1229,85,180150,85,180150,85,180150
 18144,Nívar,Granada,1093,79,180016,79,180016,79,180016
@@ -2957,7 +2957,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 19126,Galápagos,Guadalajara,2802,,,,,,
 19127,Galve de Sorbe,Guadalajara,97,,,,,,
 19129,Gascueña de Bornova,Guadalajara,22,,,,,,
-19130,Guadalajara,Guadalajara,92834,23,190019,23,190019,6,190045
+19130,Guadalajara,Guadalajara,92834,0,190019,0,190019,0,190019
 19132,Henche,Guadalajara,73,,,,,,
 19133,Heras de Ayuso,Guadalajara,248,,,,,,
 19134,Herrería,Guadalajara,13,,,,,,
@@ -3174,7 +3174,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 20033,Elgeta,Gipuzkoa,1133,99,480176,70,200245,70,200245
 20034,Eskoriatza,Gipuzkoa,4215,72,010090,30,200185,30,200185
 20035,Ezkio-Itsaso,Gipuzkoa,604,95,200261,49,200245,49,200245
-20036,Hondarribia,Gipuzkoa,16788,61,200261,16,200163,16,200163
+20036,Hondarribia,Gipuzkoa,16788,61,200261,0,200163,0,200163
 20037,Gaintza,Gipuzkoa,122,96,200261,76,200245,76,200245
 20038,Gabiria,Gipuzkoa,519,152,200261,82,200245,82,200245
 20039,Getaria,Gipuzkoa,2887,53,200261,53,200261,53,200261
@@ -3193,7 +3193,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 20052,Legorreta,Gipuzkoa,1457,70,200261,61,200245,45,200219
 20053,Lezo,Gipuzkoa,6184,34,200261,34,200261,34,200261
 20054,Lizartza,Gipuzkoa,672,108,200261,108,200261,33,200219
-20055,Arrasate,Gipuzkoa,22450,72,010090,9,200185,9,200185
+20055,Arrasate,Gipuzkoa,22450,72,010090,0,200185,0,200185
 20056,Mutriku,Gipuzkoa,5238,102,480209,46,200258,46,200258
 20057,Mutiloa,Gipuzkoa,261,117,200261,117,200261,102,200219
 20058,Olaberria,Gipuzkoa,938,129,200261,129,200261,129,200261
@@ -3207,9 +3207,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 20066,Errezil,Gipuzkoa,588,,,,,,
 20067,Errenteria,Gipuzkoa,39363,39,200261,39,200261,39,200261
 20068,Leintz-Gatzaga,Gipuzkoa,205,90,010090,77,200185,77,200185
-20069,Donostia,Gipuzkoa,189866,23,200261,23,200261,23,200261
+20069,Donostia,Gipuzkoa,189866,0,200261,0,200261,0,200261
 20070,Segura,Gipuzkoa,1496,96,200261,96,200261,81,200219
-20071,Tolosa,Gipuzkoa,20070,52,200261,52,200261,9,200219
+20071,Tolosa,Gipuzkoa,20070,52,200261,52,200261,0,200219
 20072,Urnieta,Gipuzkoa,6327,40,200261,40,200261,40,200261
 20073,Usurbil,Gipuzkoa,6488,41,200261,41,200261,41,200261
 20074,Bergara,Gipuzkoa,14404,83,480176,36,200185,36,200185
@@ -3218,9 +3218,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 20077,Urretxu,Gipuzkoa,6730,93,200261,24,200245,24,200245
 20078,Zaldibia,Gipuzkoa,1761,91,200261,71,200245,61,200219
 20079,Zarautz,Gipuzkoa,23496,49,200261,49,200261,49,200261
-20080,Zumarraga,Gipuzkoa,9678,93,200261,5,200245,5,200245
+20080,Zumarraga,Gipuzkoa,9678,93,200261,0,200245,0,200245
 20081,Zumaia,Gipuzkoa,10160,62,200261,62,200261,62,200261
-20901,Mendaro,Gipuzkoa,2028,103,480176,3,200258,3,200258
+20901,Mendaro,Gipuzkoa,2028,103,480176,0,200258,0,200258
 20902,Lasarte-Oria,Gipuzkoa,19435,32,200261,32,200261,32,200261
 20903,Astigarraga,Gipuzkoa,7812,18,200261,18,200261,18,200261
 20904,Baliarrain,Gipuzkoa,152,,,,,66,200219
@@ -3267,15 +3267,15 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 21038,Higuera de la Sierra,Huelva,1292,,,,,,
 21039,Hinojales,Huelva,314,,,,,,
 21040,Hinojos,Huelva,4097,,,,,,
-21041,Huelva,Huelva,143215,22,210123,22,210123,8,210084
+21041,Huelva,Huelva,143215,0,210123,0,210123,0,210123
 21042,Isla Cristina,Huelva,21525,121,210123,71,210148,71,210148
 21043,Jabugo,Huelva,2183,,,,,,
-21044,Lepe,Huelva,29677,92,210123,14,210148,14,210148
+21044,Lepe,Huelva,29677,92,210123,0,210148,0,210148
 21045,Linares de la Sierra,Huelva,279,,,,,,
 21046,Lucena del Puerto,Huelva,3390,95,210123,95,210123,95,210123
 21047,Manzanilla,Huelva,2214,,,,,,
 21048,Los Marines,Huelva,436,,,,,,
-21049,Minas de Riotinto,Huelva,3698,,,6,210097,6,210097
+21049,Minas de Riotinto,Huelva,3698,,,0,210097,0,210097
 21050,Moguer,Huelva,24083,59,210123,59,210123,59,210123
 21051,La Nava,Huelva,271,,,,,,
 21052,Nerva,Huelva,5087,,,,,,
@@ -3346,7 +3346,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 22045,Baldellou,Huesca,81,,,,,,
 22046,Ballobar,Huesca,862,,,,,,
 22047,Banastás,Huesca,335,,,,,,
-22048,Barbastro,Huesca,17807,156,250019,86,220015,86,220015
+22048,Barbastro,Huesca,17807,156,250019,0,220054,0,220054
 22049,Barbués,Huesca,97,,,52,220015,52,220015
 22050,Barbuñales,Huesca,93,,,,,,
 22051,Bárcabo,Huesca,116,,,,,,
@@ -3405,12 +3405,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 22119,Gurrea de Gállego,Huesca,1430,,,,,,
 22122,Hoz de Jaca,Huesca,81,,,,,,
 22124,Huerto,Huesca,216,,,68,220015,68,220015
-22125,Huesca,Huesca,55454,135,500021,16,220015,11,220041
+22125,Huesca,Huesca,55454,135,500021,0,220015,0,220015
 22126,Ibieca,Huesca,110,,,,,,
 22127,Igriés,Huesca,727,,,,,,
 22128,Ilche,Huesca,183,,,,,,
 22129,Isábena,Huesca,234,,,,,,
-22130,Jaca,Huesca,14024,,,,,,
+22130,Jaca,Huesca,14024,,,0,220089,0,220089
 22131,Jasa,Huesca,90,,,,,,
 22133,Labuerda,Huesca,179,,,106,220054,106,220054
 22135,Laluenga,Huesca,198,,,,,,
@@ -3510,10 +3510,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 22908,Hoz y Costean,Huesca,225,,,,,,
 22909,Vencillón,Huesca,402,72,250019,72,250019,72,250019
 23001,Albanchez de Mágina,Jaén,903,114,230011,114,230011,114,230011
-23002,Alcalá la Real,Jaén,21496,99,180016,99,180016,99,180016
-23003,Alcaudete,Jaén,10129,95,180016,6,230173,6,230173
+23002,Alcalá la Real,Jaén,21496,99,180016,0,230184,0,230184
+23003,Alcaudete,Jaén,10129,95,180016,0,230173,0,230173
 23004,Aldeaquemada,Jaén,446,,,,,,
-23005,Andújar,Jaén,35610,116,230011,116,230011,116,230011
+23005,Andújar,Jaén,35610,116,230011,0,230145,0,230145
 23006,Arjona,Jaén,5330,176,230011,176,230011,176,230011
 23007,Arjonilla,Jaén,3520,157,230011,157,230011,157,230011
 23008,Arquillos,Jaén,1682,,,79,230098,79,230098
@@ -3533,7 +3533,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 23025,Castellar,Jaén,3147,,,118,230098,118,230098
 23026,Castillo de Locubín,Jaén,3805,,,,,,
 23027,Cazalilla,Jaén,762,64,230011,64,230011,64,230011
-23028,Cazorla,Jaén,6930,,,14,230206,14,230206
+23028,Cazorla,Jaén,6930,,,0,230206,0,230206
 23029,Chiclana de Segura,Jaén,859,,,152,230098,152,230098
 23030,Chilluévar,Jaén,1309,,,137,230098,137,230098
 23031,Escañuela,Jaén,902,102,230011,102,230011,102,230011
@@ -3554,12 +3554,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 23047,La Iruela,Jaén,1819,,,,,,
 23048,Iznatoraf,Jaén,874,,,,,,
 23049,Jabalquinto,Jaén,1939,126,230011,76,230079,76,230079
-23050,Jaén,Jaén,112235,8,230011,8,230011,4,230063
+23050,Jaén,Jaén,112235,0,230011,0,230011,0,230011
 23051,Jamilena,Jaén,3319,79,230011,79,230011,79,230011
 23052,Jimena,Jaén,1219,,,,,,
 23053,Jódar,Jaén,11285,,,,,,
 23054,Larva,Jaén,435,,,,,,
-23055,Linares,Jaén,55633,106,230011,12,230079,12,230079
+23055,Linares,Jaén,55633,106,230011,0,230079,0,230079
 23056,Lopera,Jaén,3502,,,,,,
 23057,Lupión,Jaén,801,,,,,,
 23058,Mancha Real,Jaén,11481,83,230011,83,230011,83,230011
@@ -3574,7 +3574,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 23067,Pegalajar,Jaén,2830,75,230011,75,230011,75,230011
 23069,Porcuna,Jaén,5936,107,140230,107,140230,107,140230
 23070,Pozo Alcón,Jaén,4514,,,,,,
-23071,Puente de Génave,Jaén,2191,,,133,230162,133,230162
+23071,Puente de Génave,Jaén,2191,,,0,230162,0,230162
 23072,La Puerta de Segura,Jaén,2223,,,101,230162,101,230162
 23073,Quesada,Jaén,4901,,,,,,
 23074,Rus,Jaén,3386,176,230011,66,230098,66,230098
@@ -3592,7 +3592,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 23088,Torreperogil,Jaén,7107,,,51,230098,51,230098
 23090,Torres,Jaén,1328,,,,,,
 23091,Torres de Albánchez,Jaén,735,,,140,230162,140,230162
-23092,Úbeda,Jaén,33588,115,230011,115,230011,115,230011
+23092,Úbeda,Jaén,33588,115,230011,0,230098,0,230098
 23093,Valdepeñas de Jaén,Jaén,3469,168,230011,168,230011,78,230063
 23094,Vilches,Jaén,4191,111,230011,111,230011,111,230011
 23095,Villacarrillo,Jaén,10342,160,230011,95,230098,95,230098
@@ -3687,7 +3687,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 24086,Joarilla de las Matas,León,241,,,,,,
 24087,Laguna Dalga,León,608,,,,,,
 24088,Laguna de Negrillos,León,1056,,,,,,
-24089,León,León,123446,33,240016,33,240016,6,240055
+24089,León,León,123446,0,240016,0,240016,0,240016
 24090,Lucillo,León,360,,,,,,
 24091,Luyego,León,537,,,,,,
 24092,Llamas de la Ribera,León,783,,,,,,
@@ -3712,7 +3712,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 24112,Peranzanes,León,276,,,,,,
 24113,Pobladura de Pelayo García,León,364,,,,,,
 24114,La Pola de Gordón,León,2833,74,240016,74,240016,74,240016
-24115,Ponferrada,León,63186,171,240016,148,270109,12,240140
+24115,Ponferrada,León,63186,171,240016,0,240135,0,240135
 24116,Posada de Valdeón,León,392,,,,,,
 24117,Pozuelo del Páramo,León,374,,,102,490065,102,490065
 24118,Prado de la Guzpeña,León,108,,,,,,
@@ -3734,7 +3734,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 24137,Sabero,León,1020,,,,,,
 24139,Sahagún,León,2380,115,240016,89,340014,89,340014
 24141,San Adrián del Valle,León,82,,,,,,
-24142,San Andrés del Rabanedo,León,29944,60,240016,60,240016,16,240188
+24142,San Andrés del Rabanedo,León,29944,60,240016,60,240016,0,240188
 24143,Sancedo,León,532,,,,,,
 24144,San Cristóbal de la Polantera,León,611,,,,,,
 24145,San Emiliano,León,585,,,,,,
@@ -3919,7 +3919,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 25115,Isona i Conca Dellà,Lleida,1038,,,63,250143,63,250143
 25118,Juncosa,Lleida,377,,,60,250061,60,250061
 25119,Juneda,Lleida,3453,70,250019,27,250061,27,250061
-25120,Lleida,Lleida,146266,25,250019,2,250061,2,250061
+25120,Lleida,Lleida,146266,0,250019,0,250019,0,250019
 25121,Les,Lleida,1036,,,,,67,250156
 25122,Linyola,Lleida,2762,158,250019,63,250024,63,250024
 25123,Lladorre,Lleida,246,,,,,,
@@ -3990,7 +3990,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 25200,Sarroca de Lleida,Lleida,383,54,250019,38,250024,38,250024
 25201,Sarroca de Bellera,Lleida,111,,,,,,
 25202,Senterada,Lleida,160,,,98,250143,98,250143
-25203,La Seu d'Urgell,Lleida,13009,,,7,250117,7,250117
+25203,La Seu d'Urgell,Lleida,13009,,,0,250117,0,250117
 25204,Seròs,Lleida,1954,72,250019,72,250019,72,250019
 25205,Sidamon,Lleida,760,71,250019,31,250061,31,250061
 25206,El Soleràs,Lleida,308,,,44,250061,44,250061
@@ -4018,12 +4018,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 25231,Torrelameu,Lleida,788,53,250019,53,250019,53,250019
 25232,Torres de Segre,Lleida,2317,82,250019,52,250061,52,250061
 25233,Torre-serona,Lleida,405,70,250019,26,250061,26,250061
-25234,Tremp,Lleida,6123,147,250019,5,250143,5,250143
+25234,Tremp,Lleida,6123,147,250019,0,250143,0,250143
 25238,Vallbona de les Monges,Lleida,223,,,,,,
 25239,Les Valls de Valira,Lleida,845,,,127,250117,127,250117
 25240,Vallfogona de Balaguer,Lleida,2009,92,250019,52,250061,52,250061
 25242,Verdú,Lleida,876,,,,,,
-25243,Vielha e Mijaran,Lleida,5865,,,,,1,250156
+25243,Vielha e Mijaran,Lleida,5865,,,,,0,250156
 25244,Vilagrassa,Lleida,627,114,250019,95,081885,95,081885
 25245,Vilaller,Lleida,496,178,250019,174,250143,68,250156
 25247,Vilamòs,Lleida,174,,,,,,
@@ -4083,7 +4083,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 26033,Briñas,La Rioja,191,120,010090,92,260048,92,260048
 26034,Briones,La Rioja,752,120,480078,99,260048,99,260048
 26035,Cabezón de Cameros,La Rioja,23,,,,,,
-26036,Calahorra,La Rioja,25367,96,260027,36,260099,36,260099
+26036,Calahorra,La Rioja,25367,96,260027,0,260099,0,260099
 26037,Camprovín,La Rioja,158,,,,,,
 26038,Canales de la Sierra,La Rioja,84,,,,,,
 26039,Canillas de Río Tuerto,La Rioja,43,,,,,,
@@ -4131,11 +4131,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 26081,Jalón de Cameros,La Rioja,23,,,,,,
 26082,Laguna de Cameros,La Rioja,109,,,,,,
 26083,Lagunilla del Jubera,La Rioja,385,,,,,,
-26084,Lardero,La Rioja,12060,155,260027,155,260027,155,260027
+26084,Lardero,La Rioja,12060,155,260027,155,260027,0,260109
 26086,Ledesma de la Cogolla,La Rioja,16,,,,,,
 26087,Leiva,La Rioja,235,,,,,,
 26088,Leza de Río Leza,La Rioja,40,,,,,,
-26089,Logroño,La Rioja,152150,25,260027,6,260048,6,260048
+26089,Logroño,La Rioja,152150,0,260027,0,260027,0,260027
 26091,Lumbreras de Cameros,La Rioja,144,,,111,420011,111,420011
 26092,Manjarrés,La Rioja,97,,,,,,
 26093,Mansilla de la Sierra,La Rioja,57,,,,,,
@@ -4249,10 +4249,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 27025,Xove,Lugo,3269,,,48,270095,48,270095
 27026,Láncara,Lugo,2489,121,150011,91,270109,46,270076
 27027,Lourenzá,Lugo,2083,155,150011,40,270095,40,270095
-27028,Lugo,Lugo,100143,22,270018,22,270018,7,270076
+27028,Lugo,Lugo,100143,0,270018,0,270018,0,270018
 27029,Meira,Lugo,1773,,,,,87,270076
 27030,Mondoñedo,Lugo,3303,149,150011,57,270095,57,270095
-27031,Monforte de Lemos,Lugo,18933,101,320013,29,270109,29,270109
+27031,Monforte de Lemos,Lugo,18933,101,320013,0,270109,0,270109
 27032,Monterroso,Lugo,3744,128,150011,128,150011,74,320087
 27033,Muras,Lugo,577,,,,,,
 27034,Navia de Suarna,Lugo,971,,,,,,
@@ -4288,21 +4288,21 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 27065,Vilalba,Lugo,13852,109,150011,84,270095,84,270095
 27066,Viveiro,Lugo,15120,,,65,270095,65,270095
 27901,Baralla,Lugo,2396,83,270018,83,270018,79,270076
-27902,Burela,Lugo,9630,,,25,270095,25,270095
+27902,Burela,Lugo,9630,,,0,270095,0,270095
 28001,La Acebeda,Madrid,70,,,67,281258,67,281258
 28002,Ajalvir,Madrid,4868,36,280127,36,280127,36,280127
 28003,Alameda del Valle,Madrid,267,129,280014,86,281258,86,281258
 28004,El Álamo,Madrid,10594,62,281146,62,281146,62,281146
-28005,Alcalá de Henares,Madrid,203208,21,281337,21,281337,21,281337
+28005,Alcalá de Henares,Madrid,203208,0,280745,0,280745,0,280745
 28006,Alcobendas,Madrid,123342,26,280014,16,281258,16,281258
-28007,Alcorcón,Madrid,175719,15,281071,15,281071,14,281124
+28007,Alcorcón,Madrid,175719,0,281071,0,281071,0,281071
 28008,Aldea del Fresno,Madrid,3503,58,281348,58,281348,58,281348
 28009,Algete,Madrid,21144,40,280014,30,281258,30,281258
 28010,Alpedrete,Madrid,15686,18,281359,18,281359,18,281359
 28011,Ambite,Madrid,732,75,280035,53,281281,53,281281
 28012,Anchuelo,Madrid,1414,91,280035,91,280035,91,280035
-28013,Aranjuez,Madrid,63040,46,281236,11,281292,11,281292
-28014,Arganda del Rey,Madrid,60419,46,280246,11,281281,11,281281
+28013,Aranjuez,Madrid,63040,46,281236,0,281292,0,281292
+28014,Arganda del Rey,Madrid,60419,46,280246,0,281281,0,281281
 28015,Arroyomolinos,Madrid,38075,41,281348,38,280894,38,280894
 28016,El Atazar,Madrid,110,133,280035,133,280035,133,280035
 28017,Batres,Madrid,1976,142,280035,57,281304,57,281304
@@ -4310,11 +4310,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28019,Belmonte de Tajo,Madrid,1955,115,280035,55,281281,55,281281
 28020,Berzosa del Lozoya,Madrid,242,112,280014,112,280014,112,280014
 28021,El Berrueco,Madrid,795,72,280029,62,281258,62,281258
-28022,Boadilla del Monte,Madrid,66349,38,281315,38,281315,20,281090
+28022,Boadilla del Monte,Madrid,66349,38,281315,38,281315,0,281090
 28023,El Boalo,Madrid,8770,53,280072,53,280072,53,280072
 28024,Braojos,Madrid,233,147,280035,147,280035,147,280035
 28025,Brea de Tajo,Madrid,577,94,280035,94,280035,94,280035
-28026,Brunete,Madrid,11287,35,281071,35,281071,7,281180
+28026,Brunete,Madrid,11287,35,281071,35,281071,0,281180
 28027,Buitrago del Lozoya,Madrid,2034,80,280014,43,281258,43,281258
 28028,Bustarviejo,Madrid,2870,,,,,,
 28029,Cabanillas de la Sierra,Madrid,961,49,280014,29,281258,29,281258
@@ -4335,9 +4335,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28044,Colmenarejo,Madrid,9640,52,280029,39,280920,32,281157
 28045,Colmenar Viejo,Madrid,58730,96,280029,96,280029,96,280029
 28046,Collado Mediano,Madrid,7722,40,281359,40,281359,40,281359
-28047,Collado Villalba,Madrid,67274,14,281359,14,281359,14,281359
+28047,Collado Villalba,Madrid,67274,0,281359,0,281359,0,281359
 28048,Corpa,Madrid,832,77,280246,77,280246,77,280246
-28049,Coslada,Madrid,80512,30,281337,22,281269,22,281269
+28049,Coslada,Madrid,80512,30,281337,0,281269,0,281269
 28050,Cubas de la Sagra,Madrid,7238,61,281146,36,281304,36,281304
 28051,Chapinería,Madrid,2705,52,280035,52,280035,43,281180
 28052,Chinchón,Madrid,5800,83,280035,73,281292,73,281292
@@ -4346,14 +4346,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28055,Estremera,Madrid,1473,101,280035,101,280035,101,280035
 28056,Fresnedillas de la Oliva,Madrid,1883,59,280072,39,280920,39,280920
 28057,Fresno de Torote,Madrid,2561,45,280127,45,280127,45,280127
-28058,Fuenlabrada,Madrid,190076,13,281146,13,281146,13,281146
+28058,Fuenlabrada,Madrid,190076,0,281146,0,281146,0,281146
 28059,Fuente el Saz de Jarama,Madrid,7413,33,280014,33,280014,33,280014
 28060,Fuentidueña de Tajo,Madrid,2372,98,280035,56,281281,56,281281
 28061,Galapagar,Madrid,36758,37,281315,28,280920,28,281157
 28062,Garganta de los Montes,Madrid,441,109,280014,109,280014,109,280014
 28063,Gargantilla del Lozoya y Pinilla de Buitrago,Madrid,396,88,280014,88,280014,88,280014
 28064,Gascones,Madrid,252,,,,,,
-28065,Getafe,Madrid,193238,10,280989,10,280989,10,280989
+28065,Getafe,Madrid,193238,0,280989,0,280989,0,280989
 28066,Griñón,Madrid,10799,50,280989,45,281304,45,281304
 28067,Guadalix de la Sierra,Madrid,6993,103,280014,103,280014,103,280014
 28068,Guadarrama,Madrid,17547,19,281359,19,281359,19,281359
@@ -4362,12 +4362,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28071,Horcajuelo de la Sierra,Madrid,104,103,280014,103,280014,103,280014
 28072,Hoyo de Manzanares,Madrid,9310,50,280072,50,280072,20,281157
 28073,Humanes de Madrid,Madrid,20500,24,281146,24,281146,24,281146
-28074,Leganés,Madrid,195734,7,280838,7,280838,7,280838
+28074,Leganés,Madrid,195734,0,280838,0,280838,0,280838
 28075,Loeches,Madrid,9261,32,280127,32,280127,32,280127
 28076,Lozoya,Madrid,598,119,280014,78,281258,78,281258
 28078,Madarcos,Madrid,69,,,79,281258,79,281258
-28079,Madrid,Madrid,3506730,15,280127,11,280112,7,280954
-28080,Majadahonda,Madrid,73625,16,281315,16,281315,16,281315
+28079,Madrid,Madrid,3506730,0,280035,0,280035,0,280035
+28080,Majadahonda,Madrid,73625,0,281315,0,281315,0,281315
 28082,Manzanares el Real,Madrid,9648,,,,,,
 28083,Meco,Madrid,15922,37,280745,37,280745,37,280745
 28084,Mejorada del Campo,Madrid,25049,47,280127,31,281269,31,281269
@@ -4378,7 +4378,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28089,Moraleja de Enmedio,Madrid,5580,33,281146,33,281146,33,281146
 28090,Moralzarzal,Madrid,14772,30,281359,30,281359,30,281359
 28091,Morata de Tajuña,Madrid,8397,69,280246,15,281281,15,281281
-28092,Móstoles,Madrid,214817,16,281348,10,280894,10,280894
+28092,Móstoles,Madrid,214817,0,281348,0,281348,0,281348
 28093,Navacerrada,Madrid,3311,36,281359,36,281359,36,281359
 28094,Navalafuente,Madrid,1693,89,280014,89,280014,89,280014
 28095,Navalagamella,Madrid,3169,52,280072,42,280920,42,280920
@@ -4389,7 +4389,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28101,Olmeda de las Fuentes,Madrid,429,73,280127,58,281281,58,281281
 28102,Orusco de Tajuña,Madrid,1531,69,280035,48,281281,48,281281
 28104,Paracuellos de Jarama,Madrid,27650,24,281337,24,281337,24,281337
-28106,Parla,Madrid,137471,25,280989,24,281304,24,281304
+28106,Parla,Madrid,137471,25,280989,0,281304,0,281304
 28107,Patones,Madrid,617,79,280035,79,280035,79,280035
 28108,Pedrezuela,Madrid,6606,78,280014,33,281258,33,281258
 28109,Pelayos de la Presa,Madrid,3195,70,280035,70,280035,56,281180
@@ -4398,7 +4398,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28112,Pinilla del Valle,Madrid,200,124,280014,81,281258,81,281258
 28113,Pinto,Madrid,56651,26,281236,26,281236,26,281236
 28114,Piñuécar-Gandullas,Madrid,183,173,280035,72,281258,72,281258
-28115,Pozuelo de Alarcón,Madrid,89770,34,281315,34,281315,26,280604
+28115,Pozuelo de Alarcón,Madrid,89770,34,281315,34,281315,0,281203
 28116,Pozuelo del Rey,Madrid,1302,48,280127,36,281281,36,281281
 28117,Prádena del Rincón,Madrid,146,101,280014,101,280014,101,280014
 28118,Puebla de la Sierra,Madrid,98,,,,,,
@@ -4406,7 +4406,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28120,Rascafría,Madrid,1704,139,280014,93,281258,93,281258
 28121,Redueña,Madrid,288,99,280035,57,281258,57,281258
 28122,Ribatejada,Madrid,905,57,280127,57,280127,57,280127
-28123,Rivas-Vaciamadrid,Madrid,103148,48,280246,48,281281,18,281467
+28123,Rivas-Vaciamadrid,Madrid,103148,48,280246,48,281281,0,281467
 28124,Robledillo de la Jara,Madrid,118,117,280014,117,280014,117,280014
 28125,Robledo de Chavela,Madrid,4818,69,280072,57,280920,57,280920
 28126,Robregordo,Madrid,79,105,280014,47,281258,47,281258
@@ -4414,10 +4414,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28128,Rozas de Puerto Real,Madrid,579,94,281071,94,281071,94,281071
 28129,San Agustín del Guadalix,Madrid,13825,42,280014,22,281258,22,281258
 28130,San Fernando de Henares,Madrid,39059,26,280127,11,281269,11,281269
-28131,San Lorenzo de El Escorial,Madrid,18872,50,281315,15,280920,15,280920
+28131,San Lorenzo de El Escorial,Madrid,18872,50,281315,0,280920,0,280920
 28132,San Martín de la Vega,Madrid,21010,50,281236,50,281236,50,281236
 28133,San Martín de Valdeiglesias,Madrid,9324,76,280035,76,280035,63,281180
-28134,San Sebastián de los Reyes,Madrid,96992,27,280014,13,281258,13,281258
+28134,San Sebastián de los Reyes,Madrid,96992,27,280014,0,281258,0,281258
 28135,Santa María de la Alameda,Madrid,1584,117,280029,117,280029,117,280029
 28136,Santorcaz,Madrid,1011,86,280035,86,280035,86,280035
 28137,Los Santos de la Humosa,Madrid,2867,65,280035,65,280035,65,280035
@@ -4429,11 +4429,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28145,Talamanca de Jarama,Madrid,4607,56,280014,56,280014,56,280014
 28146,Tielmes,Madrid,2964,51,280035,31,281281,31,281281
 28147,Titulcia,Madrid,1389,84,281236,84,281236,84,281236
-28148,Torrejón de Ardoz,Madrid,143526,9,281337,9,281337,9,281337
+28148,Torrejón de Ardoz,Madrid,143526,0,281337,0,281337,0,281337
 28149,Torrejón de la Calzada,Madrid,10653,31,280989,19,281304,19,281304
 28150,Torrejón de Velasco,Madrid,4900,59,280989,24,281304,24,281304
 28151,Torrelaguna,Madrid,5081,73,280014,69,281258,69,281258
-28152,Torrelodones,Madrid,25433,41,280072,39,280920,13,281157
+28152,Torrelodones,Madrid,25433,41,280072,39,280920,0,281157
 28153,Torremocha de Jarama,Madrid,1157,79,280035,79,280035,79,280035
 28154,Torres de la Alameda,Madrid,7824,42,280745,42,280745,42,280745
 28155,Valdaracete,Madrid,658,89,280035,89,280035,89,280035
@@ -4442,7 +4442,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 28158,Valdemanco,Madrid,1097,97,280014,97,280014,97,280014
 28159,Valdemaqueda,Madrid,870,77,280072,75,280920,75,280920
 28160,Valdemorillo,Madrid,14420,44,281315,29,280920,29,280920
-28161,Valdemoro,Madrid,85972,22,281236,22,281236,22,281236
+28161,Valdemoro,Madrid,85972,0,281236,0,281236,0,281236
 28162,Valdeolmos-Alalpardo,Madrid,4626,58,280014,53,281258,53,281258
 28163,Valdepiélagos,Madrid,612,66,280014,66,280014,66,280014
 28164,Valdetorres de Jarama,Madrid,5175,46,280014,46,280014,46,280014
@@ -4482,7 +4482,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 29012,Álora,Málaga,13650,82,290017,82,290017,82,290017
 29013,Alozaina,Málaga,2127,,,,,,
 29014,Alpandeire,Málaga,242,,,,,,
-29015,Antequera,Málaga,41849,76,290017,26,290154,26,290154
+29015,Antequera,Málaga,41849,76,290017,0,290154,0,290154
 29016,Árchez,Málaga,441,,,,,,
 29017,Archidona,Málaga,8105,133,290022,133,290022,133,290022
 29018,Ardales,Málaga,2524,,,,,,
@@ -4492,7 +4492,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 29022,Benadalid,Málaga,226,,,,,,
 29023,Benahavís,Málaga,9472,,,,,,
 29024,Benalauría,Málaga,460,,,,,,
-29025,Benalmádena,Málaga,78338,61,290022,61,290022,14,290405
+29025,Benalmádena,Málaga,78338,61,290022,61,290022,0,290405
 29026,Benamargosa,Málaga,1560,108,290017,48,290206,48,290206
 29027,Benamocarra,Málaga,3200,,,,,,
 29028,Benaoján,Málaga,1427,,,,,,
@@ -4518,7 +4518,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 29048,Cuevas del Becerro,Málaga,1617,,,,,,
 29049,Cuevas de San Marcos,Málaga,3647,,,,,,
 29050,Cútar,Málaga,603,121,290017,61,290206,61,290206
-29051,Estepona,Málaga,79621,,,,,5,290382
+29051,Estepona,Málaga,79621,,,0,290528,0,290528
 29052,Faraján,Málaga,285,,,,,,
 29053,Frigiliana,Málaga,3383,,,,,,
 29054,Fuengirola,Málaga,85211,77,290022,57,290213,47,290228
@@ -4534,9 +4534,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 29064,Jubrique,Málaga,585,,,,,,
 29065,Júzcar,Málaga,208,,,,,,
 29066,Macharaviaya,Málaga,518,,,,,,
-29067,Málaga,Málaga,599063,24,290017,19,290038,6,290108
+29067,Málaga,Málaga,599063,0,290022,0,290022,0,290022
 29068,Manilva,Málaga,18165,,,,,,
-29069,Marbella,Málaga,159786,,,,,3,290461
+29069,Marbella,Málaga,159786,0,290287,0,290287,0,290287
 29070,Mijas,Málaga,95104,73,290022,73,290022,43,290405
 29071,Moclinejo,Málaga,1222,,,,,,
 29072,Mollina,Málaga,5528,,,84,290154,84,290154
@@ -4550,7 +4550,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 29081,Pujerra,Málaga,285,,,,,,
 29082,Rincón de la Victoria,Málaga,52454,55,290022,51,290206,26,290081
 29083,Riogordo,Málaga,2839,87,290022,87,290022,87,290022
-29084,Ronda,Málaga,33671,,,129,290154,129,290154
+29084,Ronda,Málaga,33671,,,0,290506,0,290506
 29085,Salares,Málaga,194,,,107,290206,107,290206
 29086,Sayalonga,Málaga,1672,,,,,,
 29087,Sedella,Málaga,607,,,100,290206,100,290206
@@ -4560,14 +4560,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 29091,Torrox,Málaga,22015,,,78,290206,78,290206
 29092,Totalán,Málaga,797,,,,,,
 29093,Valle de Abdalajís,Málaga,2439,,,71,290154,71,290154
-29094,Vélez-Málaga,Málaga,86048,92,290022,27,290206,27,290206
+29094,Vélez-Málaga,Málaga,86048,92,290022,0,290206,0,290206
 29095,Villanueva de Algaidas,Málaga,4084,,,,,,
 29096,Villanueva del Rosario,Málaga,3470,,,,,,
 29097,Villanueva del Trabuco,Málaga,5521,,,,,,
 29098,Villanueva de Tapia,Málaga,1391,,,,,,
 29099,Viñuela,Málaga,2044,,,69,290206,69,290206
 29100,Yunquera,Málaga,2828,,,,,,
-29901,Torremolinos,Málaga,71329,32,290022,30,290213,25,290228
+29901,Torremolinos,Málaga,71329,32,290022,0,290213,0,290213
 29902,Villanueva de la Concepción,Málaga,3296,121,290022,61,290038,61,290038
 29903,Montecorto,Málaga,585,,,,,,
 29904,Serrato,Málaga,457,,,,,,
@@ -4585,27 +4585,27 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 30012,Bullas,Murcia,12027,,,,,,
 30013,Calasparra,Murcia,10391,,,,,,
 30014,Campos del Río,Murcia,2159,,,,,,
-30015,Caravaca de la Cruz,Murcia,26126,,,9,300124,9,300124
-30016,Cartagena,Murcia,220704,21,300362,21,300362,21,300362
+30015,Caravaca de la Cruz,Murcia,26126,,,0,300124,0,300124
+30016,Cartagena,Murcia,220704,0,300362,0,300362,0,300362
 30017,Cehegín,Murcia,14506,,,,,,
 30018,Ceutí,Murcia,13089,,,,,,
-30019,Cieza,Murcia,35577,,,13,300281,13,300281
+30019,Cieza,Murcia,35577,,,0,300281,0,300281
 30020,Fortuna,Murcia,11437,,,,,,
 30021,Fuente Álamo de Murcia,Murcia,19171,95,300362,95,300362,95,300362
 30022,Jumilla,Murcia,27574,,,146,300243,146,300243
 30023,Librilla,Murcia,5854,,,,,,
-30024,Lorca,Murcia,98969,,,135,300269,135,300269
+30024,Lorca,Murcia,98969,,,0,300256,0,300256
 30025,Lorquí,Murcia,7946,,,,,,
 30026,Mazarrón,Murcia,35449,126,300362,126,300362,126,300362
 30027,Molina de Segura,Murcia,78458,,,,,,
 30028,Moratalla,Murcia,7518,,,,,,
 30029,Mula,Murcia,17937,,,,,,
-30030,Murcia,Murcia,479405,107,300362,6,300269,4,300079
+30030,Murcia,Murcia,479405,0,300011,0,300011,0,300011
 30031,Ojós,Murcia,548,,,,,,
 30032,Pliego,Murcia,4003,,,,,,
 30033,Puerto Lumbreras,Murcia,18006,,,108,040084,108,040084
 30034,Ricote,Murcia,1197,,,,,,
-30035,San Javier,Murcia,36524,74,300362,24,300222,24,300222
+30035,San Javier,Murcia,36524,74,300362,0,300222,0,300222
 30036,San Pedro del Pinatar,Murcia,29674,90,300362,59,300222,59,300222
 30037,Torre-Pacheco,Murcia,41479,55,300362,55,300362,55,300362
 30038,Las Torres de Cotillas,Murcia,22676,,,,,,
@@ -4613,7 +4613,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 30040,Ulea,Murcia,926,,,,,,
 30041,La Unión,Murcia,21380,37,300362,31,300145,31,300145
 30042,Villanueva del Río Segura,Murcia,4111,,,,,,
-30043,Yecla,Murcia,36453,,,12,300243,12,300243
+30043,Yecla,Murcia,36453,,,0,300243,0,300243
 30901,Santomera,Murcia,16443,105,030373,105,030373,105,030373
 30902,Los Alcázares,Murcia,20408,57,300362,57,300362,57,300362
 31001,Abáigar,Navarra,74,,,,,,
@@ -4712,7 +4712,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 31094,Eslava,Navarra,97,,,,,,
 31095,Esparza de Salazar,Navarra,75,,,,,,
 31096,Espronceda,Navarra,102,,,,,,
-31097,Estella-Lizarra,Navarra,14317,,,75,310121,75,310121
+31097,Estella-Lizarra,Navarra,14317,,,0,310121,0,310121
 31098,Esteribar,Navarra,2918,,,,,,
 31099,Etayo,Navarra,72,,,,,,
 31100,Eulate,Navarra,278,,,,,,
@@ -4816,7 +4816,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 31198,Oronz,Navarra,51,,,,,,
 31199,Oroz-Betelu,Navarra,143,114,310150,114,310150,114,310150
 31200,Oteiza,Navarra,972,,,,,,
-31201,Pamplona,Navarra,209094,28,310150,28,310150,20,310060
+31201,Pamplona,Navarra,209094,0,310150,0,310150,0,310150
 31202,Peralta,Navarra,6071,154,310150,154,310150,89,310060
 31203,Petilla de Aragón,Navarra,29,,,,,,
 31204,Piedramillera,Navarra,46,,,,,,
@@ -4846,7 +4846,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 31229,Tirapu,Navarra,49,166,310150,166,310150,166,310150
 31230,Torralba del Río,Navarra,96,,,,,,
 31231,Torres del Río,Navarra,116,,,,,,
-31232,Tudela,Navarra,38903,93,500021,32,310137,32,310137
+31232,Tudela,Navarra,38903,93,500021,0,310137,0,310137
 31233,Tulebras,Navarra,159,142,500021,77,310137,77,310137
 31234,Ucar,Navarra,194,171,310150,171,310150,171,310150
 31235,Ujué,Navarra,168,,,,,,
@@ -4896,7 +4896,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 32006,Bande,Ourense,1460,,,,,,
 32007,Baños de Molgas,Ourense,1471,77,320013,77,320013,77,320013
 32008,Barbadás,Ourense,11201,35,320013,35,320013,35,320013
-32009,O Barco de Valdeorras,Ourense,13368,156,320013,10,320126,10,320126
+32009,O Barco de Valdeorras,Ourense,13368,156,320013,0,320126,0,320126
 32010,Beade,Ourense,363,163,320013,163,320013,163,320013
 32011,Beariz,Ourense,901,174,320013,174,320013,174,320013
 32012,Os Blancos,Ourense,696,,,,,,
@@ -4941,7 +4941,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 32051,Muíños,Ourense,1385,,,,,,
 32052,Nogueira de Ramuín,Ourense,2074,79,320013,79,320013,79,320013
 32053,Oímbra,Ourense,1689,,,125,320150,125,320150
-32054,Ourense,Ourense,105769,13,320013,13,320013,3,320087
+32054,Ourense,Ourense,105769,0,320013,0,320013,0,320013
 32055,Paderne de Allariz,Ourense,1346,64,320013,64,320013,64,320013
 32056,Padrenda,Ourense,1555,,,,,,
 32057,Parada de Sil,Ourense,500,107,320013,107,320013,107,320013
@@ -4972,7 +4972,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 32082,Trasmiras,Ourense,1216,104,320013,67,320150,67,320150
 32083,A Veiga,Ourense,873,,,121,320126,121,320126
 32084,Verea,Ourense,974,,,,,,
-32085,Verín,Ourense,13956,144,320013,39,320150,39,320150
+32085,Verín,Ourense,13956,144,320013,0,320150,0,320150
 32086,Viana do Bolo,Ourense,2715,,,94,320126,94,320126
 32087,Vilamarín,Ourense,1836,63,320013,63,320013,35,320163
 32088,Vilamartín de Valdeorras,Ourense,1817,144,320013,35,320126,35,320126
@@ -4983,48 +4983,48 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 33001,Allande,Asturias,1506,,,,,,
 33002,Aller,Asturias,10011,86,330292,45,330325,45,330325
 33003,Amieva,Asturias,591,,,,,,
-33004,Avilés,Asturias,75517,46,330292,19,330100,19,330100
+33004,Avilés,Asturias,75517,46,330292,0,330100,0,330100
 33005,Belmonte de Miranda,Asturias,1366,127,330292,127,330292,127,330292
 33006,Bimenes,Asturias,1639,,,105,330194,105,330194
 33007,Boal,Asturias,1372,,,74,330143,74,330143
 33008,Cabrales,Asturias,1884,,,108,330306,108,330306
 33009,Cabranes,Asturias,1094,,,,,,
 33010,Candamo,Asturias,1902,142,330292,43,330100,43,330100
-33011,Cangas del Narcea,Asturias,11282,,,64,330138,64,330138
+33011,Cangas del Narcea,Asturias,11282,,,0,330138,0,330138
 33012,Cangas de Onís,Asturias,6344,141,330292,66,330306,66,330306
 33013,Caravia,Asturias,486,79,330156,79,330156,79,330156
 33014,Carreño,Asturias,10292,41,330292,41,330292,38,330169
 33015,Caso,Asturias,1437,,,106,330241,106,330241
 33016,Castrillón,Asturias,21998,57,330292,46,330100,46,330100
 33017,Castropol,Asturias,3202,161,330292,88,330143,88,330143
-33018,Coaña,Asturias,3321,,,39,330143,39,330143
+33018,Coaña,Asturias,3321,,,0,330143,0,330143
 33019,Colunga,Asturias,3143,91,330156,91,330156,91,330156
 33020,Corvera de Asturias,Asturias,15785,46,330292,36,330100,36,330100
 33021,Cudillero,Asturias,4867,131,330292,96,330100,96,330100
 33022,Degaña,Asturias,768,,,,,,
 33023,El Franco,Asturias,3728,152,330292,48,330143,48,330143
-33024,Gijón,Asturias,269894,33,330156,20,330194,11,330169
+33024,Gijón,Asturias,269894,0,330156,0,330156,0,330156
 33025,Gozón,Asturias,10407,51,330292,51,330292,51,330292
 33026,Grado,Asturias,9681,85,330292,61,330100,61,330100
 33027,Grandas de Salime,Asturias,767,,,,,,
 33028,Ibias,Asturias,1084,,,,,,
 33029,Illano,Asturias,277,,,,,,
 33030,Illas,Asturias,1048,,,38,330100,38,330100
-33031,Langreo,Asturias,38612,60,330156,23,330241,23,330241
+33031,Langreo,Asturias,38612,60,330156,0,330241,0,330241
 33032,Laviana,Asturias,12352,82,330156,52,330241,52,330241
 33033,Lena,Asturias,10382,61,330292,35,330325,35,330325
 33034,Valdés,Asturias,10776,109,330292,69,330143,69,330143
 33035,Llanera,Asturias,14020,32,330292,32,330292,31,330061
 33036,Llanes,Asturias,13486,98,330156,83,330306,83,330306
-33037,Mieres,Asturias,36373,44,330292,13,330325,13,330325
+33037,Mieres,Asturias,36373,44,330292,0,330325,0,330325
 33038,Morcín,Asturias,2460,71,330292,71,330292,48,330061
 33039,Muros de Nalón,Asturias,1955,80,330292,80,330292,80,330292
 33040,Nava,Asturias,5244,78,330292,35,330306,35,330306
 33041,Navia,Asturias,8031,125,330292,32,330143,32,330143
 33042,Noreña,Asturias,5131,35,330292,35,330292,35,330292
 33043,Onís,Asturias,739,167,330292,92,330306,92,330306
-33044,Oviedo,Asturias,223968,17,330292,17,330292,11,330061
-33045,Parres,Asturias,5150,127,330292,127,330292,127,330292
+33044,Oviedo,Asturias,223968,0,330292,0,330292,0,330292
+33045,Parres,Asturias,5150,127,330292,0,330306,0,330306
 33046,Peñamellera Alta,Asturias,500,,,,,,
 33047,Peñamellera Baja,Asturias,1194,168,330156,158,330306,158,330306
 33048,Pesoz,Asturias,134,,,,,,
@@ -5150,7 +5150,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 34113,Olea de Boedo,Palencia,38,,,,,,
 34114,Olmos de Ojeda,Palencia,166,,,,,,
 34116,Osornillo,Palencia,57,,,,,,
-34120,Palencia,Palencia,77466,64,470029,20,340029,13,340053
+34120,Palencia,Palencia,77466,64,470029,0,340014,0,340014
 34121,Palenzuela,Palencia,212,,,,,,
 34122,Páramo de Boedo,Palencia,103,,,,,,
 34123,Paredes de Nava,Palencia,1927,,,65,340014,65,340014
@@ -5252,7 +5252,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 35001,Agaete,Las Palmas,5683,90,350290,90,350290,90,350290
 35002,Agüimes,Las Palmas,33800,65,350290,65,350290,65,350290
 35003,Antigua,Las Palmas,14164,117,350252,117,350252,117,350252
-35004,Arrecife,Las Palmas,70811,28,350228,28,350228,28,350228
+35004,Arrecife,Las Palmas,70811,0,350228,0,350228,0,350228
 35005,Artenara,Las Palmas,1024,,,,,,
 35006,Arucas,Las Palmas,39232,38,350290,38,350290,33,350167
 35007,Betancuria,Las Palmas,801,171,350252,171,350252,171,350252
@@ -5264,10 +5264,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 35013,Moya,Las Palmas,8007,80,350290,80,350290,45,350206
 35014,La Oliva,Las Palmas,30022,58,350252,58,350252,58,350252
 35015,Pájara,Las Palmas,21570,,,,,,
-35016,Las Palmas de Gran Canaria,Las Palmas,381868,15,350311,15,350311,8,350154
-35017,Puerto del Rosario,Las Palmas,46150,14,350252,14,350252,14,350252
+35016,Las Palmas de Gran Canaria,Las Palmas,381868,0,350290,0,350290,0,350290
+35017,Puerto del Rosario,Las Palmas,46150,0,350252,0,350252,0,350252
 35018,San Bartolomé,Las Palmas,19551,24,350228,24,350228,24,350228
-35019,San Bartolomé de Tirajana,Las Palmas,54291,113,350290,113,350290,53,350367
+35019,San Bartolomé de Tirajana,Las Palmas,54291,113,350290,113,350290,0,350367
 35020,La Aldea de San Nicolás,Las Palmas,7401,138,350290,138,350290,108,350367
 35021,Santa Brígida,Las Palmas,18766,61,350290,61,350290,51,350173
 35022,Santa Lucía de Tirajana,Las Palmas,78584,,,,,,
@@ -5276,7 +5276,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 35025,Tejeda,Las Palmas,1806,150,350290,150,350290,90,350367
 35026,Telde,Las Palmas,104168,20,350290,20,350290,20,350290
 35027,Teror,Las Palmas,13211,64,350290,64,350290,34,350167
-35028,Tías,Las Palmas,21613,45,350228,45,350228,45,350228
+35028,Tías,Las Palmas,21613,45,350228,45,350228,0,350326
 35029,Tinajo,Las Palmas,6939,81,350228,81,350228,81,350228
 35030,Tuineje,Las Palmas,16834,131,350252,131,350252,131,350252
 35031,Valsequillo de Gran Canaria,Las Palmas,9869,56,350290,56,350290,56,350290
@@ -5318,7 +5318,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 36035,Nigrán,Pontevedra,18174,51,360368,51,360368,51,360368
 36036,Oia,Pontevedra,3062,,,108,360182,108,360182
 36037,Pazos de Borbén,Pontevedra,3046,145,150200,145,150200,80,360059
-36038,Pontevedra,Pontevedra,83316,90,360368,41,360340,5,360059
+36038,Pontevedra,Pontevedra,83316,90,360368,0,360340,0,360340
 36039,O Porriño,Pontevedra,20965,63,360368,63,360368,63,360368
 36040,Portas,Pontevedra,2748,135,150200,40,360353,40,360353
 36041,Poio,Pontevedra,17434,109,360368,58,360340,33,360059
@@ -5337,10 +5337,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 36054,Tomiño,Pontevedra,13738,90,360368,90,360368,90,360368
 36055,Tui,Pontevedra,17468,102,360368,102,360368,102,360368
 36056,Valga,Pontevedra,5779,84,150200,65,360353,65,360353
-36057,Vigo,Pontevedra,294489,37,360368,18,360182,12,360255
+36057,Vigo,Pontevedra,294489,0,360368,0,360368,0,360368
 36058,Vilaboa,Pontevedra,5856,100,360368,57,360340,49,360059
 36059,Vila de Cruces,Pontevedra,4967,,,,,120,360059
-36060,Vilagarcía de Arousa,Pontevedra,37888,79,150200,37,360353,37,360353
+36060,Vilagarcía de Arousa,Pontevedra,37888,79,150200,0,360353,0,360353
 36061,Vilanova de Arousa,Pontevedra,10159,138,150200,55,360353,55,360353
 36901,A Illa de Arousa,Pontevedra,4809,122,150200,91,360353,91,360353
 36902,Cerdedo-Cotobade,Pontevedra,5671,,,,,59,360059
@@ -5422,7 +5422,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 37083,Cantaracillo,Salamanca,188,108,370037,102,050013,102,050013
 37085,Carbajosa de la Sagrada,Salamanca,7791,,,,,,
 37086,Carpio de Azaba,Salamanca,110,,,,,,
-37087,Carrascal de Barregas,Salamanca,1456,,,,,,
+37087,Carrascal de Barregas,Salamanca,1456,,,0,370074,0,370074
 37088,Carrascal del Obispo,Salamanca,185,,,,,,
 37089,Casafranca,Salamanca,69,,,,,,
 37090,Las Casas del Conde,Salamanca,63,,,,,,
@@ -5600,7 +5600,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 37271,Rollán,Salamanca,317,,,,,,
 37272,Saelices el Chico,Salamanca,175,,,,,,
 37273,La Sagrada,Salamanca,78,,,,,,
-37274,Salamanca,Salamanca,146110,9,370037,9,370037,7,370055
+37274,Salamanca,Salamanca,146110,0,370037,0,370037,0,370037
 37275,Saldeana,Salamanca,96,,,,,,
 37276,Salmoral,Salamanca,107,,,,,,
 37277,Salvatierra de Tormes,Salamanca,66,,,,,,
@@ -5706,14 +5706,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 37380,Zarapicos,Salamanca,50,,,,,,
 37381,La Zarza de Pumareda,Salamanca,131,,,,,,
 37382,Zorita de la Frontera,Salamanca,140,,,,,,
-38001,Adeje,Santa Cruz de Tenerife,50021,90,380027,49,380348,28,380146
+38001,Adeje,Santa Cruz de Tenerife,50021,90,380027,49,380348,0,380282
 38002,Agulo,Santa Cruz de Tenerife,1078,,,,,,
 38003,Alajeró,Santa Cruz de Tenerife,2061,,,,,,
 38004,Arafo,Santa Cruz de Tenerife,5945,51,380027,51,380027,51,380027
 38005,Arico,Santa Cruz de Tenerife,9505,155,380027,155,380027,91,380146
-38006,Arona,Santa Cruz de Tenerife,87793,113,380027,22,380348,22,380348
+38006,Arona,Santa Cruz de Tenerife,87793,113,380027,0,380348,0,380348
 38007,Barlovento,Santa Cruz de Tenerife,2108,,,103,380316,103,380316
-38008,Breña Alta,Santa Cruz de Tenerife,7487,,,24,380316,24,380316
+38008,Breña Alta,Santa Cruz de Tenerife,7487,,,0,380316,0,380316
 38009,Breña Baja,Santa Cruz de Tenerife,6159,,,31,380316,31,380316
 38010,Buenavista del Norte,Santa Cruz de Tenerife,4695,127,380027,127,380027,97,380223
 38011,Candelaria,Santa Cruz de Tenerife,29023,31,380027,31,380027,31,380027
@@ -5728,12 +5728,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 38020,Güímar,Santa Cruz de Tenerife,22009,54,380027,54,380027,54,380027
 38021,Hermigua,Santa Cruz de Tenerife,1961,,,,,,
 38022,Icod de los Vinos,Santa Cruz de Tenerife,24616,96,380027,96,380027,56,380223
-38023,San Cristóbal de La Laguna,Santa Cruz de Tenerife,161108,18,380178,18,380178,18,380178
+38023,San Cristóbal de La Laguna,Santa Cruz de Tenerife,161108,0,380178,0,380178,0,380178
 38024,Los Llanos de Aridane,Santa Cruz de Tenerife,20582,,,43,380316,43,380316
 38025,La Matanza de Acentejo,Santa Cruz de Tenerife,9089,62,380027,62,380027,57,380223
-38026,La Orotava,Santa Cruz de Tenerife,42514,121,380027,65,380033,20,380201
+38026,La Orotava,Santa Cruz de Tenerife,42514,121,380027,65,380033,0,380201
 38027,El Paso,Santa Cruz de Tenerife,8290,,,30,380316,30,380316
-38028,Puerto de la Cruz,Santa Cruz de Tenerife,31137,61,380027,61,380027,21,380223
+38028,Puerto de la Cruz,Santa Cruz de Tenerife,31137,61,380027,61,380027,0,380223
 38029,Puntagorda,Santa Cruz de Tenerife,2345,,,127,380316,127,380316
 38030,Puntallana,Santa Cruz de Tenerife,2790,,,75,380316,75,380316
 38031,Los Realejos,Santa Cruz de Tenerife,37867,61,380027,61,380027,30,380201
@@ -5741,9 +5741,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 38033,San Andrés y Sauces,Santa Cruz de Tenerife,4350,,,87,380316,87,380316
 38034,San Juan de la Rambla,Santa Cruz de Tenerife,4987,133,380027,133,380027,62,380223
 38035,San Miguel de Abona,Santa Cruz de Tenerife,23960,114,380027,46,380348,46,380348
-38036,San Sebastián de la Gomera,Santa Cruz de Tenerife,9574,,,,,,
+38036,San Sebastián de la Gomera,Santa Cruz de Tenerife,9574,,,0,380244,0,380244
 38037,Santa Cruz de la Palma,Santa Cruz de Tenerife,15690,,,23,380316,23,380316
-38038,Santa Cruz de Tenerife,Santa Cruz de Tenerife,211957,24,380027,23,380033,7,380103
+38038,Santa Cruz de Tenerife,Santa Cruz de Tenerife,211957,0,380027,0,380027,0,380027
 38039,Santa Úrsula,Santa Cruz de Tenerife,15429,48,380027,48,380027,39,380223
 38040,Santiago del Teide,Santa Cruz de Tenerife,12582,143,380027,122,380348,68,380282
 38041,El Sauzal,Santa Cruz de Tenerife,9345,53,380027,53,380027,53,380027
@@ -5753,7 +5753,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 38045,Tazacorte,Santa Cruz de Tenerife,4549,,,80,380316,80,380316
 38046,Tegueste,Santa Cruz de Tenerife,11490,53,380027,53,380027,53,380027
 38047,Tijarafe,Santa Cruz de Tenerife,2733,,,112,380316,112,380316
-38048,Valverde,Santa Cruz de Tenerife,5338,,,9,380276,9,380276
+38048,Valverde,Santa Cruz de Tenerife,5338,,,0,380276,0,380276
 38049,Valle Gran Rey,Santa Cruz de Tenerife,4830,,,,,,
 38050,Vallehermoso,Santa Cruz de Tenerife,2938,,,,,,
 38051,La Victoria de Acentejo,Santa Cruz de Tenerife,9448,51,380027,51,380027,49,380223
@@ -5794,7 +5794,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 39032,Hermandad de Campoo de Suso,Cantabria,1619,,,,,,
 39033,Herrerías,Cantabria,570,,,,,,
 39034,Lamasón,Cantabria,237,,,,,,
-39035,Laredo,Cantabria,10698,78,390015,53,390134,53,390134
+39035,Laredo,Cantabria,10698,78,390015,0,390134,0,390134
 39036,Liendo,Cantabria,1218,,,,,,
 39037,Liérganes,Cantabria,2365,62,390015,62,390015,62,390015
 39038,Limpias,Cantabria,1983,113,480176,53,390134,53,390134
@@ -5832,9 +5832,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 39070,San Miguel de Aguayo,Cantabria,164,,,,,,
 39071,San Pedro del Romeral,Cantabria,432,,,,,,
 39072,San Roque de Riomiera,Cantabria,333,92,390015,92,390015,92,390015
-39073,Santa Cruz de Bezana,Cantabria,13904,24,390015,24,390015,15,390152
+39073,Santa Cruz de Bezana,Cantabria,13904,24,390015,24,390015,0,390152
 39074,Santa María de Cayón,Cantabria,9538,58,390015,58,390015,58,390015
-39075,Santander,Cantabria,175425,13,390015,13,390015,13,390015
+39075,Santander,Cantabria,175425,0,390015,0,390015,0,390015
 39076,Santillana del Mar,Cantabria,4189,95,390015,95,390015,95,390015
 39077,Santiurde de Reinosa,Cantabria,254,158,390015,158,390015,158,390015
 39078,Santiurde de Toranzo,Cantabria,1726,85,390015,85,390015,85,390015
@@ -5846,7 +5846,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 39084,Solórzano,Cantabria,1144,,,,,,
 39085,Suances,Cantabria,9034,52,390015,52,390015,52,390015
 39086,Los Tojos,Cantabria,369,,,,,,
-39087,Torrelavega,Cantabria,51796,38,390015,32,390149,32,390149
+39087,Torrelavega,Cantabria,51796,38,390015,0,390149,0,390149
 39088,Tresviso,Cantabria,52,,,,,,
 39089,Tudanca,Cantabria,154,,,,,,
 39090,Udías,Cantabria,960,,,,,,
@@ -6030,7 +6030,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 40191,Santo Tomé del Puerto,Segovia,230,170,280035,128,090079,128,090079
 40192,Sauquillo de Cabezas,Segovia,135,,,,,,
 40193,Sebúlcor,Segovia,239,,,,,,
-40194,Segovia,Segovia,52375,71,280246,1,400019,1,400019
+40194,Segovia,Segovia,52375,71,280246,0,400019,0,400019
 40195,Sepúlveda,Segovia,979,,,,,,
 40196,Sequera de Fresno,Segovia,42,,,,,,
 40198,Sotillo,Segovia,31,,,,,,
@@ -6074,7 +6074,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 41001,Aguadulce,Sevilla,2109,,,,,,
 41002,Alanís,Sevilla,1638,,,,,,
 41003,Albaida del Aljarafe,Sevilla,3220,72,410042,72,410042,72,410042
-41004,Alcalá de Guadaíra,Sevilla,77474,53,410016,31,410227,31,410227
+41004,Alcalá de Guadaíra,Sevilla,77474,53,410016,0,410227,0,410227
 41005,Alcalá del Río,Sevilla,12335,59,410042,59,410042,59,410042
 41006,Alcolea del Río,Sevilla,3265,,,,,,
 41007,La Algaba,Sevilla,16803,36,410042,26,410055,26,410055
@@ -6087,7 +6087,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 41014,Badolatosa,Sevilla,3058,,,,,,
 41015,Benacazón,Sevilla,7363,61,410042,61,410042,53,410375
 41016,Bollullos de la Mitación,Sevilla,11431,53,410042,17,410353,17,410353
-41017,Bormujos,Sevilla,23071,43,410042,11,410353,11,410353
+41017,Bormujos,Sevilla,23071,43,410042,0,410353,0,410353
 41018,Brenes,Sevilla,12975,58,410016,58,410016,58,410016
 41019,Burguillos,Sevilla,7448,,,,,,
 41020,Las Cabezas de San Juan,Sevilla,16388,,,,,,
@@ -6099,7 +6099,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 41026,Casariche,Sevilla,5291,,,,,,
 41027,Castilblanco de los Arroyos,Sevilla,5145,,,,,,
 41028,Castilleja de Guzmán,Sevilla,2843,79,410042,65,410353,42,410375
-41029,Castilleja de la Cuesta,Sevilla,17074,42,410042,17,410353,11,410375
+41029,Castilleja de la Cuesta,Sevilla,17074,42,410042,17,410353,0,410375
 41030,Castilleja del Campo,Sevilla,611,108,410042,108,410042,108,410042
 41031,El Castillo de las Guardas,Sevilla,1501,,,,,,
 41032,Cazalla de la Sierra,Sevilla,4626,,,,,,
@@ -6108,7 +6108,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 41035,Coripe,Sevilla,1218,,,,,,
 41036,El Coronil,Sevilla,4659,,,,,,
 41037,Los Corrales,Sevilla,4021,113,290022,113,290022,113,290022
-41038,Dos Hermanas,Sevilla,142519,22,410016,22,410016,22,410016
+41038,Dos Hermanas,Sevilla,142519,22,410016,22,410016,0,410233
 41039,Écija,Sevilla,39659,126,140230,126,140230,121,410135
 41040,Espartinas,Sevilla,16479,48,410042,46,410353,27,410375
 41041,Estepa,Sevilla,12430,,,,,,
@@ -6123,7 +6123,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 41050,Herrera,Sevilla,6575,,,,,,
 41051,Huévar del Aljarafe,Sevilla,3388,93,410042,93,410042,93,410042
 41052,Lantejuela,Sevilla,3857,,,,,,
-41053,Lebrija,Sevilla,27788,,,14,410454,14,410454
+41053,Lebrija,Sevilla,27788,,,0,410454,0,410454
 41054,Lora de Estepa,Sevilla,890,,,,,,
 41055,Lora del Río,Sevilla,18122,85,410042,85,410042,85,410042
 41056,La Luisiana,Sevilla,4618,,,,,,
@@ -6135,10 +6135,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 41062,Martín de la Jara,Sevilla,2627,110,290022,110,290022,110,290022
 41063,Los Molares,Sevilla,3659,,,,,,
 41064,Montellano,Sevilla,7032,,,,,,
-41065,Morón de la Frontera,Sevilla,27210,,,9,410248,9,410248
+41065,Morón de la Frontera,Sevilla,27210,,,0,410248,0,410248
 41066,Las Navas de la Concepción,Sevilla,1501,,,,,,
 41067,Olivares,Sevilla,9537,66,410042,66,410042,66,410042
-41068,Osuna,Sevilla,17396,174,410042,12,410251,12,410251
+41068,Osuna,Sevilla,17396,174,410042,0,410251,0,410251
 41069,Los Palacios y Villafranca,Sevilla,38761,42,410021,42,410021,42,410021
 41070,Palomares del Río,Sevilla,9421,74,410042,40,410353,40,410353
 41071,Paradas,Sevilla,6762,,,,,,
@@ -6161,11 +6161,11 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 41088,San Nicolás del Puerto,Sevilla,604,,,,,,
 41089,Santiponce,Sevilla,8634,38,410042,38,410042,38,410042
 41090,El Saucejo,Sevilla,4189,121,290022,121,290022,121,290022
-41091,Sevilla,Sevilla,689423,29,410042,29,410042,21,410074
+41091,Sevilla,Sevilla,689423,0,410042,0,410042,0,410042
 41092,Tocina,Sevilla,9431,104,410042,104,410042,104,410042
 41093,Tomares,Sevilla,25432,37,410042,24,410353,24,410353
 41094,Umbrete,Sevilla,9455,71,410042,57,410353,41,410375
-41095,Utrera,Sevilla,52403,,,13,410386,13,410386
+41095,Utrera,Sevilla,52403,,,0,410386,0,410386
 41096,Valencina de la Concepción,Sevilla,8050,87,410042,60,410353,47,410375
 41097,Villamanrique de la Condesa,Sevilla,4694,144,410042,144,410042,144,410042
 41098,Villanueva del Ariscal,Sevilla,6965,58,410042,58,410042,58,410042
@@ -6320,7 +6320,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 42168,Santa María de las Hoyas,Soria,112,,,,,,
 42171,Serón de Nágima,Soria,125,,,,,,
 42172,Soliedra,Soria,37,,,,,,
-42173,Soria,Soria,41025,,,16,420011,16,420011
+42173,Soria,Soria,41025,,,0,420011,0,420011
 42174,Sotillo del Rincón,Soria,171,,,,,,
 42175,Suellacabras,Soria,32,,,,,,
 42176,Tajahuerce,Soria,22,,,,,,
@@ -6373,7 +6373,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 43011,Almoster,Tarragona,1384,92,430017,42,430094,42,430094
 43012,Altafulla,Tarragona,5870,45,430017,35,430043,35,430043
 43013,L'Ametlla de Mar,Tarragona,7446,113,430017,66,430167,66,430167
-43014,Amposta,Tarragona,23080,123,430017,4,430252,4,430252
+43014,Amposta,Tarragona,23080,123,430017,0,430252,0,430252
 43015,Arbolí,Tarragona,138,,,,,,
 43016,L'Arboç,Tarragona,5721,89,430017,29,430213,29,430213
 43017,L'Argentera,Tarragona,139,,,,,,
@@ -6451,7 +6451,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 43090,El Montmell,Tarragona,1958,116,080109,116,080109,116,080109
 43091,Mont-ral,Tarragona,174,,,,,,
 43092,Mont-roig del Camp,Tarragona,14615,101,430017,42,430108,42,430108
-43093,Móra d'Ebre,Tarragona,5811,120,430017,10,430081,10,430081
+43093,Móra d'Ebre,Tarragona,5811,120,430017,0,430081,0,430081
 43094,Móra la Nova,Tarragona,3350,125,430017,12,430081,12,430081
 43095,El Morell,Tarragona,3811,52,430017,52,430017,52,430017
 43096,La Morera de Montsant,Tarragona,150,,,,,,
@@ -6481,7 +6481,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 43120,Querol,Tarragona,611,122,430017,122,430017,122,430017
 43121,Rasquera,Tarragona,786,147,430017,47,430081,47,430081
 43122,Renau,Tarragona,165,101,430017,101,430017,101,430017
-43123,Reus,Tarragona,111601,43,430017,1,430108,1,430108
+43123,Reus,Tarragona,111601,43,430017,0,430094,0,430094
 43124,La Riba,Tarragona,574,90,430017,67,430228,67,430228
 43125,Riba-roja d'Ebre,Tarragona,1132,152,500021,114,430081,114,430081
 43126,La Riera de Gaià,Tarragona,1834,40,430017,32,430043,32,430043
@@ -6498,7 +6498,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 43137,Sant Jaume dels Domenys,Tarragona,2819,88,080109,57,430213,57,430213
 43138,Santa Bàrbara,Tarragona,3871,,,70,430167,70,430167
 43139,Santa Coloma de Queralt,Tarragona,2795,112,080109,53,081885,53,081885
-43140,Santa Oliva,Tarragona,3711,150,081347,30,430213,30,430213
+43140,Santa Oliva,Tarragona,3711,150,081347,0,430213,0,430213
 43141,Pontils,Tarragona,124,,,,,,
 43142,Sarral,Tarragona,1644,102,430017,102,430017,102,430017
 43143,Savallà del Comtat,Tarragona,49,,,123,081885,123,081885
@@ -6506,22 +6506,22 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 43145,La Selva del Camp,Tarragona,5732,73,430017,43,430094,43,430094
 43146,Senan,Tarragona,47,,,,,,
 43147,Solivella,Tarragona,633,,,,,,
-43148,Tarragona,Tarragona,143649,15,430017,2,430043,2,430043
+43148,Tarragona,Tarragona,143649,0,430017,0,430017,0,430017
 43149,Tivenys,Tarragona,948,,,42,430167,42,430167
 43150,Tivissa,Tarragona,1658,,,64,430081,64,430081
 43151,La Torre de Fontaubella,Tarragona,124,,,,,,
 43152,La Torre de l'Espanyol,Tarragona,641,,,83,430081,83,430081
 43153,Torredembarra,Tarragona,18237,55,430017,45,430213,45,430213
 43154,Torroja del Priorat,Tarragona,129,,,,,,
-43155,Tortosa,Tarragona,35997,110,430017,2,430189,2,430189
+43155,Tortosa,Tarragona,35997,110,430017,0,430167,0,430167
 43156,Ulldecona,Tarragona,6714,97,120017,30,120115,30,120115
 43157,Ulldemolins,Tarragona,389,,,95,430094,95,430094
 43158,Vallclara,Tarragona,91,,,,,,
 43159,Vallfogona de Riucorb,Tarragona,95,131,080109,82,081885,82,081885
 43160,Vallmoll,Tarragona,1997,48,430017,24,430228,24,430228
-43161,Valls,Tarragona,25518,53,430017,8,430228,8,430228
+43161,Valls,Tarragona,25518,53,430017,0,430228,0,430228
 43162,Vandellòs i l'Hospitalet de l'Infant,Tarragona,7143,122,430017,95,430094,95,430094
-43163,El Vendrell,Tarragona,41133,69,430017,10,430213,10,430213
+43163,El Vendrell,Tarragona,41133,69,430017,0,430298,0,430298
 43164,Vespella de Gaià,Tarragona,502,,,58,430043,58,430043
 43165,Vilabella,Tarragona,724,123,250019,88,430228,57,430056
 43166,Vilallonga del Camp,Tarragona,2495,56,430017,56,430017,56,430017
@@ -6556,7 +6556,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 44010,Albentosa,Teruel,290,,,55,440012,55,440012
 44011,Alcaine,Teruel,38,,,,,,
 44012,Alcalá de la Selva,Teruel,382,,,114,440012,114,440012
-44013,Alcañiz,Teruel,16505,,,63,440048,63,440048
+44013,Alcañiz,Teruel,16505,,,0,440048,0,440048
 44014,Alcorisa,Teruel,3243,,,141,440012,141,440012
 44016,Alfambra,Teruel,485,,,34,440012,34,440012
 44017,Aliaga,Teruel,344,,,96,440012,96,440012
@@ -6734,7 +6734,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 44212,Seno,Teruel,39,,,,,,
 44213,Singra,Teruel,76,,,99,440012,99,440012
 44215,Terriente,Teruel,198,,,,,,
-44216,Teruel,Teruel,36655,,,14,440012,14,440012
+44216,Teruel,Teruel,36655,,,0,440012,0,440012
 44217,Toril y Masegoso,Teruel,31,,,,,,
 44218,Tormón,Teruel,29,,,106,440012,106,440012
 44219,Tornos,Teruel,175,,,,,,
@@ -6943,10 +6943,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 45162,Sevilleja de la Jara,Toledo,635,,,,,104,450089
 45163,Sonseca,Toledo,11452,79,450144,79,450144,79,450144
 45164,Sotillo de las Palomas,Toledo,184,,,,,133,450089
-45165,Talavera de la Reina,Toledo,83803,128,280035,128,280035,8,450089
+45165,Talavera de la Reina,Toledo,83803,0,450067,0,450067,0,450067
 45166,Tembleque,Toledo,1992,66,450144,66,450144,66,450144
 45167,El Toboso,Toledo,1702,170,450144,95,130052,95,130052
-45168,Toledo,Toledo,87216,25,450144,18,450041,18,450041
+45168,Toledo,Toledo,87216,0,450144,0,450144,0,450144
 45169,Torralba de Oropesa,Toledo,186,,,,,,
 45170,Torrecilla de la Jara,Toledo,227,,,,,85,450089
 45171,La Torre de Esteban Hambrán,Toledo,1946,95,280035,95,280035,95,280035
@@ -7000,7 +7000,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46014,Albuixech,València,4482,22,460044,22,460044,22,460044
 46015,Alcàsser,València,10772,,,,,,
 46016,Alcàntera de Xúquer,València,1468,129,460018,129,460018,129,460018
-46017,Alzira,València,48236,22,460351,22,460351,22,460351
+46017,Alzira,València,48236,0,460351,0,460351,0,460351
 46018,Alcublas,València,710,,,84,460392,84,460392
 46019,l'Alcúdia,València,12587,51,460351,51,460351,51,460351
 46020,l'Alcúdia de Crespins,València,5548,72,460351,72,460351,72,460351
@@ -7061,12 +7061,12 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46075,Bufali,València,162,174,460018,174,460018,174,460018
 46076,Bugarra,València,774,,,,,,
 46077,Buñol,València,9858,,,,,,
-46078,Burjassot,València,41299,27,460060,22,460039,12,460404
+46078,Burjassot,València,41299,27,460060,22,460039,0,460404
 46079,Calles,València,465,,,60,460392,60,460392
 46080,Camporrobles,València,1183,,,75,460288,75,460288
 46081,Canals,València,13746,79,460351,79,460351,79,460351
 46082,Canet d'En Berenguer,València,8297,62,460044,62,460044,62,460044
-46083,Carcaixent,València,21934,42,460351,42,460351,42,460351
+46083,Carcaixent,València,21934,42,460351,42,460351,0,460333
 46084,Càrcer,València,1795,127,460018,127,460018,127,460018
 46085,Carlet,València,16857,67,460351,67,460351,67,460351
 46086,Carrícola,València,97,165,460351,71,460235,71,460235
@@ -7114,7 +7114,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46128,la Font de la Figuera,València,2022,156,460018,91,460235,91,460235
 46129,Fuenterrobles,València,678,,,,,,
 46130,Gavarda,València,1023,77,460351,77,460351,77,460351
-46131,Gandia,València,83135,84,460060,21,460207,3,460327
+46131,Gandia,València,83135,84,460060,0,460207,0,460207
 46132,el Genovés,València,2822,75,460351,60,460229,60,460229
 46133,Gestalgar,València,587,,,,,,
 46134,Gilet,València,4011,47,460044,47,460044,47,460044
@@ -7128,9 +7128,9 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46142,Jalance,València,808,,,81,020136,81,020136
 46143,Xeraco,València,6149,82,460060,72,460207,37,460327
 46144,Jarafuel,València,788,,,72,020136,72,020136
-46145,Xàtiva,València,31008,55,460351,42,460229,42,460229
+46145,Xàtiva,València,31008,55,460351,0,460229,0,460229
 46146,Xeresa,València,2418,139,460018,74,460207,74,460207
-46147,Llíria,València,25333,76,460060,37,460392,37,460392
+46147,Llíria,València,25333,76,460060,0,460392,0,460392
 46148,Loriguilla,València,2188,54,460018,54,460018,54,460018
 46149,Losa del Obispo,València,531,167,460018,47,460392,47,460392
 46150,Llutxent,València,2314,102,460351,74,460229,74,460229
@@ -7142,7 +7142,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46156,Llombai,València,2791,83,460351,83,460351,83,460351
 46157,la Llosa de Ranes,València,3765,,,,,,
 46158,Macastre,València,1461,,,,,,
-46159,Manises,València,32609,23,460370,23,460370,23,460370
+46159,Manises,València,32609,0,460370,0,460370,0,460370
 46160,Manuel,València,2560,,,,,,
 46161,Marines,València,1967,,,45,460392,45,460392
 46162,Massalavés,València,1905,70,460351,70,460351,70,460351
@@ -7167,7 +7167,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46181,Oliva,València,26813,72,030340,26,460207,26,460207
 46182,Olocau,València,2534,,,68,460392,68,460392
 46183,l'Olleria,València,8818,99,460351,70,460235,70,460235
-46184,Ontinyent,València,37012,128,460351,9,460235,9,460235
+46184,Ontinyent,València,37012,128,460351,0,460235,0,460235
 46185,Otos,València,442,,,86,460235,86,460235
 46186,Paiporta,València,28136,27,460018,27,460018,27,460018
 46187,Palma de Gandía,València,1897,140,030340,65,460207,65,460207
@@ -7196,14 +7196,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46210,Ráfol de Salem,València,463,,,92,460207,92,460207
 46211,el Real de Gandia,València,2722,150,460018,75,460207,25,460327
 46212,Real,València,2497,,,,,,
-46213,Requena,València,20982,152,460018,14,460288,14,460288
+46213,Requena,València,20982,152,460018,0,460288,0,460288
 46214,Riba-roja de Túria,València,24616,,,,,,
 46215,Riola,València,1820,77,460351,77,460351,77,460351
 46216,Rocafort,València,7751,30,460060,25,460039,25,460039
 46217,Rotglà i Corberà,València,1171,134,460018,134,460018,134,460018
 46218,Ròtova,València,1283,,,67,460207,67,460207
 46219,Rugat,València,165,,,82,460207,82,460207
-46220,Sagunt,València,73031,36,460044,36,460044,36,460044
+46220,Sagunt,València,73031,36,460044,0,460266,0,460266
 46221,Salem,València,407,,,85,460207,85,460207
 46222,Sant Joanet,València,527,,,,,,
 46223,Sedaví,València,10837,29,460018,29,460018,29,460018
@@ -7233,7 +7233,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 46247,Tuéjar,València,1278,,,72,460392,72,460392
 46248,Turís,València,7717,,,,,,
 46249,Utiel,València,11663,171,460018,28,460288,28,460288
-46250,València,València,840792,1,460060,1,460060,1,460060
+46250,València,València,840792,0,460018,0,460018,0,460018
 46251,Vallada,València,3091,174,460018,81,460229,81,460229
 46252,Vallanca,València,128,,,,,,
 46253,Vallés,València,161,,,,,,
@@ -7333,7 +7333,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 47082,Matapozuelos,Valladolid,977,,,,,,
 47083,Matilla de los Caños,Valladolid,116,,,,,,
 47084,Mayorga,Valladolid,1354,109,240016,109,240016,109,240016
-47085,Medina del Campo,Valladolid,20215,,,,,,
+47085,Medina del Campo,Valladolid,20215,,,0,470091,0,470091
 47086,Medina de Rioseco,Valladolid,4617,118,470029,118,470029,68,470113
 47087,Megeces,Valladolid,419,,,,,,
 47088,Melgar de Abajo,Valladolid,117,,,,,,
@@ -7430,7 +7430,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 47183,Valdunquillo,Valladolid,111,,,,,,
 47184,Valoria la Buena,Valladolid,740,,,,,,
 47185,Valverde de Campos,Valladolid,89,,,,,,
-47186,Valladolid,Valladolid,302614,10,470029,10,470029,7,470105
+47186,Valladolid,Valladolid,302614,0,470029,0,470029,0,470029
 47187,Vega de Ruiponce,Valladolid,81,,,,,,
 47188,Vega de Valdetronco,Valladolid,88,,,,,,
 47189,Velascálvaro,Valladolid,156,,,,,,
@@ -7487,14 +7487,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 48010,Arrieta,Bizkaia,582,82,480176,82,480176,82,480176
 48011,Arrigorriaga,Bizkaia,11939,29,480209,29,480209,29,480209
 48012,Bakio,Bizkaia,2857,80,480176,80,480176,80,480176
-48013,Barakaldo,Bizkaia,102986,19,480176,6,480182,6,480182
+48013,Barakaldo,Bizkaia,102986,0,480176,0,480176,0,480176
 48014,Barrika,Bizkaia,1513,93,480176,40,480327,40,480327
 48015,Basauri,Bizkaia,40274,23,480209,23,480209,19,480097
 48016,Berango,Bizkaia,8242,49,480176,36,480327,36,480327
 48017,Bermeo,Bizkaia,17038,73,480176,73,480176,73,480176
 48018,Berriatua,Bizkaia,1224,81,480209,69,200258,69,200258
 48019,Berriz,Bizkaia,4533,43,480209,43,480209,43,480209
-48020,Bilbao,Bizkaia,351124,18,480078,18,480078,10,480160
+48020,Bilbao,Bizkaia,351124,0,480078,0,480078,0,480078
 48021,Busturia,Bizkaia,1693,103,480176,103,480176,103,480176
 48022,Karrantza Harana,Bizkaia,2715,148,480176,148,480176,148,480176
 48023,Artea,Bizkaia,743,65,480209,65,480209,62,010040
@@ -7510,7 +7510,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 48033,Ereño,Bizkaia,275,122,480078,122,480078,122,480078
 48034,Ermua,Bizkaia,15516,72,480176,61,200258,61,200258
 48035,Fruiz,Bizkaia,591,171,480176,171,480176,171,480176
-48036,Galdakao,Bizkaia,24776,10,480209,10,480209,10,480209
+48036,Galdakao,Bizkaia,24776,0,480209,0,480209,0,480209
 48037,Galdames,Bizkaia,829,112,480176,112,480176,53,480255
 48038,Gamiz-Fika,Bizkaia,1414,88,480176,88,480176,88,480176
 48039,Garai,Bizkaia,332,,,,,,
@@ -7556,14 +7556,14 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 48079,Errigoiti,Bizkaia,499,88,480078,88,480078,88,480078
 48080,Valle de Trápaga-Trapagaran,Bizkaia,11797,30,480176,24,480182,21,480255
 48081,Lezama,Bizkaia,2430,41,480209,41,480209,41,480209
-48082,Santurtzi,Bizkaia,46442,25,480176,20,480182,8,480255
+48082,Santurtzi,Bizkaia,46442,25,480176,20,480182,0,480255
 48083,Ortuella,Bizkaia,8735,40,480176,31,480182,21,480255
 48084,Sestao,Bizkaia,28512,18,480176,13,480182,13,480182
 48085,Sopela,Bizkaia,15048,50,480176,29,480327,29,480327
 48086,Sopuerta,Bizkaia,2820,81,480078,81,480078,81,480078
 48087,Trucios-Turtzioz,Bizkaia,515,163,480176,163,480176,163,480176
 48088,Ubide,Bizkaia,167,104,010090,104,010090,42,010040
-48089,Urduliz,Bizkaia,6128,48,480176,9,480327,9,480327
+48089,Urduliz,Bizkaia,6128,48,480176,0,480327,0,480327
 48090,Balmaseda,Bizkaia,7718,79,480176,79,480176,79,480176
 48091,Atxondo,Bizkaia,1342,67,480209,67,480209,67,480209
 48092,Bedia,Bizkaia,1111,26,480209,26,480209,26,480209
@@ -7573,7 +7573,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 48096,Zalla,Bizkaia,8334,59,480176,59,480176,43,480059
 48097,Zaratamo,Bizkaia,1609,92,480176,92,480176,92,480176
 48901,Derio,Bizkaia,7294,47,480176,47,480176,32,480097
-48902,Erandio,Bizkaia,24659,18,480176,18,480176,16,480046
+48902,Erandio,Bizkaia,24659,18,480176,18,480176,0,480305
 48903,Loiu,Bizkaia,2364,59,480078,59,480078,34,480305
 48904,Sondika,Bizkaia,4670,36,480176,36,480176,21,480097
 48905,Zamudio,Bizkaia,3442,51,480176,51,480176,36,480097
@@ -7607,7 +7607,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 49018,Ayoó de Vidriales,Zamora,264,,,,,,
 49019,Barcial del Barco,Zamora,254,177,280014,37,490065,37,490065
 49020,Belver de los Montes,Zamora,252,,,,,,
-49021,Benavente,Zamora,17309,177,330292,3,490065,3,490065
+49021,Benavente,Zamora,17309,177,330292,0,490065,0,490065
 49022,Benegiles,Zamora,266,,,,,,
 49023,Bermillo de Sayago,Zamora,1028,,,,,,
 49024,La Bóveda de Toro,Zamora,682,,,,,,
@@ -7835,7 +7835,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 49271,Villaveza del Agua,Zamora,162,167,280014,47,490065,47,490065
 49272,Villaveza de Valverde,Zamora,72,,,,,,
 49273,Viñas,Zamora,148,,,,,,
-49275,Zamora,Zamora,59815,118,280014,15,490028,15,490028
+49275,Zamora,Zamora,59815,118,280014,0,490013,0,490013
 50001,Abanto,Zaragoza,78,,,,,,
 50002,Acered,Zaragoza,131,,,,,,
 50003,Agón,Zaragoza,135,,,,,,
@@ -7901,7 +7901,7 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 50064,Cabañas de Ebro,Zaragoza,473,99,500016,99,500016,99,500016
 50065,Cabolafuente,Zaragoza,50,,,,,,
 50066,Cadrete,Zaragoza,4688,114,500021,114,500021,114,500021
-50067,Calatayud,Zaragoza,20158,121,500021,121,500021,103,500223
+50067,Calatayud,Zaragoza,20158,121,500021,0,500153,0,500153
 50068,Calatorao,Zaragoza,2970,147,500021,147,500021,147,500021
 50069,Calcena,Zaragoza,65,,,,,,
 50070,Calmarza,Zaragoza,57,,,,,,
@@ -8124,10 +8124,10 @@ code,name,province,population,t1_min,t1_hospital,t2_min,t2_hospital,t3_min,t3_ho
 50294,Villarroya del Campo,Zaragoza,70,,,,,,
 50295,Vistabella,Zaragoza,51,,,,,,
 50296,La Zaida,Zaragoza,433,68,500021,68,500021,68,500021
-50297,Zaragoza,Zaragoza,693091,13,500021,2,500140,2,500140
+50297,Zaragoza,Zaragoza,693091,0,500021,0,500021,0,500021
 50298,Zuera,Zaragoza,8766,,,,,,
 50901,Biel,Zaragoza,166,,,,,,
 50902,Marracos,Zaragoza,82,,,,,,
 50903,Villamayor de Gállego,Zaragoza,2841,43,500021,43,500021,43,500021
-51001,Ceuta,Ceuta,83595,,,,,,
-52001,Melilla,Melilla,86780,,,11,520018,11,520018
+51001,Ceuta,Ceuta,83595,,,0,510039,0,510039
+52001,Melilla,Melilla,86780,,,0,520018,0,520018

@@ -189,7 +189,8 @@ Specialised, long-stay, mental-health and other inpatient centres are left out. 
 - **Coverage gaps:** 30 hospitals stay unreachable in TravelTime's data even after that, mostly where local
   buses are missing (e.g. Virgen de la Arrixaca in Murcia, Costa del Sol in Marbella, Ceuta's hospital).
   Places near them fall back to the next hospital; the list is in `hospitals.json` `params.notes` and on the page.
-  Ceuta therefore shows no hospital within 3 h.
+- **Hospital in town counts as close:** a municipality containing a hospital of the category gets 0 min to it
+  ("in town"), even when TravelTime has no transit from the town centre to it (e.g. Marbella, Ceuta, Cuenca).
 - **Caveat:** the catalogue doesn't say which private clinics have a 24 h emergency department.
 
 ```bash

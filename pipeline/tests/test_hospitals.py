@@ -313,3 +313,15 @@ def test_hospital_code_column_stays_text(tmp_path):
     p = tmp_path / "h.csv"
     write_csv(p, ["code", "t1_min", "t1_hospital"], [["01001", 30, "010090"]])
     assert p.with_suffix(".csvt").read_text().strip() == '"String","Integer","String"'
+
+
+def test_hospital_in_own_municipality_counts_as_close(monkeypatch, tmp_path):
+    """User decision: a town with its own hospital is close (0 min), even without transit data to it."""
+    places, dests, results, hs, rows = run(monkeypatch, tmp_path)
+    idx = {h["codcnh"]: i for i, h in enumerate(hs)}
+    # Ceuta's hospital is in Ceuta: 0 min for tiers 2 and 3, still none for tier 1
+    assert rows["51001"][0] == -1 and rows["51001"][2:6] == [0, idx["H4"], 0, idx["H4"]]
+    # Zaragoza hosts H5, which nobody reaches by public transport: still close
+    assert rows["50297"][2:4] == [0, idx["H5"]]
+    # Teruel hosts a public (H2) and a private (H3) hospital: own public one for tier 2
+    assert rows["44216"][2:4] == [0, idx["H2"]]

@@ -83,6 +83,10 @@ export function hospitalTooltip(
   const h = hi >= 0 ? d.hospitals[hi] : null
   const max = d.params.max_minutes
   if (!h) return `${head}<br><span class="muted">no ${HOSPITAL_TEXT[tier].noun.replace(/^an? /, '')} within ${max / 60} h</span>`
+  if (t === 0) {
+    const kind = HOSPITAL_TEXT[tier].noun.replace(/^an? /, '')
+    return `${head}<br><span class="big">In town</span><br>${kind[0].toUpperCase()}${kind.slice(1)} in this municipality: ${h[1]}`
+  }
   const town = muniName(h[2])
   return `${head}<br><span class="big">${fmt(t as number, max)}</span><br>to ${h[1]}${town ? ` (${town})` : ''}`
 }

@@ -33,6 +33,12 @@ same pattern as the airports map: JSON + CSV per municipality, a mode on the pag
 - Each hospital is computed once; aggregation picks the nearest per tier. Cache: `.cache/hospitals/<method>/`.
 - The `reach` per hospital is stored, as for airports. Hospitals nobody reaches are reported in `params.notes` (a hint that the arrival point didn't attach).
 
+## Hospital in town (decided with the user after review)
+
+A municipality that contains a hospital of the category counts as close: 0 min to its own hospital,
+tooltip "in town", even where TravelTime has no transit from the town centre to it (~660k people in
+Marbella, Cuenca, Estepona, Ceuta… had shown "none within 3 h").
+
 ## Output
 
 - `web/public/data/hospitals.json`:
