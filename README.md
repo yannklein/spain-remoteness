@@ -129,6 +129,16 @@ actually measure: average download, upload and latency per municipality, for fix
     Ookla counts devices per tile and quarter, so devices are summed over a municipality's tiles but not
     over quarters (one household testing every quarter is still one device). `*_devices` in the CSV is
     the busiest quarter's count.
+- **Estimates for places without enough local tests:** the tests of every tile within **10 km** of the
+  village's town centre are pooled, with the same evidence rule and weighting. Only tiles located in Spain
+  count. Estimates fill ~3,700 municipalities for fixed broadband; they are drawn paler on the map and kept
+  in separate `*_est_*` CSV columns. Measured values are never replaced.
+- **Official coverage (every municipality):** the share of households that *can* get ≥ 100 Mbps, ≥ 1 Gbps
+  and 5G, latest year (2025, situation at 30 June). Source: Ministerio para la Transformación Digital y de
+  la Función Pública (SETID), "Cobertura de banda ancha en España 2021–2025" (municipal file, downloaded
+  once into `.cache/internet/`). Shown in the tooltip and in `coverage_*_pct`; not used for colours.
+  It is often the more telling figure for villages: ~700 municipalities have under half of households
+  able to get 100 Mbps.
 - **What it shows:** wherever there are enough tests, fixed internet is fast. Practically nobody lives where
   measured fixed upload is under 10 Mbps. The gap is evidence: most municipalities under 1,000 people
   have too few tests.
@@ -140,7 +150,7 @@ actually measure: average download, upload and latency per municipality, for fix
     Portuguese or Gibraltar tiles, so they are left out.
 
 ```bash
-pip install -r pipeline/requirements.txt          # DuckDB, reads Ookla's Parquet files on S3
+pip install -r pipeline/requirements.txt          # DuckDB (Ookla Parquet on S3), openpyxl (coverage file)
 python3 pipeline/compute_internet.py              # latest 4 quarters; no API key needed (~4 min)
 python3 pipeline/compute_internet.py --quarters 2025-1,2025-2,2025-3,2025-4
 ```
@@ -157,7 +167,9 @@ Both datasets come as a flat CSV, one row per municipality, next to the JSON:
   routes) minutes to the nearest intercontinental / Europe / any airport, `*_airport` its IATA code.
 
 - `web/public/data/internet.csv`: `fixed_down_mbps`, `fixed_up_mbps`, `fixed_latency_ms`, `fixed_tests`,
-  `fixed_devices` and the same for `mobile_*`. Empty speed cells mean not enough speed tests.
+  `fixed_devices` and the same for `mobile_*` (measured; empty = not enough local tests), then
+  `fixed_est_*` / `mobile_est_*` (estimated from tests within 10 km, only where there is no measured value)
+  and `coverage_100mbps_pct`, `coverage_1gbps_pct`, `coverage_5g_pct` (official 2025 coverage).
 
 Empty cells in the first two mean over 3 hours or no airport/city reachable. Load the CSV as a delimited text layer
 without geometry and join it on `code` to a municipalities layer whose INE code is a 5-digit text field
@@ -206,4 +218,5 @@ cd web && npm install && npm run dev
 - Town centres: © OpenStreetMap contributors (ODbL)
 - Travel times: [TravelTime API](https://traveltime.com)
 - Internet speeds: [Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps](https://github.com/teamookla/ookla-open-data) (CC BY-NC-SA 4.0)
+- Broadband coverage: Ministerio para la Transformación Digital y de la Función Pública (SETID), [Información de cobertura](https://digital.gob.es/telecomunicaciones-infraestructuras-digitales/areas-interes/banda-ancha/informacion-cobertura)
 - Basemap: [OpenFreeMap](https://openfreemap.org) Positron

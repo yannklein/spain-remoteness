@@ -62,7 +62,8 @@ def test_output_has_every_municipality():
     out = ci.build_output(places, {}, [(2025, 4), (2026, 1)])
     assert len(out["m"]) == 8132
     pop = places["municipalities"][0]["pop"]
-    assert out["m"][places["municipalities"][0]["code"]] == [None, None, None, 0, 0, None, None, None, 0, 0, pop]
+    row = out["m"][places["municipalities"][0]["code"]]
+    assert row[:10] == [None, None, None, 0, 0, None, None, None, 0, 0] and row[21] == pop and len(row) == 22
     assert out["params"]["quarters"] == ["2025-Q4", "2026-Q1"]
     assert out["params"]["min_tests"] == 20 and out["params"]["min_devices"] == 5
     assert "CC BY-NC-SA 4.0" in out["params"]["licence"]
@@ -74,7 +75,7 @@ def test_internet_csv(tmp_path):
     agg = {munis[0]["code"]: {"fixed": [96.0, 18.4, 31, 120, 40]}}
     out = ci.build_output(places, agg, [(2026, 1)])
     header, rows = ci.internet_csv_rows(out, munis)
-    assert header == ["code", "name", "province", "population",
+    assert header[:14] == ["code", "name", "province", "population",
                       "fixed_down_mbps", "fixed_up_mbps", "fixed_latency_ms", "fixed_tests", "fixed_devices",
                       "mobile_down_mbps", "mobile_up_mbps", "mobile_latency_ms", "mobile_tests", "mobile_devices"]
     assert len(rows) == 8132
@@ -102,3 +103,79 @@ def test_fetch_quarter_uses_cache(monkeypatch, tmp_path):
 
     monkeypatch.setitem(sys.modules, "duckdb", NoDuck())
     assert ci.fetch_quarter("fixed", 2026, 1) == [tuple(t) for t in tiles]
+
+
+# --- gaps: estimates from nearby tests + official coverage -------------------
+
+def t_at(lng, lat, tests=10, devices=3, d=100_000, u=50_000, lt=20):
+    return (lng, lat, d, u, lt, tests, devices)
+
+
+CENTRES = {"A": (-3.0, 40.0), "B": (-3.5, 40.0)}
+
+
+def test_estimate_only_where_missing():
+    near = t_at(-3.05, 40.0, tests=25, devices=6)          # ~4 km from A
+    far = t_at(-3.0, 40.11, tests=100, devices=50)          # ~12 km from A
+    tiles = {"fixed": [[near, far]]}
+    located = {(near[0], near[1]): "Z", (far[0], far[1]): "Z"}
+    est = ci.estimate(tiles, located, CENTRES, {"fixed": {"A"}})
+    assert set(est) == {"A"}
+    assert est["A"]["fixed"] == [100.0, 50.0, 20, 25]
+
+
+def test_estimate_skips_foreign_tiles():
+    pt = t_at(-3.01, 40.0, tests=100, devices=50)
+    est = ci.estimate({"fixed": [[pt]]}, {(pt[0], pt[1]): None}, CENTRES, {"fixed": {"A"}})
+    assert est == {} or est["A"]["fixed"][3] == 0
+
+
+def test_estimate_evidence_rule():
+    q = [[t_at(-3.01, 40.0, tests=t, devices=d)] for t, d in ((7, 1), (6, 1), (6, 2), (6, 1))]
+    located = {(-3.01, 40.0): "Z"}
+    est = ci.estimate({"fixed": q}, located, CENTRES, {"fixed": {"A"}})
+    assert est["A"]["fixed"] == [None, None, None, 25]
+
+
+def test_read_coverage_fixture(tmp_path):
+    import openpyxl
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Municipio_%hogar"
+    ws.append(["Comunidad Autónoma", "Provincia", "CMUN", "Municipio", "Habitantes", "Hogares", None,
+               "Cob. 100Mbps condiciones máxima demanda\n(junio 2024)", "Cob. 100Mbps condiciones máxima demanda\n(junio 2025)",
+               "Cob. 1Gbps descarga condiciones máxima demanda\n(junio 2025)",
+               "5G\n(junio 2025)", "5G-Banda 3,5GHz\n(junio 2025)"])
+    ws.append(["X", "Y", "01001", "A", 1, 1, None, 0.5, 0.987, 0.955, 1.0000004, 0.1])
+    ws.append(["X", "Y", 2003, "B", 1, 1, None, 0.5, None, 0.2, 0.3, 0.9])
+    p = tmp_path / "cov.xlsx"
+    wb.save(p)
+    year, cov = ci.read_coverage(p)
+    assert year == 2025
+    assert cov["01001"] == [99, 96, 100]
+    assert cov["02003"] == [None, 20, 30]
+
+
+def test_output_row_layout(tmp_path):
+    from common import write_csv
+    places = load_json(PLACES_FILE)
+    munis = places["municipalities"]
+    a, b = munis[0]["code"], munis[1]["code"]
+    agg = {a: {"fixed": [300.0, 200.0, 10, 500, 60]}}
+    est = {b: {"fixed": [150.5, 80.2, 25, 340]}}
+    cov = {a: [99, 96, 100], b: [80, 70, 95]}
+    out = ci.build_output(places, agg, [(2026, 1)], est=est, coverage=cov, coverage_year=2025)
+    ra, rb = out["m"][a], out["m"][b]
+    assert len(ra) == 22 and ra[21] == munis[0]["pop"]
+    assert ra[10:14] == [None, None, None, None]                    # measured -> no estimate
+    assert rb[10:14] == [150.5, 80.2, 25, 340] and rb[18:21] == [80, 70, 95]
+    assert out["params"]["estimate_radius_km"] == 10 and out["params"]["coverage"]["year"] == 2025
+    header, rows = ci.internet_csv_rows(out, munis)
+    assert header[-11:] == ["fixed_est_down_mbps", "fixed_est_up_mbps", "fixed_est_latency_ms", "fixed_est_tests",
+                            "mobile_est_down_mbps", "mobile_est_up_mbps", "mobile_est_latency_ms", "mobile_est_tests",
+                            "coverage_100mbps_pct", "coverage_1gbps_pct", "coverage_5g_pct"]
+    p = tmp_path / "i.csv"
+    write_csv(p, header, rows)
+    types = dict(zip(header, p.with_suffix(".csvt").read_text().strip().split(",")))
+    assert types["fixed_est_down_mbps"] == '"Real"' and types["coverage_100mbps_pct"] == '"Integer"'
+    assert types["fixed_est_tests"] == '"Integer"'
