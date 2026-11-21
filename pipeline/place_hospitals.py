@@ -1,0 +1,219 @@
+"""Place catalogue hospitals on the map, using OpenStreetMap.
+
+Each hospital of the Catálogo Nacional de Hospitales (tiers 1-3) is matched to an
+OSM `amenity=hospital` in the same municipality by name. Its arrival point is the
+nearest public transport stop within STOP_RADIUS_M of the OSM hospital (TravelTime
+can't attach points inside a campus to its walking network), else an entrance on
+the hospital outline, else the OSM centre. Hospitals OSM doesn't have are geocoded
+from their address with Nominatim, then get the same stop rule.
+
+Writes data/hospitals.json (committed, so positions can be reviewed and fixed).
+Usage: python pipeline/place_hospitals.py
+"""
+
+import json
+import re
+import time
+import unicodedata
+import urllib.parse
+
+import hospitals as catalogue
+from common import DATA, PLACES_FILE, USER_AGENT, dump_json, haversine_km, http, load_json
+from geo import MuniIndex, load_municipalities
+
+OUTPUT = DATA / "hospitals.json"
+OVERPASS = "https://overpass-api.de/api/interpreter"
+NOMINATIM = "https://nominatim.openstreetmap.org/search"
+STOP_RADIUS_M = 400
+MIN_OVERLAP = 0.5
+GENERIC = {
+    "hospital", "hospitales", "clinica", "clinic", "clinico", "universitario", "universitaria", "universitari",
+    "general", "comarcal", "de", "del", "la", "las", "el", "los", "l", "d", "i", "y", "e", "en", "s", "a",
+    "centro", "centre", "sanitario", "medico", "complejo", "hospitalario", "consorci", "fundacion", "fundacio",
+    "grupo", "sl", "slu", "sa", "hosp", "h", "u",
+    # Basque / Galician / Catalan generic words
+    "ospitalea", "ospitala", "osi", "organizacion", "sanitaria", "integrada", "complexo", "publico", "publica",
+    "da", "do", "das", "dos", "alto",
+}
+OVERRIDES = DATA / "hospital_overrides.json"  # keyed by CODCNH (catalogue code), not municipality
+OSM_CACHE = catalogue.CACHE / "osm_hospitals.json"
+
+
+def normalise(name):
+    s = unicodedata.normalize("NFKD", name or "").encode("ascii", "ignore").decode().lower()
+    tokens = re.findall(r"[a-z0-9]+", s)
+    return " ".join(t for t in tokens if t not in GENERIC)
+
+
+def _same_word(a, b):
+    """Equal, or sharing a long beginning: Basque genitives (Zumarraga / Zumarragako, Bidasoa / Bidasoko)."""
+    if a == b:
+        return True
+    n = 0
+    for x, y in zip(a, b):
+        if x != y:
+            break
+        n += 1
+    return n >= 5 and n >= 0.7 * min(len(a), len(b))
+
+
+def _overlap(a, b):
+    ta, tb = set(normalise(a).split()), set(normalise(b).split())
+    if not ta or not tb:
+        return 0.0
+    small, big = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    return sum(1 for w in small if any(_same_word(w, v) for v in big)) / len(small)
+
+
+def match(hosp, osm_hospitals):
+    """Best-named OSM hospital in the same municipality, or None."""
+    best, score = None, 0.0
+    for o in osm_hospitals:
+        if o["muni"] != hosp["muni"]:
+            continue
+        s = _overlap(hosp["name"], o.get("name", ""))
+        if s > score:
+            best, score = o, s
+    return best if score >= MIN_OVERLAP else None
+
+
+def apply_override(h, overrides, osm_hospitals):
+    """Hand-set anchor from data/hospital_overrides.json: {codcnh: {"osm_name": ...} or {"lat", "lng"}}."""
+    o = overrides.get(h["codcnh"])
+    if not o:
+        return None
+    if "osm_name" in o:
+        return next((dict(c, osm_id=c["id"], via="override") for c in osm_hospitals if c.get("name") == o["osm_name"]), None)
+    return {"lat": o["lat"], "lng": o["lng"], "entrances": [], "osm_id": None, "via": "override", "id": None}
+
+
+def pick_point(h, stops):
+    """(lat, lng, source, stop_name): closest stop within STOP_RADIUS_M, else an entrance, else the centre."""
+    best, dist = None, STOP_RADIUS_M / 1000
+    for s in stops:
+        d = haversine_km(h["lat"], h["lng"], s["lat"], s["lng"])
+        if d <= dist:
+            best, dist = s, d
+    if best:
+        return best["lat"], best["lng"], "stop", best.get("name")
+    if h.get("entrances"):
+        lat, lng = h["entrances"][0]
+        return lat, lng, "entrance", None
+    return h["lat"], h["lng"], "osm", None
+
+
+STOP_FILTERS = ('["highway"="bus_stop"]', '["public_transport"="platform"]', '["public_transport"="stop_position"]',
+                '["railway"~"^(station|halt|tram_stop)$"]', '["station"="subway"]')
+
+
+def _overpass(query):
+    body = ("data=" + urllib.parse.quote(query)).encode()
+    return json.loads(http(OVERPASS, data=body, timeout=400))["elements"]
+
+
+def fetch_osm_hospitals():
+    """OSM hospitals in Spain with centre, name and outline entrances (cached)."""
+    if OSM_CACHE.exists():
+        return load_json(OSM_CACHE)
+    q = """[out:json][timeout:300];
+area["ISO3166-1"="ES"][admin_level=2]->.es;
+nwr["amenity"="hospital"](area.es)->.h;
+.h out center tags;
+way.h; node(w)["entrance"];
+out;"""
+    els = _overpass(q)
+    hosp, entr = [], {}
+    for e in els:
+        if e.get("tags", {}).get("amenity") == "hospital":
+            c = e.get("center") or {"lat": e.get("lat"), "lon": e.get("lon")}
+            if c.get("lat") is None:
+                continue
+            hosp.append({"id": f"{e['type'][0]}{e['id']}", "name": e["tags"].get("name", ""),
+                         "lat": c["lat"], "lng": c["lon"], "entrances": []})
+        elif "entrance" in e.get("tags", {}):
+            entr[e["id"]] = (e["lat"], e["lon"])
+    # attach entrances to the hospital whose centre is closest (they come from hospital outlines)
+    for lat, lng in entr.values():
+        near = min(hosp, key=lambda h: (h["lat"] - lat) ** 2 + (h["lng"] - lng) ** 2, default=None)
+        if near and haversine_km(lat, lng, near["lat"], near["lng"]) < 1:
+            near["entrances"].append((lat, lng))
+    dump_json(hosp, OSM_CACHE, compact=True)
+    return hosp
+
+
+def fetch_stops(points):
+    """Public transport stops within STOP_RADIUS_M of any of the given (lat, lng) points."""
+    stops = []
+    for i in range(0, len(points), 150):
+        chunk = points[i:i + 150]
+        parts = "".join(f"node{f}(around:{STOP_RADIUS_M},{lat},{lng});" for lat, lng in chunk for f in STOP_FILTERS)
+        for e in _overpass(f"[out:json][timeout:300];({parts});out;"):
+            stops.append({"lat": e["lat"], "lng": e["lon"], "name": e.get("tags", {}).get("name")})
+        time.sleep(2)
+    return stops
+
+
+def geocode(h, muni_name):
+    q = {"q": f"{h['address']}, {h['postcode']} {muni_name}, España", "format": "json", "limit": 1, "countrycodes": "es"}
+    time.sleep(1.1)  # Nominatim usage policy: max 1 request per second
+    res = json.loads(http(NOMINATIM + "?" + urllib.parse.urlencode(q), headers={"User-Agent": USER_AGENT}, timeout=60))
+    if not res:
+        q["q"] = f"{h['name']}, {muni_name}, España"
+        time.sleep(1.1)
+        res = json.loads(http(NOMINATIM + "?" + urllib.parse.urlencode(q), headers={"User-Agent": USER_AGENT}, timeout=60))
+    if not res and h.get("postcode"):  # last resort: the postcode area within the municipality
+        q = {"postalcode": h["postcode"], "city": muni_name, "country": "España", "format": "json", "limit": 1}
+        time.sleep(1.1)
+        res = json.loads(http(NOMINATIM + "?" + urllib.parse.urlencode(q), headers={"User-Agent": USER_AGENT}, timeout=60))
+        if res:
+            return float(res[0]["lat"]), float(res[0]["lon"]), "postcode"
+    return (float(res[0]["lat"]), float(res[0]["lon"]), "address") if res else None
+
+
+def main():
+    places = {m["code"]: m for m in load_json(PLACES_FILE)["municipalities"]}
+    hosps = [h for h in catalogue.read_catalogue(catalogue.fetch_catalogue()) if h["tier"]]
+    index = MuniIndex(load_municipalities())
+    osm = fetch_osm_hospitals()
+    for o in osm:
+        o["muni"] = index.locate(o["lng"], o["lat"])
+    print(f"{len(hosps)} catalogue hospitals, {len(osm)} OSM hospitals")
+
+    overrides = load_json(OVERRIDES) if OVERRIDES.exists() else {}
+    anchors = {}  # codcnh -> {"lat","lng","entrances","osm_id","via"}
+    for h in hosps:
+        o = apply_override(h, overrides, osm)
+        if o:
+            anchors[h["codcnh"]] = o
+            continue
+        o = match(h, osm)
+        if o:
+            anchors[h["codcnh"]] = dict(o, osm_id=o["id"], via="osm")
+    missing = [h for h in hosps if h["codcnh"] not in anchors]
+    print(f"matched in OSM: {len(anchors)}; geocoding {len(missing)} with Nominatim")
+    for h in missing:
+        p = geocode(h, places.get(h["muni"], {}).get("name", ""))
+        if p:
+            via = "nominatim" if p[2] == "address" else "postcode"
+            anchors[h["codcnh"]] = {"lat": p[0], "lng": p[1], "entrances": [], "osm_id": None, "via": via}
+        else:
+            print(f"  not found: {h['name']} ({h['muni']})")
+
+    stops = fetch_stops([(a["lat"], a["lng"]) for a in anchors.values()])
+    out = []
+    for h in hosps:
+        a = anchors.get(h["codcnh"])
+        if not a:
+            continue
+        lat, lng, source, stop_name = pick_point(a, stops)
+        if a["via"] in ("nominatim", "postcode", "override"):
+            source = f"{a['via']}+stop" if source == "stop" else a["via"]
+        out.append(dict(h, lat=round(lat, 6), lng=round(lng, 6), point_source=source,
+                        osm_id=a["osm_id"], stop_name=stop_name))
+    dump_json(out, OUTPUT)
+    from collections import Counter
+    print("placed:", len(out), dict(Counter(x["point_source"] for x in out)))
+
+
+if __name__ == "__main__":
+    main()
