@@ -86,7 +86,7 @@ def read_hospitals_fr(finess_path, urgences_path):
         category, sph = f[18], f[26]
         public = sph in PUBLIC_SPH or category in PUBLIC_CATEGORIES or category == "355"
         tier = 1 if category == "101" else 2 if public else 3
-        out.append({"codcnh": fi, "name": (f[4] or f[3]).strip().title(), "muni": commune_of(dep, f[12]),
+        out.append({"codcnh": fi, "name": (f[4] or f[3]).strip().strip('"').strip().title(), "muni": commune_of(dep, f[12]),
                     "address": " ".join(x for x in (f[7], f[8], f[9]) if x), "postcode": f[15][:5],
                     "beds": None, "cls": category, "public": public, "cath_lab": False, "tier": tier,
                     "lat": round(lat, 6), "lng": round(lng, 6)})

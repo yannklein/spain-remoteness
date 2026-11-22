@@ -27,11 +27,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 45.748509,
-  "lng": 5.680762,
-  "point_source": "stop",
+  "lat": 45.75105,
+  "lng": 5.684403,
+  "point_source": "stop+nudged400",
   "osm_id": null,
-  "stop_name": "Hôpital"
+  "stop_name": null
  },
  {
   "codcnh": "010005239",
@@ -775,9 +775,9 @@
   "public": false,
   "cath_lab": false,
   "tier": 3,
-  "lat": 43.220831,
+  "lat": 43.224424,
   "lng": 2.306211,
-  "point_source": "finess",
+  "point_source": "finess+nudged400",
   "osm_id": null,
   "stop_name": null
  },
@@ -1599,7 +1599,7 @@
  },
  {
   "codcnh": "190000018",
-  "name": "\"Centre Hospitalier \"\"Dubois\"\"  Brive\"",
+  "name": "Centre Hospitalier \"\"Dubois\"\"  Brive",
   "muni": "19031",
   "address": "3 BD DOCTEUR VERLHAC",
   "postcode": "19312",
@@ -1795,9 +1795,9 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 48.771712,
+  "lat": 48.769915,
   "lng": -3.469076,
-  "point_source": "finess",
+  "point_source": "finess+nudged200",
   "osm_id": null,
   "stop_name": null
  },
@@ -3810,7 +3810,7 @@
  {
   "codcnh": "400015103",
   "name": "Gcs Pays De L'Adour",
-  "muni": "40001",
+  "muni": "32027",
   "address": "16 R CHANTEMERLE",
   "postcode": "40800",
   "beds": null,
@@ -3818,9 +3818,9 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 43.713438,
-  "lng": -0.240542,
-  "point_source": "finess",
+  "lat": 43.710897,
+  "lng": -0.237027,
+  "point_source": "finess+nudged400",
   "osm_id": null,
   "stop_name": null
  },
@@ -4583,11 +4583,11 @@
   "public": true,
   "cath_lab": false,
   "tier": 2,
-  "lat": 48.715656,
+  "lat": 48.719249,
   "lng": 4.597762,
-  "point_source": "stop",
+  "point_source": "stop+nudged400",
   "osm_id": null,
-  "stop_name": "Hôpital"
+  "stop_name": null
  },
  {
   "codcnh": "510004302",
@@ -4907,8 +4907,8 @@
   "cath_lab": false,
   "tier": 2,
   "lat": 48.091352,
-  "lng": -2.913245,
-  "point_source": "finess",
+  "lng": -2.910555,
+  "point_source": "finess+nudged200",
   "osm_id": null,
   "stop_name": null
  },
@@ -5611,7 +5611,7 @@
  },
  {
   "codcnh": "610000077",
-  "name": "\"Centre Hospitalier \"\"Marguerite De Lorraine\"\"-Mortagne\"",
+  "name": "Centre Hospitalier \"\"Marguerite De Lorraine\"\"-Mortagne",
   "muni": "61293",
   "address": "9 R DE LONGNY",
   "postcode": "61400",
@@ -5815,7 +5815,7 @@
  },
  {
   "codcnh": "620025346",
-  "name": "\"Polyclinique De La \"\"Clarence\"\"\"",
+  "name": "Polyclinique De La \"\"Clarence",
   "muni": "62270",
   "address": "R DU DOCTEUR LEGAY",
   "postcode": "62460",
@@ -6818,7 +6818,7 @@
  },
  {
   "codcnh": "710978289",
-  "name": "\"Ch \"\"Les Chanaux\"\" Macon\"",
+  "name": "Ch \"\"Les Chanaux\"\" Macon",
   "muni": "71270",
   "address": "350 BD LOUIS ESCANDE",
   "postcode": "71000",
@@ -8756,7 +8756,7 @@
  },
  {
   "codcnh": "870000064",
-  "name": "\"Centre Hospitalier Universitaire \"\"Dupuytren\"\" Limoges\"",
+  "name": "Centre Hospitalier Universitaire \"\"Dupuytren\"\" Limoges",
   "muni": "87085",
   "address": "2 AV MARTIN LUTHER KING",
   "postcode": "87042",

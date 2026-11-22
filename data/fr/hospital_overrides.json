@@ -1,0 +1,62 @@
+{
+ "010000032": {
+  "lat": 45.75105,
+  "lng": 5.684403,
+  "exact": true,
+  "source": "stop+nudged400",
+  "note": "moved 400 m so TravelTime attaches (Centre Hospitalier Bugey Sud)"
+ },
+ "110780483": {
+  "lat": 43.224424,
+  "lng": 2.306211,
+  "exact": true,
+  "source": "finess+nudged400",
+  "note": "moved 400 m so TravelTime attaches (Polyclinique Montreal Carcassonne)"
+ },
+ "160000303": {
+  "unattachable_at": [
+   45.477152,
+   -0.126546
+  ]
+ },
+ "220000368": {
+  "lat": 48.769915,
+  "lng": -3.469076,
+  "exact": true,
+  "source": "finess+nudged200",
+  "note": "moved 200 m so TravelTime attaches (Centre Hospitalier De Lannion)"
+ },
+ "400015103": {
+  "lat": 43.710897,
+  "lng": -0.237027,
+  "exact": true,
+  "source": "finess+nudged400",
+  "note": "moved 400 m so TravelTime attaches (Gcs Pays De L'Adour)"
+ },
+ "510000250": {
+  "lat": 48.719249,
+  "lng": 4.597762,
+  "exact": true,
+  "source": "stop+nudged400",
+  "note": "moved 400 m so TravelTime attaches (Centre Hospitalier Vitry Le Francois)"
+ },
+ "560000143": {
+  "lat": 48.091352,
+  "lng": -2.910555,
+  "exact": true,
+  "source": "finess+nudged200",
+  "note": "moved 200 m so TravelTime attaches (Chcb Site Kerio)"
+ },
+ "650784218": {
+  "unattachable_at": [
+   43.119021,
+   0.412117
+  ]
+ },
+ "840000343": {
+  "unattachable_at": [
+   43.862326,
+   5.362515
+  ]
+ }
+}
