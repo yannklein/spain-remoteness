@@ -23,6 +23,7 @@ def paths(cc):
         airports_json=out / "airports.json", airports_csv=out / "airports.csv", airports_cache=cache / "airports",
         internet_json=out / "internet.json", internet_csv=out / "internet.csv", internet_cache=cache / "internet",
         hospitals_json=out / "hospitals.json", hospitals_csv=out / "hospitals.csv", hospitals_cache=cache / "hospitals",
+        housing_json=out / "housing.json", housing_csv=out / "housing.csv", housing_cache=cache / "housing",
         hospitals_placed=data / "hospitals.json", hospital_overrides=data / "hospital_overrides.json",
     )
 
@@ -136,7 +137,7 @@ def write_csv(path, header, rows):
         for r in rows:
             w.writerow(["" if v is None else v for v in r])
     def kind(i, c):
-        if c in TEXT_COLUMNS or c.endswith(("_city", "_airport", "_hospital", "_via")):
+        if c in TEXT_COLUMNS or c.endswith(("_city", "_airport", "_hospital", "_via", "_source")):
             return '"String"'
         return '"Real"' if any(isinstance(r[i], float) for r in rows) else '"Integer"'
 
