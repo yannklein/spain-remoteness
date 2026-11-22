@@ -1,0 +1,135 @@
+/**
+ * Gems: small municipalities that meet the user's thresholds for internet, city, airport and hospital.
+ * Pure logic, shared by the map colours, the counts, the list and the tooltip (one judge, no drift).
+ * Feature properties come from the other modes: t1..t3 / dt (cities), y1..s3 (airports),
+ * hm1..hm3 (hospitals), fd/md (measured download) and fed/med (estimated download).
+ */
+import type { Tier } from './airports'
+
+export type NetKind = 'fixed' | 'mobile' | 'either'
+export interface Limit { tier: Tier; max: number }
+export interface GemFilters {
+  pop: number | null // largest population a gem may have; null = any size
+  net: { kind: NetKind; min: number } | null // minimum download in Mbps; null = criterion off
+  est: boolean // count estimates from nearby speed tests
+  city: Limit | null
+  air: Limit | null
+  summer: boolean // count seasonal flights
+  hosp: Limit | null
+}
+
+export const DEFAULTS: GemFilters = {
+  pop: 20000,
+  net: { kind: 'fixed', min: 100 },
+  est: true,
+  city: { tier: 2, max: 60 },
+  air: { tier: 2, max: 90 },
+  summer: false,
+  hosp: { tier: 2, max: 45 },
+}
+
+export const POP_CHOICES = [1000, 2000, 5000, 10000, 20000, 50000]
+export const NET_CHOICES = [10, 25, 50, 100, 300]
+export const TIME_CHOICES = [30, 45, 60, 90, 120, 150, 180]
+export const HOSP_TIME_CHOICES = [15, 30, 45, 60, 90, 120, 180]
+
+export type Crit = 'net' | 'city' | 'air' | 'hosp'
+export interface Check { crit: Crit; value: number | null; ok: boolean; est?: boolean }
+/** 0 other, 1 near miss (exactly one criterion missed), 2 gem, 3 too big to be a gem. */
+export type GemClass = 0 | 1 | 2 | 3
+export interface Verdict { cls: GemClass; checks: Check[] }
+
+const num = (v: unknown): number | null => (typeof v === 'number' && v >= 0 ? v : null)
+
+/** Download in Mbps for one connection kind: measured, else (if allowed) the estimate. */
+function download(p: Record<string, unknown>, k: 'f' | 'm', est: boolean): { v: number | null; est: boolean } {
+  const measured = num(p[`${k}d`])
+  if (measured !== null) return { v: measured, est: false }
+  const e = est ? num(p[`${k}ed`]) : null
+  return { v: e, est: e !== null }
+}
+
+function minutes(value: number | null, max: number, crit: Crit): Check {
+  return { crit, value, ok: value !== null && value <= max }
+}
+
+export function judge(p: Record<string, unknown>, f: GemFilters): Verdict {
+  const checks: Check[] = []
+  if (f.net) {
+    const fixed = download(p, 'f', f.est)
+    const mobile = download(p, 'm', f.est)
+    const pick =
+      f.net.kind === 'fixed' ? fixed
+        : f.net.kind === 'mobile' ? mobile
+          : (mobile.v ?? -1) > (fixed.v ?? -1) ? mobile : fixed
+    checks.push({ crit: 'net', value: pick.v, ok: pick.v !== null && pick.v >= f.net.min, ...(pick.est ? { est: true } : {}) })
+  }
+  if (f.city) {
+    const dt = num(p.dt) ?? 0
+    // a place that is itself a city of the chosen tier is there already
+    checks.push(minutes(dt > 0 && dt <= f.city.tier ? 0 : num(p[`t${f.city.tier}`]), f.city.max, 'city'))
+  }
+  if (f.air) checks.push(minutes(num(p[`${f.summer ? 's' : 'y'}${f.air.tier}`]), f.air.max, 'air'))
+  if (f.hosp) checks.push(minutes(num(p[`hm${f.hosp.tier}`]), f.hosp.max, 'hosp'))
+
+  const pop = num(p.pop)
+  if (f.pop !== null && pop !== null && pop > f.pop) return { cls: 3, checks }
+  const fails = checks.filter((c) => !c.ok).length
+  return { cls: fails === 0 ? 2 : fails === 1 ? 1 : 0, checks }
+}
+
+const limitText = (l: Limit | null) => (l ? `${l.tier}:${l.max}` : 'off')
+
+/** Query part of the hash: "pop=20000&net=fixed:100&est=1&city=2:60&air=2:90&summer=0&hosp=2:45". */
+export function formatHash(f: GemFilters): string {
+  return [
+    `pop=${f.pop ?? 'any'}`,
+    `net=${f.net ? `${f.net.kind}:${f.net.min}` : 'off'}`,
+    `est=${f.est ? 1 : 0}`,
+    `city=${limitText(f.city)}`,
+    `air=${limitText(f.air)}`,
+    `summer=${f.summer ? 1 : 0}`,
+    `hosp=${limitText(f.hosp)}`,
+  ].join('&')
+}
+
+const positive = (s: string | undefined): number | null => {
+  const n = Number(s)
+  return s && Number.isFinite(n) && n > 0 ? n : null
+}
+
+function parseLimit(s: string | null, fallback: Limit | null): Limit | null {
+  if (s === null) return fallback
+  if (s === 'off') return null
+  const [t, m] = s.split(':')
+  const tier = Number(t)
+  const max = positive(m)
+  return (tier === 1 || tier === 2 || tier === 3) && max !== null ? { tier, max } : fallback
+}
+
+const parseBool = (s: string | null, fallback: boolean) => (s === '1' ? true : s === '0' ? false : fallback)
+
+/** Settings from the hash query; anything missing or unreadable keeps its default. */
+export function parseHash(query: string): GemFilters {
+  const q = new URLSearchParams(query)
+  const d = DEFAULTS
+  const popS = q.get('pop')
+  const pop = popS === null ? d.pop : popS === 'any' ? null : positive(popS) ?? d.pop
+  let net = d.net
+  const netS = q.get('net')
+  if (netS === 'off') net = null
+  else if (netS) {
+    const [kind, min] = netS.split(':')
+    const m = positive(min)
+    if ((kind === 'fixed' || kind === 'mobile' || kind === 'either') && m !== null) net = { kind, min: m }
+  }
+  return {
+    pop,
+    net,
+    est: parseBool(q.get('est'), d.est),
+    city: parseLimit(q.get('city'), d.city),
+    air: parseLimit(q.get('air'), d.air),
+    summer: parseBool(q.get('summer'), d.summer),
+    hosp: parseLimit(q.get('hosp'), d.hosp),
+  }
+}
