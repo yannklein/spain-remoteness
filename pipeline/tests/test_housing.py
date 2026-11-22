@@ -48,9 +48,10 @@ def test_province_csv_latest_free_market_quarter():
     text = ("﻿Año;Trimestre;Valor;Régimen;CPRO;Provincia;Comunidad_Autónoma;CODAUTO\n"
             "2026;1;1000,5;Libre;4;Almería;Andalucía;1\n2026;2;1010,0;Libre;4;Almería;Andalucía;1\n"
             "2026;2;;Protegida;4;Almería;Andalucía;1\n2026;2;900;Libre;44;Teruel;Aragón;2\n2026;3;;Libre;44;Teruel;Aragón;2\n"
-            "2026;2;4000;Libre;;Total CCAA;Madrid;13\n2026;2;1500;Libre;;Total CCAA;Andalucía;1\n")
-    # single-province regions (Madrid) only appear as region totals; other totals are ignored
-    assert ch.read_province_csv(text) == ("2026 Q2", {"04": 1010.0, "44": 900.0, "28": 4000.0})
+            "2026;2;4000;Libre;;Total CCAA;Madrid, Comunidad de;13\n2026;2;1500;Libre;;Total CCAA;Andalucía;1\n"
+            "2026;2;1936,4;Libre;;Total CCAA;Navarra, Comunidad Foral de;15\n2026;2;1350,1;Libre;;Total CCAA;Murcia, Region de;\n")
+    # single-province regions only appear as region totals, matched by name (their CODAUTO is unreliable)
+    assert ch.read_province_csv(text) == ("2026 Q2", {"04": 1010.0, "44": 900.0, "28": 4000.0, "31": 1936.4, "30": 1350.1})
 
 
 def test_anil_marks_pooled_or_weak_predictions_as_area_model():
@@ -94,3 +95,17 @@ def test_anil_arrondissements_merge_into_their_city():
     rows = [{"INSEE_C": "75101", "loypredm2": "30", "TYPPRED": "commune", "nbobs_com": "100", "R2_adj": "0,8"},
             {"INSEE_C": "75120", "loypredm2": "20", "TYPPRED": "commune", "nbobs_com": "300", "R2_adj": "0,8"}]
     assert ch.read_anil(rows) == {"75056": (22.5, 400, 0)}
+
+
+def test_merged_city_is_an_area_model_when_most_listings_are_weak():
+    rows = [{"INSEE_C": "75101", "loypredm2": "30", "TYPPRED": "maille", "nbobs_com": "300", "R2_adj": "0,8"},
+            {"INSEE_C": "75102", "loypredm2": "20", "TYPPRED": "commune", "nbobs_com": "100", "R2_adj": "0,8"}]
+    assert ch.read_anil(rows)["75056"][2] == 3
+
+
+def test_dvf_implausible_medians_are_dropped():
+    rows = [{"code_geo": "59116", "echelle_geo": "commune", "nb_ventes_whole_appartement": "5",
+             "med_prix_m2_whole_appartement": "220000", "nb_ventes_whole_maison": "8", "med_prix_m2_whole_maison": "132"},
+            {"code_geo": "58131", "echelle_geo": "commune", "nb_ventes_whole_appartement": "6",
+             "med_prix_m2_whole_appartement": "1100", "nb_ventes_whole_maison": "0", "med_prix_m2_whole_maison": ""}]
+    assert ch.read_dvf(rows) == {"58131": {"bf": (1100.0, 6)}}

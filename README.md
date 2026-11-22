@@ -240,7 +240,7 @@ Rent and purchase prices per m² per municipality (`pipeline/compute_housing.py 
 
 | | Rent (per month) | Buy |
 |---|---|---|
-| Spain | SERPAVI (Ministry of Housing): median of declared leases, houses and flats, latest of 2022–2024 (≥ 10 leases). No data in the Basque Country and Navarre | Coarse: Ministry appraisal value for towns over 25,000, the province average elsewhere (no open per-village sale prices; the notaries' portal forbids redistribution) |
+| Spain | SERPAVI (Ministry of Housing): median of declared leases, houses and flats, latest of 2022–2024 (≥ 10 leases) | Coarse: Ministry appraisal value for towns over 25,000, the province average elsewhere (no open per-village sale prices; the notaries' portal forbids redistribution) |
 | France | ANIL "carte des loyers" 2025: advertised rents incl. charges; area-model predictions are marked | DVF statistics (Etalab): median €/m² of sales over 5 years (≥ 5 sales). None in Alsace-Moselle |
 
 A municipality without its own figure gets the count-weighted mean of those within 10 km, marked "nearby". Every

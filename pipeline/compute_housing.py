@@ -2,8 +2,7 @@
 
 Spain
   rent  SERPAVI (Ministerio de Vivienda), municipal medians from lease deposits / tax returns, houses (VU)
-        and flats (VC); latest year of 2022-2024 with a value (>= 10 leases). No data in the Basque
-        Country and Navarre (foral tax systems).
+        and flats (VC); latest year of 2022-2024 with a value (>= 10 leases).
   buy   coarse: Ministry appraisal value of free-market housing for towns over 25,000 (latest quarter),
         the province average elsewhere. All dwellings, so houses = flats.
 France
@@ -34,7 +33,8 @@ MIN_LEASES, MIN_SALES = 10, 5
 YEARS = (24, 23, 22)
 KEYS = ("rh", "rf", "bh", "bf")   # rent house, rent flat, buy house, buy flat
 SCOPE_NAMES = {0: "own", 1: "nearby", 2: "province", 3: "area"}
-NO_DVF = ("57", "67", "68")       # Alsace-Moselle: land register outside DVF
+NO_DVF = ("57", "67", "68")
+PLAUSIBLE_EUR_M2 = (200, 30000)   # DVF medians outside this come from a few odd sales (e.g. 220,000 €/m² from 5 sales)       # Alsace-Moselle: land register outside DVF
 
 SERPAVI_URL = ("https://cdn.mivau.gob.es/portal-web-mivau/vivienda/serpavi/"
                "2026-03_09_bd_SERPAVI_2011-2024%20-%20DEFINITIVO%20WEB_v2.xlsx")
@@ -154,8 +154,9 @@ def match_towns(towns, munis, provinces=None):
     return matched, unmatched
 
 
-# single-province regions appear only as region totals: CODAUTO -> province code
-SINGLE_PROVINCE_REGIONS = {"3": "33", "13": "28", "14": "31", "15": "30"}
+# single-province regions appear only as region totals; matched by region name, since their CODAUTO is
+# unreliable (Navarra is 15, Murcia blank)
+SINGLE_PROVINCE_REGIONS = {"asturias": "33", "madrid": "28", "navarra": "31", "murcia": "30"}
 
 
 def read_province_csv(text):
@@ -166,9 +167,10 @@ def read_province_csv(text):
             continue
         if r["CPRO"] in ("", "null"):
             # single-province regions (Madrid, Asturias, Murcia, Navarra) appear only as region totals
-            if r["Provincia"] != "Total CCAA" or r["CODAUTO"] not in SINGLE_PROVINCE_REGIONS:
+            region = normalise(r.get("Comunidad_Autónoma") or "").split(" ")[0]
+            if r["Provincia"] != "Total CCAA" or region not in SINGLE_PROVINCE_REGIONS:
                 continue
-            r = dict(r, CPRO=SINGLE_PROVINCE_REGIONS[r["CODAUTO"]])
+            r = dict(r, CPRO=SINGLE_PROVINCE_REGIONS[region])
         rows.append(r)
     last = max((int(r["Año"]), int(r["Trimestre"])) for r in rows)
     vals = {r["CPRO"].zfill(2): _num(r["Valor"]) for r in rows if (int(r["Año"]), int(r["Trimestre"])) == last}
@@ -200,7 +202,8 @@ def read_anil(rows):
     for code, ps in parts.items():   # Paris, Lyon, Marseille: arrondissements, weighted by listings
         n = sum(x[1] for x in ps)
         v = sum(x[0] * x[1] for x in ps) / n if n else sum(x[0] for x in ps) / len(ps)
-        out[code] = (round(v, 2), n, 3 if (any(x[2] for x in ps) and len(ps) == 1) or n < 30 else 0)
+        weak_share = (sum(x[1] for x in ps if x[2]) / n) if n else 1
+        out[code] = (round(v, 2), n, 3 if weak_share > 0.5 or n < 30 else 0)
     return out
 
 
@@ -214,7 +217,7 @@ def read_dvf(rows):
         for key, kind in (("bh", "maison"), ("bf", "appartement")):
             n = int(_num(r.get(f"nb_ventes_whole_{kind}")) or 0)
             v = _num(r.get(f"med_prix_m2_whole_{kind}"))
-            if v is not None and n >= MIN_SALES:
+            if v is not None and n >= MIN_SALES and PLAUSIBLE_EUR_M2[0] <= v <= PLAUSIBLE_EUR_M2[1]:
                 got[key] = (v, n)
         if got:
             out[r["code_geo"]] = got
@@ -334,11 +337,11 @@ def run_es(p, places):
             values.setdefault(m["code"], {})[key] = (val, n, scope)
     if unmatched:
         print(f"{len(unmatched)} appraisal towns not matched: {', '.join(unmatched)}")
-    notes = ["Rent: median of declared leases (SERPAVI), latest year 2022-2024; no data in the Basque Country and "
-             "Navarre, whose taxes are collected separately.",
+    notes = ["Rent: median of declared leases (SERPAVI), latest year 2022-2024 with at least 10 leases.",
              f"Buy: appraisal value of free-market housing ({period}), for towns over 25,000 inhabitants; elsewhere "
              "the province average. A coarse guide: villages are usually cheaper than their province."]
     return values, {"sources": ["SERPAVI 2011-2024 (MIVAU)", f"Valor tasado de vivienda {period} (MIVAU)"],
+                    "buy_all_dwellings": True,
                     "rent_years": sorted(years), "buy_period": period, "notes": notes,
                     "unmatched_towns": unmatched}
 

@@ -30,7 +30,7 @@ export const DEFAULTS: GemFilters = {
   air: { tier: 2, max: 90 },
   summer: false,
   hosp: { tier: 2, max: 45 },
-  rent: { kind: 'house', max: 10 },
+  rent: null, // off by default: a missing figure fails, which would exclude the smallest villages
   buy: null,
 }
 

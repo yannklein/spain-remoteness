@@ -6053,7 +6053,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 18052,Charenton-du-Cher,18,984,6.3,7.7,830,,area,area,own,,47,49,79,
 18053,Charentonnay,18,282,6.7,7.7,770,,area,area,own,,8,1,36,
 18054,Charly,18,226,6.7,8.5,820,,area,area,own,,25,3,28,
-18055,Chârost,18,888,6.7,7.7,890,690,area,area,own,nearby,85,27,76,72
+18055,Chârost,18,888,6.7,7.7,890,830,area,area,own,nearby,85,27,76,60
 18056,Chassy,18,233,6.7,8.6,950,,area,area,own,,11,0,36,
 18057,Châteaumeillant,18,1629,6.2,7.3,710,,area,area,own,,40,51,201,
 18058,Châteauneuf-sur-Cher,18,1360,6.3,9.9,680,,own,area,own,,114,19,128,
@@ -6064,7 +6064,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 18063,Chavannes,18,151,6.5,9.9,890,,area,area,own,,5,0,7,
 18064,Chéry,18,233,6.7,7.9,870,,area,area,own,,7,1,17,
 18065,Chezal-Benoît,18,765,6.7,8.8,920,,area,area,own,,17,28,68,
-18066,Civray,18,926,6.7,8.8,1090,30,area,area,own,own,38,7,59,12
+18066,Civray,18,926,6.7,8.8,1090,830,area,area,own,nearby,38,7,59,60
 18067,Clémont,18,687,7.2,8.3,1020,,area,area,own,,28,8,56,
 18068,Cogny,18,31,6.9,8.5,870,,area,area,nearby,,0,0,504,
 18069,Colombiers,18,409,6.8,8.5,970,880,area,area,own,nearby,20,0,29,128
@@ -6129,11 +6129,11 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 18129,Lissay-Lochy,18,231,8.6,11.5,1570,,area,area,own,,15,0,12,
 18130,Loye-sur-Arnon,18,305,6.8,7.2,840,,area,area,own,,0,0,34,
 18132,Lugny-Champagne,18,142,6.8,7.7,790,,area,area,own,,8,2,15,
-18133,Lunery,18,1486,6.5,9.9,1030,690,area,area,own,nearby,83,4,97,72
+18133,Lunery,18,1486,6.5,9.9,1030,830,area,area,own,nearby,83,4,97,60
 18134,Lury-sur-Arnon,18,648,6.9,7.9,770,,area,area,own,,29,6,61,
 18135,Maisonnais,18,227,6.2,7.3,840,,area,area,own,,3,0,28,
 18136,Marçais,18,308,6.5,7.3,760,680,area,area,own,nearby,4,1,18,6
-18137,Mareuil-sur-Arnon,18,487,6.7,8.8,700,30,area,area,own,nearby,17,28,66,12
+18137,Mareuil-sur-Arnon,18,487,6.7,8.8,700,,area,area,own,,17,28,66,
 18138,Marmagne,18,1963,8.6,11.5,1710,1540,area,area,own,nearby,85,8,130,2661
 18139,Marseilles-lès-Aubigny,18,645,6.8,8.6,1080,930,area,area,own,nearby,36,94,32,123
 18140,Massay,18,1345,6.9,7.9,960,820,area,area,own,nearby,75,8,111,469
@@ -6177,14 +6177,14 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 18178,La Perche,18,205,6.3,7.2,920,,area,area,own,,10,0,20,
 18179,Pigny,18,966,7.2,11.5,1590,2670,area,area,own,nearby,27,7,60,36
 18180,Plaimpied-Givaudins,18,2101,8.6,8.5,1740,,area,area,own,,37,24,93,
-18181,Plou,18,527,7.4,8.8,1310,690,area,area,own,nearby,26,0,33,72
-18182,Poisieux,18,216,7.8,8.8,880,30,area,area,own,nearby,4,1,21,12
+18181,Plou,18,527,7.4,8.8,1310,830,area,area,own,nearby,26,0,33,60
+18182,Poisieux,18,216,7.8,8.8,880,,area,area,own,,4,1,21,
 18183,Le Pondy,18,147,6.9,8.5,600,,area,area,own,,4,0,18,
 18184,Précy,18,353,6.7,8.6,950,,area,area,own,,11,1,32,
 18185,Presly,18,207,7.2,8.3,820,,area,area,own,,25,0,12,
 18186,Preuilly,18,477,7.8,8.0,1120,710,area,area,own,nearby,35,0,30,16
 18187,Préveranges,18,520,6.6,7.7,770,,area,area,own,,31,1,86,
-18188,Primelles,18,191,6.5,7.2,990,690,area,area,own,nearby,20,0,23,72
+18188,Primelles,18,191,6.5,7.2,990,830,area,area,own,nearby,20,0,23,60
 18189,Quantilly,18,490,8.3,8.0,1230,,area,area,own,,8,1,27,
 18190,Quincy,18,818,7.8,8.0,1150,710,area,area,own,nearby,40,8,57,16
 18191,Raymond,18,172,6.7,7.0,1020,,area,area,own,,16,0,16,
@@ -6194,10 +6194,10 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 18195,Sagonne,18,190,6.7,8.5,760,,area,area,own,,11,0,25,
 18196,Saint-Aignan-des-Noyers,18,77,6.3,7.0,760,,area,area,own,,4,0,9,
 18197,Saint-Amand-Montrond,18,9899,7.2,8.5,1080,890,own,own,own,own,628,1777,680,122
-18198,Saint-Ambroix,18,374,6.7,8.8,1030,30,area,area,own,nearby,4,1,17,12
+18198,Saint-Ambroix,18,374,6.7,8.8,1030,,area,area,own,,4,1,17,
 18199,Saint-Baudel,18,250,6.5,7.2,540,,area,area,own,,6,0,22,
 18200,Saint-Bouize,18,253,6.7,8.1,680,770,area,area,own,nearby,12,0,36,11
-18201,Saint-Caprais,18,747,8.6,11.5,1510,690,area,area,own,nearby,11,0,36,72
+18201,Saint-Caprais,18,747,8.6,11.5,1510,830,area,area,own,nearby,11,0,36,60
 18202,Saint-Céols,18,16,7.8,8.0,1080,,area,area,nearby,,5,12,430,
 18203,Saint-Christophe-le-Chaudry,18,95,6.8,7.2,840,,area,area,own,,7,0,11,
 18204,Saint-Denis-de-Palin,18,274,6.9,8.5,870,,area,area,own,,11,0,14,
@@ -6238,7 +6238,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 18241,Sancerre,18,1269,8.2,8.1,1460,1060,own,own,own,own,139,281,106,5
 18242,Sancoins,18,2951,7.3,7.3,800,,own,own,own,,210,251,245,
 18243,Santranges,18,440,7.3,9.4,1060,1250,area,area,own,nearby,12,0,39,14
-18244,Saugy,18,77,7.4,7.7,1170,690,area,area,nearby,nearby,6,0,756,72
+18244,Saugy,18,77,7.4,7.7,1170,830,area,area,nearby,nearby,6,0,756,60
 18245,Saulzais-le-Potier,18,472,6.2,7.7,680,,area,area,own,,27,2,37,
 18246,Savigny-en-Sancerre,18,1088,6.8,9.4,1200,1120,area,area,own,nearby,26,26,84,111
 18247,Savigny-en-Septaine,18,685,7.6,11.5,1340,,area,area,own,,40,0,38,
@@ -6279,7 +6279,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 18282,Villabon,18,559,7.6,7.7,1330,,area,area,own,,34,5,39,
 18283,Villecelin,18,83,6.7,7.2,560,,area,area,own,,0,0,9,
 18284,Villegenon,18,217,6.8,9.4,1030,,area,area,own,,14,0,19,
-18285,Villeneuve-sur-Cher,18,402,7.8,8.8,1320,690,area,area,own,nearby,30,0,30,72
+18285,Villeneuve-sur-Cher,18,402,7.8,8.8,1320,830,area,area,own,nearby,30,0,30,60
 18286,Villequiers,18,437,6.7,8.6,1110,,area,area,own,,28,7,39,
 18287,Vinon,18,302,7.8,7.1,1080,770,area,area,own,nearby,16,1,34,11
 18288,Vorly,18,247,6.9,8.5,1260,,area,area,own,,52,4,10,
@@ -13303,7 +13303,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 36192,Saint-Gaultier,36,1701,7.1,6.9,930,860,area,own,own,nearby,90,132,126,25
 36193,Sainte-Gemme,36,262,6.4,7.3,1080,,area,area,own,,13,0,29,
 36194,Saint-Genou,36,911,6.3,8.1,690,,area,area,own,,44,7,83,
-36195,Saint-Georges-sur-Arnon,36,548,7.4,8.8,1320,840,area,area,own,nearby,29,1,40,62
+36195,Saint-Georges-sur-Arnon,36,548,7.4,8.8,1320,1030,area,area,own,nearby,29,1,40,50
 36196,Saint-Gilles,36,91,6.3,8.7,670,,area,area,own,,10,1,14,
 36197,Saint-Hilaire-sur-Benaize,36,311,6.1,7.5,970,880,area,area,own,nearby,10,2,14,22
 36198,Saint-Lactencin,36,405,7.2,7.3,1070,2050,area,area,own,nearby,28,0,22,18
@@ -16682,7 +16682,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47035,Bourgougnague,47,285,8.0,9.2,1430,1150,area,area,own,nearby,7,0,18,52
 47036,Bourlens,47,372,9.1,9.2,1250,860,area,area,own,nearby,10,0,20,27
 47037,Bournel,47,247,8.0,8.4,1680,,area,area,own,,3,4,21,
-47038,Bourran,47,610,7.4,9.4,1770,990,area,area,own,nearby,21,0,30,173
+47038,Bourran,47,610,7.4,9.4,1770,1020,area,area,own,nearby,21,0,30,166
 47039,Boussès,47,41,6.7,9.2,1400,,area,area,nearby,,3,1,121,
 47040,Brax,47,2098,10.7,9.5,2210,1690,own,area,own,nearby,164,24,99,2312
 47041,Bruch,47,688,6.7,8.9,1170,1320,area,area,own,nearby,55,24,42,79
@@ -16709,7 +16709,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47062,Cauzac,47,420,10.4,10.5,1810,,area,area,own,,15,0,27,
 47063,Cavarc,47,155,8.0,8.9,2000,,area,area,own,,2,1,6,
 47064,Cazideroque,47,249,9.1,9.2,1460,1290,area,area,own,nearby,20,1,9,24
-47065,Clairac,47,2606,7.5,9.8,1130,170,own,own,own,own,217,248,183,7
+47065,Clairac,47,2606,7.5,9.8,1130,1020,own,own,own,nearby,217,248,183,166
 47066,Clermont-Dessous,47,798,7.7,9.4,1290,960,area,area,own,nearby,36,29,49,19
 47067,Clermont-Soubiran,47,395,8.9,9.6,1670,1350,area,area,own,nearby,17,8,19,44
 47068,Cocumont,47,1133,7.6,9.6,1420,2060,area,area,own,nearby,40,37,69,6
@@ -16751,12 +16751,12 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47104,Frégimont,47,271,9.6,10.5,1510,1060,area,area,own,nearby,15,4,12,56
 47105,Frespech,47,279,9.6,10.5,1720,1290,area,area,own,nearby,9,3,14,24
 47106,Fumel,47,4690,7.5,8.6,1080,800,own,own,own,own,368,429,360,20
-47107,Galapian,47,333,7.4,9.4,1190,960,area,area,own,nearby,30,2,20,44
+47107,Galapian,47,333,7.4,9.4,1190,1110,area,area,own,nearby,30,2,20,37
 47108,Gaujac,47,241,8.9,10.7,1620,1340,area,area,own,nearby,24,2,11,404
 47109,Gavaudun,47,302,7.6,8.4,1640,860,area,area,own,nearby,16,0,20,27
 47110,Gontaud-de-Nogaret,47,1638,7.4,9.1,1420,1000,own,own,own,nearby,126,115,81,129
-47111,Granges-sur-Lot,47,590,7.4,9.2,1170,170,area,area,own,nearby,42,8,39,7
-47112,Grateloup-Saint-Gayrand,47,469,7.4,9.3,1180,960,area,area,own,nearby,15,8,25,136
+47111,Granges-sur-Lot,47,590,7.4,9.2,1170,,area,area,own,,42,8,39,
+47112,Grateloup-Saint-Gayrand,47,469,7.4,9.3,1180,1000,area,area,own,nearby,15,8,25,129
 47113,Grayssas,47,150,8.9,10.7,1850,1350,area,area,own,nearby,2,0,7,44
 47114,Grézet-Cavagnan,47,409,7.6,11.2,1980,1420,area,area,own,nearby,12,0,26,86
 47115,Guérin,47,246,7.6,10.7,1650,2060,area,area,own,nearby,1,0,13,6
@@ -16768,17 +16768,17 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47122,Labretonie,47,167,8.0,9.7,1610,,area,area,own,,1,1,8,
 47123,Lacapelle-Biron,47,391,7.6,8.6,1360,,area,area,own,,25,5,37,
 47124,Lacaussade,47,210,8.3,9.2,1570,860,area,area,own,nearby,7,0,10,42
-47125,Lacépède,47,320,9.6,9.4,1350,170,area,area,own,nearby,18,7,37,7
+47125,Lacépède,47,320,9.6,9.4,1350,,area,area,own,,18,7,37,
 47126,Lachapelle,47,96,8.0,9.3,1510,1140,area,area,nearby,nearby,3,0,971,70
-47127,Lafitte-sur-Lot,47,832,7.4,9.2,1510,960,area,area,own,nearby,37,10,38,44
+47127,Lafitte-sur-Lot,47,832,7.4,9.2,1510,1110,area,area,own,nearby,37,10,38,37
 47128,Lafox,47,1098,8.8,10.7,1810,1550,area,area,own,own,54,50,55,14
-47129,Lagarrigue,47,272,7.7,9.2,1610,1090,area,area,own,nearby,8,9,14,66
+47129,Lagarrigue,47,272,7.7,9.2,1610,1200,area,area,own,nearby,8,9,14,59
 47130,Lagruère,47,351,7.7,9.4,1690,1000,area,area,own,nearby,5,4,25,129
 47131,Lagupie,47,680,8.2,10.7,1920,1330,area,area,own,nearby,24,0,30,442
 47132,Lalandusse,47,219,8.0,8.9,1830,,area,area,own,,2,0,27,
 47133,Lamontjoie,47,553,8.1,9.8,1410,,area,area,own,,36,10,34,
 47134,Lannes,47,359,8.1,8.9,1290,,area,area,own,,7,6,28,
-47135,Laparade,47,395,7.4,9.4,1370,170,area,area,own,nearby,19,27,32,7
+47135,Laparade,47,395,7.4,9.4,1370,,area,area,own,,19,27,32,
 47136,Laperche,47,141,7.4,9.7,1570,1080,area,area,own,nearby,3,0,8,32
 47137,Laplume,47,1330,8.1,9.5,1660,1950,area,area,own,nearby,67,36,58,75
 47138,Laroque-Timbaut,47,1589,8.8,10.5,1610,1780,own,area,own,nearby,143,92,90,23
@@ -16817,7 +16817,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47174,Moncrabeau,47,745,8.1,8.9,1430,1130,area,area,own,nearby,16,7,64,43
 47175,Monflanquin,47,2342,8.2,8.5,1350,830,own,own,own,own,117,134,237,35
 47176,Montgaillard-en-Albret,47,167,7.7,9.2,800,1320,area,area,own,nearby,3,0,13,101
-47177,Monheurt,47,190,7.7,9.4,720,1030,area,area,own,nearby,19,1,17,195
+47177,Monheurt,47,190,7.7,9.4,720,1060,area,area,own,nearby,19,1,17,188
 47178,Monségur,47,397,7.6,8.4,1420,860,area,area,own,nearby,17,6,26,27
 47179,Monsempron-Libos,47,2122,7.2,8.4,1210,1030,own,own,own,own,134,211,163,7
 47180,Montagnac-sur-Auvignon,47,641,9.9,9.5,1330,1950,area,area,own,nearby,24,1,15,36
@@ -16836,7 +16836,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47193,Moulinet,47,195,8.0,9.2,1370,1410,area,area,own,nearby,4,1,13,24
 47194,Moustier,47,324,8.4,9.7,1380,1150,area,area,own,nearby,9,4,23,52
 47195,Nérac,47,6992,7.0,9.6,1440,1320,own,own,own,own,440,979,445,79
-47196,Nicole,47,237,7.7,9.4,800,1030,area,area,own,nearby,15,13,12,195
+47196,Nicole,47,237,7.7,9.4,800,1060,area,area,own,nearby,15,13,12,188
 47197,Nomdieu,47,256,9.9,9.8,1710,,area,area,own,,18,7,19,
 47198,Pailloles,47,315,8.2,8.9,1560,1180,area,area,own,nearby,0,7,20,490
 47199,Pardaillan,47,334,8.2,9.7,1540,1710,area,area,own,nearby,1,0,36,60
@@ -16889,7 +16889,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47247,Saint-Jean-de-Duras,47,260,8.4,9.7,1390,2430,area,area,own,nearby,5,0,14,28
 47248,Saint-Jean-de-Thurac,47,563,8.8,10.7,1820,1720,area,area,own,nearby,7,7,32,173
 47249,Saint-Laurent,47,431,7.7,9.4,1190,1110,area,area,own,nearby,22,9,24,37
-47250,Saint-Léger,47,177,7.7,9.2,750,1090,area,area,own,nearby,11,1,5,66
+47250,Saint-Léger,47,177,7.7,9.2,750,1200,area,area,own,nearby,11,1,5,59
 47251,Saint-Léon,47,329,9.7,9.2,1500,1200,area,area,own,nearby,8,0,20,59
 47252,Sainte-Livrade-sur-Lot,47,6541,8.3,8.7,1330,1180,own,own,own,nearby,427,441,365,477
 47253,Sainte-Marthe,47,658,7.6,11.2,1760,1330,area,area,own,nearby,13,0,27,382
@@ -16911,8 +16911,8 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47272,Saint-Quentin-du-Dropt,47,180,8.0,8.9,1430,,area,area,own,,9,0,13,
 47273,Saint-Robert,47,190,9.2,10.5,1980,1780,area,area,own,nearby,0,0,10,23
 47274,Saint-Romain-le-Noble,47,412,8.9,10.7,1650,1690,area,area,own,nearby,13,1,27,74
-47275,Saint-Salvy,47,200,7.4,9.4,1430,960,area,area,own,nearby,9,0,10,44
-47276,Saint-Sardos,47,289,9.6,9.4,1520,170,area,area,own,nearby,0,2,17,7
+47275,Saint-Salvy,47,200,7.4,9.4,1430,1110,area,area,own,nearby,9,0,10,37
+47276,Saint-Sardos,47,289,9.6,9.4,1520,,area,area,own,,0,2,17,
 47277,Saint-Sauveur-de-Meilhan,47,341,8.9,9.6,1400,1450,area,area,own,nearby,4,3,19,22
 47278,Saint-Sernin,47,454,8.4,9.4,1690,5370,area,area,own,nearby,22,1,33,8
 47279,Saint-Sixte,47,363,8.8,10.7,1520,1540,area,area,own,nearby,30,3,27,137
@@ -16952,7 +16952,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47313,Tourtrès,47,140,7.4,8.9,1640,,area,area,own,,2,0,13,
 47314,Trémons,47,409,7.9,9.2,1610,1230,area,area,own,nearby,17,1,18,31
 47315,Trentels,47,843,7.9,9.2,1570,1230,area,area,own,nearby,26,22,45,31
-47316,Varès,47,655,8.0,9.7,1500,960,area,area,own,nearby,12,5,23,136
+47316,Varès,47,655,8.0,9.7,1500,1000,area,area,own,nearby,12,5,23,129
 47317,Verteuil-d'Agenais,47,539,7.4,9.7,1250,,area,area,own,,36,11,31,
 47318,Vianne,47,979,7.7,9.2,1290,1320,area,area,own,nearby,59,20,93,79
 47319,Villebramar,47,109,8.2,9.2,1850,,area,area,own,,12,3,6,
@@ -16960,7 +16960,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 47321,Villeneuve-de-Duras,47,315,8.4,9.4,1310,1410,area,area,own,nearby,3,8,16,174
 47323,Villeneuve-sur-Lot,47,22350,8.8,9.5,1420,1170,own,own,own,own,1643,4264,1624,466
 47324,Villeréal,47,1261,8.1,9.3,1590,,own,own,own,,110,163,154,
-47325,Villeton,47,475,7.7,9.4,1280,1030,area,area,own,nearby,5,1,25,195
+47325,Villeton,47,475,7.7,9.4,1280,1060,area,area,own,nearby,5,1,25,188
 47326,Virazeil,47,1715,8.6,9.3,1830,1320,own,area,own,nearby,129,33,79,420
 47327,Xaintrailles,47,378,7.7,9.2,970,1340,area,area,own,nearby,14,6,19,22
 47328,Saint-Georges,47,492,7.9,9.2,1520,860,area,area,own,nearby,17,2,26,27
@@ -18353,7 +18353,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52004,Aingoulaincourt,52,11,6.1,6.9,610,,area,area,nearby,,0,0,244,
 52005,Aizanville,52,23,7.2,7.6,820,,area,area,nearby,,1,0,310,
 52006,Allichamps,52,348,7.8,8.2,1450,1050,area,area,own,nearby,12,19,18,407
-52007,Ambonville,52,82,6.2,7.6,650,,area,area,nearby,,9,7,188,
+52007,Ambonville,52,82,6.2,7.6,660,,area,area,nearby,,9,7,183,
 52008,Andelot-Blancheville,52,799,6.2,6.4,810,,area,area,own,,43,58,56,
 52009,Andilly-en-Bassigny,52,108,6.8,7.5,500,,area,area,own,,2,0,7,
 52011,Annéville-la-Prairie,52,95,6.2,7.6,1160,,area,area,nearby,,2,0,382,
@@ -18378,7 +18378,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52035,Baissey,52,167,8.4,8.9,580,,area,area,own,,2,0,13,
 52037,Bannes,52,360,5.7,8.4,1130,1310,area,area,own,nearby,16,3,23,123
 52038,Bassoncourt,52,62,6.8,7.5,390,,area,area,own,,0,0,9,
-52039,Baudrecourt,52,84,6.1,7.6,560,,area,area,nearby,,6,0,208,
+52039,Baudrecourt,52,84,6.1,7.6,570,,area,area,nearby,,6,0,203,
 52040,Bay-sur-Aube,52,45,7.2,6.6,720,,area,area,nearby,,1,0,68,
 52042,Beauchemin,52,112,5.7,8.4,1150,1310,area,area,nearby,nearby,6,6,470,123
 52043,Belmont,52,46,6.8,7.5,600,,area,area,nearby,,0,0,307,
@@ -18399,7 +18399,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52063,Bourg-Sainte-Marie,52,83,6.3,6.4,780,,area,area,own,,0,27,6,
 52064,Bourmont-entre-Meuse-et-Mouzon,52,740,6.3,7.8,530,,area,area,own,,25,42,45,
 52065,Bouzancourt,52,72,6.2,7.6,380,,area,area,own,,0,0,8,
-52066,Brachay,52,58,6.1,7.6,560,,area,area,nearby,,1,1,233,
+52066,Brachay,52,58,6.1,7.6,570,,area,area,nearby,,1,1,228,
 52067,Brainville-sur-Meuse,52,69,5.7,7.8,440,,area,area,own,,0,0,9,
 52069,Braux-le-Châtel,52,123,7.1,8.5,690,,area,area,own,,4,4,7,
 52070,Brennes,52,129,8.4,8.4,1130,1310,area,area,nearby,nearby,3,0,490,123
@@ -18411,7 +18411,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52082,Bugnières,52,153,5.7,8.4,830,,area,area,nearby,,6,11,149,
 52083,Champsevraine,52,719,6.8,7.5,660,,area,area,own,,32,8,68,
 52084,Busson,52,44,6.1,6.4,580,,area,area,nearby,,4,0,195,
-52085,Buxières-lès-Clefmont,52,25,5.7,7.5,600,,area,area,nearby,,0,0,225,
+52085,Buxières-lès-Clefmont,52,25,5.7,7.5,620,,area,area,nearby,,0,0,218,
 52087,Buxières-lès-Villiers,52,228,7.1,8.4,1580,1220,area,area,own,nearby,3,0,7,400
 52088,Ceffonds,52,665,7.2,7.6,1030,,area,area,own,,39,46,31,
 52089,Celles-en-Bassigny,52,71,6.8,7.5,600,,area,area,own,,2,0,5,
@@ -18431,8 +18431,8 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52106,Chanoy,52,132,7.1,8.4,1000,1310,area,area,own,nearby,1,1,6,123
 52107,Chantraines,52,199,6.2,6.4,970,,area,area,own,,11,3,18,
 52108,Charmes,52,151,7.1,8.4,1040,1310,area,area,own,nearby,3,0,12,123
-52109,Charmes-en-l'Angle,52,6,7.8,7.5,520,,area,area,nearby,,0,0,142,
-52110,Charmes-la-Grande,52,161,7.8,7.5,130,,area,area,own,,3,0,5,
+52109,Charmes-en-l'Angle,52,6,7.8,7.5,540,,area,area,nearby,,0,0,137,
+52110,Charmes-la-Grande,52,161,7.8,7.5,540,,area,area,nearby,,3,0,168,
 52113,Chassigny,52,243,8.4,8.4,600,,area,area,own,,4,5,17,
 52114,Châteauvillain,52,1482,5.7,8.5,800,,area,area,own,,60,35,87,
 52115,Chatenay-Mâcheron,52,97,7.1,8.4,1140,1280,area,area,nearby,nearby,4,1,696,129
@@ -18470,8 +18470,8 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52156,Curel,52,407,6.2,6.9,1020,640,area,area,own,nearby,5,4,27,20
 52157,Curmont,52,12,6.2,7.9,810,,area,area,nearby,,0,0,107,
 52158,Cusey,52,291,8.4,8.4,880,,area,area,own,,2,13,17,
-52159,Cuves,52,24,5.7,6.4,630,,area,area,nearby,,0,0,197,
-52160,Daillancourt,52,60,7.2,7.6,510,,area,area,nearby,,0,0,96,
+52159,Cuves,52,24,5.7,6.4,650,,area,area,nearby,,0,0,190,
+52160,Daillancourt,52,60,7.2,7.6,530,,area,area,nearby,,0,0,91,
 52161,Daillecourt,52,72,6.8,7.5,310,,area,area,own,,0,0,7,
 52162,Dammartin-sur-Meuse,52,206,6.5,8.4,240,,area,area,own,,18,6,11,
 52163,Dampierre,52,382,5.7,7.5,730,940,area,area,own,nearby,8,7,16,26
@@ -18479,16 +18479,16 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52165,Dancevoir,52,198,6.9,6.6,500,,area,area,own,,16,4,15,
 52167,Darmannes,52,233,7.1,8.2,1060,1220,area,area,own,nearby,12,0,9,400
 52168,Dinteville,52,62,5.7,6.6,660,,area,area,nearby,,0,0,284,
-52169,Domblain,52,86,6.1,7.5,780,,area,area,nearby,,2,0,363,
+52169,Domblain,52,86,6.1,7.5,790,,area,area,nearby,,2,0,358,
 52170,Dommarien,52,167,8.4,8.4,860,,area,area,own,,6,11,5,
 52171,Dommartin-le-Franc,52,243,7.8,7.5,620,,area,area,own,,19,1,18,
 52172,Dommartin-le-Saint-Père,52,265,7.8,7.5,430,,area,area,own,,2,6,18,
 52173,Domremy-Landéville,52,75,6.1,7.6,420,,area,area,own,,0,0,5,
-52174,Doncourt-sur-Meuse,52,40,5.7,8.2,430,,area,area,nearby,,0,1,359,
+52174,Doncourt-sur-Meuse,52,40,5.7,8.2,440,,area,area,nearby,,0,1,347,
 52175,Donjeux,52,380,6.1,7.6,710,640,area,area,own,nearby,17,1,13,20
 52177,Doulaincourt-Saucourt,52,731,6.1,6.9,520,,area,area,own,,24,59,46,
 52178,Doulevant-le-Château,52,370,7.8,7.5,350,,area,area,own,,22,15,20,
-52179,Doulevant-le-Petit,52,17,7.8,7.5,730,,area,area,nearby,,0,0,395,
+52179,Doulevant-le-Petit,52,17,7.8,7.5,740,,area,area,nearby,,0,0,390,
 52181,Échenay,52,96,6.1,6.9,540,,area,area,own,,2,4,5,
 52182,Éclaron-Braucourt-Sainte-Livière,52,2008,9.3,7.9,1460,980,own,own,own,own,139,101,119,5
 52183,Ecot-la-Combe,52,36,6.3,6.4,640,,area,area,nearby,,7,0,282,
@@ -18503,9 +18503,9 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52196,Faverolles,52,102,7.1,8.4,960,,area,area,nearby,,7,0,200,
 52197,Fayl-Billot,52,1296,6.8,7.9,610,,area,own,own,,51,106,87,
 52198,Fays,52,61,7.8,7.6,910,640,area,area,own,nearby,0,0,6,20
-52199,Ferrière-et-Lafolie,52,50,6.1,7.6,720,640,area,area,nearby,nearby,1,0,444,20
+52199,Ferrière-et-Lafolie,52,50,6.1,7.6,720,640,area,area,nearby,nearby,1,0,439,20
 52200,Flagey,52,70,7.1,8.4,990,,area,area,nearby,,3,11,249,
-52201,Flammerécourt,52,72,6.1,7.6,550,,area,area,nearby,,0,0,205,
+52201,Flammerécourt,52,72,6.1,7.6,560,,area,area,nearby,,0,0,200,
 52203,Fontaines-sur-Marne,52,151,7.8,6.9,960,900,area,area,own,nearby,5,0,8,20
 52204,Forcey,52,59,6.3,6.4,830,,area,area,nearby,,7,0,226,
 52205,Foulain,52,673,7.1,8.2,1120,1200,area,area,own,nearby,13,39,37,426
@@ -18517,7 +18517,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52213,Genevrières,52,124,8.4,7.5,710,,area,area,own,,1,0,13,
 52214,La Genevroye,52,28,6.2,7.6,720,,area,area,nearby,,6,0,220,
 52216,Germaines,52,47,7.2,6.6,700,,area,area,nearby,,3,0,62,
-52217,Germainvilliers,52,83,5.7,7.5,450,,area,area,nearby,,0,0,339,
+52217,Germainvilliers,52,83,5.7,7.5,460,,area,area,nearby,,0,0,327,
 52218,Germay,52,49,6.1,6.4,440,,area,area,nearby,,0,0,82,
 52219,Germisay,52,17,6.1,6.4,470,,area,area,nearby,,0,0,100,
 52220,Giey-sur-Aujon,52,139,5.7,8.5,610,,area,area,own,,4,4,15,
@@ -18529,9 +18529,9 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52229,Grenant,52,148,8.4,8.4,410,,area,area,own,,14,3,15,
 52230,Gudmont-Villiers,52,278,6.1,6.9,370,,area,area,own,,23,16,16,
 52231,Guindrecourt-aux-Ormes,52,97,7.8,7.6,1290,640,area,area,own,nearby,0,0,6,20
-52232,Guindrecourt-sur-Blaise,52,51,7.2,7.6,450,,area,area,nearby,,2,0,109,
+52232,Guindrecourt-sur-Blaise,52,51,7.2,7.6,470,,area,area,nearby,,2,0,104,
 52233,Guyonvelle,52,84,6.8,7.5,430,,area,area,own,,0,0,15,
-52234,Hâcourt,52,41,5.7,7.8,450,,area,area,nearby,,0,2,363,
+52234,Hâcourt,52,41,5.7,7.8,460,,area,area,nearby,,0,2,351,
 52235,Hallignicourt,52,238,7.6,8.2,1030,1040,area,area,own,nearby,6,0,18,415
 52237,Harréville-les-Chanteurs,52,259,6.3,6.4,440,,area,area,own,,11,40,24,
 52240,Heuilley-le-Grand,52,188,8.4,8.4,640,660,area,area,own,nearby,8,4,10,6
@@ -18562,7 +18562,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52274,Latrecey-Ormoy-sur-Aube,52,268,6.9,6.6,630,,area,area,own,,12,1,26,
 52275,Lavernoy,52,74,6.8,7.5,650,,area,area,nearby,,0,0,356,
 52276,Laville-aux-Bois,52,238,7.1,8.2,1200,1220,area,area,own,nearby,31,1,9,400
-52277,Lavilleneuve,52,57,6.8,7.5,550,,area,area,nearby,,0,0,323,
+52277,Lavilleneuve,52,57,6.8,7.5,550,,area,area,nearby,,0,0,316,
 52278,Lavilleneuve-au-Roi,52,69,6.2,7.6,640,,area,area,own,,0,0,8,
 52280,Lecey,52,196,7.1,8.4,1070,1280,area,area,own,nearby,7,0,19,129
 52282,Leffonds,52,344,7.1,8.2,840,,area,area,own,,16,7,13,
@@ -18580,7 +18580,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52297,Luzy-sur-Marne,52,279,7.1,8.2,1010,1220,area,area,own,nearby,7,12,13,400
 52298,Maâtz,52,72,8.4,8.4,530,,area,area,own,,1,0,9,
 52300,Magneux,52,150,7.8,8.2,630,910,area,area,own,nearby,4,6,7,5
-52301,Maisoncelles,52,53,6.3,8.2,430,,area,area,nearby,,1,0,341,
+52301,Maisoncelles,52,53,6.3,8.2,430,,area,area,nearby,,1,0,334,
 52302,Maizières,52,185,6.2,7.5,970,640,area,area,own,nearby,15,1,11,20
 52303,Maizières-sur-Amance,52,95,8.4,7.5,700,,area,area,own,,3,5,12,
 52304,Malaincourt-sur-Meuse,52,47,6.3,7.8,220,,area,area,own,,1,0,6,
@@ -18593,9 +18593,9 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52312,Mardor,52,55,7.1,8.4,1130,1310,area,area,nearby,nearby,0,0,443,123
 52313,Mareilles,52,139,7.1,8.2,1190,,area,area,own,,16,2,8,
 52315,Marnay-sur-Marne,52,320,7.1,8.2,1390,940,area,area,own,nearby,6,0,16,26
-52316,Mathons,52,68,6.1,7.6,710,640,area,area,nearby,nearby,5,0,491,20
+52316,Mathons,52,68,6.1,7.6,720,640,area,area,nearby,nearby,5,0,486,20
 52318,Melay,52,240,6.5,8.4,430,780,area,area,own,nearby,0,1,53,32
-52319,Mennouveaux,52,64,5.7,8.2,740,,area,area,nearby,,0,0,285,
+52319,Mennouveaux,52,64,5.7,8.2,760,,area,area,nearby,,0,0,278,
 52320,Merrey,52,93,6.3,7.5,630,,area,area,own,,5,0,14,
 52321,Mertrud,52,183,7.8,7.5,430,,area,area,own,,3,3,14,
 52322,Meures,52,130,6.2,8.4,1160,,area,area,nearby,,0,0,386,
@@ -18617,7 +18617,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52348,Neuilly-l'Évêque,52,601,6.8,7.5,740,,area,area,own,,24,22,29,
 52349,Neuilly-sur-Suize,52,291,7.1,8.2,1420,1220,area,area,own,nearby,10,1,21,400
 52350,Neuvelle-lès-Voisey,52,68,8.4,8.4,480,530,area,area,own,nearby,1,0,15,17
-52352,Ninville,52,62,5.7,6.4,180,940,area,area,own,nearby,0,0,7,26
+52352,Ninville,52,62,5.7,6.4,720,940,area,area,nearby,nearby,0,0,511,26
 52353,Nogent,52,3550,7.2,8.1,810,940,own,own,own,own,172,278,208,26
 52354,Noidant-Chatenoy,52,79,8.4,8.4,550,1280,area,area,own,nearby,5,1,6,129
 52355,Noidant-le-Rocheux,52,168,7.1,8.4,1100,1310,area,area,own,nearby,19,0,13,123
@@ -18645,7 +18645,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52380,Peigney,52,381,7.1,8.4,1520,1280,area,area,own,nearby,23,2,13,129
 52383,Perrancey-les-Vieux-Moulins,52,297,7.1,8.4,1290,1310,area,area,own,nearby,13,1,28,123
 52384,Perrogney-les-Fontaines,52,106,7.2,8.4,900,,area,area,own,,3,2,8,
-52385,Perrusse,52,28,5.7,7.5,470,,area,area,nearby,,0,0,261,
+52385,Perrusse,52,28,5.7,7.5,480,,area,area,nearby,,0,0,254,
 52386,Perthes,52,518,7.6,8.2,970,1050,area,area,own,nearby,35,17,25,407
 52388,Pierremont-sur-Amance,52,148,6.8,8.4,650,,area,area,own,,0,1,15,
 52390,Pisseloup,52,62,8.4,8.4,720,,area,area,own,,3,0,8,
@@ -18665,10 +18665,10 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52406,Pressigny,52,195,6.8,8.3,660,,area,area,own,,0,0,18,
 52407,Prez-sous-Lafauche,52,276,6.2,6.4,480,,area,area,own,,1,1,17,
 52411,Rives Dervoises,52,1301,6.6,7.5,1070,,area,area,own,,40,5,76,
-52413,Rachecourt-Suzémont,52,101,6.1,7.6,750,,area,area,nearby,,4,0,367,
+52413,Rachecourt-Suzémont,52,101,6.1,7.6,750,,area,area,nearby,,4,0,362,
 52414,Rachecourt-sur-Marne,52,739,6.2,6.9,1160,770,area,area,own,nearby,36,4,24,40
 52415,Rançonnières,52,127,6.5,8.4,800,,area,area,own,,0,0,9,
-52416,Rangecourt,52,62,6.8,7.5,570,,area,area,nearby,,2,0,266,
+52416,Rangecourt,52,62,6.8,7.5,580,,area,area,nearby,,2,0,259,
 52419,Rennepont,52,117,7.2,8.5,700,,area,area,own,,1,0,7,
 52420,Reynel,52,129,6.2,6.9,380,,area,area,own,,12,0,12,
 52421,Riaucourt,52,402,7.1,8.2,1270,1220,area,area,own,nearby,10,5,21,400
@@ -18736,7 +18736,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 52502,Valleret,52,59,6.1,7.5,910,,area,area,nearby,,1,7,507,
 52503,Valleroy,52,24,6.8,7.5,610,,area,area,nearby,,0,0,249,
 52504,Varennes-sur-Amance,52,255,6.8,8.4,690,,area,area,own,,10,1,22,
-52505,Vaudrecourt,52,32,6.3,7.8,510,,area,area,nearby,,0,0,369,
+52505,Vaudrecourt,52,32,6.3,7.8,520,,area,area,nearby,,0,0,357,
 52506,Vaudrémont,52,81,6.2,7.6,820,,area,area,nearby,,0,0,238,
 52507,Vauxbons,52,55,7.1,6.6,980,,area,area,nearby,,4,0,139,
 52510,Vaux-sur-Blaise,52,336,7.8,7.5,640,,area,area,own,,12,8,22,
@@ -19871,7 +19871,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 55317,Manheulles,55,156,7.2,8.2,1470,,area,area,own,,9,2,6,
 55320,Marchéville-en-Woëvre,55,69,8.1,9.8,1080,,area,area,nearby,,4,0,352,
 55321,Marre,55,183,7.2,7.8,1380,1310,area,area,own,nearby,2,0,8,551
-55322,Marson-sur-Barboure,55,59,7.0,7.7,670,,area,area,nearby,,0,0,289,
+55322,Marson-sur-Barboure,55,59,7.0,7.7,690,,area,area,nearby,,0,0,280,
 55323,Martincourt-sur-Meuse,55,66,6.7,7.1,830,460,area,area,nearby,nearby,0,3,646,5
 55324,Marville,55,522,7.0,9.8,1180,1000,area,area,own,nearby,18,41,35,6
 55325,Maucourt-sur-Orne,55,51,7.2,8.3,1190,900,area,area,nearby,nearby,0,0,324,16
@@ -19879,8 +19879,8 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 55327,Mauvages,55,236,7.4,6.9,740,700,area,area,own,nearby,4,3,20,9
 55328,Maxey-sur-Vaise,55,279,7.4,6.9,440,700,area,area,own,nearby,4,3,21,9
 55329,Mécrin,55,183,8.1,7.5,620,820,area,area,own,nearby,20,3,17,99
-55330,Méligny-le-Grand,55,88,7.0,7.3,950,,area,area,nearby,,1,0,214,
-55331,Méligny-le-Petit,55,73,7.0,7.3,690,,area,area,nearby,,0,0,295,
+55330,Méligny-le-Grand,55,88,7.0,7.3,980,,area,area,nearby,,1,0,205,
+55331,Méligny-le-Petit,55,73,7.0,7.3,710,,area,area,nearby,,0,0,286,
 55332,Menaucourt,55,221,8.1,6.9,650,640,area,area,own,nearby,2,1,13,30
 55333,Ménil-aux-Bois,55,48,8.1,7.3,980,,area,area,nearby,,0,0,300,
 55334,Ménil-la-Horgne,55,180,7.0,7.3,700,880,area,area,own,nearby,3,0,13,75
@@ -19960,7 +19960,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 55416,Rarécourt,55,195,7.1,7.8,700,,area,area,own,,8,7,19,
 55419,Récicourt,55,149,8.3,7.8,850,,area,area,own,,8,7,10,
 55420,Récourt-le-Creux,55,64,8.7,7.3,1050,,area,area,nearby,,1,0,307,
-55421,Reffroy,55,72,7.0,7.7,200,,area,area,own,,1,0,9,
+55421,Reffroy,55,72,7.0,7.7,720,,area,area,nearby,,1,0,296,
 55422,Regnéville-sur-Meuse,55,50,8.2,7.8,1380,1230,area,area,nearby,nearby,0,0,461,67
 55423,Rembercourt-Sommaisne,55,309,7.3,7.8,750,,area,area,own,,19,8,18,
 55424,Remennecourt,55,43,6.8,7.5,1020,,area,area,nearby,,0,2,712,
@@ -19987,7 +19987,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 55448,Rupt-devant-Saint-Mihiel,55,39,7.3,7.3,350,640,area,area,own,nearby,0,0,5,24
 55449,Rupt-en-Woëvre,55,280,7.2,8.2,820,,area,area,own,,16,8,14,
 55450,Rupt-sur-Othain,55,51,8.2,9.8,800,860,area,area,own,nearby,2,0,7,161
-55452,Saint-Amand-sur-Ornain,55,60,7.0,7.7,720,640,area,area,nearby,nearby,1,7,428,30
+55452,Saint-Amand-sur-Ornain,55,60,7.0,7.7,740,640,area,area,nearby,nearby,1,7,419,30
 55453,Saint-André-en-Barrois,55,59,8.7,7.8,1070,,area,area,own,,0,0,8,
 55454,Saint-Aubin-sur-Aire,55,178,7.0,7.8,860,640,area,area,own,nearby,4,0,14,30
 55456,Saint-Germain-sur-Meuse,55,224,7.0,8.4,810,720,area,area,own,nearby,3,0,17,26
@@ -20078,7 +20078,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 55555,Ville-devant-Belrain,55,33,7.3,7.3,860,,area,area,nearby,,0,0,122,
 55556,Ville-devant-Chaumont,55,49,8.2,8.3,1140,,area,area,nearby,,1,3,169,
 55557,Ville-en-Woëvre,55,131,8.1,9.0,820,900,area,area,own,nearby,2,5,11,16
-55559,Villeroy-sur-Méholle,55,52,7.0,6.9,840,700,area,area,nearby,nearby,0,0,380,9
+55559,Villeroy-sur-Méholle,55,52,7.0,6.9,850,700,area,area,nearby,nearby,0,0,371,9
 55560,Villers-aux-Vents,55,125,8.3,7.5,1070,,area,area,nearby,,0,0,459,
 55561,Villers-devant-Dun,55,52,6.7,9.0,380,,area,area,own,,1,0,9,
 55562,Villers-le-Sec,55,135,8.1,7.5,650,640,area,area,own,nearby,9,4,8,30
@@ -21142,7 +21142,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 58064,Châteauneuf-Val-de-Bargis,58,499,6.9,8.1,630,,area,area,own,,24,7,67,
 58065,Châtillon-en-Bazois,58,795,6.2,7.5,680,,area,area,own,,49,75,73,
 58066,Châtin,58,84,6.2,8.1,930,240,area,area,own,nearby,0,1,10,5
-58067,Chaulgnes,58,1500,9.0,7.8,1320,690,area,area,own,nearby,45,0,97,139
+58067,Chaulgnes,58,1500,9.0,7.8,1320,770,area,area,own,nearby,45,0,97,124
 58068,Chaumard,58,192,6.2,8.3,1460,240,area,area,own,nearby,1,0,42,5
 58069,Chaumot,58,164,6.7,8.1,1100,,area,area,own,,0,0,17,
 58070,Chazeuil,58,60,6.7,8.1,1080,,area,area,own,,3,2,10,
@@ -21204,7 +21204,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 58128,Glux-en-Glenne,58,87,7.2,8.1,1240,,area,area,own,,0,0,12,
 58129,Gouloux,58,164,7.2,8.1,980,,area,area,own,,4,7,14,
 58130,Grenois,58,93,6.7,7.4,690,,area,area,own,,1,1,21,
-58131,Guérigny,58,2505,7.1,9.2,1250,20,own,own,own,own,136,159,131,15
+58131,Guérigny,58,2505,7.1,9.2,1250,1020,own,own,own,nearby,136,159,131,174
 58132,Guipy,58,222,6.3,7.5,730,,area,area,own,,7,0,31,
 58133,Héry,58,72,6.7,8.1,910,,area,area,own,,1,0,12,
 58134,Imphy,58,3182,7.9,8.8,980,620,own,own,own,own,144,300,174,43
@@ -21276,15 +21276,15 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 58201,Oudan,58,148,6.7,8.1,800,,area,area,own,,2,0,17,
 58202,Ougny,58,28,6.2,7.5,770,,area,area,nearby,,1,0,436,
 58203,Oulon,58,64,6.3,8.1,620,,area,area,own,,5,0,7,
-58204,Vaux d'Amognes,58,539,6.3,8.1,1030,20,area,area,own,nearby,7,24,42,15
+58204,Vaux d'Amognes,58,539,6.3,8.1,1030,,area,area,own,,7,24,42,
 58205,Ouroux-en-Morvan,58,599,6.2,8.1,1020,,area,area,own,,5,23,82,
 58206,Parigny-la-Rose,58,32,6.7,8.1,700,,area,area,nearby,,1,0,420,
-58207,Parigny-les-Vaux,58,964,9.0,7.8,1280,980,area,area,own,nearby,31,5,57,260
+58207,Parigny-les-Vaux,58,964,9.0,7.8,1280,1040,area,area,own,nearby,31,5,57,245
 58208,Pazy,58,293,6.7,8.1,910,,area,area,own,,2,1,29,
 58209,Perroy,58,152,6.9,7.3,820,,area,area,own,,3,0,21,
 58210,Planchez,58,313,6.2,8.1,990,,area,area,own,,2,3,66,
 58211,Poil,58,152,6.9,7.0,910,,area,area,own,,5,0,17,
-58212,Poiseux,58,331,6.3,7.5,1320,20,area,area,own,nearby,5,21,28,15
+58212,Poiseux,58,331,6.3,7.5,1320,,area,area,own,,5,21,28,
 58213,Pougny,58,473,7.3,8.1,1020,1120,area,area,own,nearby,3,3,38,111
 58214,Pougues-les-Eaux,58,2401,9.4,8.8,1380,880,own,own,own,own,107,233,146,14
 58215,Pouilly-sur-Loire,58,1635,6.7,7.4,960,530,area,own,own,own,96,175,161,6
@@ -21303,7 +21303,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 58228,Saint-Andelain,58,583,6.9,8.1,1050,770,area,area,own,nearby,10,4,32,11
 58229,Saint-André-en-Morvan,58,309,7.0,8.7,970,,area,area,own,,5,0,32,
 58230,Saint-Aubin-des-Chaumes,58,70,7.0,8.1,1060,,area,area,own,,0,0,15,
-58231,Saint-Aubin-les-Forges,58,376,9.0,7.8,720,20,area,area,own,nearby,6,1,38,15
+58231,Saint-Aubin-les-Forges,58,376,9.0,7.8,720,,area,area,own,,6,1,38,
 58232,Saint-Benin-d'Azy,58,1255,7.6,8.1,960,,own,area,own,,115,33,79,
 58233,Saint-Benin-des-Bois,58,195,6.3,8.1,940,,area,area,own,,13,0,15,
 58234,Saint-Bonnot,58,155,6.7,7.8,610,,area,area,own,,11,5,7,
@@ -21326,7 +21326,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 58251,Saint-Loup-des-Bois,58,459,7.3,8.1,910,1120,area,area,own,nearby,1,0,40,111
 58252,Saint-Malo-en-Donziois,58,150,6.9,7.8,680,,area,area,own,,2,0,19,
 58253,Sainte-Marie,58,87,6.3,8.1,920,,area,area,own,,0,0,11,
-58254,Saint-Martin-d'Heuille,58,565,6.3,9.1,1340,1010,area,area,own,nearby,11,19,30,1832
+58254,Saint-Martin-d'Heuille,58,565,6.3,9.1,1340,1020,area,area,own,nearby,11,19,30,1817
 58255,Saint-Martin-du-Puy,58,290,7.0,8.7,930,,area,area,own,,3,0,36,
 58256,Saint-Martin-sur-Nohain,58,375,6.9,7.3,1270,1090,area,area,own,nearby,19,0,18,117
 58257,Saint-Maurice,58,48,6.6,7.5,730,,area,area,nearby,,2,2,522,
@@ -21351,7 +21351,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 58276,Sémelay,58,223,6.6,7.9,830,,area,area,own,,6,8,40,
 58277,Sermages,58,189,6.2,8.1,950,240,area,area,own,nearby,2,1,28,5
 58278,Sermoise-sur-Loire,58,1486,8.0,9.1,1410,1020,area,area,own,nearby,24,74,63,1835
-58279,Sichamps,58,173,6.3,8.1,940,20,area,area,own,nearby,11,1,12,15
+58279,Sichamps,58,173,6.3,8.1,940,,area,area,own,,11,1,12,
 58280,Sougy-sur-Loire,58,594,6.5,7.5,1050,750,area,area,own,nearby,21,11,45,150
 58281,Suilly-la-Tour,58,569,6.9,7.3,990,,area,area,own,,13,5,62,
 58282,Surgy,58,335,7.5,9.1,670,620,area,area,own,nearby,15,37,37,20
@@ -21372,7 +21372,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 58297,Trois-Vèvres,58,241,6.5,7.5,650,750,area,area,own,nearby,13,7,21,150
 58298,Tronsanges,58,392,9.0,7.8,1330,770,area,area,own,nearby,3,16,14,124
 58299,Trucy-l'Orgueilleux,58,217,7.5,7.3,650,620,area,area,own,nearby,5,3,13,20
-58300,Urzy,58,1727,9.0,8.1,1310,1010,area,area,own,nearby,51,57,67,1832
+58300,Urzy,58,1727,9.0,8.1,1310,1020,area,area,own,nearby,51,57,67,1817
 58301,Vandenesse,58,287,6.9,7.9,630,,area,area,own,,2,0,41,
 58302,Varennes-lès-Narcy,58,901,6.7,8.1,1110,820,area,area,own,nearby,40,1,59,72
 58303,Varennes-Vauzelles,58,9146,11.0,10.1,1550,1200,own,own,own,own,212,356,421,91
@@ -21391,7 +21391,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59003,Aibes,59,350,7.1,9.5,1390,900,area,area,own,nearby,8,1,28,127
 59004,Aix-en-Pévèle,59,1338,12.7,15.0,2480,3090,area,area,own,nearby,61,7,57,268
 59005,Allennes-les-Marais,59,3545,11.4,12.4,2280,2620,area,area,own,nearby,92,75,189,2439
-59006,L'Orée de Mormal,59,619,8.6,11.4,1380,220000,area,area,own,nearby,10,1,30,5
+59006,L'Orée de Mormal,59,619,8.6,11.4,1380,,area,area,own,,10,1,30,
 59007,Anhiers,59,888,9.2,11.3,1620,1580,area,area,own,nearby,18,5,40,1471
 59008,Aniche,59,9963,8.3,11.0,1160,1330,own,own,own,nearby,472,627,484,98
 59009,Villeneuve-d'Ascq,59,62868,13.5,14.3,3130,2760,own,own,own,own,895,4118,1880,1322
@@ -21435,7 +21435,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59050,Bas-Lieu,59,348,7.1,9.5,1110,500,area,area,own,nearby,25,1,12,10
 59051,La Bassée,59,6650,9.7,12.0,1930,2110,own,own,own,own,334,784,365,41
 59052,Bauvin,59,5249,10.2,11.6,2020,2350,own,own,own,nearby,111,173,286,808
-59053,Bavay,59,3249,8.0,10.0,1340,220000,own,own,own,nearby,168,228,191,5
+59053,Bavay,59,3249,8.0,10.0,1340,,own,own,own,,168,228,191,
 59054,Bavinchove,59,1045,8.9,10.8,1920,2420,area,area,own,nearby,53,7,60,226
 59055,Bazuel,59,551,6.8,9.1,1180,1010,area,area,own,nearby,38,9,36,28
 59056,Beaucamps-Ligny,59,845,13.1,13.6,3150,3180,area,area,own,own,33,61,38,6
@@ -21447,7 +21447,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59062,Beaurieux,59,169,7.1,9.5,1540,,area,area,own,,6,7,5,
 59063,Beauvois-en-Cambrésis,59,1933,7.9,9.4,1040,1200,own,area,own,nearby,127,93,160,134
 59064,Bellaing,59,1301,8.8,11.4,1760,2120,area,area,own,nearby,18,9,46,3110
-59065,Bellignies,59,810,8.1,10.7,1210,220000,area,area,own,nearby,20,3,44,5
+59065,Bellignies,59,810,8.1,10.7,1210,,area,area,own,,20,3,44,
 59066,Bérelles,59,163,7.1,9.5,1180,850,area,area,own,nearby,13,0,11,91
 59067,Bergues,59,3525,9.5,13.7,1970,2100,own,own,own,own,177,585,146,42
 59068,Berlaimont,59,3159,7.4,10.0,1190,780,own,own,own,nearby,118,149,196,7
@@ -21458,7 +21458,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59074,Bertry,59,2140,7.4,9.1,1100,1170,area,area,own,nearby,98,16,143,162
 59075,Béthencourt,59,689,8.5,9.4,1120,1170,area,area,own,nearby,44,4,40,162
 59076,Bettignies,59,343,7.4,11.5,1570,930,area,area,own,nearby,4,1,10,569
-59077,Bettrechies,59,253,8.1,10.7,1490,36490,area,area,own,nearby,3,1,7,31
+59077,Bettrechies,59,253,8.1,10.7,1490,1200,area,area,own,nearby,3,1,7,26
 59078,Beugnies,59,599,6.9,9.5,1200,500,area,area,own,nearby,22,17,30,10
 59079,Beuvrages,59,6796,9.1,11.2,1490,1380,own,own,own,own,148,161,245,37
 59080,Beuvry-la-Forêt,59,2861,10.8,12.6,2220,2130,own,area,own,nearby,116,53,153,104
@@ -21496,7 +21496,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59113,Bruille-lez-Marchiennes,59,1340,9.6,10.4,1650,940,area,area,own,nearby,41,8,62,228
 59114,Bruille-Saint-Amand,59,1698,9.4,11.9,2000,1650,area,area,own,nearby,36,25,94,521
 59115,Brunémont,59,704,8.5,11.4,1750,2300,area,area,own,nearby,48,3,36,27
-59116,Bry,59,390,9.1,12.8,2210,220000,area,area,own,own,11,0,34,5
+59116,Bry,59,390,9.1,12.8,2210,1660,area,area,own,nearby,11,0,34,67
 59117,Bugnicourt,59,1095,9.4,11.5,1450,1540,area,area,own,nearby,85,17,44,1342
 59118,Busigny,59,2435,6.9,8.9,920,940,own,own,own,nearby,102,100,151,33
 59119,Buysscheure,59,582,8.9,11.3,1910,1940,area,area,own,nearby,25,4,25,467
@@ -21545,7 +21545,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59163,Croix,59,20566,12.3,14.5,2600,2870,own,own,own,own,568,2651,1129,869
 59164,Croix-Caluyau,59,238,8.5,9.6,1100,1010,area,area,own,nearby,22,0,15,28
 59165,Cuincy,59,6467,9.2,14.2,1790,1530,own,area,own,nearby,206,96,341,1661
-59166,Curgies,59,1333,11.2,11.2,2020,2500,area,area,own,nearby,57,9,77,3015
+59166,Curgies,59,1333,11.2,11.2,2020,2140,area,area,own,nearby,57,9,77,3010
 59167,Cuvillers,59,177,8.2,9.8,1030,1650,area,area,own,nearby,8,0,15,691
 59168,Cysoing,59,4839,13.5,14.2,2810,3610,own,own,own,own,281,592,293,41
 59169,Damousies,59,205,7.7,10.5,1120,930,area,area,own,nearby,9,1,14,559
@@ -21594,9 +21594,9 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59212,Estaires,59,6525,8.7,11.2,2030,2190,own,own,own,own,257,405,347,29
 59213,Estourmel,59,475,8.1,9.8,1610,1570,area,area,own,nearby,14,0,36,825
 59214,Estrées,59,1134,9.0,11.2,1900,1540,area,area,own,nearby,28,4,59,1342
-59215,Estreux,59,937,11.2,12.8,1980,2480,area,area,own,nearby,25,1,54,3075
+59215,Estreux,59,937,11.2,12.8,1980,2120,area,area,own,nearby,25,1,54,3070
 59216,Eswars,59,363,8.2,9.8,1730,1650,area,area,own,nearby,16,0,15,691
-59217,Eth,59,328,9.1,12.8,2010,4640,area,area,own,nearby,10,1,14,419
+59217,Eth,59,328,9.1,12.8,2010,2040,area,area,own,nearby,10,1,14,414
 59218,Étrœungt,59,1233,6.5,9.7,900,700,own,area,own,nearby,147,33,69,22
 59219,Estrun,59,725,8.2,11.4,2040,1650,area,area,own,nearby,23,0,21,676
 59220,Faches-Thumesnil,59,18619,11.9,13.6,2520,2630,own,own,own,own,355,1536,952,267
@@ -21611,7 +21611,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59229,Féron,59,514,7.5,9.5,1690,870,area,area,own,nearby,3,1,23,12
 59230,Ferrière-la-Grande,59,5131,7.6,10.2,1240,1010,own,own,own,own,202,229,278,22
 59231,Ferrière-la-Petite,59,1024,7.7,11.5,1340,930,area,area,own,nearby,43,4,58,569
-59232,La Flamengrie,59,431,8.6,11.4,1960,36490,area,area,own,nearby,3,3,26,31
+59232,La Flamengrie,59,431,8.6,11.4,1960,1200,area,area,own,nearby,3,3,26,26
 59233,Flaumont-Waudrechies,59,342,7.1,9.5,1390,500,area,area,own,nearby,51,1,30,10
 59234,Flers-en-Escrebieux,59,5424,8.4,14.0,1550,1540,own,own,own,nearby,171,146,214,1632
 59236,Flesquières,59,276,7.9,9.7,1010,1530,area,area,own,nearby,7,2,25,15
@@ -21627,7 +21627,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59247,Forest-sur-Marque,59,1662,12.7,13.6,3220,3380,area,area,own,nearby,54,29,93,23556
 59249,Fourmies,59,11449,7.6,9.2,1020,870,own,own,own,own,477,691,558,12
 59250,Fournes-en-Weppes,59,2179,13.1,12.8,2880,2340,own,own,own,own,125,140,135,5
-59251,Frasnoy,59,389,8.6,11.2,1940,220000,area,area,own,nearby,1,2,22,5
+59251,Frasnoy,59,389,8.6,11.2,1940,,area,area,own,,1,2,22,
 59252,Frelinghien,59,2609,11.3,13.3,2660,2860,area,own,own,nearby,65,116,146,2405
 59253,Fresnes-sur-Escaut,59,7354,8.5,10.4,1070,2100,own,own,own,nearby,308,175,351,2896
 59254,Fressain,59,919,9.4,11.5,1490,,area,area,own,,54,10,68,
@@ -21641,7 +21641,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59262,Godewaersvelde,59,2024,9.4,11.2,2140,2620,area,area,own,nearby,49,6,136,276
 59263,Gœulzin,59,1070,10.3,11.2,1960,1540,area,area,own,nearby,31,1,72,1355
 59264,Gognies-Chaussée,59,723,8.1,10.7,1460,930,area,area,own,nearby,15,9,49,530
-59265,Gommegnies,59,2264,7.8,11.4,1700,220000,area,area,own,nearby,85,26,124,5
+59265,Gommegnies,59,2264,7.8,11.4,1700,,area,area,own,,85,26,124,
 59266,Gondecourt,59,4148,11.2,13.1,2580,2250,own,own,own,own,129,148,195,5
 59267,Gonnelieu,59,279,7.3,9.7,1000,,area,area,own,,13,1,19,
 59268,La Gorgue,59,5616,9.3,11.5,1860,1780,own,own,own,own,212,358,295,27
@@ -21653,7 +21653,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59274,La Groise,59,464,7.3,9.1,1050,,area,area,own,,46,1,34,
 59275,Gruson,59,1207,12.9,14.6,3890,2650,area,area,own,nearby,42,33,69,3829
 59276,Guesnain,59,4635,8.8,11.2,1540,1530,area,area,own,nearby,58,36,130,1447
-59277,Gussignies,59,353,8.1,10.7,1870,36490,area,area,own,nearby,5,5,21,31
+59277,Gussignies,59,353,8.1,10.7,1870,1200,area,area,own,nearby,5,5,21,26
 59278,Hallennes-lez-Haubourdin,59,4683,11.5,14.0,2670,2820,own,own,own,own,112,183,255,26
 59279,Halluin,59,20715,10.1,13.2,2170,2390,own,own,own,own,385,997,1024,195
 59280,Hamel,59,797,9.4,11.2,1690,1640,area,area,own,nearby,17,0,30,1219
@@ -21685,12 +21685,12 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59307,Holque,59,837,9.1,10.4,1630,1470,area,area,own,nearby,19,19,49,26
 59308,Hondeghem,59,916,9.2,10.8,2230,2420,area,area,own,nearby,45,9,50,226
 59309,Hondschoote,59,3957,9.9,12.5,1710,,own,area,own,,119,91,216,
-59310,Hon-Hergies,59,867,8.1,10.7,1840,220000,area,area,own,nearby,30,18,39,5
+59310,Hon-Hergies,59,867,8.1,10.7,1840,,area,area,own,,30,18,39,
 59311,Honnechy,59,541,6.8,9.1,1060,1150,area,area,own,nearby,38,3,42,167
 59312,Honnecourt-sur-Escaut,59,710,7.3,9.8,1110,,area,area,own,,24,2,51,
 59313,Hordain,59,1446,8.5,11.4,1420,1230,area,area,own,nearby,46,0,65,40
 59314,Hornaing,59,3496,8.6,10.4,1630,1340,area,area,own,nearby,59,9,128,142
-59315,Houdain-lez-Bavay,59,902,8.1,10.7,1720,220000,area,area,own,nearby,16,11,42,5
+59315,Houdain-lez-Bavay,59,902,8.1,10.7,1720,,area,area,own,,16,11,42,
 59316,Houplin-Ancoisne,59,3326,11.4,13.8,2540,3550,area,area,own,nearby,72,43,194,17816
 59317,Houplines,59,7921,9.8,12.1,2260,1690,own,own,own,own,301,369,527,5
 59318,Houtkerque,59,978,9.3,11.2,1680,2740,area,area,own,nearby,33,15,60,23
@@ -21698,7 +21698,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59320,Illies,59,1712,10.1,12.4,2340,2280,area,area,own,nearby,57,22,80,218
 59321,Inchy,59,619,8.5,9.1,1120,1170,area,area,own,nearby,53,14,53,162
 59322,Iwuy,59,3403,7.9,9.9,1300,1650,own,own,own,nearby,217,129,190,676
-59323,Jenlain,59,1115,9.1,12.8,1840,2590,area,area,own,nearby,30,8,62,2758
+59323,Jenlain,59,1115,9.1,12.8,1840,2200,area,area,own,nearby,30,8,62,2753
 59324,Jeumont,59,10160,7.5,10.9,1150,630,own,own,own,own,313,268,446,10
 59325,Jolimetz,59,856,8.6,11.4,1640,,area,area,own,,36,25,50,
 59326,Killem,59,1164,10.8,12.5,1620,2100,area,area,own,nearby,22,13,54,42
@@ -21751,7 +21751,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59377,Marcoing,59,1841,8.2,10.4,1450,1650,own,own,own,nearby,103,109,108,691
 59378,Marcq-en-Barœul,59,40184,14.6,15.5,4110,3470,own,own,own,own,1018,4997,1735,1446
 59379,Marcq-en-Ostrevent,59,741,8.5,11.4,1440,1290,area,area,own,nearby,36,24,33,64
-59381,Maresches,59,808,11.2,10.5,1580,2590,area,area,own,nearby,26,35,42,2766
+59381,Maresches,59,808,11.2,10.5,1580,2200,area,area,own,nearby,26,35,42,2761
 59382,Maretz,59,1402,7.4,9.1,920,1170,area,area,own,nearby,59,26,89,139
 59383,Marly,59,11995,9.5,11.8,1510,1780,own,own,own,own,466,663,586,112
 59384,Maroilles,59,1454,7.3,9.7,1080,,area,area,own,,71,51,70,
@@ -21809,7 +21809,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59438,Noyelles-sur-Escaut,59,816,7.9,9.7,1670,1650,area,area,own,nearby,53,8,25,691
 59439,Noyelles-sur-Sambre,59,283,7.3,9.6,1500,,area,area,own,,6,0,16,
 59440,Noyelles-sur-Selle,59,657,8.5,10.4,1280,1650,area,area,own,nearby,33,12,44,138
-59441,Obies,59,660,7.8,11.4,1780,92120,area,area,own,nearby,20,0,30,12
+59441,Obies,59,660,7.8,11.4,1780,780,area,area,own,nearby,20,0,30,7
 59442,Obrechies,59,283,7.7,10.5,1490,930,area,area,own,nearby,2,1,9,559
 59443,Ochtezeele,59,351,9.4,11.3,2220,2330,area,area,own,nearby,33,0,15,31
 59444,Odomez,59,945,8.7,10.9,1900,1650,area,area,own,nearby,17,3,33,521
@@ -21819,7 +21819,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59448,Oost-Cappel,59,463,10.8,12.5,1660,,area,area,own,,12,1,31,
 59449,Orchies,59,8396,10.2,13.9,2240,2220,own,own,own,own,517,1329,401,81
 59450,Ors,59,644,7.3,9.1,1280,1010,area,area,own,nearby,33,3,32,28
-59451,Orsinval,59,564,11.2,11.2,1500,8740,area,area,own,nearby,25,4,21,173
+59451,Orsinval,59,564,11.2,11.2,1500,2450,area,area,own,nearby,25,4,21,168
 59452,Ostricourt,59,6097,9.7,11.2,1900,1960,own,area,own,nearby,114,36,245,652
 59453,Oudezeele,59,690,9.3,11.2,2070,2330,area,area,own,nearby,23,4,41,31
 59454,Oxelaëre,59,540,8.9,11.2,1940,1160,area,area,own,own,24,68,32,8
@@ -21835,20 +21835,20 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59465,Pommereuil,59,765,7.3,9.1,1040,1010,area,area,own,nearby,17,0,28,28
 59466,Pont-à-Marcq,59,3016,12.6,14.1,2760,3020,own,own,own,own,109,246,161,57
 59467,Pont-sur-Sambre,59,2371,7.6,10.7,1200,980,own,area,own,nearby,137,73,141,43
-59468,Potelle,59,439,8.6,11.4,1950,220000,area,area,own,nearby,8,1,18,5
+59468,Potelle,59,439,8.6,11.4,1950,,area,area,own,,8,1,18,
 59469,Pradelles,59,399,9.2,11.2,2460,2550,area,area,own,nearby,0,5,22,494
 59470,Prémesques,59,2031,12.2,13.6,3090,3940,area,area,own,own,60,34,114,10
-59471,Préseau,59,2100,11.9,10.5,1880,2510,own,area,own,nearby,108,23,99,2989
+59471,Préseau,59,2100,11.9,10.5,1880,2140,own,area,own,nearby,108,23,99,2984
 59472,Preux-au-Bois,59,832,7.8,9.1,990,,area,area,own,,37,0,48,
-59473,Preux-au-Sart,59,300,8.6,11.2,1820,34100,area,area,own,nearby,8,0,20,34
+59473,Preux-au-Sart,59,300,8.6,11.2,1820,2050,area,area,own,nearby,8,0,20,29
 59474,Prisches,59,1000,6.9,9.7,950,,area,area,own,,30,12,56,
 59475,Prouvy,59,2178,9.3,11.4,1570,2120,area,area,own,nearby,85,24,108,3072
 59476,Proville,59,3206,9.2,9.7,1660,1580,own,area,own,own,167,57,142,7
 59477,Provin,59,4428,9.4,11.9,2190,2600,own,own,own,own,161,173,256,5
 59478,Quaëdypre,59,1108,9.3,12.5,1860,2420,area,area,own,nearby,34,33,67,114
-59479,Quarouble,59,3145,8.9,10.9,1670,2500,own,area,own,nearby,121,58,183,2957
+59479,Quarouble,59,3145,8.9,10.9,1670,2140,own,area,own,nearby,121,58,183,2952
 59480,Quérénaing,59,865,8.0,11.5,1750,2140,area,area,own,nearby,56,21,53,2975
-59481,Le Quesnoy,59,4878,8.4,10.9,1540,220000,own,own,own,nearby,289,617,213,5
+59481,Le Quesnoy,59,4878,8.4,10.9,1540,,own,own,own,,289,617,213,
 59482,Quesnoy-sur-Deûle,59,6805,11.9,13.4,2910,3300,own,own,own,own,167,261,317,63
 59483,Quiévelon,59,135,7.7,9.5,1200,930,area,area,own,nearby,0,0,8,562
 59484,Quiévrechain,59,5949,8.6,11.1,1130,1200,own,own,own,own,175,211,227,26
@@ -21872,7 +21872,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59502,Rieux-en-Cambrésis,59,1425,7.8,9.4,1350,1580,own,area,own,nearby,129,10,60,810
 59503,Robersart,59,201,7.3,9.1,1670,1010,area,area,own,nearby,7,0,10,28
 59504,Rœulx,59,3743,8.2,10.4,1320,1260,own,area,own,nearby,122,32,191,104
-59505,Rombies-et-Marchipont,59,741,9.1,12.8,2050,2500,area,area,own,nearby,19,0,31,2957
+59505,Rombies-et-Marchipont,59,741,9.1,12.8,2050,2140,area,area,own,nearby,19,0,31,2952
 59506,Romeries,59,471,8.5,9.6,1230,,area,area,own,,27,0,30,
 59507,Ronchin,59,19787,11.9,14.2,2390,2530,own,own,own,own,271,1963,847,380
 59508,Roncq,59,14075,11.4,13.7,2770,3080,own,own,own,own,197,844,752,167
@@ -21884,7 +21884,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59515,Rouvignies,59,655,8.5,11.4,1450,2120,area,area,own,nearby,32,27,23,3072
 59516,Rubrouck,59,899,8.9,10.4,1810,2740,area,area,own,nearby,46,9,43,23
 59517,Les Rues-des-Vignes,59,737,8.1,9.7,1620,1650,area,area,own,nearby,19,1,46,683
-59518,Ruesnes,59,448,8.0,11.5,1670,8430,area,area,own,nearby,17,2,18,181
+59518,Ruesnes,59,448,8.0,11.5,1670,2420,area,area,own,nearby,17,2,18,176
 59519,Rumegies,59,1722,10.8,11.1,2270,2080,area,area,own,nearby,65,17,85,156
 59520,Rumilly-en-Cambrésis,59,1431,7.9,9.8,1440,1650,area,area,own,nearby,49,8,94,691
 59521,Sailly-lez-Cambrai,59,409,8.3,11.4,1200,1650,area,area,own,nearby,22,0,24,691
@@ -21913,7 +21913,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59545,Saint-Souplet,59,1191,6.8,9.1,860,940,area,area,own,nearby,90,2,99,33
 59546,Saint-Sylvestre-Cappel,59,1144,9.4,11.2,1800,2420,area,area,own,nearby,30,30,63,226
 59547,Saint-Vaast-en-Cambrésis,59,871,8.3,9.4,1210,1200,area,area,own,nearby,34,7,62,134
-59548,Saint-Waast,59,686,8.6,11.4,1650,220000,area,area,own,nearby,20,0,29,5
+59548,Saint-Waast,59,686,8.6,11.4,1650,,area,area,own,,20,0,29,
 59549,Salesches,59,327,8.5,9.6,1490,,area,area,own,,25,0,20,
 59550,Salomé,59,3182,10.1,11.8,2090,2110,area,area,own,nearby,96,74,223,267
 59551,Saméon,59,1704,10.8,15.0,2530,2080,area,area,own,nearby,45,6,75,148
@@ -21924,12 +21924,12 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59556,Sassegnies,59,260,7.3,9.6,1270,,area,area,own,,5,3,15,
 59557,Saultain,59,2499,11.8,12.3,2080,2050,own,own,own,own,158,197,131,29
 59558,Saulzoir,59,1672,8.5,11.5,1270,1800,area,area,own,nearby,74,36,100,8
-59559,Sebourg,59,1967,9.1,12.8,2230,2590,area,area,own,nearby,92,3,127,2758
+59559,Sebourg,59,1967,9.1,12.8,2230,2200,area,area,own,nearby,92,3,127,2753
 59560,Seclin,59,13261,11.2,13.6,2430,2860,own,own,own,own,358,1268,607,258
 59562,Sémeries,59,520,6.9,9.5,1310,500,area,area,own,nearby,28,6,24,10
 59563,Semousies,59,227,7.1,10.5,1520,500,area,area,own,nearby,4,0,9,10
 59564,La Sentinelle,59,3103,9.3,11.4,1430,1240,area,area,own,own,98,88,142,14
-59565,Sepmeries,59,640,11.2,11.2,1700,2590,area,area,own,nearby,23,0,26,2766
+59565,Sepmeries,59,640,11.2,11.2,1700,2200,area,area,own,nearby,23,0,26,2761
 59566,Sequedin,59,4675,12.0,13.9,2880,3140,area,own,own,own,67,234,214,27
 59567,Séranvillers-Forenville,59,416,8.1,9.8,1570,1570,area,area,own,nearby,9,2,23,825
 59568,Sercus,59,486,8.9,10.8,1850,2090,area,area,own,nearby,13,1,19,304
@@ -21983,13 +21983,13 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59616,Vieux-Condé,59,10617,8.3,10.5,1330,1700,own,own,own,nearby,298,201,435,370
 59617,Vieux-Mesnil,59,641,7.3,10.7,1790,950,area,area,own,nearby,8,0,16,500
 59618,Vieux-Reng,59,938,7.4,11.5,1320,930,area,area,own,nearby,40,35,35,562
-59619,Villereau,59,1084,8.6,11.4,2030,220000,area,area,own,nearby,64,24,38,5
+59619,Villereau,59,1084,8.6,11.4,2030,,area,area,own,,64,24,38,
 59620,Villers-au-Tertre,59,670,9.4,11.5,1680,1100,area,area,own,nearby,27,1,37,272
 59622,Villers-en-Cauchies,59,1151,8.5,9.4,1290,,area,area,own,,82,12,64,
 59623,Villers-Guislain,59,684,7.3,9.8,1270,,area,area,own,,55,0,35,
 59624,Villers-Outréaux,59,2117,6.9,9.8,940,,own,area,own,,109,40,112,
 59625,Villers-Plouich,59,390,8.1,9.7,1160,,area,area,own,,16,11,25,
-59626,Villers-Pol,59,1197,11.2,11.2,1810,5890,area,area,own,nearby,50,29,96,293
+59626,Villers-Pol,59,1197,11.2,11.2,1810,2170,area,area,own,nearby,50,29,96,288
 59627,Villers-Sire-Nicole,59,1009,7.4,11.5,1600,930,area,area,own,nearby,20,38,36,562
 59628,Volckerinckhove,59,573,8.9,11.3,1820,,area,area,own,,40,0,34,
 59629,Vred,59,1302,9.9,11.2,1870,1280,area,area,own,nearby,20,3,92,309
@@ -22002,8 +22002,8 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 59636,Wambrechies,59,11012,12.7,14.9,3440,3610,own,own,own,own,272,929,540,261
 59637,Wandignies-Hamage,59,1301,9.6,11.1,2090,1720,area,area,own,nearby,19,4,85,273
 59638,Wannehain,59,1338,12.3,13.8,3270,3470,area,area,own,nearby,22,4,58,252
-59639,Wargnies-le-Grand,59,1125,9.1,11.2,1780,6110,area,area,own,nearby,48,23,53,271
-59640,Wargnies-le-Petit,59,771,8.6,11.2,1620,34100,area,area,own,nearby,18,0,39,34
+59639,Wargnies-le-Grand,59,1125,9.1,11.2,1780,2090,area,area,own,nearby,48,23,53,266
+59640,Wargnies-le-Petit,59,771,8.6,11.2,1620,2050,area,area,own,nearby,18,0,39,29
 59641,Warhem,59,2020,9.3,12.5,2080,2260,area,area,own,nearby,49,12,117,265
 59642,Warlaing,59,603,9.9,11.1,1830,1800,area,area,own,nearby,2,1,19,233
 59643,Warneton,59,231,11.3,12.2,1980,2800,area,area,own,nearby,27,20,10,1741
@@ -26864,7 +26864,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70032,Attricourt,70,47,8.4,10.3,1350,,area,area,nearby,,0,0,410,
 70035,Augicourt,70,175,8.4,7.3,750,530,area,area,own,nearby,4,5,16,17
 70036,Aulx-lès-Cromary,70,160,9.7,9.6,1880,2070,area,area,own,nearby,4,4,13,101
-70037,Autet,70,269,7.8,8.6,900,180,area,area,own,nearby,6,6,30,6
+70037,Autet,70,269,7.8,8.6,900,,area,area,own,,6,6,30,
 70038,Authoison,70,314,9.7,7.7,1490,2050,area,area,own,nearby,10,30,19,28
 70039,Autoreille,70,394,8.5,10.1,1470,1300,area,area,own,nearby,13,18,29,30
 70040,Autrey-lès-Cerre,70,240,7.6,8.6,1350,800,area,area,own,nearby,3,2,14,13
@@ -26885,7 +26885,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70055,Baudoncourt,70,482,7.8,8.2,1180,870,area,area,own,nearby,23,21,33,382
 70056,Baulay,70,322,7.5,7.3,690,570,area,area,own,nearby,12,0,31,28
 70057,Bay,70,161,9.1,9.2,1630,1580,area,area,own,nearby,15,7,10,19
-70058,Beaujeu-Saint-Vallier-Pierrejux-et-Quitteur,70,921,8.0,6.8,1180,950,area,area,own,nearby,5,2,50,165
+70058,Beaujeu-Saint-Vallier-Pierrejux-et-Quitteur,70,921,8.0,6.8,1180,980,area,area,own,nearby,5,2,50,159
 70059,Beaumotte-Aubertans,70,475,8.6,9.2,1720,2050,area,area,own,nearby,13,21,19,28
 70060,Beaumotte-lès-Pin,70,281,8.5,10.0,1330,1840,area,area,own,nearby,10,11,11,54
 70061,Belfahy,70,83,8.5,8.3,1670,1090,area,area,own,nearby,0,0,16,77
@@ -26924,7 +26924,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70096,Brevilliers,70,626,9.7,10.0,1570,1200,area,area,own,nearby,13,15,29,5450
 70097,Briaucourt,70,256,8.4,7.5,960,830,area,area,own,nearby,9,6,15,407
 70098,Brotte-lès-Luxeuil,70,194,7.9,8.6,890,870,area,area,own,nearby,11,9,10,382
-70099,Brotte-lès-Ray,70,61,8.0,6.8,840,180,area,area,own,nearby,3,0,5,6
+70099,Brotte-lès-Ray,70,61,8.0,6.8,840,,area,area,own,,3,0,5,
 70100,Broye-les-Loups-et-Verfontaine,70,112,8.3,10.3,1100,,area,area,own,,24,0,6,
 70101,Broye-Aubigney-Montseugny,70,512,8.3,11.0,920,940,area,area,own,nearby,3,3,34,8
 70102,Brussey,70,296,8.5,10.0,1570,1750,area,area,own,nearby,3,4,13,40
@@ -27015,13 +27015,13 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70195,Dambenoît-lès-Colombe,70,272,7.9,8.6,1370,900,area,area,own,nearby,5,5,8,148
 70196,Dampierre-lès-Conflans,70,264,8.4,7.5,880,400,area,area,own,nearby,0,15,9,36
 70197,Dampierre-sur-Linotte,70,753,8.6,7.5,1000,,area,area,own,,32,17,41,
-70198,Dampierre-sur-Salon,70,1234,7.8,7.3,1250,180,area,own,own,nearby,46,116,53,6
+70198,Dampierre-sur-Salon,70,1234,7.8,7.3,1250,,area,own,own,,46,116,53,
 70199,Dampvalley-lès-Colombe,70,118,8.3,7.5,880,1170,area,area,own,nearby,5,0,11,995
 70200,Dampvalley-Saint-Pancras,70,44,7.5,7.5,1010,400,area,area,own,nearby,1,0,6,36
-70201,Delain,70,186,8.3,6.8,570,180,area,area,own,nearby,0,0,12,6
+70201,Delain,70,186,8.3,6.8,570,,area,area,own,,0,0,12,
 70202,Demangevelle,70,256,7.5,8.3,690,,area,area,own,,3,10,23,
 70203,La Demie,70,161,8.6,9.6,1570,1170,area,area,own,nearby,7,0,8,1009
-70204,Denèvre,70,145,7.8,6.8,1060,180,area,area,own,nearby,1,2,5,6
+70204,Denèvre,70,145,7.8,6.8,1060,,area,area,own,,1,2,5,
 70205,Échavanne,70,199,9.7,10.3,1740,1280,area,area,own,nearby,0,1,7,3682
 70206,Échenans-sous-Mont-Vaudois,70,567,9.7,10.3,1780,1280,area,area,own,nearby,4,2,28,4084
 70207,Échenoz-la-Méline,70,3158,9.5,10.2,1550,1150,own,own,own,own,120,379,151,40
@@ -27045,7 +27045,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70228,Faverney,70,980,8.3,8.0,840,630,area,own,own,own,38,165,54,11
 70229,Faymont,70,253,7.6,8.6,1260,1130,area,area,own,nearby,4,4,15,11
 70230,Fédry,70,92,7.8,9.7,710,,area,area,own,,2,0,16,
-70231,Ferrières-lès-Ray,70,41,8.0,6.8,910,180,area,area,nearby,nearby,1,0,392,6
+70231,Ferrières-lès-Ray,70,41,8.0,6.8,910,,area,area,nearby,,1,0,392,
 70232,Ferrières-lès-Scey,70,132,7.4,9.0,880,960,area,area,own,nearby,3,8,9,32
 70233,Les Fessey,70,126,7.8,8.5,1270,,area,area,own,,0,2,6,
 70234,Filain,70,217,8.6,7.7,970,1150,area,area,own,nearby,14,11,8,66
@@ -27067,7 +27067,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70252,Framont,70,176,8.3,6.8,640,,area,area,own,,6,3,9,
 70253,Frasne-le-Château,70,294,8.0,9.7,1070,870,area,area,own,nearby,9,19,25,12
 70254,Frédéric-Fontaine,70,278,7.6,8.7,1060,1120,area,area,own,nearby,5,10,13,48
-70255,Fresne-Saint-Mamès,70,491,8.0,9.7,1250,180,area,area,own,nearby,36,66,15,6
+70255,Fresne-Saint-Mamès,70,491,8.0,9.7,1250,,area,area,own,,36,66,15,
 70256,Fresse,70,687,7.8,8.3,1170,1070,area,area,own,nearby,20,3,65,32
 70257,Fretigney-et-Velloreille,70,764,8.0,9.7,1000,,area,area,own,,27,83,38,
 70258,Froideconche,70,1960,8.5,8.7,1160,870,own,own,own,nearby,133,117,96,388
@@ -27097,7 +27097,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70286,Hugier,70,115,8.5,9.2,1690,1660,area,area,own,nearby,2,3,6,8
 70287,Hurecourt,70,48,7.5,8.5,260,,area,area,own,,0,0,5,
 70288,Hyet,70,118,9.7,9.7,1470,2050,area,area,own,nearby,11,2,5,28
-70289,Igny,70,202,8.0,8.6,740,640,area,area,own,nearby,1,6,8,18
+70289,Igny,70,202,8.0,8.6,740,870,area,area,own,nearby,1,6,8,12
 70290,Jasney,70,190,8.4,7.5,500,400,area,area,own,nearby,1,7,9,36
 70291,Jonvelle,70,100,7.5,8.3,470,,area,area,own,,1,5,21,
 70292,Jussey,70,1558,8.0,9.4,620,530,own,own,own,own,115,255,139,17
@@ -27107,7 +27107,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70296,Larians-et-Munans,70,291,8.6,7.7,1470,1450,area,area,own,nearby,16,47,6,6
 70297,Larret,70,63,7.8,6.8,490,,area,area,own,,2,0,6,
 70298,Lavigney,70,129,8.4,7.3,410,,area,area,own,,3,1,8,
-70299,Lavoncourt,70,331,8.0,8.3,1100,180,area,area,own,nearby,11,37,20,6
+70299,Lavoncourt,70,331,8.0,8.3,1100,,area,area,own,,11,37,20,
 70301,Lieffrans,70,50,8.0,9.7,1110,,area,area,nearby,,3,13,351,
 70302,Lieucourt,70,71,9.1,9.0,1280,,area,area,nearby,,7,0,412,
 70303,Liévans,70,152,8.3,7.5,1220,,area,area,own,,7,2,6,
@@ -27146,9 +27146,9 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70337,Melin,70,52,8.4,7.3,610,,area,area,nearby,,2,3,299,
 70338,Melincourt,70,224,7.5,8.5,670,,area,area,own,,7,4,18,
 70339,Mélisey,70,1625,7.8,8.2,1280,960,area,own,own,nearby,50,183,73,185
-70340,Membrey,70,208,8.0,9.7,1100,180,area,area,own,nearby,7,2,16,6
+70340,Membrey,70,208,8.0,9.7,1100,,area,area,own,,7,2,16,
 70341,Menoux,70,293,7.5,8.5,780,630,area,area,own,nearby,11,15,19,11
-70342,Mercey-sur-Saône,70,127,8.0,8.6,920,180,area,area,own,nearby,5,2,8,6
+70342,Mercey-sur-Saône,70,127,8.0,8.6,920,,area,area,own,,5,2,8,
 70343,Mersuay,70,287,8.3,8.5,900,630,area,area,own,nearby,5,3,21,11
 70344,Meurcourt,70,345,8.3,7.5,940,630,area,area,own,nearby,42,2,15,11
 70347,Mignavillers,70,365,7.6,8.6,1160,800,area,area,own,nearby,2,5,24,13
@@ -27170,8 +27170,8 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70364,Montjustin-et-Velotte,70,122,7.6,7.5,1280,800,area,area,nearby,nearby,6,4,512,13
 70366,Villers-Chemin-et-Mont-lès-Étrelles,70,124,7.4,8.6,910,870,area,area,own,nearby,0,0,8,12
 70367,Mont-le-Vernois,70,185,7.4,9.0,1020,1160,area,area,own,nearby,2,16,10,1027
-70368,Montot,70,139,7.8,6.8,1090,180,area,area,own,nearby,6,8,7,6
-70369,Mont-Saint-Léger,70,49,7.4,8.3,360,180,area,area,own,nearby,0,1,6,6
+70368,Montot,70,139,7.8,6.8,1090,,area,area,own,,6,8,7,
+70369,Mont-Saint-Léger,70,49,7.4,8.3,360,,area,area,own,,0,1,6,
 70371,Montureux-et-Prantigny,70,189,7.8,9.0,860,980,area,area,own,nearby,4,7,14,159
 70372,Montureux-lès-Baulay,70,164,7.5,7.3,740,530,area,area,own,nearby,5,0,10,17
 70373,La Roche-Morey,70,297,8.4,8.3,630,,area,area,own,,9,11,25,
@@ -27232,17 +27232,17 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70435,Raddon-et-Chapendu,70,849,7.8,8.5,930,860,area,area,own,nearby,51,43,51,415
 70436,Raincourt,70,110,6.5,8.3,500,530,area,area,own,nearby,13,4,13,17
 70437,Ranzevelle,70,16,7.5,7.3,600,,area,area,nearby,,0,0,465,
-70438,Ray-sur-Saône,70,209,8.0,9.7,1210,180,area,area,own,nearby,4,8,10,6
+70438,Ray-sur-Saône,70,209,8.0,9.7,1210,,area,area,own,,4,8,10,
 70439,Raze,70,381,7.4,9.7,1330,1210,area,area,own,nearby,10,4,26,63
-70440,Recologne,70,30,7.4,6.8,910,180,area,area,nearby,nearby,0,0,386,6
+70440,Recologne,70,30,7.4,6.8,910,,area,area,nearby,,0,0,386,
 70441,Recologne-lès-Rioz,70,288,8.0,9.7,1300,2050,area,area,own,nearby,27,2,11,28
-70442,Renaucourt,70,116,7.8,8.3,740,180,area,area,own,nearby,1,2,17,6
+70442,Renaucourt,70,116,7.8,8.3,740,,area,area,own,,1,2,17,
 70443,La Grande-Résie,70,87,9.1,10.0,1320,,area,area,nearby,,5,3,500,
 70444,La Résie-Saint-Martin,70,165,9.1,10.0,1320,,area,area,own,,4,5,7,
 70445,Rignovelle,70,122,7.9,8.3,1330,880,area,area,own,nearby,5,3,9,524
 70446,Rigny,70,636,8.4,9.0,1130,980,area,area,own,nearby,34,25,36,159
 70447,Rioz,70,2398,10.2,9.9,2090,2050,own,own,own,own,125,225,80,28
-70448,Roche-et-Raucourt,70,153,8.0,6.8,610,180,area,area,own,nearby,0,1,11,6
+70448,Roche-et-Raucourt,70,153,8.0,6.8,610,,area,area,own,,0,1,11,
 70449,Roche-sur-Linotte-et-Sorans-les-Cordiers,70,71,9.7,7.7,1460,,area,area,own,,0,0,10,
 70450,La Rochelle,70,40,8.4,7.5,560,,area,area,nearby,,1,4,294,
 70451,Ronchamp,70,2737,7.8,8.8,1260,1010,area,own,own,own,58,279,125,16
@@ -27256,14 +27256,14 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70460,Saint-Bresson,70,417,7.8,8.5,1130,770,area,area,own,nearby,12,12,30,33
 70461,Saint-Broing,70,105,8.4,9.0,1170,970,area,area,nearby,nearby,0,0,650,171
 70462,Saint-Ferjeux,70,78,7.6,8.5,1210,840,area,area,nearby,nearby,12,12,464,18
-70463,Saint-Gand,70,138,7.4,8.6,950,180,area,area,nearby,nearby,2,7,346,6
+70463,Saint-Gand,70,138,7.4,8.6,950,,area,area,nearby,,2,7,346,
 70464,Saint-Germain,70,1377,7.9,8.6,1290,1020,area,area,own,own,25,87,83,5
 70466,Saint-Loup-Nantouard,70,119,8.4,6.8,1160,870,area,area,nearby,nearby,0,4,410,12
 70467,Saint-Loup-sur-Semouse,70,2814,7.8,8.0,930,400,area,own,own,own,76,335,112,36
 70468,Saint-Marcel,70,90,7.5,8.3,290,530,area,area,own,nearby,1,0,7,17
 70469,Sainte-Marie-en-Chanois,70,208,7.8,7.8,1330,870,area,area,own,nearby,4,6,11,377
 70470,Sainte-Marie-en-Chaux,70,162,8.4,8.2,990,870,area,area,own,nearby,10,2,9,382
-70471,Sainte-Reine,70,23,8.0,8.6,980,180,area,area,nearby,nearby,0,1,304,6
+70471,Sainte-Reine,70,23,8.0,8.6,980,,area,area,nearby,,0,1,304,
 70472,Saint-Rémy-en-Comté,70,436,8.4,8.5,870,630,area,area,own,nearby,3,4,22,11
 70473,Saint-Sauveur,70,1920,7.8,8.7,1090,720,area,own,own,own,84,237,92,11
 70474,Saint-Sulpice,70,119,7.6,7.5,1240,800,area,area,nearby,nearby,3,0,472,13
@@ -27272,7 +27272,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70478,Saulx,70,874,8.3,9.9,1380,,area,own,own,,73,125,34,
 70479,Sauvigney-lès-Gray,70,100,8.4,6.8,740,870,area,area,own,nearby,6,0,7,12
 70480,Sauvigney-lès-Pesmes,70,159,8.3,10.0,800,,area,area,own,,4,1,6,
-70481,Savoyeux,70,200,8.0,8.6,780,180,area,area,own,nearby,4,11,7,6
+70481,Savoyeux,70,200,8.0,8.6,780,,area,area,own,,4,11,7,
 70482,Scey-sur-Saône-et-Saint-Albin,70,1525,7.4,7.9,1060,780,area,own,own,nearby,89,154,64,18
 70483,Scye,70,131,8.6,9.6,840,1160,area,area,own,nearby,3,1,8,1011
 70484,Secenans,70,183,9.3,8.5,1180,850,area,area,own,nearby,0,11,8,10
@@ -27282,16 +27282,16 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70488,Senoncourt,70,181,8.4,8.5,460,630,area,area,own,nearby,1,2,15,11
 70489,Servance-Miellin,70,759,8.5,7.8,1480,740,area,area,own,nearby,13,13,63,43
 70490,Servigney,70,122,7.9,8.2,1420,,area,area,own,,2,1,8,
-70491,Seveux-Motey,70,471,8.0,8.6,940,180,area,area,own,own,15,43,30,6
+70491,Seveux-Motey,70,471,8.0,8.6,940,,area,area,own,,15,43,30,
 70492,Soing-Cubry-Charentenay,70,555,7.4,9.7,830,,area,area,own,,41,11,41,
 70493,Sorans-lès-Breurey,70,419,9.7,9.6,2290,2350,area,area,own,nearby,10,35,16,110
 70494,Sornay,70,357,9.1,9.2,1380,1580,area,area,own,nearby,6,18,22,19
 70496,Tartécourt,70,31,7.5,8.5,630,530,area,area,nearby,nearby,2,0,627,17
 70498,Ternuay-Melay-et-Saint-Hilaire,70,438,7.8,8.3,1440,1070,area,area,own,nearby,6,20,32,32
-70499,Theuley,70,105,7.4,8.3,750,180,area,area,own,nearby,1,0,9,6
+70499,Theuley,70,105,7.4,8.3,750,,area,area,own,,1,0,9,
 70500,Thieffrans,70,170,8.6,7.5,1090,,area,area,own,,2,0,13,
 70501,Thiénans,70,112,8.6,7.7,1140,,area,area,own,,6,5,8,
-70502,Tincey-et-Pontrebeau,70,81,8.0,6.8,840,180,area,area,nearby,nearby,1,0,331,6
+70502,Tincey-et-Pontrebeau,70,81,8.0,6.8,840,,area,area,nearby,,1,0,331,
 70503,Traitiéfontaine,70,160,9.7,9.6,1260,1880,area,area,own,nearby,0,0,9,39
 70504,Traves,70,345,7.4,9.7,1070,780,area,area,own,nearby,13,9,23,18
 70505,Le Tremblois,70,159,8.3,9.0,1630,980,area,area,own,nearby,2,1,13,159
@@ -27299,7 +27299,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70507,Trésilley,70,287,9.7,9.2,1460,1910,area,area,own,nearby,7,15,14,34
 70509,Tromarey,70,118,9.2,9.2,1530,1660,area,area,nearby,nearby,1,0,519,8
 70510,Vadans,70,138,9.1,9.0,1100,,area,area,own,,1,0,9,
-70511,Vaite,70,224,8.0,8.6,830,180,area,area,own,nearby,16,24,19,6
+70511,Vaite,70,224,8.0,8.6,830,,area,area,own,,16,24,19,
 70512,La Vaivre,70,216,8.4,7.4,810,700,area,area,own,nearby,7,3,16,123
 70513,Vaivre-et-Montoille,70,2422,8.6,9.0,1740,1180,area,area,own,own,43,54,79,14
 70514,Valay,70,638,9.1,10.0,1240,,area,area,own,,44,75,24,
@@ -27308,7 +27308,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70517,Vallerois-Lorioz,70,452,8.6,9.6,1970,1170,area,area,own,nearby,17,1,19,1009
 70518,Le Val-Saint-Éloi,70,94,8.3,8.5,790,630,area,area,own,nearby,0,0,10,11
 70519,Vandelans,70,113,9.7,9.6,1520,1820,area,area,own,nearby,3,3,5,50
-70520,Vanne,70,123,7.4,8.3,690,180,area,area,own,nearby,6,4,12,6
+70520,Vanne,70,123,7.4,8.3,690,,area,area,own,,6,4,12,
 70521,Vantoux-et-Longevelle,70,176,8.0,8.6,1380,870,area,area,own,nearby,4,4,9,12
 70522,Varogne,70,155,8.3,8.5,1330,630,area,area,own,nearby,6,5,8,11
 70523,Vars,70,176,8.3,6.8,820,770,area,area,own,nearby,1,1,9,11
@@ -27325,14 +27325,14 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70535,Velleguindry-et-Levrecey,70,161,8.0,9.0,1100,1170,area,area,own,nearby,2,1,5,1009
 70536,Velle-le-Châtel,70,125,9.7,9.0,960,1160,area,area,own,nearby,6,2,6,1011
 70537,Velleminfroy,70,294,8.3,8.2,1230,,area,area,own,,15,10,12,
-70538,Vellemoz,70,87,8.0,8.6,800,640,area,area,own,nearby,1,0,5,18
-70539,Vellexon-Queutrey-et-Vaudey,70,487,7.4,9.7,680,180,area,area,own,nearby,13,59,32,6
+70538,Vellemoz,70,87,8.0,8.6,800,870,area,area,own,nearby,1,0,5,12
+70539,Vellexon-Queutrey-et-Vaudey,70,487,7.4,9.7,680,,area,area,own,,13,59,32,
 70540,Velloreille-lès-Choye,70,78,8.4,10.0,2460,870,area,area,own,nearby,1,4,5,12
 70541,Velorcey,70,206,8.4,7.5,870,,area,area,own,,12,19,14,
 70542,Venère,70,215,9.1,9.0,950,,area,area,own,,15,0,12,
 70544,La Vergenne,70,110,7.6,8.6,1360,920,area,area,own,nearby,0,0,6,161
 70545,Venisey,70,135,7.5,7.3,370,530,area,area,own,nearby,13,10,6,17
-70546,Vereux,70,208,7.8,6.8,790,950,area,area,own,nearby,3,15,12,165
+70546,Vereux,70,208,7.8,6.8,790,980,area,area,own,nearby,3,15,12,159
 70547,Verlans,70,166,9.8,8.5,1230,1010,area,area,own,nearby,0,2,7,1780
 70548,Vernois-sur-Mance,70,134,8.4,8.4,290,530,area,area,own,nearby,3,0,25,17
 70549,La Vernotte,70,78,7.4,9.7,970,,area,area,nearby,,1,2,342,
@@ -27356,7 +27356,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 70571,Visoncourt,70,36,7.9,8.6,1140,870,area,area,nearby,nearby,2,0,759,382
 70572,Vitrey-sur-Mance,70,287,8.4,8.4,400,,area,area,own,,8,0,19,
 70573,La Voivre,70,106,7.8,8.5,1940,,area,area,own,,4,3,8,
-70574,Volon,70,59,8.0,6.8,840,180,area,area,nearby,nearby,0,2,417,6
+70574,Volon,70,59,8.0,6.8,840,,area,area,nearby,,0,2,417,
 70575,Voray-sur-l'Ognon,70,854,9.7,10.2,1890,2330,area,own,own,nearby,40,100,42,433
 70576,Vougécourt,70,168,7.5,8.3,540,,area,area,own,,10,8,7,
 70577,Vouhenans,70,379,7.6,7.5,1390,940,area,area,own,nearby,10,8,23,153
@@ -28833,7 +28833,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 74313,Vovray-en-Bornes,74,550,16.4,17.1,5150,4010,area,area,own,own,3,34,19,15
 74314,Vulbens,74,1783,15.5,19.1,4480,4490,area,own,own,own,44,246,77,61
 74315,Yvoire,74,1046,21.3,22.9,4570,6000,area,area,own,own,27,86,58,22
-75056,Paris,75,2103778,24.7,32.1,13990,10120,own,own,own,own,662,269792,725,150738
+75056,Paris,75,2103778,24.7,32.1,13990,10120,area,own,own,own,662,269792,725,150738
 76001,Allouville-Bellefosse,76,1153,9.4,11.2,1870,2000,area,area,own,nearby,34,12,44,499
 76002,Alvimare,76,584,9.4,11.2,1960,1930,area,area,own,nearby,14,2,34,396
 76004,Ambrumesnil,76,520,9.1,12.0,1880,2200,area,area,own,nearby,8,0,22,2003
@@ -32915,7 +32915,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 88059,Biffontaine,88,390,9.0,9.0,1330,850,area,area,own,nearby,2,6,21,92
 88060,Blémerey,88,28,8.5,9.1,910,740,area,area,nearby,nearby,0,0,623,84
 88061,Bleurville,88,281,6.5,8.2,450,,area,area,own,,2,4,19,
-88062,Blevaincourt,88,90,6.2,8.2,160,,area,area,own,,0,0,12,
+88062,Blevaincourt,88,90,6.2,8.2,440,,area,area,nearby,,0,0,328,
 88063,Bocquegney,88,131,7.8,9.8,1500,1440,area,area,nearby,nearby,5,6,1147,225
 88064,Bois-de-Champ,88,105,8.1,8.1,1990,800,area,area,own,nearby,0,12,6,72
 88065,Bonvillet,88,272,6.5,7.2,580,,area,area,own,,2,3,24,
@@ -33030,7 +33030,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 88177,La Forge,88,517,8.4,8.8,1870,1530,area,area,own,nearby,4,57,36,287
 88178,Les Forges,88,1776,7.8,9.8,1980,1630,area,area,own,own,39,67,81,10
 88179,Fouchécourt,88,40,6.2,8.2,590,,area,area,own,,0,0,6,
-88180,Frain,88,125,6.2,8.2,550,,area,area,nearby,,0,4,362,
+88180,Frain,88,125,6.2,8.2,560,,area,area,nearby,,0,4,357,
 88181,Fraize,88,2843,10.1,8.8,1540,720,area,own,own,own,56,397,145,44
 88182,Frapelle,88,201,8.3,8.2,830,1050,area,area,own,nearby,1,9,14,828
 88183,Frebécourt,88,341,7.4,8.9,1080,890,area,area,own,nearby,6,20,18,73
@@ -33158,7 +33158,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 88313,Moriville,88,443,9.3,9.5,1090,1060,area,area,own,nearby,2,5,38,33
 88314,Morizécourt,88,98,6.2,8.2,290,,area,area,own,,2,0,14,
 88315,Mortagne,88,196,8.1,9.4,1580,720,area,area,own,nearby,2,1,19,49
-88316,Morville,88,42,7.4,7.8,910,710,area,area,nearby,nearby,2,6,659,60
+88316,Morville,88,42,7.4,7.8,910,710,area,area,nearby,nearby,2,6,654,60
 88317,Moussey,88,548,7.4,6.3,840,590,area,area,own,nearby,7,53,50,84
 88318,Moyemont,88,220,9.3,8.0,620,590,area,area,own,nearby,1,9,5,16
 88319,Moyenmoutier,88,3134,8.3,8.8,1080,770,area,own,own,own,91,433,139,27
@@ -33229,7 +33229,7 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 88389,Repel,88,83,7.4,9.1,300,760,area,area,own,nearby,0,0,5,5
 88390,Robécourt,88,104,6.2,8.2,670,,area,area,own,,2,0,13,
 88391,Rochesson,88,676,9.0,9.5,2080,1000,area,area,own,own,8,29,33,11
-88394,Romain-aux-Bois,88,47,6.2,7.5,440,,area,area,nearby,,0,0,340,
+88394,Romain-aux-Bois,88,47,6.2,7.5,460,,area,area,nearby,,0,0,323,
 88395,Romont,88,358,9.3,8.0,780,590,area,area,own,nearby,0,7,15,16
 88398,Les Rouges-Eaux,88,80,8.1,8.1,1440,800,area,area,nearby,nearby,0,1,665,72
 88399,Le Roulier,88,208,8.4,8.6,1100,960,area,area,own,nearby,4,5,5,164
@@ -33311,10 +33311,10 @@ code,name,province,population,rent_house,rent_flat,buy_house,buy_flat,rent_house
 88479,Trémonzey,88,234,8.4,7.4,730,840,area,area,own,nearby,1,6,22,15
 88480,Ubexy,88,170,7.1,9.5,1300,990,area,area,own,nearby,14,16,7,117
 88481,Uriménil,88,1323,8.4,8.6,1600,520,area,own,own,own,14,154,55,8
-88482,Urville,88,54,6.3,7.8,750,,area,area,nearby,,0,1,403,
+88482,Urville,88,54,6.3,7.8,780,,area,area,nearby,,0,1,386,
 88483,Uxegney,88,2237,7.8,9.8,1970,1340,area,area,own,nearby,42,44,93,2198
 88484,Uzemain,88,1046,8.4,7.2,1440,2160,area,area,own,nearby,29,85,63,27
-88485,La Vacheresse-et-la-Rouillie,88,134,6.8,7.8,200,710,area,area,own,nearby,1,6,5,60
+88485,La Vacheresse-et-la-Rouillie,88,134,6.8,7.8,860,710,area,area,nearby,nearby,1,6,548,60
 88486,Vagney,88,3843,8.5,9.6,1800,1060,area,own,own,own,65,284,139,28
 88487,Le Val-d'Ajol,88,3885,7.8,8.1,1340,780,area,own,own,own,71,335,186,27
 88488,Valfroicourt,88,228,7.1,7.9,1070,590,area,area,own,nearby,12,0,19,6

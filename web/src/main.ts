@@ -473,7 +473,8 @@ function refresh(map: maplibregl.Map) {
   $('#summer-note').textContent =
     country === 'fr' ? '(summer-only, or winter-only ski routes)' : '(summer-only, or winter-only in Canarias)'
   $('#mobile-wrap').hidden = mode !== 'internet'
-  $('#flats-wrap').hidden = mode !== 'housing'
+  // Spain's price to buy covers any home: the flats switch would change nothing there
+  $('#flats-wrap').hidden = mode !== 'housing' || (tier === 2 && !!housing?.params.buy_all_dwellings)
   const noun = `<strong>${text[tier].noun.replace(/^an? /, '')}</strong>`
   $('#lead').innerHTML =
     mode === 'gems'
@@ -556,7 +557,6 @@ function refresh(map: maplibregl.Map) {
     $('#hospital-notes').innerHTML = hospitals.params.notes.map((n) => `<li>${n}</li>`).join('')
   } else if (mode === 'housing' && housing) {
     meta.textContent = `Computed ${fmtDate(housing.generated_at)} · ${housing.params.sources.join(' · ')}`
-    $('#housing-notes').innerHTML = housing.params.notes.map((n) => `<li>${n}</li>`).join('')
   } else if (mode === 'internet' && internet) {
     const q = internet.params.quarters
     const n = Object.values(internet.m).filter((r) => typeof r[mobile ? 5 : 0] === 'number').length
@@ -693,7 +693,7 @@ function renderGemControls() {
   limit('air', TIME_CHOICES)
   limit('hosp', HOSP_TIME_CHOICES)
   const price = (key: 'rent' | 'buy', choices: number[], fmt: (v: number) => string) => {
-    const d = { kind: 'house' as HomeKind, max: key === 'rent' ? GEM_DEFAULTS.rent!.max : 1500 }
+    const d = { kind: 'house' as HomeKind, max: key === 'rent' ? 8 : 1500 }
     const l = f[key] ?? { kind: (sel(`#g-${key}-kind`).value || d.kind) as HomeKind, max: shownNum(`#g-${key}-max`) ?? d.max }
     inp(`#g-${key}-on`).checked = !!f[key]
     sel(`#g-${key}-kind`).value = l.kind
@@ -778,7 +778,7 @@ function gemTooltip(p: Record<string, unknown>): string {
       const fmt = (v: number) => (rent ? `€${v.toFixed(1)}` : `€${Math.round(v).toLocaleString('en')}`)
       value = c.value === null
         ? 'no figure'
-        : `${c.scope ? '≈ ' : ''}${fmt(c.value)}/m²${rent ? ' a month' : ''}, ${lp.kind}${c.scope ? ` (${SCOPE_TEXT[c.scope]})` : ''}`
+        : `${c.scope ? '≈ ' : ''}${fmt(c.value)}/m²${rent ? ' a month' : ''}, ${!rent && housing?.params.buy_all_dwellings ? 'any home' : lp.kind}${c.scope ? ` (${SCOPE_TEXT[c.scope]})` : ''}`
       limit = `≤ ${fmt(lp.max)}`
     } else {
       const l = f[c.crit]!
@@ -858,7 +858,7 @@ async function setMode(map: maplibregl.Map, m: Mode) {
 
 function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string {
   if (mode === 'gems') return gemTooltip(p)
-  if (mode === 'housing') return housingTooltip(p)
+  if (mode === 'housing') return housingTooltip(p, !!housing?.params.buy_all_dwellings)
   if (mode === 'internet') return internetTooltip(p, tier, mobile, internet)
   if (mode === 'hospitals') {
     return hospitals

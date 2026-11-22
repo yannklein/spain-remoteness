@@ -11,6 +11,7 @@ export interface HousingData {
     population_year: number | null
     rent_years?: number[]
     buy_period?: string
+    buy_all_dwellings?: boolean // Spain: one appraisal value for any home (houses = flats)
   }
   // code -> [rent_house, rent_flat, buy_house, buy_flat, s_rh, s_rf, s_bh, s_bf, n_rh, n_rf, n_bh, n_bf, population]
   // €/m² (rent per month); scope 0 own figure, 1 nearby estimate, 2 province average, 3 area model
@@ -19,8 +20,8 @@ export interface HousingData {
 
 /** Tier buttons on the Housing map: 1 = rent, 2 = buy (3 unused). */
 export const HOUSING_TEXT: Record<Tier, { label: string; noun: string; help: string }> = {
-  1: { label: 'Rent', noun: 'rent', help: 'Median rent per m² per month.' },
-  2: { label: 'Buy', noun: 'price', help: 'Median price per m².' },
+  1: { label: 'Rent', noun: 'rent', help: 'Rent per m² per month.' },
+  2: { label: 'Buy', noun: 'price', help: 'Price per m².' },
   3: { label: '', noun: '', help: '' },
 }
 
@@ -83,7 +84,8 @@ export function housingLegend(tier: Tier): string[] {
   return [`under ${f(b[0])}`, ...b.slice(0, -1).map((v, i) => `${f(v)}–${f(b[i + 1])}`), `${f(b[b.length - 1])}+`]
 }
 
-export function housingTooltip(p: Record<string, unknown>): string {
+/** allDwellings (Spain): rents come from leases and the buy figure is one appraisal value for any home. */
+export function housingTooltip(p: Record<string, unknown>, allDwellings: boolean): string {
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
   const head = `<b>${name}</b>${pop ? `<br><span class="muted">${pop}</span>` : ''}`
@@ -92,10 +94,11 @@ export function housingTooltip(p: Record<string, unknown>): string {
     if (typeof v !== 'number') return `<br>${label}: <span class="muted">no figure</span>`
     const scope = p[`s${k}`] as number | undefined
     const n = p[`n${k}`] as number | undefined
-    const note = scope ? SCOPE_TEXT[scope] : n ? `${n.toLocaleString('en')} ${rent ? 'leases or listings' : 'sales'}` : ''
+    const counted = rent ? (allDwellings ? 'leases' : 'listings') : allDwellings ? 'appraisals' : 'sales'
+    const note = scope ? SCOPE_TEXT[scope] : n ? `${n.toLocaleString('en')} ${counted}` : ''
     return `<br>${label}: <b>${scope ? '≈ ' : ''}${euros(v, rent)}/m²</b>${rent ? ' a month' : ''}${note ? ` <span class="muted">(${note})</span>` : ''}`
   }
-  const sameBuy = p.bh === p.bf && p.sbh === 2
+  const sameBuy = allDwellings && p.bh === p.bf
   return (
     head +
     line('Rent, house', 'rh', true) +

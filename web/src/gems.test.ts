@@ -76,7 +76,7 @@ describe('judge', () => {
   })
   it('ignores a criterion that is off', () => {
     const r = judge({ ...good(), y2: -1 }, f({ air: null }))
-    expect(r.checks.map((c) => c.crit)).toEqual(['net', 'city', 'hosp', 'rent'])
+    expect(r.checks.map((c) => c.crit)).toEqual(['net', 'city', 'hosp'])
     expect(r.cls).toBe(2)
   })
   it('uses the chosen tier and limit', () => {
@@ -88,13 +88,15 @@ describe('judge', () => {
 
 describe('housing criteria', () => {
   it('passes rent at or under the limit for the chosen kind', () => {
-    expect(judge(good(), f()).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: true, value: 7.5 })
+    // off by default: a missing figure would otherwise exclude the smallest villages
+    expect(judge(good(), f()).checks.some((c) => c.crit === 'rent')).toBe(false)
+    expect(judge(good(), f({ rent: { kind: 'house', max: 10 } })).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: true, value: 7.5 })
     expect(judge(good(), f({ rent: { kind: 'flat', max: 8 } })).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: false, value: 9 })
   })
   it('fails a missing rent', () => {
     const p = good()
     delete p.rh
-    expect(judge(p, f()).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: false, value: null })
+    expect(judge(p, f({ rent: { kind: 'house', max: 10 } })).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: false, value: null })
   })
   it('judges buy only when switched on, and reports the scope', () => {
     expect(judge(good(), f()).checks.some((c) => c.crit === 'buy')).toBe(false)
