@@ -325,3 +325,11 @@ def test_hospital_in_own_municipality_counts_as_close(monkeypatch, tmp_path):
     assert rows["50297"][2:4] == [0, idx["H5"]]
     # Teruel hosts a public (H2) and a private (H3) hospital: own public one for tier 2
     assert rows["44216"][2:4] == [0, idx["H2"]]
+
+
+def test_cache_without_recorded_position_is_stale(tmp_path):
+    cdir = tmp_path / "c"
+    cdir.mkdir()
+    (cdir / "HOS:A.json").write_text("{}")
+    chos.invalidate_moved([{"code": "HOS:A", "lat": 40.0, "lng": -3.0}], cdir, tmp_path / "positions.json")
+    assert not (cdir / "HOS:A.json").exists()          # computed somewhere unknown: recompute

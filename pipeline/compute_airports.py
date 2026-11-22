@@ -128,6 +128,18 @@ def configure(cc):
     airport_list = importlib.import_module(f"countries.{cc}_airports") if cc != "es" else airport_list
 
 
+def apply_points(dests, points_file):
+    """Use snapped / moved airport points from data/<cc>/airport_points.json (place_airports.py)."""
+    if not points_file.exists():
+        return dests
+    pts = load_json(points_file)
+    out = []
+    for d in dests:
+        p = pts.get(d["iata"], {})
+        out.append(dict(d, lat=p["lat"], lng=p["lng"]) if "lat" in p else d)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     add_country_arg(ap)
@@ -140,7 +152,7 @@ def main():
 
     places = load_json(PLACES_FILE)
     munis = places["municipalities"]
-    dests = airport_list.destinations()
+    dests = apply_points(airport_list.destinations(), PLACES_FILE.parent / "airport_points.json")
     partial = bool(args.limit or args.only)
     if args.only:
         wanted = {c.strip().upper() for c in args.only.split(",")}
@@ -150,6 +162,9 @@ def main():
 
     client = Client("regular")
     cdir = AIRPORT_CACHE_DIR / cache_dir(client).name
+    cdir.mkdir(parents=True, exist_ok=True)
+    from compute_hospitals import invalidate_moved
+    invalidate_moved(dests, cdir, cdir / "positions.json")
     try:
         results = compute_all(munis, dests, client, use_cache=not args.no_cache, cdir=cdir)
     except HTTPStatusError as e:

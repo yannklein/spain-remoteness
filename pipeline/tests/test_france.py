@@ -206,3 +206,24 @@ def test_france_hospital_radius_by_tier():
     finally:
         chos.configure("es")
     assert "max_km" not in chos.destinations(placed, places)[0]          # Spain unchanged
+
+
+def test_airport_stop_prefers_airport_named_stops():
+    import place_airports as pa
+    a = {"lat": 45.0, "lng": 5.0}
+    stops = [{"lat": 45.001, "lng": 5.0, "name": "ZI Nord"},                 # ~110 m, unnamed for the airport
+             {"lat": 45.008, "lng": 5.0, "name": "Aéroport Lyon-Saint Exupéry"}]  # ~900 m
+    assert pa.pick_stop(a, stops)[3] == "Aéroport Lyon-Saint Exupéry"
+    assert pa.pick_stop(a, stops[:1])[3] == "ZI Nord"                        # any stop within 600 m
+    assert pa.pick_stop(a, [{"lat": 45.007, "lng": 5.0, "name": "Ferme"}]) is None
+
+
+def test_compute_airports_uses_placed_points(tmp_path):
+    import json
+    import compute_airports as cap
+    pts = tmp_path / "airport_points.json"
+    pts.write_text(json.dumps({"LYS": {"lat": 45.72, "lng": 5.08, "source": "stop"}}))
+    dests = [{"iata": "LYS", "code": "AIR:LYS", "lat": 45.0, "lng": 5.0}, {"iata": "NCE", "code": "AIR:NCE", "lat": 43.6, "lng": 7.2}]
+    out = {d["iata"]: d for d in cap.apply_points(dests, pts)}
+    assert (out["LYS"]["lat"], out["LYS"]["lng"]) == (45.72, 5.08) and out["NCE"]["lat"] == 43.6
+    assert cap.apply_points(dests, tmp_path / "missing.json") == dests

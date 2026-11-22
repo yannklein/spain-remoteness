@@ -1,0 +1,385 @@
+{
+ "AGF": {
+  "lat": 44.183619,
+  "lng": 0.597392,
+  "source": "stop",
+  "stop_name": "Aéroport"
+ },
+ "AUR": {
+  "lat": 44.892778,
+  "lng": 2.415479,
+  "source": "stop",
+  "stop_name": "Cité Les Bleuets"
+ },
+ "AVN": {
+  "lat": 43.903845,
+  "lng": 4.896424,
+  "source": "stop",
+  "stop_name": "Avignon - Aéroport"
+ },
+ "BES": {
+  "lat": 48.442838,
+  "lng": -4.419763,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 40 min from Guipavas"
+ },
+ "BIQ": {
+  "lat": 43.472084,
+  "lng": -1.532391,
+  "source": "stop",
+  "stop_name": "Aéroport de Biarritz - Bus TXIK TXAK"
+ },
+ "BOD": {
+  "lat": 44.830465,
+  "lng": -0.701017,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 40 min from Mérignac"
+ },
+ "BSL": {
+  "lat": 47.600111,
+  "lng": 7.531627,
+  "source": "stop",
+  "stop_name": "EuroAirport"
+ },
+ "BVA": {
+  "lat": 49.459342,
+  "lng": 2.112099,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 9 min from Tillé"
+ },
+ "BZR": {
+  "lat": 43.320501,
+  "lng": 3.353255,
+  "source": "stop",
+  "stop_name": "Aéroport",
+  "unattachable_at": [
+   43.320501,
+   3.353255
+  ]
+ },
+ "CCF": {
+  "lat": 43.213857,
+  "lng": 2.308773,
+  "source": "stop",
+  "stop_name": "Carcassonne - Aéroport"
+ },
+ "CDG": {
+  "lat": 49.013259,
+  "lng": 2.542068,
+  "source": "stop",
+  "stop_name": "Terminal 1"
+ },
+ "CFE": {
+  "lat": 45.791688,
+  "lng": 3.161615,
+  "source": "stop",
+  "stop_name": "Aéroport"
+ },
+ "CFR": {
+  "lat": 49.1833,
+  "lng": -0.459004,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 25 min from Carpiquet"
+ },
+ "CMF": {
+  "lat": 45.638861,
+  "lng": 5.87903,
+  "exact": true,
+  "source": "nudged400",
+  "note": "moved 400 m so TravelTime attaches; 52 min from La Motte-Servolex"
+ },
+ "DCM": {
+  "lat": 43.553498,
+  "lng": 2.289163,
+  "source": "stop",
+  "stop_name": "Aéroport"
+ },
+ "DOL": {
+  "lat": 49.360954,
+  "lng": 0.157882,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 177 min from Saint-Gatien-des-Bois"
+ },
+ "EBU": {
+  "lat": 45.529965,
+  "lng": 4.290105,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 51 min from Andrézieux-Bouthéon"
+ },
+ "FNI": {
+  "lat": 43.762185,
+  "lng": 4.421944,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 108 min from Saint-Gilles"
+ },
+ "GNB": {
+  "lat": 45.359817,
+  "lng": 5.331983,
+  "source": "stop",
+  "stop_name": "Aéroport Grenoble-Alpes-Isère",
+  "unattachable_at": [
+   45.359817,
+   5.331983
+  ]
+ },
+ "LDE": {
+  "lat": 43.171861,
+  "lng": -0.001288,
+  "source": "stop",
+  "stop_name": "Aéroport-Industrie",
+  "unattachable_at": [
+   43.171861,
+   -0.001288
+  ]
+ },
+ "LIG": {
+  "lat": 45.862718,
+  "lng": 1.174561,
+  "source": "stop",
+  "stop_name": "Aéroport"
+ },
+ "LPY": {
+  "lat": 45.069757,
+  "lng": 3.7627,
+  "exact": true,
+  "source": "nudged600",
+  "note": "moved 600 m so TravelTime attaches; 14 min from Chaspuzac"
+ },
+ "LRH": {
+  "lat": 46.175696,
+  "lng": -1.195361,
+  "source": "stop",
+  "stop_name": "Aéroport"
+ },
+ "LYS": {
+  "lat": 45.722002,
+  "lng": 5.080258,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 56 min from Colombier-Saugnieu"
+ },
+ "MPL": {
+  "lat": 43.578982,
+  "lng": 3.958301,
+  "source": "stop",
+  "stop_name": "Aéroport de Montpellier"
+ },
+ "MRS": {
+  "lat": 43.442899,
+  "lng": 5.220762,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 29 min from Marignane"
+ },
+ "NCE": {
+  "lat": 43.66484,
+  "lng": 7.210025,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 34 min from Nice"
+ },
+ "NTE": {
+  "lat": 47.157946,
+  "lng": -1.601321,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 46 min from Bouguenais"
+ },
+ "ORY": {
+  "lat": 48.728272,
+  "lng": 2.36227,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 28 min from Paray-Vieille-Poste"
+ },
+ "PGF": {
+  "lat": 42.740927,
+  "lng": 2.867064,
+  "source": "stop",
+  "stop_name": "Aéroport"
+ },
+ "PUF": {
+  "lat": 43.382122,
+  "lng": -0.413273,
+  "source": "stop",
+  "stop_name": "Aéroport Pau Pyrénées",
+  "unattachable_at": [
+   43.382122,
+   -0.413273
+  ]
+ },
+ "RNS": {
+  "lat": 48.067959,
+  "lng": -1.726979,
+  "source": "stop",
+  "stop_name": "Aéroport"
+ },
+ "SXB": {
+  "lat": 48.546908,
+  "lng": 7.62821,
+  "source": "stop",
+  "stop_name": "Entzheim Aéroport"
+ },
+ "TLN": {
+  "lat": 43.093187,
+  "lng": 6.159112,
+  "source": "stop",
+  "stop_name": "Hyères Aéroport"
+ },
+ "TLS": {
+  "lat": 43.630405,
+  "lng": 1.374535,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 23 min from Blagnac"
+ },
+ "UIP": {
+  "lat": 47.976106,
+  "lng": -4.175589,
+  "exact": true,
+  "source": "nudged400",
+  "note": "moved 400 m so TravelTime attaches; 7 min from Pluguffan"
+ },
+ "AJA": {
+  "lat": 41.920601,
+  "lng": 8.794136,
+  "exact": true,
+  "source": "nudged0",
+  "note": "moved 0 m so TravelTime attaches; 41 min from Ajaccio"
+ },
+ "BIA": {
+  "lat": 42.547836,
+  "lng": 9.480346,
+  "source": "stop",
+  "stop_name": "Aéroport",
+  "unattachable_at": [
+   42.547836,
+   9.480346
+  ]
+ },
+ "BCN": {
+  "lat": 41.28835,
+  "lng": 2.072937,
+  "source": "stop",
+  "stop_name": "Aeroport T1 - Arribades"
+ },
+ "CRL": {
+  "lat": 50.4567,
+  "lng": 4.454929,
+  "source": "stop",
+  "stop_name": "Jumet Monument"
+ },
+ "EAS": {
+  "lat": 43.356773,
+  "lng": -1.794391,
+  "source": "stop",
+  "stop_name": "Aireportua"
+ },
+ "FKB": {
+  "lat": 48.77834,
+  "lng": 8.088275,
+  "source": "stop",
+  "stop_name": "Airpark Terminal (FKB)"
+ },
+ "GRO": {
+  "lat": 41.89651,
+  "lng": 2.766089,
+  "source": "stop",
+  "stop_name": "Aeroport de Girona"
+ },
+ "GVA": {
+  "lat": 46.233362,
+  "lng": 6.112731,
+  "source": "stop",
+  "stop_name": "Genève-Aéroport, gare-Arena"
+ },
+ "LUX": {
+  "lat": 49.63485,
+  "lng": 6.215386,
+  "source": "stop",
+  "stop_name": "Findel, Aéroport"
+ },
+ "SCN": {
+  "lat": 49.211964,
+  "lng": 7.112717,
+  "source": "stop",
+  "stop_name": "Ensheim Industriestraße"
+ },
+ "DNR": {
+  "unattachable_at": [
+   48.5877,
+   -2.0796
+  ]
+ },
+ "LIL": {
+  "lat": 50.56869,
+  "lng": 3.0897,
+  "exact": true,
+  "source": "nudged600",
+  "note": "moved 600 m so TravelTime attaches; 134 min from Avelin"
+ },
+ "ETZ": {
+  "unattachable_at": [
+   48.9821,
+   6.2513
+  ]
+ },
+ "PIS": {
+  "lat": 46.5877,
+  "lng": 0.309214,
+  "exact": true,
+  "source": "nudged200",
+  "note": "moved 200 m so TravelTime attaches; 179 min from Biard"
+ },
+ "TUF": {
+  "lat": 47.428389,
+  "lng": 0.721966,
+  "exact": true,
+  "source": "nudged600",
+  "note": "moved 600 m so TravelTime attaches; 65 min from Parçay-Meslay"
+ },
+ "CLY": {
+  "unattachable_at": [
+   42.5308,
+   8.7931
+  ]
+ },
+ "EGC": {
+  "lat": 44.82403,
+  "lng": 0.520391,
+  "exact": true,
+  "source": "nudged200",
+  "note": "moved 200 m so TravelTime attaches; 133 min from Bergerac"
+ },
+ "XCR": {
+  "unattachable_at": [
+   48.7733,
+   4.2061
+  ]
+ },
+ "BVE": {
+  "unattachable_at": [
+   45.0397,
+   1.4856
+  ]
+ },
+ "LRT": {
+  "unattachable_at": [
+   47.7606,
+   -3.44
+  ]
+ },
+ "RDZ": {
+  "unattachable_at": [
+   44.4079,
+   2.4827
+  ]
+ }
+}

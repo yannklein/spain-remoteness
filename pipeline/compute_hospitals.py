@@ -47,7 +47,7 @@ def invalidate_moved(dests, cdir, positions_file):
     pos = json.loads(positions_file.read_text()) if positions_file.exists() else {}
     for d in dests:
         now = [d["lat"], d["lng"]]
-        if pos.get(d["code"]) not in (None, now):
+        if pos.get(d["code"]) != now:  # moved, or computed at an unrecorded position
             (cdir / f"{d['code']}.json").unlink(missing_ok=True)
         pos[d["code"]] = now
     positions_file.parent.mkdir(parents=True, exist_ok=True)

@@ -87,6 +87,9 @@ def main():
             print(f"  no attachable point near {h['name']}")
             continue
         r, lat, lng, t = got
+        if r == 0:  # the point attaches after all (transient empty response): drop the stale cache
+            import compute_hospitals
+            (compute_hospitals.CACHE_DIR / "regular-0830-1130-1430" / f"HOS:{h['codcnh']}.json").unlink(missing_ok=True)
         h["lat"], h["lng"] = round(lat, 6), round(lng, 6)
         h["point_source"] = f"{h['point_source']}+nudged{r}"
         overrides[h["codcnh"]] = {"lat": h["lat"], "lng": h["lng"], "exact": True, "source": h["point_source"],
