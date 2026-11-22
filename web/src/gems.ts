@@ -9,6 +9,7 @@ import type { Tier } from './airports'
 export type NetKind = 'fixed' | 'mobile' | 'either'
 export interface Limit { tier: Tier; max: number }
 export type HomeKind = 'house' | 'flat'
+export type IncentiveKind = 'tax' | 'grant' | 'business' | 'any'
 export interface PriceLimit { kind: HomeKind; max: number } // €/m² (rent: per month)
 export interface GemFilters {
   pop: number | null // largest population a gem may have; null = any size
@@ -22,6 +23,7 @@ export interface GemFilters {
   buy: PriceLimit | null
   heat: number | null // most days a year at or above 35 °C
   frost: number | null // most frost days a year
+  incent: IncentiveKind | null // at least one offer of this kind (open to all ages)
 }
 
 export const DEFAULTS: GemFilters = {
@@ -36,6 +38,7 @@ export const DEFAULTS: GemFilters = {
   buy: null,
   heat: null,
   frost: null,
+  incent: null,
 }
 
 export const POP_CHOICES = [1000, 2000, 5000, 10000, 20000, 50000]
@@ -47,7 +50,7 @@ export const BUY_CHOICES = [500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000]
 export const HEAT_CHOICES = [1, 3, 5, 10, 20, 30, 50]
 export const FROST_CHOICES = [1, 5, 10, 20, 40, 60, 90]
 
-export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy' | 'heat' | 'frost'
+export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy' | 'heat' | 'frost' | 'incent'
 /** scope (housing): 0 own figure, 1 nearby estimate, 2 province average, 3 area model */
 export interface Check { crit: Crit; value: number | null; ok: boolean; est?: boolean; scope?: number }
 /** 0 other, 1 near miss (exactly one criterion missed), 2 gem, 3 too big to be a gem. */
@@ -100,6 +103,13 @@ export function judge(p: Record<string, unknown>, f: GemFilters): Verdict {
   }
   if (f.heat !== null) checks.push(days(num(p.ch), f.heat, 'heat'))
   if (f.frost !== null) checks.push(days(num(p.cf), f.frost, 'frost'))
+  if (f.incent !== null) {
+    // i1o/i2o/i3o: tax breaks, grants, business offers open to all ages
+    const counts = [num(p.i1o), num(p.i2o), num(p.i3o)]
+    const pick = f.incent === 'any' ? counts : [counts[{ tax: 0, grant: 1, business: 2 }[f.incent]]]
+    const value = pick.some((c) => c === null) ? null : pick.reduce((a: number, b) => a + (b as number), 0)
+    checks.push({ crit: 'incent', value, ok: value !== null && value >= 1 })
+  }
 
   const pop = num(p.pop)
   if (f.pop !== null && pop !== null && pop > f.pop) return { cls: 3, checks }
@@ -123,6 +133,7 @@ export function formatHash(f: GemFilters): string {
     `buy=${f.buy ? `${f.buy.kind}:${f.buy.max}` : 'off'}`,
     `heat=${f.heat ?? 'off'}`,
     `frost=${f.frost ?? 'off'}`,
+    `incent=${f.incent ?? 'off'}`,
   ].join('&')
 }
 
@@ -141,6 +152,12 @@ function parseLimit(s: string | null, fallback: Limit | null): Limit | null {
 }
 
 const parseBool = (s: string | null, fallback: boolean) => (s === '1' ? true : s === '0' ? false : fallback)
+
+function parseIncent(s: string | null, fallback: IncentiveKind | null): IncentiveKind | null {
+  if (s === null) return fallback
+  if (s === 'off') return null
+  return s === 'tax' || s === 'grant' || s === 'business' || s === 'any' ? s : fallback
+}
 
 function parseDays(s: string | null, fallback: number | null): number | null {
   if (s === null) return fallback
@@ -182,5 +199,6 @@ export function parseHash(query: string): GemFilters {
     buy: parsePrice(q.get('buy'), d.buy),
     heat: parseDays(q.get('heat'), d.heat),
     frost: parseDays(q.get('frost'), d.frost),
+    incent: parseIncent(q.get('incent'), d.incent),
   }
 }

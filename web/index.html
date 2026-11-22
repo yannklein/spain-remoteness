@@ -22,6 +22,7 @@
         <button role="radio" data-mode="hospitals">Hospitals</button>
         <button role="radio" data-mode="housing">Housing</button>
         <button role="radio" data-mode="climate">Climate</button>
+        <button role="radio" data-mode="incentives">Incentives</button>
         <button role="radio" data-mode="gems">Gems</button>
       </div>
       <h1 id="title">How far is rural Spain from a city?</h1>
@@ -38,6 +39,9 @@
       <label id="summer-wrap" class="summer" hidden>
         <input type="checkbox" id="summer" autocomplete="off" /> Include seasonal routes
         <span class="muted" id="summer-note">(summer-only, or winter-only in Canarias)</span>
+      </label>
+      <label id="young-wrap" class="summer" hidden>
+        <input type="checkbox" id="young" autocomplete="off" /> I'm under 35 <span class="muted">(show age-limited offers)</span>
       </label>
       <label id="flats-wrap" class="summer" hidden>
         <input type="checkbox" id="flats" autocomplete="off" /> Flats instead of houses
@@ -89,6 +93,12 @@
         <div class="g-row">
           <label class="g-name"><input type="checkbox" id="g-frost-on" autocomplete="off" /> Frost</label>
           <span>≤ <select id="g-frost-max" aria-label="Most frost days a year"></select> frost days a year</span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-incent-on" autocomplete="off" /> Incentive</label>
+          <span>at least one <select id="g-incent-kind" aria-label="Kind of incentive">
+            <option value="tax">tax break</option><option value="grant">grant</option><option value="business">business incentive</option><option value="any">offer of any kind</option>
+          </select></span>
         </div>
         <button type="button" id="g-reset" class="g-reset">Reset to defaults</button>
       </form>
@@ -147,10 +157,20 @@
           <li>Gems combine the four other maps: a municipality is a <b>gem</b> when it is under the size limit and meets every criterion that is ticked; a <b>near miss</b> fails exactly one. Places over the size limit are grey: they can be the city you travel to, never the gem.</li>
           <li>Times are the same public transport times as on the other maps (best weekday connection, capped at 3 hours); a place that is itself a city of the chosen category counts as being there, and a hospital in town counts as 0 min.</li>
           <li>Internet is the average download speed from Speedtest by Ookla, measured in the municipality or, if ticked, estimated from tests within 10 km. A place with no speed data, or with no connection within 3 hours, fails that criterion.</li>
+          <li>Incentives count offers open to all ages (see the Incentives map).</li>
           <li>Heat and frost come from the Climate map (2015–2024 averages, ERA5-Land).</li>
           <li>Rent and price to buy come from the Housing map: a missing figure fails the criterion; estimates count and say so in the tooltip (in Spain, the price to buy is the province average for villages).</li>
           <li>Your settings are kept in the page address: bookmark or share it to come back to the same filters.</li>
         </ul>
+        <ul data-for="incentives" data-country="es" hidden>
+          <li>Tax breaks are the regional income-tax deductions tied to where you live, for the 2025 tax year (filed in 2026), from the tax agency's manual of regional deductions and the official municipality lists it links to. Amounts are as the law states them: “15% of the regional share” depends on your tax bill.</li>
+          <li>Most have conditions (income limits, staying several years, a first home). Offers for people under 35 or 36 show only with the box ticked. Municipalities are matched by their current population where the rule is a population threshold.</li>
+          <li>Grants are standing programmes open to newcomers; check the call is still open. Left out: deductions about children, nurseries, transport, internet or second homes.</li>
+        </ul>
+        <ul data-for="incentives" data-country="fr" hidden>
+          <li>France has no tax break for simply living somewhere. In FRR communes (France Ruralités Revitalisation), a new business or freelance activity pays no profit tax for 5 years, then 75%, 50% and 25% exemption; FRR+ widens who is eligible. Local business taxes can be exempted too, if the commune decides.</li>
+        </ul>
+        <ul data-for="incentives" id="incentive-offers" hidden></ul>
         <ul data-for="climate" hidden>
           <li>Daily highs and lows from ERA5-Land, the Copernicus reanalysis on a ~9 km grid, averaged over 2015–2024: <b>hot days</b> reach 35 °C or more, <b>hot nights</b> stay at 20 °C or above, <b>frost days</b> drop below 0 °C.</li>
           <li>Each municipality takes the grid cell at its town centre (the nearest land cell on the coast). A 9 km cell averages a mountain village with its valley.</li>

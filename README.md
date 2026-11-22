@@ -263,6 +263,23 @@ It needs a free CDS account: accept the dataset licence on
 `january_low_c`. ERA5-Land runs 2–3 °C cooler than stations on extreme days, so hot-day counts are conservative.
 Contains modified Copernicus Climate Change Service information (CC BY 4.0).
 
+## Incentives map
+
+`pipeline/compute_incentives.py --country es|fr` lists the offers in `pipeline/countries/{es,fr}_incentives.py`
+(each with kind, amount, conditions, age limit, validity and source) and which municipalities they cover:
+
+- **Spain, tax breaks:** regional income-tax deductions tied to the municipality, 2025 tax year, from the tax
+  agency's *Manual práctico de Renta 2025, Parte 2* and the official lists it links (Aragón Rango X, Asturias
+  concejos, Castilla-La Mancha zones, La Rioja's annex), Valencia's depopulation fund (open data), Cantabria's Orden
+  PRE/1/2025; population thresholds use the current INE population.
+- **Spain, grants:** Extremadura's digital-nomad grant and the national under-35 home-purchase grant (Real Decreto
+  326/2026).
+- **France, business:** FRR / FRR+ communes (ministry list of 10 July 2025): no profit tax for 5 years for a new
+  business or freelance activity.
+
+The PDFs are read with `pdftotext` (poppler). `incentives.csv`: `n_tax`, `n_grant`, `n_business` and the offer ids.
+Offers change every year: re-check the sources before relying on them.
+
 ## Cities and airports across the border
 
 A town near the border often uses the city or airport on the other side (Hendaye → San Sebastián, Annemasse →
