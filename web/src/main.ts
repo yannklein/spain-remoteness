@@ -132,6 +132,11 @@ let hospitals: HospitalsData | null | undefined
 const muniNames = new Map<string, string>()
 let mobile = false
 let geo: FeatureCollection<Geometry, Record<string, unknown>> | null = null
+// Country switches are slow (France: ~35k communes). gen identifies the current switch; anything
+// loaded for an older one is dropped, and nothing merges while `loading` is true.
+let gen = 0
+let loading = false
+let provincesGeo: FeatureCollection | null = null
 
 function fmtMinutes(t: number, max = 180): string {
   if (t < 0) return `over ${max / 60} h (or no service)`
@@ -190,34 +195,38 @@ async function loadData() {
   >
   const provinces = feature(topo, topo.objects.provinces as GeometryCollection)
 
+  let cities: Remoteness | null = null
   try {
-    data = null
     const r = await fetch(dataUrl('remoteness.json'))
-    if (r.ok) data = (await r.json()) as Remoteness
+    if (r.ok) cities = (await r.json()) as Remoteness
   } catch {
-    data = null
+    cities = null
   }
 
   // tier in which each municipality counts as a main city (tiers are nested)
-  const cityTier = new Map((data?.cities ?? []).map((c) => [c[0], c[2]]))
+  const cityTier = new Map((cities?.cities ?? []).map((c) => [c[0], c[2]]))
+  const names = new Map<string, string>()
   for (const f of g.features) {
     const code = String(f.id)
     const p: Record<string, unknown> = { code, name: f.properties?.name }
-    const row = data?.m[code]
+    const row = cities?.m[code]
     if (row) {
       ;[p.t1, p.c1, p.t2, p.c2, p.t3, p.c3, , p.pop] = row
     }
     p.dt = cityTier.get(code) ?? 0
     f.properties = p
-    muniNames.set(code, String(p.name ?? ''))
+    names.set(code, String(p.name ?? ''))
   }
-  return { geo: g, provinces }
+  return { geo: g, provinces, cities, names }
 }
 
 /** Load hospitals.json once and merge its values into the municipality features. */
 async function ensureHospitals(map: maplibregl.Map) {
-  if (hospitals !== undefined) return
-  hospitals = await loadHospitals()
+  if (hospitals !== undefined || loading) return
+  const g = gen
+  const got = await loadHospitals()
+  if (g !== gen || loading) return // the country changed meanwhile: these values belong to the other one
+  hospitals = got
   if (!hospitals || !geo) return
   for (const f of geo.features) {
     const row = hospitals.m[String(f.id)]
@@ -227,8 +236,11 @@ async function ensureHospitals(map: maplibregl.Map) {
 }
 
 async function ensureAirports(map: maplibregl.Map) {
-  if (airports !== undefined) return
-  airports = await loadAirports()
+  if (airports !== undefined || loading) return
+  const g = gen
+  const got = await loadAirports()
+  if (g !== gen || loading) return // the country changed meanwhile: these values belong to the other one
+  airports = got
   if (!airports || !geo) return
   for (const f of geo.features) {
     const row = airports.m[String(f.id)]
@@ -240,8 +252,11 @@ async function ensureAirports(map: maplibregl.Map) {
 
 /** Load internet.json once and merge its values into the municipality features. */
 async function ensureInternet(map: maplibregl.Map) {
-  if (internet !== undefined) return
-  internet = await loadInternet()
+  if (internet !== undefined || loading) return
+  const g = gen
+  const got = await loadInternet()
+  if (g !== gen || loading) return // the country changed meanwhile: these values belong to the other one
+  internet = got
   if (!internet || !geo) return
   for (const f of geo.features) {
     const row = internet.m[String(f.id)]
@@ -377,6 +392,13 @@ function refresh(map: maplibregl.Map) {
   if (h) el.innerHTML = h
 
   const s = $('#status')
+  if (loading) {
+    s.hidden = false
+    s.textContent = `Loading ${COUNTRY_NAME[country]}…`
+    $('#headline').hidden = true
+    renderLegend()
+    return
+  }
   const missing = { cities: !data, airports: airports === null, internet: internet === null, hospitals: hospitals === null }[mode]
   s.hidden = !missing
   s.innerHTML = {
@@ -441,16 +463,25 @@ function renderViews(map: maplibregl.Map, padding: () => maplibregl.PaddingOptio
 
 /** Switch country: reload its boundaries and city data; its other datasets load when their mode is shown. */
 async function setCountry(map: maplibregl.Map, cc: Country, padding: () => maplibregl.PaddingOptions) {
-  if (cc === country) return
+  if (cc === country && !loading) return
+  const g = ++gen
   country = cc
   setDataCountry(cc)
+  loading = true
   airports = internet = hospitals = undefined
-  muniNames.clear()
   hideTooltip()
+  refresh(map)
   const loaded = await loadData()
+  if (g !== gen) return // a newer switch is under way
   geo = loaded.geo
-  ;(map.getSource('munis') as maplibregl.GeoJSONSource).setData(geo)
-  ;(map.getSource('provinces') as maplibregl.GeoJSONSource).setData(loaded.provinces)
+  data = loaded.cities
+  muniNames.clear()
+  loaded.names.forEach((v, k) => muniNames.set(k, v))
+  loading = false
+  provincesGeo = loaded.provinces as FeatureCollection
+  // the map may still be loading its style: its load handler then adds the sources from geo/provincesGeo
+  ;(map.getSource('munis') as maplibregl.GeoJSONSource | undefined)?.setData(geo)
+  ;(map.getSource('provinces') as maplibregl.GeoJSONSource | undefined)?.setData(provincesGeo)
   renderViews(map, padding)
   map.fitBounds(VIEWS[cc][0].bounds, { padding: padding() })
   await setMode(map, mode)
@@ -465,6 +496,7 @@ async function setMode(map: maplibregl.Map, m: Mode) {
   mode = m
   tier = tiers[m]
   writeHash()
+  if (loading) return refresh(map) // the country's data will apply this mode when it arrives
   if (m === 'airports') await ensureAirports(map)
   if (m === 'internet') await ensureInternet(map)
   if (m === 'hospitals') await ensureHospitals(map)
@@ -519,7 +551,9 @@ async function main() {
   mobile = $<HTMLInputElement>('#mobile').checked
   const [style, loaded] = await Promise.all([loadStyle(), loadData()])
   geo = loaded.geo
-  const provinces = loaded.provinces
+  data = loaded.cities
+  loaded.names.forEach((v, k) => muniNames.set(k, v))
+  provincesGeo = loaded.provinces as FeatureCollection
 
   const narrow = window.innerWidth < 700
   if (narrow) $('#panel').classList.add('collapsed')
@@ -550,7 +584,7 @@ async function main() {
       attribution:
         'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID / Arcep · Hospitals © Ministerio de Sanidad / FINESS, DREES · Communes © INSEE, Etalab',
     })
-    map.addSource('provinces', { type: 'geojson', data: provinces })
+    map.addSource('provinces', { type: 'geojson', data: provincesGeo! })
     map.addSource('dests', { type: 'geojson', data: destGeoJSON() })
 
     map.addLayer(
