@@ -20407,7 +20407,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57055,Bazoncourt,57,526,,,134,LUX,129,SCN,,,129,SCN,129,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
 57056,Bébing,57,189,,,179,SXB,179,SXB,,,179,SXB,179,SXB,,,,,,
 57057,Béchy,57,615,,,160,LUX,109,SCN,,,109,SCN,109,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
-57058,Behren-lès-Forbach,57,6166,167,FRA,167,FRA,82,SCN,167,FRA,82,SCN,82,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57058,Behren-lès-Forbach,57,6166,177,FRA,177,FRA,82,SCN,177,FRA,82,SCN,82,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
 57059,Bellange,57,58,,,110,SXB,110,SXB,,,110,SXB,110,SXB,,,,,,
 57060,Bénestroff,57,516,,,101,SXB,101,SXB,,,101,SXB,101,SXB,,,,,,
 57061,Béning-lès-Saint-Avold,57,1095,,,,,123,SCN,,,123,SCN,123,SCN,,,Forbach station,,Forbach station,Forbach station
@@ -20562,11 +20562,11 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57219,Flévy,57,602,,,155,LUX,154,SCN,,,154,SCN,154,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
 57220,Flocourt,57,135,,,,,,,,,,,,,,,,,,
 57221,Florange,57,12035,,,92,LUX,92,LUX,,,92,LUX,92,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
-57222,Folkling,57,1411,175,FRA,175,FRA,90,SCN,175,FRA,90,SCN,90,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57222,Folkling,57,1411,,,,,90,SCN,,,90,SCN,90,SCN,,,Forbach station,,Forbach station,Forbach station
 57224,Folschviller,57,3916,,,,,118,SCN,,,118,SCN,118,SCN,,,Forbach station,,Forbach station,Forbach station
 57225,Fonteny,57,143,,,,,,,,,,,,,,,,,,
 57226,Fontoy,57,3184,,,121,LUX,121,LUX,,,121,LUX,121,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
-57227,Forbach,57,20493,148,FRA,148,FRA,63,SCN,148,FRA,63,SCN,63,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57227,Forbach,57,20493,158,FRA,151,LUX,63,SCN,158,FRA,63,SCN,63,SCN,Forbach station,Thionville station,Forbach station,Forbach station,Forbach station,Forbach station
 57228,Fossieux,57,186,,,,,,,,,,,,,,,,,,
 57229,Foulcrey,57,162,,,,,,,,,,,,,,,,,,
 57230,Fouligny,57,192,,,174,SXB,128,SCN,,,128,SCN,128,SCN,,,Forbach station,,Forbach station,Forbach station
@@ -20579,7 +20579,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57237,Frémestroff,57,304,,,,,145,SCN,,,145,SCN,145,SCN,,,Forbach station,,Forbach station,Forbach station
 57238,Fresnes-en-Saulnois,57,191,,,,,,,,,,,,,,,,,,
 57239,Freybouse,57,422,,,,,148,SCN,,,148,SCN,148,SCN,,,Forbach station,,Forbach station,Forbach station
-57240,Freyming-Merlebach,57,13266,170,FRA,170,FRA,85,SCN,170,FRA,85,SCN,85,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57240,Freyming-Merlebach,57,13266,180,FRA,172,LUX,85,SCN,180,FRA,85,SCN,85,SCN,Forbach station,Thionville station,Forbach station,Forbach station,Forbach station,Forbach station
 57241,Fribourg,57,159,,,,,,,,,,,,,,,,,,
 57242,Gandrange,57,3031,,,120,LUX,120,LUX,,,120,LUX,120,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57244,Garrebourg,57,485,,,,,,,,,,,,,,,,,,
@@ -20667,7 +20667,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57329,Holling,57,444,,,,,,,,,,,,,,,,,,
 57330,Holving,57,1268,,,,,159,SCN,,,159,SCN,159,SCN,,,Forbach station,,Forbach station,Forbach station
 57331,Hombourg-Budange,57,562,,,124,LUX,124,LUX,,,124,LUX,124,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
-57332,Hombourg-Haut,57,5976,161,FRA,137,LUX,76,SCN,161,FRA,76,SCN,76,SCN,Forbach station,Thionville station,Forbach station,Forbach station,Forbach station,Forbach station
+57332,Hombourg-Haut,57,5976,171,FRA,137,LUX,76,SCN,171,FRA,76,SCN,76,SCN,Forbach station,Thionville station,Forbach station,Forbach station,Forbach station,Forbach station
 57333,Hommarting,57,847,,,163,SXB,163,SXB,,,163,SXB,163,SXB,,,,,,
 57334,Hommert,57,305,,,,,,,,,,,,,,,,,,
 57335,Honskirch,57,213,,,,,,,,,,,,,,,,,,
@@ -20809,7 +20809,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57481,Montois-la-Montagne,57,2711,,,164,LUX,164,LUX,,,164,LUX,164,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57482,Ogy-Montoy-Flanville,57,1806,,,140,LUX,140,LUX,,,140,LUX,140,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57483,Morhange,57,3308,,,99,SXB,99,SXB,,,99,SXB,99,SXB,,,,,,
-57484,Morsbach,57,2635,158,FRA,158,FRA,73,SCN,158,FRA,73,SCN,73,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57484,Morsbach,57,2635,168,FRA,168,FRA,73,SCN,168,FRA,73,SCN,73,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
 57485,Morville-lès-Vic,57,105,,,,,,,,,,,,,,,,,,
 57486,Morville-sur-Nied,57,121,,,,,,,,,,,,,,,,,,
 57487,Moulins-lès-Metz,57,5265,159,ORY,122,SXB,122,SXB,159,ORY,122,SXB,122,SXB,,,,,,
@@ -20845,7 +20845,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57518,Oberstinzel,57,316,,,132,SXB,132,SXB,,,132,SXB,132,SXB,,,,,,
 57519,Obervisse,57,154,,,,,129,SCN,,,129,SCN,129,SCN,,,Forbach station,,Forbach station,Forbach station
 57520,Obreck,57,40,,,,,,,,,,,,,,,,,,
-57521,Œting,57,2599,162,FRA,162,FRA,77,SCN,162,FRA,77,SCN,77,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57521,Œting,57,2599,172,FRA,168,LUX,77,SCN,172,FRA,77,SCN,77,SCN,Forbach station,Thionville station,Forbach station,Forbach station,Forbach station,Forbach station
 57524,Ommeray,57,127,,,,,,,,,,,,,,,,,,
 57525,Oriocourt,57,55,,,,,,,,,,,,,,,,,,
 57526,Ormersviller,57,385,,,,,,,,,,,,,,,,,,
@@ -20917,7 +20917,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57593,Roncourt,57,1058,,,147,LUX,147,LUX,,,147,LUX,147,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57594,Roppeviller,57,97,,,,,,,,,,,,,,,,,,
 57595,Rorbach-lès-Dieuze,57,48,,,,,,,,,,,,,,,,,,
-57596,Rosbruck,57,740,165,FRA,165,FRA,80,SCN,165,FRA,80,SCN,80,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57596,Rosbruck,57,740,175,FRA,175,FRA,80,SCN,175,FRA,80,SCN,80,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
 57597,Rosselange,57,2384,,,112,LUX,112,LUX,,,112,LUX,112,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57598,Rouhling,57,1981,,,,,100,SCN,,,100,SCN,100,SCN,,,Forbach station,,Forbach station,Forbach station
 57599,Roupeldange,57,326,,,,,139,SCN,,,139,SCN,139,SCN,,,Forbach station,,Forbach station,Forbach station
@@ -20927,7 +20927,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57603,Russange,57,1263,,,137,LUX,137,LUX,,,137,LUX,137,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57604,Rustroff,57,641,,,141,LUX,141,LUX,,,141,LUX,141,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57605,Sailly-Achâtel,57,324,,,174,LUX,169,SCN,,,169,SCN,169,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
-57606,Saint-Avold,57,14755,177,FRA,153,LUX,92,SCN,177,FRA,92,SCN,92,SCN,Forbach station,Thionville station,Forbach station,Forbach station,Forbach station,Forbach station
+57606,Saint-Avold,57,14755,,,153,LUX,92,SCN,,,92,SCN,92,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
 57607,Sainte-Barbe,57,786,,,162,LUX,157,SCN,,,157,SCN,157,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
 57609,Saint-Epvre,57,177,,,168,LUX,163,SCN,,,163,SCN,163,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
 57610,Saint-François-Lacroix,57,317,,,,,,,,,,,,,,,,,,
@@ -20951,7 +20951,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57628,Sarralbe,57,4364,,,169,SXB,125,SCN,,,125,SCN,125,SCN,,,Forbach station,,Forbach station,Forbach station
 57629,Sarraltroff,57,789,,,136,SXB,136,SXB,,,136,SXB,136,SXB,,,,,,
 57630,Sarrebourg,57,12170,,,78,SXB,78,SXB,,,78,SXB,78,SXB,,,,,,
-57631,Sarreguemines,57,20143,175,FRA,123,SXB,90,SCN,175,FRA,90,SCN,90,SCN,Forbach station,,Forbach station,Forbach station,Forbach station,Forbach station
+57631,Sarreguemines,57,20143,,,123,SXB,90,SCN,,,90,SCN,90,SCN,,,Forbach station,,Forbach station,Forbach station
 57633,Sarreinsming,57,1178,,,147,SXB,145,SCN,,,145,SCN,145,SCN,,,Forbach station,,Forbach station,Forbach station
 57634,Saulny,57,1590,,,130,LUX,130,LUX,,,130,LUX,130,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station
 57635,Schalbach,57,372,,,,,,,,,,,,,,,,,,
@@ -20978,7 +20978,7 @@ code,name,province,population,y1_min,y1_airport,y2_min,y2_airport,y3_min,y3_airp
 57657,Sotzeling,57,26,,,,,,,,,,,,,,,,,,
 57658,Soucht,57,1013,,,,,,,,,,,,,,,,,,
 57659,Spicheren,57,3143,,,,,111,SCN,,,111,SCN,111,SCN,,,Forbach station,,Forbach station,Forbach station
-57660,Stiring-Wendel,57,10956,154,FRA,154,FRA,69,SCN,154,FRA,69,SCN,69,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
+57660,Stiring-Wendel,57,10956,164,FRA,164,FRA,69,SCN,164,FRA,69,SCN,69,SCN,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station,Forbach station
 57661,Sturzelbronn,57,168,,,,,,,,,,,,,,,,,,
 57662,Suisse,57,94,,,159,LUX,154,SCN,,,154,SCN,154,SCN,,Thionville station,Forbach station,,Forbach station,Forbach station
 57663,Talange,57,8120,,,105,LUX,105,LUX,,,105,LUX,105,LUX,,Thionville station,Thionville station,,Thionville station,Thionville station

@@ -16,10 +16,28 @@ DIRECT_KM = 60      # foreign cities are also measured directly, for the rare li
 
 def config(cc):
     """The country's countries/<cc>_crossborder module, or None if it has none."""
+    name = f"countries.{cc}_crossborder"
     try:
-        return importlib.import_module(f"countries.{cc}_crossborder")
-    except ModuleNotFoundError:
+        return importlib.import_module(name)
+    except ModuleNotFoundError as e:
+        if e.name != name:
+            raise  # a broken import inside the config must not silently switch cross-border off
         return None
+
+
+def gateway_city_tiers(cfg, locate, tier_of):
+    """{gateway: tier of the home city it stands in, or None}. locate(lng, lat) -> municipality code."""
+    out = {}
+    for g, (_name, lat, lng) in (cfg.GATEWAYS.items() if cfg else []):
+        code = locate(lng, lat)
+        out[g] = tier_of(code) if code else None
+    return out
+
+
+def hops_for_tier(hops, city_tier, tier):
+    """Hops usable for the nearest city of `tier`: not through a gateway inside a home city that already
+    counts at that tier (the trip passes through it, so it is never the foreign city that is nearest)."""
+    return [h for h in hops if not (city_tier.get(h[0]) and city_tier[h[0]] <= tier)]
 
 
 def gateway_ids(cfg):

@@ -30,7 +30,8 @@ GATEWAYS = {
 }
 
 # code: (name, tier, lat, lng, population) - tier 1: core of an urban area at least the size of the
-# smallest métropoles (or a national capital); 2: regional/provincial capitals and >100k; 3: >50k
+# smallest métropoles; 2: national, regional or provincial capitals (Monaco, Aosta, Namur, Mons) and >100k;
+# 3: >50k
 FOREIGN_CITIES = {
     "ES:barcelona": ("Barcelona", 1, 41.37911, 2.13834, 1_660_000),
     "ES:bilbao": ("Bilbao", 1, 43.2613, -2.95, 346_000),
@@ -47,7 +48,7 @@ FOREIGN_CITIES = {
     "BE:charleroi": ("Charleroi", 1, 50.4045, 4.4386, 203_000),
     "BE:namur": ("Namur", 2, 50.4692, 4.86243, 113_000),
     "BE:mons": ("Mons", 2, 50.45412, 3.94174, 96_000),
-    "BE:tournai": ("Tournai", 2, 50.61277, 3.39683, 69_000),
+    "BE:tournai": ("Tournai", 3, 50.61277, 3.39683, 69_000),
     "BE:kortrijk": ("Kortrijk", 3, 50.82427, 3.26445, 79_000),
     "BE:mouscron": ("Mouscron", 3, 50.7397, 3.2208, 59_000),
     "DE:saarbrucken": ("Saarbrücken", 1, 49.2412, 6.99079, 180_000),
@@ -75,12 +76,12 @@ HOPS = [
     ("mulhouse", "DE:freiburg", 60, "regional train via Müllheim", "verify"),
     ("strasbourg", "DE:offenburg", 30, "Ortenau S-Bahn via Kehl", "verify"),
     ("strasbourg", "DE:karlsruhe", 50, "TGV/regional (54 min average)", "aggregators 2026"),
-    ("strasbourg", "DE:freiburg", 65, "regional train, change at Offenburg", "verify"),
+    ("strasbourg", "DE:freiburg", 75, "regional train, change at Offenburg", "verify"),
     ("strasbourg", "AIR:FKB", 95, "train to Baden-Baden + airport bus (28 min, hourly)", "aggregators 2026"),
     ("strasbourg", "AIR:FRA", 130, "TGV/ICE via Karlsruhe", "verify"),
     ("forbach", "DE:saarbrucken", 12, "TER/regional", "verify"),
     ("forbach", "AIR:SCN", 45, "train to Saarbrücken + airport bus", "verify"),
-    ("forbach", "AIR:FRA", 130, "TGV/ICE Paris-Frankfurt", "verify"),
+    ("forbach", "AIR:FRA", 140, "TGV/ICE Paris-Frankfurt", "verify"),
     ("sarreguemines", "DE:saarbrucken", 25, "Saarbahn", "verify"),
     ("thionville", "LU:luxembourg", 22, "TER, several an hour", "verify"),
     ("thionville", "AIR:LUX", 50, "TER + bus/tram to the airport", "verify"),

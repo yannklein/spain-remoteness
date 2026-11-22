@@ -75,7 +75,7 @@ def test_country_config_is_consistent(cc, airports_module):
     for gw, dest, ride, service, source in cfg.HOPS:
         assert gw in cfg.GATEWAYS, gw
         assert dest in cfg.FOREIGN_CITIES or dest in iatas, dest
-        assert 0 < ride < 180 and service and source
+        assert 0 < ride and ride + crossborder.TRANSFER_MIN < 180 and service and source   # else it can never count
     assert len({(h[0], h[1]) for h in cfg.HOPS}) == len(cfg.HOPS)   # no duplicate hop
 
 
@@ -87,3 +87,42 @@ def test_destinations_for_gateways_and_foreign_cities():
     cities = crossborder.foreign_city_dests(cfg)
     geneve = next(d for d in cities if d["code"] == "CH:geneve")
     assert geneve["tier"] == 1 and geneve["max_km"] == crossborder.DIRECT_KM and geneve["zone"] == "mainland"
+
+
+def test_hops_through_a_home_city_of_the_slot_tier_are_skipped():
+    hops = [hop("lille", "BE:tournai", 25), hop("perpignan", "ES:barcelona", 80), hop("tui", "PT:viana", 75)]
+    city_tier = {"lille": 1, "perpignan": 2, "tui": None}   # tier of the home city each gateway stands in
+    names = lambda hs: [h[0] for h in hs]                   # noqa: E731
+    assert names(crossborder.hops_for_tier(hops, city_tier, 1)) == ["perpignan", "tui"]
+    assert names(crossborder.hops_for_tier(hops, city_tier, 2)) == ["tui"]
+    assert names(crossborder.hops_for_tier(hops, city_tier, 3)) == ["tui"]
+
+
+def test_gateway_city_tiers_locate_the_home_municipality():
+    cfg = type("Cfg", (), {"GATEWAYS": {"a": ("A station", 1.0, 2.0), "b": ("B stop", 3.0, 4.0), "c": ("C", 5.0, 6.0)}})
+    where = {(2.0, 1.0): "M1", (4.0, 3.0): "M2"}
+    tiers = {"M1": 2, "M2": None}
+    got = crossborder.gateway_city_tiers(cfg, lambda lng, lat: where.get((lng, lat)), tiers.get)
+    assert got == {"a": 2, "b": None, "c": None}
+
+
+def test_cities_skip_a_border_station_inside_a_city_of_the_slot_tier(monkeypatch):
+    import compute_times
+    import geo
+    munis = [{"code": "L", "name": "Lille", "tier": 1, "lat": 0, "lng": 0, "pop": 1},
+             {"code": "V", "name": "Village", "tier": None, "lat": 0, "lng": 0, "pop": 1}]
+    foreign = [{"code": "BE:tournai", "name": "Tournai", "tier": 2, "lat": 0, "lng": 0, "pop": 1}]
+    cfg = type("Cfg", (), {"GATEWAYS": {"lille": ("Lille station", 50.6, 3.07), "bridge": ("Bridge", 1.0, 1.0)},
+                           "HOPS": [("lille", "BE:tournai", 25, "SNCB", "test"), ("bridge", "BE:tournai", 100, "bus", "test")]})
+    monkeypatch.setattr(geo, "load_municipalities", lambda path=None: None)
+    monkeypatch.setattr(geo, "MuniIndex", lambda _m: type("I", (), {"locate": staticmethod(
+        lambda lng, lat: "L" if lat > 50 else None)})())
+    results = {"L": {"L": 0, "V": 7200}, "BE:tournai": {}, "GW:lille": {"V": 600}, "GW:bridge": {"V": 600}}
+    cities, rows, slots = compute_times.aggregate_with_border(munis, [munis[0]] + foreign, results, cfg)
+    tour = next(i for i, c in enumerate(cities) if c["code"] == "BE:tournai")
+    # tier 2: Lille counts, so the Lille hop is out; the bridge one (600 + 110 min = 7200 s) only ties Lille
+    assert rows["V"][2:4] == [120, 0] and slots["V"] is None
+    # with a faster bridge hop the estimate wins tier 2 and names the bridge
+    cfg.HOPS = [("lille", "BE:tournai", 25, "SNCB", "test"), ("bridge", "BE:tournai", 50, "bus", "test")]
+    cities, rows, slots = compute_times.aggregate_with_border(munis, [munis[0]] + foreign, results, cfg)
+    assert rows["V"][2:4] == [70, tour] and slots["V"] == [-1, 1, 1]

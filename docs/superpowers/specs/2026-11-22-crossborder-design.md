@@ -101,11 +101,17 @@ Tiers follow each country's own rule: for Spain the municipal population thresho
 - **Dropped:**
   - Lisbon, Lausanne-area extras, Neuchâtel and Cuneo: no service gets there within 3 h;
   - Bordeaux airport for Spain: Irun → Bordeaux is already 2 h 25.
+- **Also dropped:**
+  - Andorra for France; Guimarães, Bragança, Castelo Branco and Portalegre for Spain: no checked service within 3 h;
+  - the Latour-de-Carol, Saint-Julien and Jeumont gateways: they can't be reached from Spain/France in TravelTime, or their service couldn't be confirmed;
+  - Puigcerdà→Toulouse: 2 h 44 plus the change is over the cap.
+- **Review fix:** per city category, a border station inside a home city that already counts at that category is not used. The trip passes through that city (Lille-Flandres → Tournai, Badajoz → Évora). Airports are unaffected.
+- **Tiers:** Tournai is tier 3 (69k, not a provincial capital).
 - **Added:** Pamplona (France's map, tier 2), via Hendaye.
 - **The Celta train (Vigo–Porto) is replaced by buses Vigo–Valença until April 2027.** Galicia → Porto uses the Vigo–Porto buses.
 - **Time sources:**
   - **Checked against 2026 timetables or aggregators:** Puigcerdà–Foix/Toulouse, La Seu–Andorra, Vigo–Porto and Porto airport, Huelva/Sevilla–Faro, Badajoz–Évora, Salamanca–Guarda, Modane–Torino, Chamonix–Aosta, Strasbourg–Karlsruhe and Baden airport.
   - **Marked "verify":** the rest.
 - **First results:**
-  - **Spain:** the cities map changes in 31 municipalities. On the European-airports map, Biarritz becomes nearest for 30 municipalities, Perpignan for 24 and Faro for 12; Porto becomes the nearest intercontinental airport for 5.
-  - **France:** a foreign city becomes the nearest métropole-sized city for about 1,100 communes (Basel 378, Geneva 213, Saarbrücken 198, Luxembourg 101, Barcelona 92…). Brussels airport becomes the nearest intercontinental airport for 420 communes; Luxembourg becomes the nearest European airport for 331.
+  - **Spain:** the cities map changes in 33 municipalities. On the European-airports map, Biarritz becomes nearest for 30 municipalities, Perpignan for 24 and Faro for 12; Porto becomes the nearest intercontinental airport for 5.
+  - **France:** a foreign city becomes the nearest métropole-sized city for about 1,070 communes (Basel, Geneva, Saarbrücken, Luxembourg, Barcelona…). Brussels airport becomes the nearest intercontinental airport for 420 communes; Luxembourg becomes the nearest European airport for 331.

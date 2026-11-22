@@ -5,7 +5,8 @@ across the border is reachable, not even Hendaye on foot from Irun). So each for
 reached as: TravelTime time to a Spanish gateway stop + the scheduled ride from it (HOPS) + 10 min to
 change (crossborder.TRANSFER_MIN). Ride times are the fastest regular weekday service; "verify"
 marks a time taken from general knowledge of the line rather than a timetable checked in Nov 2026.
-Lisbon is left out: no public transport reaches it from Spain within 3 h.
+Lisbon is left out: no public transport reaches it from Spain within 3 h; so is Puigcerdà→Toulouse (2 h 44 by
+TER plus the change is over the cap).
 """
 
 # id: (name, lat, lng) - the stop a hop starts from, on the Spanish side
@@ -54,7 +55,6 @@ HOPS = [
     ("figueres-vilafant", "FR:toulouse", 150, "AVE/TGV, change at Narbonne", "verify"),
     ("portbou", "FR:perpignan", 50, "TER Portbou-Cerbère-Perpignan", "verify"),
     ("puigcerda", "FR:foix", 100, "Rodalies R3 to Latour-de-Carol + TER (1h26-1h40)", "SNCF timetable 2026"),
-    ("puigcerda", "FR:toulouse", 175, "Rodalies R3 to Latour-de-Carol + TER (2h44)", "SNCF timetable 2026"),
     ("la-seu", "AD:andorra-la-vella", 33, "Hife bus, about hourly", "Hife timetable via aggregators 2026"),
     ("vigo", "PT:porto", 125, "Alsa/Autna bus (Celta train replaced by bus to Valença until Apr 2027)", "aggregators 2026"),
     ("vigo", "AIR:OPO", 115, "Alsa/Autna bus to Porto airport (1h55)", "aggregators 2026"),

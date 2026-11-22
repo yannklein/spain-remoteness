@@ -670,7 +670,7 @@ code,name,province,population,t1_min,t1_city,t2_min,t2_city,t3_min,t3_city,t1_vi
 06039,La Coronada,Badajoz,2136,,,,,,,,,
 06040,Corte de Peleas,Badajoz,1153,,,60,06015,60,06015,,,
 06041,Cristina,Badajoz,549,,,,,,,,,
-06042,Cheles,Badajoz,1175,,,149,PT:evora,149,PT:evora,,Badajoz bus station,Badajoz bus station
+06042,Cheles,Badajoz,1175,,,,,,,,,
 06043,Don Álvaro,Badajoz,841,,,139,10037,139,10037,,,
 06044,Don Benito,Badajoz,37986,,,,,,,,,
 06045,Entrín Bajo,Badajoz,548,,,65,06015,65,06015,,,
@@ -5375,7 +5375,7 @@ code,name,province,population,t1_min,t1_city,t2_min,t2_city,t3_min,t3_city,t1_vi
 37029,Anaya de Alba,Salamanca,190,,,,,,,,,
 37030,Añover de Tormes,Salamanca,84,,,,,,,,,
 37031,Arabayona de Mógica,Salamanca,318,,,,,,,,,
-37032,Arapiles,Salamanca,744,,,142,PT:guarda,142,PT:guarda,,Salamanca bus station,Salamanca bus station
+37032,Arapiles,Salamanca,744,,,147,47186,147,47186,,,
 37033,Arcediano,Salamanca,89,,,,,,,,,
 37034,El Arco,Salamanca,85,,,,,,,,,
 37035,Armenteros,Salamanca,156,,,,,,,,,
@@ -5538,7 +5538,7 @@ code,name,province,population,t1_min,t1_city,t2_min,t2_city,t3_min,t3_city,t1_vi
 37206,Moríñigo,Salamanca,93,,,,,,,,,
 37207,Moriscos,Salamanca,577,,,151,37274,151,37274,,,
 37208,Moronta,Salamanca,73,,,,,,,,,
-37209,Mozárbez,Salamanca,510,,,145,PT:guarda,145,PT:guarda,,Salamanca bus station,Salamanca bus station
+37209,Mozárbez,Salamanca,510,,,150,47186,150,47186,,,
 37211,Narros de Matalayegua,Salamanca,187,,,,,,,,,
 37212,Navacarros,Salamanca,141,,,,,,,,,
 37213,Nava de Béjar,Salamanca,74,,,88,37274,88,37274,,,

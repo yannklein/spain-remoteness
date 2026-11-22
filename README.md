@@ -245,12 +245,14 @@ so foreign destinations are reached through **border stations** ("gateways"):
   (origins within 250 km);
 - a hop adds the scheduled ride from the gateway to the foreign city's main station or the airport, plus 10 min to
   change (`pipeline/crossborder.py`);
-- the estimate counts only where it beats the measured time and stays within 3 hours. Foreign cities are also measured
+- the estimate counts only where it beats the measured time and stays within 3 hours. On the cities map, a border
+  station inside a home city that already counts at that category is not used (the trip passes through that city). Foreign cities are also measured
   directly within 60 km, for the few links TravelTime has.
 
 Gateways, foreign cities (with tiers by each country's rule) and hops live in
 `pipeline/countries/{es,fr}_crossborder.py`; "verify" marks ride times taken from general knowledge of the line
-rather than a timetable checked in November 2026. Estimated times are hatched on the map, say "via <station>" in
+rather than a timetable checked in November 2026. Gateway results are cached without a position check: after
+moving a gateway, delete its `GW:<id>.json` in `.cache/<cc>/times/…`. Estimated times are hatched on the map, say "via <station>" in
 the tooltip, and fill the `*_via` columns of the CSVs. Gateway results share the cities cache, so
 `compute_airports.py` reuses them.
 

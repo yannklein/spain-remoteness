@@ -236,6 +236,37 @@ def aggregate(munis, dests, results):
     return cities, out
 
 
+def aggregate_with_border(munis, dests, results, xb):
+    """aggregate(), with foreign cities estimated through border stations; also returns the via slots.
+
+    Per tier, a border station inside a home city that already counts at that tier is not used: the
+    trip passes through that city, so the foreign city is never the nearest one (Lille-Flandres -> Tournai).
+    """
+    ids = crossborder.gateway_ids(xb)
+    if not xb:
+        cities, rows = aggregate(munis, dests, results)
+        return cities, rows, {m: None for m in rows}
+    from geo import MuniIndex, load_municipalities
+    tier_of = {m["code"]: m.get("tier") for m in munis}
+    gw_tier = crossborder.gateway_city_tiers(xb, MuniIndex(load_municipalities(common.TOPO_FILE)).locate, tier_of.get)
+    codes = {d["code"] for d in dests}
+    hops = [h for h in xb.HOPS if h[1] in codes]
+    muni_codes = set(tier_of)
+    cities, rows, slots = None, None, {}
+    for tier in TIERS:
+        res = dict(results)  # apply_hops copies the per-destination dicts it changes
+        via = crossborder.apply_hops(res, crossborder.hops_for_tier(hops, gw_tier, tier), muni_codes, MAX_SECONDS)
+        cities, rows_t = aggregate(munis, dests, res)
+        slots_t = crossborder.via_slots(rows_t, cities, via, ids)
+        if rows is None:
+            rows = {m: list(r) for m, r in rows_t.items()}
+        k = (tier - 1) * 2
+        for m, r in rows_t.items():
+            rows[m][k:k + 2] = r[k:k + 2]
+            slots.setdefault(m, [-1] * len(TIERS))[tier - 1] = slots_t[m][tier - 1] if slots_t[m] else -1
+    return cities, rows, {m: (v if any(x >= 0 for x in v) else None) for m, v in slots.items()}
+
+
 def cities_csv_rows(output, munis):
     """One row per municipality: minutes and code of the nearest city per tier, then the border
     station each time goes through when it is an estimate (empty when measured)."""
@@ -297,11 +328,7 @@ def main():
                      "Check TRAVELTIME_APP_ID / TRAVELTIME_API_KEY on https://account.traveltime.com")
         raise
 
-    foreign_codes = {d["code"] for d in foreign}
-    via = crossborder.apply_hops(results, [h for h in (xb.HOPS if xb else []) if h[1] in foreign_codes],
-                                 {m["code"] for m in munis}, MAX_SECONDS)
-    cities, rows = aggregate(munis, dests + foreign, results)
-    slots = crossborder.via_slots(rows, cities, via, crossborder.gateway_ids(xb))
+    cities, rows, slots = aggregate_with_border(munis, dests + foreign, results, xb)
     notes = list(places["meta"].get("notes", []))
     if xb:
         notes.append(f"Cities across the border count too: TravelTime has almost no cross-border public transport, "

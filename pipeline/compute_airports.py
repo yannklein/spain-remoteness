@@ -84,7 +84,8 @@ def build_output(places, airports, rows, results):
             "notes": notes,
         },
         # [iata, name, country, lat, lng, tier_year, tier_summer, note, reach]
-        # reach = municipalities that get there within the cap (0 = no transit link in the data)
+        # reach = municipalities that get there within the cap, estimates through border stations included
+        # (0 = no transit link in the data)
         "airports": [[a["iata"], a["name"], a["country"], a["lat"], a["lng"],
                       a["tier_year"], a["tier_summer"], a["note"], reach[a["code"]]] for a in airports],
         # code -> [y1, ya1, y2, ya2, y3, ya3, s1, sa1, s2, sa2, s3, sa3, population]
