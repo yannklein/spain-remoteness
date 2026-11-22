@@ -72,7 +72,9 @@ def next_weekday_8am():
 
 
 def origins_for(dest, munis, max_km=MAX_KM):
+    """Municipalities in the destination's zone within max_km (a destination may set its own "max_km")."""
     z = zone(dest)
+    max_km = dest.get("max_km", max_km)
     return [m for m in munis
             if m["code"] != dest["code"] and zone(m) == z
             and haversine_km(dest["lat"], dest["lng"], m["lat"], m["lng"]) <= max_km]

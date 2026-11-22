@@ -218,7 +218,42 @@ def geocode(h, muni_name):
     return (float(res[0]["lat"]), float(res[0]["lon"]), "address") if res else None
 
 
+def settle_muni(h, locate):
+    """The commune the hospital's point stands in (the register's commune if the point is off the map)."""
+    return locate(h["lng"], h["lat"]) or h["muni"]
+
+
+def main_fr():
+    """France: FINESS has coordinates, so no OSM matching; snap to the nearest stop and apply overrides."""
+    import hospitals_fr
+    p = paths("fr")
+    hosps = hospitals_fr.read_hospitals_fr(hospitals_fr.fetch_finess(), hospitals_fr.fetch_urgences())
+    index = MuniIndex(load_municipalities(p.topo))
+    overrides = load_json(p.hospital_overrides) if p.hospital_overrides.exists() else {}
+    stops = fetch_stops([(h["lat"], h["lng"]) for h in hosps])
+    out = []
+    for h in hosps:
+        a = apply_override(h, overrides, []) or {"lat": h["lat"], "lng": h["lng"], "entrances": [], "via": "finess"}
+        lat, lng, source, stop_name = place_anchor(a, stops)
+        if a.get("exact"):
+            source = overrides[h["codcnh"]].get("source", "override")
+        elif source == "osm":
+            source = "finess"
+        h = dict(h, lat=round(lat, 6), lng=round(lng, 6), point_source=source, osm_id=None, stop_name=stop_name)
+        h["muni"] = settle_muni(h, index.locate)
+        out.append(h)
+    dump_json(out, p.hospitals_placed)
+    from collections import Counter
+    print("placed:", len(out), dict(Counter(x["point_source"] for x in out)))
+
+
 def main():
+    import argparse
+    from common import add_country_arg
+    ap = argparse.ArgumentParser()
+    add_country_arg(ap)
+    if ap.parse_args().country == "fr":
+        return main_fr()
     places = {m["code"]: m for m in load_json(PLACES_FILE)["municipalities"]}
     hosps = [h for h in catalogue.read_catalogue(catalogue.fetch_catalogue()) if h["tier"]]
     index = MuniIndex(load_municipalities())

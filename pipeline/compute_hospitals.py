@@ -24,6 +24,7 @@ OUTPUT_FILE = paths("es").hospitals_json
 CSV_FILE = paths("es").hospitals_csv
 CACHE_DIR = paths("es").hospitals_cache
 SOURCE = "Catálogo Nacional de Hospitales 2025, Ministerio de Sanidad"
+SOURCES = {"es": SOURCE, "fr": "FINESS (Ministère de la Santé) and DREES SAE urgences"}
 
 
 def destinations(placed, places):
@@ -34,7 +35,10 @@ def destinations(placed, places):
         if not h.get("tier") or h.get("lat") is None:
             continue
         m = by.get(h["muni"], {"code": h["muni"]})
-        out.append(dict(h, code="HOS:" + h["codcnh"], zone=zone(m)))
+        d = dict(h, code="HOS:" + h["codcnh"], zone=zone(m))
+        if RADIUS_KM:
+            d["max_km"] = RADIUS_KM[h["tier"]]
+        out.append(d)
     return out
 
 
@@ -124,9 +128,16 @@ def hospitals_csv_rows(output, munis):
     return header, rows
 
 
+# France: hospitals with an emergency department are dense, so tiers 2/3 search 150 km around
+# (nobody reaches one within 3 h from further), the major ones 300 km. Spain: 300 km for all.
+RADIUS_KM = None
+
+
 def configure(cc):
-    global PLACED_FILE, OUTPUT_FILE, CSV_FILE, CACHE_DIR, PLACES_FILE
+    global PLACED_FILE, OUTPUT_FILE, CSV_FILE, CACHE_DIR, PLACES_FILE, RADIUS_KM, SOURCE
     p = paths(cc)
+    SOURCE = SOURCES[cc]
+    RADIUS_KM = {1: 300, 2: 150, 3: 150} if cc == "fr" else None
     PLACED_FILE, OUTPUT_FILE, CSV_FILE, CACHE_DIR, PLACES_FILE = (
         p.hospitals_placed, p.hospitals_json, p.hospitals_csv, p.hospitals_cache, p.places)
     common.TOPO_FILE, common.PLACES_FILE = p.topo, p.places

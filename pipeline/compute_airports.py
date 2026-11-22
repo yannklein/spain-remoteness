@@ -110,7 +110,7 @@ def airports_csv_rows(output, munis):
 
 def print_border_checks(munis, results):
     names = {m["code"]: m["name"] for m in munis}
-    for code, iata in BORDER_CHECKS:
+    for code, iata in getattr(airport_list, "BORDER_CHECKS", BORDER_CHECKS):
         got = results.get("AIR:" + iata)
         if got is None:
             continue
