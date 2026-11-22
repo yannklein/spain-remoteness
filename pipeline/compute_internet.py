@@ -27,15 +27,18 @@ INTERNET_CSV = paths("es").internet_csv
 CACHE = paths("es").internet_cache
 BUCKET = "https://ookla-open-data.s3.amazonaws.com/"
 PREFIX = "parquet/performance/"
-BBOX = (-18.5, 27.4, 4.5, 44.0)
+BBOX = (-18.5, 27.4, 4.5, 44.0)   # lng/lat box around Spain incl. Canarias; point-in-polygon does the rest
 ESTIMATE_KM = 10
+COUNTRY = "es"
 # No fixed estimate where official coverage says most homes can't get 100 Mbps:
 # the nearby tests then describe the next town, not the village.
 ESTIMATE_MIN_COVERAGE = 50
 COVERAGE_URL = ("https://digital.gob.es/content/dam/portal-mtdfp/avance-digital/telecomunicacion-e-infraestructuras-digitales/"
                 "areas_interes/banda-ancha/cobertura/documents/"
                 "Cobertura_BA_Espa%C3%B1a_2021-2025_MUN_PROV_CCAA_Nacional_datosgob_DEF.xlsx")
-COVERAGE_SOURCE = "Ministerio para la Transformación Digital y de la Función Pública (SETID)"   # lng/lat box around Spain incl. Canarias; point-in-polygon does the rest
+COVERAGE_SOURCE = "Ministerio para la Transformación Digital y de la Función Pública (SETID)"
+ARCEP_STATS = "https://data.arcep.fr/fixe/maconnexioninternet/statistiques/"
+ARCEP_SOURCE = "Arcep, Ma connexion internet (statistiques par commune)"
 
 MIN_TESTS = 20
 MIN_DEVICES = 5
@@ -175,6 +178,37 @@ def read_coverage(path):
     return year, out
 
 
+def read_coverage_arcep(path):
+    """France: % of premises eligible to >= 100 Mbps and >= 1 Gbps per commune (Arcep), latest quarter.
+
+    -> (date, {code: [cov_100, cov_1g, None]}); no per-commune 5G figure, so the third value is None.
+    """
+    import csv
+    out, date = {}, None
+    with open(path, encoding="utf-8") as fh:
+        for r in csv.DictReader(fh, delimiter=";"):
+            if r.get("type") != "all":
+                continue
+            date = date or r.get("date")
+            n = int(r["nbr"] or 0)
+            pct = (lambda k: max(0, min(100, round(100 * int(r[k] or 0) / n)))) if n else (lambda k: None)
+            out[r["code_insee"].strip()] = [pct("elig_thd100"), pct("elig_thd1g"), None]
+    return date, out
+
+
+def fetch_arcep():
+    """Latest quarter's commune file from data.arcep.fr, cached once per quarter."""
+    index = http(ARCEP_STATS, timeout=60).decode()
+    latest = sorted(set(re.findall(r'href="(20[0-9]{2}_T[1-4])/index.html"', index)))[-1]
+    f = CACHE / f"arcep_commune_debit_filaire_{latest}.csv"
+    if not f.exists():
+        CACHE.mkdir(parents=True, exist_ok=True)
+        tmp = f.with_suffix(".tmp")
+        tmp.write_bytes(http(f"{ARCEP_STATS}{latest}/commune/commune_debit_filaire.csv", timeout=120))
+        tmp.rename(f)
+    return f
+
+
 def fetch_coverage():
     f = CACHE / "coverage_2021-2025.xlsx"
     if not f.exists():
@@ -276,9 +310,15 @@ def fetch_quarter(kind, year, q):
 
 
 def configure(cc):
-    global INTERNET_OUTPUT_FILE, INTERNET_CSV, CACHE, PLACES_FILE
+    global INTERNET_OUTPUT_FILE, INTERNET_CSV, CACHE, PLACES_FILE, BBOX, COVERAGE_SOURCE, COUNTRY
     p = paths(cc)
     INTERNET_OUTPUT_FILE, INTERNET_CSV, CACHE, PLACES_FILE = p.internet_json, p.internet_csv, p.internet_cache, p.places
+    COUNTRY = cc
+    if cc == "fr":
+        from countries import fr
+        BBOX, COVERAGE_SOURCE = fr.BBOX, ARCEP_SOURCE
+    else:
+        BBOX, COVERAGE_SOURCE = (-18.5, 27.4, 4.5, 44.0), "Ministerio para la Transformación Digital y de la Función Pública (SETID)"
     common.TOPO_FILE, common.PLACES_FILE = p.topo, p.places
 
 
@@ -318,7 +358,10 @@ def main():
     need = {kind: {c for c, r in measured["m"].items() if r[i * 5] is None} for i, kind in enumerate(TYPES)}
     centres = {m["code"]: (m["lng"], m["lat"]) for m in places["municipalities"]}
     est = estimate(tiles, located, centres, need)
-    cov_year, coverage = read_coverage(fetch_coverage())
+    if COUNTRY == "fr":
+        cov_year, coverage = read_coverage_arcep(fetch_arcep())
+    else:
+        cov_year, coverage = read_coverage(fetch_coverage())
     output = build_output(places, agg, quarters, est=est, coverage=coverage, coverage_year=cov_year)
     dump_json(output, INTERNET_OUTPUT_FILE, compact=True)
     write_csv(INTERNET_CSV, *internet_csv_rows(output, places["municipalities"]))

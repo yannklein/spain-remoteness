@@ -65,3 +65,58 @@ def test_real_places_match_boundaries():
     assert codes == set(topo)
     by = {m["code"]: m for m in pl}
     assert sum(1 for m in pl if m["tier"] == 1) == 22 and by["2B033"]["zone"] == "island:Corse"
+
+
+# --- internet ---------------------------------------------------------------
+
+ARCEP = """code_insee;nom_com;code_dep;code_reg;nbr;type;inel_hd;elig_hd05;elig_hd3;elig_bhd8;elig_thd30;elig_thd100;elig_thd1g;date
+16123;Échallat;16;75;278;all;5;273;273;273;273;273;250;2026-06-30
+16123;Échallat;16;75;200;res;5;195;195;195;195;195;180;2026-06-30
+2A004;Ajaccio;2A;94;40000;all;0;40000;40000;40000;39000;38000;36000;2026-06-30
+48001;Albaret;48;76;0;all;0;0;0;0;0;0;0;2026-06-30
+"""
+
+
+def test_read_arcep_coverage(tmp_path):
+    import compute_internet as ci
+    p = tmp_path / "commune_debit_filaire.csv"
+    p.write_text(ARCEP, encoding="utf-8")
+    date, cov = ci.read_coverage_arcep(p)
+    assert date == "2026-06-30"
+    assert cov["16123"] == [98, 90, None]            # type "all" only; % of premises; no 5G per commune
+    assert cov["2A004"] == [95, 90, None]            # codes stay strings
+    assert cov["48001"] == [None, None, None]        # no premises: unknown, not 0%
+
+
+def test_configure_france_internet():
+    import compute_internet as ci
+    try:
+        ci.configure("fr")
+        assert ci.BBOX == fr.BBOX and ci.CACHE == paths("fr").internet_cache
+        assert ci.INTERNET_OUTPUT_FILE == paths("fr").internet_json
+    finally:
+        ci.configure("es")
+    assert ci.CACHE == paths("es").internet_cache
+
+
+# --- airports ---------------------------------------------------------------
+
+def test_france_airport_list():
+    import re
+    from countries import fr_airports as fa
+    codes = [a[0] for a in fa.AIRPORTS]
+    assert len(codes) == len(set(codes)) and all(re.fullmatch(r"[A-Z]{3}", c) for c in codes)
+    by = {a[0]: a for a in fa.AIRPORTS}
+    for iata, _, country, lat, lng, ty, ts, z, note in fa.AIRPORTS:
+        assert country in ("FR", "CH", "LU", "BE", "DE", "ES"), iata
+        assert z in ("mainland", "island:Corse"), iata
+        assert 41.0 <= lat <= 51.5 and -5.5 <= lng <= 10.0, iata
+        if ty is not None:
+            assert ts is not None and ts <= ty, iata
+        if ty is None and ts is None:
+            assert note.strip(), iata
+    assert by["CDG"][5] == 1 and by["ORY"][5] == 1
+    assert {by[c][7] for c in ("AJA", "BIA", "FSC", "CLY")} == {"island:Corse"}
+    assert by["BSL"][2] == "FR"                         # Basel-Mulhouse lies on French soil
+    assert all(d["code"].startswith("AIR:") for d in fa.destinations())
+    assert {c for c, _ in fa.BORDER_CHECKS} <= {"74010", "57463", "67482", "64024", "66136", "59350"} | {c for c, _ in fa.BORDER_CHECKS}
