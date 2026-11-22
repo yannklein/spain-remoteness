@@ -20,7 +20,7 @@ but are labelled with their metro.
 ## How it works
 
 ```
-data/municipalities_base.json   8,132 INE municipalities (codes, names, islands, centroids)
+data/es/municipalities_base.json   8,132 INE municipalities (codes, names, islands, centroids)
         │
         ▼  pipeline/build_places.py
         │    + INE table 29005 (latest padrón)      → population, >100k / >50k tiers
@@ -33,8 +33,8 @@ data/places.json
         │    08:30 / 11:30 / 14:30 from every municipality in the same zone
         │    within 300 km", 2,000 origins per search, best time kept, capped at 3 h
         ▼
-web/public/data/remoteness.json  → per municipality and tier: minutes + nearest city
-web/public/data/remoteness.csv   → same, flat table for QGIS (see below)
+web/public/data/es/remoteness.json  → per municipality and tier: minutes + nearest city
+web/public/data/es/remoteness.csv   → same, flat table for QGIS (see below)
         │
         ▼  web/ (Vite + TypeScript + MapLibre)
 Docker image (nginx, static) → Coolify
@@ -107,7 +107,7 @@ python3 pipeline/compute_airports.py --only OPO,MAD   # test a few airports, wri
 python3 pipeline/compute_airports.py                  # everything (~50 requests, a few minutes)
 ```
 
-Output: `web/public/data/airports.json` and `airports.csv`. Per-airport results are cached in
+Output: `web/public/data/es/airports.json` and `airports.csv`. Per-airport results are cached in
 `.cache/airports/`; delete an airport's file there after changing its coordinates.
 
 ## Internet map
@@ -173,18 +173,18 @@ with the same public transport method as the cities and airports maps.
 Specialised, long-stay, mental-health and other inpatient centres are left out. Currently 106 major,
 321 public and 549 general hospitals.
 
-- **Placing hospitals** (`pipeline/place_hospitals.py` → `data/hospitals.json`): the catalogue has addresses,
+- **Placing hospitals** (`pipeline/place_hospitals.py` → `data/es/hospitals.json`): the catalogue has addresses,
   not coordinates. Each hospital is matched by name to an OpenStreetMap hospital in the same municipality
   (Basque/Galician name forms handled); its arrival point is the nearest bus/rail stop within 400 m (TravelTime
   can't attach points inside a campus), else an entrance, else the OSM centre. Unmatched hospitals are placed
-  from their address or postcode with Nominatim; `data/hospital_overrides.json` (keyed by CODCNH) fixes the rest
-  by hand. `point_source` in `data/hospitals.json` says how each was placed.
+  from their address or postcode with Nominatim; `data/es/hospital_overrides.json` (keyed by CODCNH) fixes the rest
+  by hand. `point_source` in `data/es/hospitals.json` says how each was placed.
 - **Complexes:** the catalogue reports equipment once per hospital complex; its cath lab is assigned to the
   complex's largest site only. Formentera's 13-bed hospital reports a cath lab and is excluded from "major" by
   the 100-bed rule.
 - **Points that don't attach** (`pipeline/nudge_hospitals.py`): hospitals nobody reaches are probed on rings of
   200/400/600 m from their own town; the first reachable point is kept as an exact override in
-  `data/hospital_overrides.json` (16 hospitals moved). Positions already probed without success are recorded so
+  `data/es/hospital_overrides.json` (16 hospitals moved). Positions already probed without success are recorded so
   they aren't probed again.
 - **Coverage gaps:** 30 hospitals stay unreachable in TravelTime's data even after that, mostly where local
   buses are missing (e.g. Virgen de la Arrixaca in Murcia, Costa del Sol in Marbella, Ceuta's hospital).
@@ -194,7 +194,7 @@ Specialised, long-stay, mental-health and other inpatient centres are left out. 
 - **Caveat:** the catalogue doesn't say which private clinics have a 24 h emergency department.
 
 ```bash
-python3 pipeline/place_hospitals.py      # catalogue + OSM + Nominatim -> data/hospitals.json (a few minutes)
+python3 pipeline/place_hospitals.py      # catalogue + OSM + Nominatim -> data/es/hospitals.json (a few minutes)
 python3 pipeline/compute_hospitals.py    # TravelTime, ~2,700 searches (~25 min), cached in .cache/hospitals/
 python3 pipeline/nudge_hospitals.py      # move points of unreached hospitals, then run compute_hospitals.py again
 ```
@@ -203,21 +203,21 @@ python3 pipeline/nudge_hospitals.py      # move points of unreached hospitals, t
 
 Both datasets come as a flat CSV, one row per municipality, next to the JSON:
 
-- `web/public/data/remoteness.csv`: `t1_min`..`t3_min` minutes to the nearest metro / regional hub /
+- `web/public/data/es/remoteness.csv`: `t1_min`..`t3_min` minutes to the nearest metro / regional hub /
   urban area, `t*_city` its INE code.
-- `web/public/data/airports.csv`: `y1_min`..`y3_min` (year-round) and `s1_min`..`s3_min` (with seasonal
+- `web/public/data/es/airports.csv`: `y1_min`..`y3_min` (year-round) and `s1_min`..`s3_min` (with seasonal
   routes) minutes to the nearest intercontinental / Europe / any airport, `*_airport` its IATA code.
 
-- `web/public/data/hospitals.csv`: `t1_min`..`t3_min` minutes to the nearest major / public / any hospital,
-  `t*_hospital` its catalogue code (CODCNH, see `data/hospitals.json`).
-- `web/public/data/internet.csv`: `fixed_down_mbps`, `fixed_up_mbps`, `fixed_latency_ms`, `fixed_tests`,
+- `web/public/data/es/hospitals.csv`: `t1_min`..`t3_min` minutes to the nearest major / public / any hospital,
+  `t*_hospital` its catalogue code (CODCNH, see `data/es/hospitals.json`).
+- `web/public/data/es/internet.csv`: `fixed_down_mbps`, `fixed_up_mbps`, `fixed_latency_ms`, `fixed_tests`,
   `fixed_devices` and the same for `mobile_*` (measured; empty = not enough local tests), then
   `fixed_est_*` / `mobile_est_*` (estimated from tests within 10 km, only where there is no measured value)
   and `coverage_100mbps_pct`, `coverage_1gbps_pct`, `coverage_5g_pct` (official 2025 coverage).
 
 Empty cells in the first two mean over 3 hours or no airport/city reachable. Load the CSV as a delimited text layer
 without geometry and join it on `code` to a municipalities layer whose INE code is a 5-digit text field
-(for example `web/public/data/municipalities.topo.json`, whose feature ids are those codes). The `.csvt` file next to each
+(for example `web/public/data/es/municipalities.topo.json`, whose feature ids are those codes). The `.csvt` file next to each
 CSV makes QGIS read `code` as text, so `01001` keeps its leading zero.
 `python3 pipeline/compute_times.py --csv-only` rebuilds the cities CSV from the JSON without API calls.
 
@@ -238,7 +238,7 @@ result with nginx (`nginx.conf`: gzip, long cache on hashed assets, 1 h on data)
    (Settings → Secrets and variables → Actions).
 2. Actions → **Compute travel times** → Run workflow. Put `5` in *limit* first for a smoke test
    (it prints a sample and does not commit), then run it with *limit* empty.
-3. The workflow commits `web/public/data/remoteness.json`; Coolify picks up the push and redeploys.
+3. The workflow commits `web/public/data/es/remoteness.json`; Coolify picks up the push and redeploys.
 
 The compute workflow also runs quarterly, since timetables change.
 

@@ -7,7 +7,8 @@ even-odd ray casting over all rings, so holes are excluded.
 
 import math
 
-from common import TOPO_FILE, load_json
+import common
+from common import load_json
 
 
 def _decode_arcs(topo):
@@ -37,9 +38,9 @@ def _ring(arcs, indices):
     return pts
 
 
-def load_municipalities(path=TOPO_FILE, layer="municipalities"):
+def load_municipalities(path=None, layer="municipalities"):
     """code -> polygons -> rings of (lng, lat); first ring outer, the rest holes."""
-    topo = load_json(path)
+    topo = load_json(path or common.TOPO_FILE)
     arcs = _decode_arcs(topo)
     out = {}
     for g in topo["objects"][layer]["geometries"]:

@@ -18,12 +18,13 @@ import re
 import urllib.parse
 from datetime import datetime, timezone
 
-from common import (PLACES_FILE, ROOT, dump_json, haversine_km, http, load_json, write_csv)
+import common
+from common import (PLACES_FILE, ROOT, add_country_arg, dump_json, haversine_km, http, load_json, paths, write_csv)
 from geo import MuniIndex, load_municipalities
 
-INTERNET_OUTPUT_FILE = ROOT / "web" / "public" / "data" / "internet.json"
-INTERNET_CSV = ROOT / "web" / "public" / "data" / "internet.csv"
-CACHE = ROOT / ".cache" / "internet"
+INTERNET_OUTPUT_FILE = paths("es").internet_json
+INTERNET_CSV = paths("es").internet_csv
+CACHE = paths("es").internet_cache
 BUCKET = "https://ookla-open-data.s3.amazonaws.com/"
 PREFIX = "parquet/performance/"
 BBOX = (-18.5, 27.4, 4.5, 44.0)
@@ -274,10 +275,20 @@ def fetch_quarter(kind, year, q):
     return [tuple(r) for r in rows]
 
 
+def configure(cc):
+    global INTERNET_OUTPUT_FILE, INTERNET_CSV, CACHE, PLACES_FILE
+    p = paths(cc)
+    INTERNET_OUTPUT_FILE, INTERNET_CSV, CACHE, PLACES_FILE = p.internet_json, p.internet_csv, p.internet_cache, p.places
+    common.TOPO_FILE, common.PLACES_FILE = p.topo, p.places
+
+
 def main():
     ap = argparse.ArgumentParser()
+    add_country_arg(ap)
     ap.add_argument("--quarters", help="comma-separated YEAR-Q list, e.g. 2025-4,2026-1 (default: latest 4)")
     args = ap.parse_args()
+    if args.country != "es":
+        configure(args.country)
 
     if args.quarters:
         quarters = [tuple(int(v) for v in s.split("-")) for s in args.quarters.split(",")]

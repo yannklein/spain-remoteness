@@ -150,7 +150,7 @@ async function loadStyle(): Promise<StyleSpecification | string> {
 }
 
 async function loadData() {
-  const topo = (await (await fetch('./data/municipalities.topo.json')).json()) as Topology
+  const topo = (await (await fetch('./data/es/municipalities.topo.json')).json()) as Topology
   const g = feature(topo, topo.objects.municipalities as GeometryCollection) as FeatureCollection<
     Geometry,
     Record<string, unknown>
@@ -158,7 +158,7 @@ async function loadData() {
   const provinces = feature(topo, topo.objects.provinces as GeometryCollection)
 
   try {
-    const r = await fetch('./data/remoteness.json')
+    const r = await fetch('./data/es/remoteness.json')
     if (r.ok) data = (await r.json()) as Remoteness
   } catch {
     data = null

@@ -18,10 +18,10 @@ import unicodedata
 import urllib.parse
 
 import hospitals as catalogue
-from common import DATA, PLACES_FILE, USER_AGENT, dump_json, haversine_km, http, load_json
+from common import PLACES_FILE, USER_AGENT, dump_json, haversine_km, http, load_json, paths
 from geo import MuniIndex, load_municipalities
 
-OUTPUT = DATA / "hospitals.json"
+OUTPUT = paths("es").hospitals_placed
 OVERPASS = "https://overpass-api.de/api/interpreter"
 NOMINATIM = "https://nominatim.openstreetmap.org/search"
 STOP_RADIUS_M = 400
@@ -37,7 +37,7 @@ GENERIC = {
     # too common in Spanish hospital names to tell hospitals apart
     "nuestra", "senora", "virgen", "san", "santa", "sant", "santo",
 }
-OVERRIDES = DATA / "hospital_overrides.json"  # keyed by CODCNH (catalogue code), not municipality
+OVERRIDES = paths("es").hospital_overrides  # keyed by CODCNH (catalogue code), not municipality
 OSM_CACHE = catalogue.CACHE / "osm_hospitals.json"
 
 

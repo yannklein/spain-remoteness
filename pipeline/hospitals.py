@@ -14,11 +14,11 @@ centres (C190) are left out. Equipment and concierto marked "DC" ("dato en
 complejo") are read from the hospital's complex row (CODIDCOM).
 """
 
-from common import ROOT, http
+from common import http, paths
 
 CATALOGUE_URL = ("https://www.sanidad.gob.es/estadEstudios/estadisticas/sisInfSanSNS/"
                  "ofertaRecursos/hospitales/docs/CNH_2025.xlsx")
-CACHE = ROOT / ".cache" / "hospitals"
+CACHE = paths("es").hospitals_cache
 PUBLIC_DEPENDENCIES = {str(i) for i in range(1, 9)}
 MAJOR_MIN_BEDS = 100
 PUBLIC_CONCIERTOS = {"Red de utilización pública (RUP)", "Concierto sustitutorio"}

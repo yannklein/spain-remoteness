@@ -33,7 +33,7 @@ const COUNTRY: Record<string, string> = { PT: 'Portugal', FR: 'France', GI: 'Gib
 
 export async function loadAirports(): Promise<AirportsData | null> {
   try {
-    const r = await fetch('./data/airports.json')
+    const r = await fetch('./data/es/airports.json')
     return r.ok ? ((await r.json()) as AirportsData) : null
   } catch {
     return null

@@ -6,18 +6,42 @@ import urllib.error
 import urllib.request
 from http.client import HTTPException
 from pathlib import Path
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-BASE_FILE = DATA / "municipalities_base.json"
-PLACES_FILE = DATA / "places.json"
-OUTPUT_FILE = ROOT / "web" / "public" / "data" / "remoteness.json"
-CACHE_DIR = ROOT / ".cache" / "times"
-TOPO_FILE = ROOT / "web" / "public" / "data" / "municipalities.topo.json"
-CITIES_CSV = ROOT / "web" / "public" / "data" / "remoteness.csv"
-AIRPORTS_OUTPUT_FILE = ROOT / "web" / "public" / "data" / "airports.json"
-AIRPORTS_CSV = ROOT / "web" / "public" / "data" / "airports.csv"
-AIRPORT_CACHE_DIR = ROOT / ".cache" / "airports"
+COUNTRIES = ("es", "fr")
+
+
+def paths(cc):
+    """Everything a country reads and writes lives in its own folders (self-contained)."""
+    data, out, cache = DATA / cc, ROOT / "web" / "public" / "data" / cc, ROOT / ".cache" / cc
+    return SimpleNamespace(
+        cc=cc, data=data, out=out, cache=cache,
+        base=data / "municipalities_base.json", places=data / "places.json", topo=out / "municipalities.topo.json",
+        cities_json=out / "remoteness.json", cities_csv=out / "remoteness.csv", times_cache=cache / "times",
+        airports_json=out / "airports.json", airports_csv=out / "airports.csv", airports_cache=cache / "airports",
+        internet_json=out / "internet.json", internet_csv=out / "internet.csv", internet_cache=cache / "internet",
+        hospitals_json=out / "hospitals.json", hospitals_csv=out / "hospitals.csv", hospitals_cache=cache / "hospitals",
+        hospitals_placed=data / "hospitals.json", hospital_overrides=data / "hospital_overrides.json",
+    )
+
+
+def add_country_arg(ap):
+    ap.add_argument("--country", default="es", choices=COUNTRIES, help="country to build (default: es)")
+
+
+# Spain is the default country (scripts switch with --country, see each module's configure()).
+_ES = paths("es")
+BASE_FILE = _ES.base
+PLACES_FILE = _ES.places
+OUTPUT_FILE = _ES.cities_json
+CACHE_DIR = _ES.times_cache
+TOPO_FILE = _ES.topo
+CITIES_CSV = _ES.cities_csv
+AIRPORTS_OUTPUT_FILE = _ES.airports_json
+AIRPORTS_CSV = _ES.airports_csv
+AIRPORT_CACHE_DIR = _ES.airports_cache
 
 class HTTPStatusError(RuntimeError):
     def __init__(self, code, msg):

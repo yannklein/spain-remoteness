@@ -24,8 +24,9 @@ import time
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from common import (CACHE_DIR, CITIES_CSV, OUTPUT_FILE, PLACES_FILE, HTTPStatusError,
-                    dump_json, haversine_km, http, load_json, write_csv, zone)
+import common
+from common import (CACHE_DIR, CITIES_CSV, OUTPUT_FILE, PLACES_FILE, HTTPStatusError, add_country_arg,
+                    dump_json, haversine_km, http, load_json, paths, write_csv, zone)
 
 API = "https://api.traveltimeapp.com/v4"
 MAX_SECONDS = 10800              # 3 h cap
@@ -247,14 +248,25 @@ def cities_csv_rows(output, munis):
     return header, rows
 
 
+def configure(cc):
+    """Point this module (and common) at a country's folders."""
+    global CACHE_DIR, OUTPUT_FILE, CITIES_CSV, PLACES_FILE
+    p = paths(cc)
+    CACHE_DIR, OUTPUT_FILE, CITIES_CSV, PLACES_FILE = p.times_cache, p.cities_json, p.cities_csv, p.places
+    common.TOPO_FILE, common.PLACES_FILE = p.topo, p.places
+
+
 def main():
     ap = argparse.ArgumentParser()
+    add_country_arg(ap)
     ap.add_argument("--limit", type=int, help="only compute the first N destinations (testing)")
     ap.add_argument("--endpoint", choices=["regular", "fast"], default="regular")
     ap.add_argument("--no-cache", action="store_true")
     ap.add_argument("--csv-only", action="store_true",
                     help="rewrite the CSV from the existing JSON, no API calls")
     args = ap.parse_args()
+    if args.country != "es":
+        configure(args.country)
 
     places = load_json(PLACES_FILE)
     munis = places["municipalities"]

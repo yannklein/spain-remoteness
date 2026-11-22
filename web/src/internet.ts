@@ -44,7 +44,7 @@ export const METRICS: Record<
 
 export async function loadInternet(): Promise<InternetData | null> {
   try {
-    const r = await fetch('./data/internet.json')
+    const r = await fetch('./data/es/internet.json')
     return r.ok ? ((await r.json()) as InternetData) : null
   } catch {
     return null

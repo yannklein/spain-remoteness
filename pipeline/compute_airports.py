@@ -16,8 +16,9 @@ import sys
 from datetime import datetime, timezone
 
 import airports as airport_list
+import common
 from common import (AIRPORT_CACHE_DIR, AIRPORTS_CSV, AIRPORTS_OUTPUT_FILE, PLACES_FILE,
-                    HTTPStatusError, dump_json, load_json, write_csv)
+                    HTTPStatusError, add_country_arg, dump_json, load_json, paths, write_csv)
 from compute_times import (ARRIVAL_TIMES, MAX_SECONDS, TIERS, Client, cache_dir,
                            compute_all)
 
@@ -117,12 +118,25 @@ def print_border_checks(munis, results):
         print(f"  {names.get(code, code)} -> {iata}: " + ("unreachable" if t is None else f"{round(t / 60)} min"))
 
 
+def configure(cc):
+    global AIRPORT_CACHE_DIR, AIRPORTS_CSV, AIRPORTS_OUTPUT_FILE, PLACES_FILE, airport_list
+    p = paths(cc)
+    AIRPORT_CACHE_DIR, AIRPORTS_CSV, AIRPORTS_OUTPUT_FILE, PLACES_FILE = (
+        p.airports_cache, p.airports_csv, p.airports_json, p.places)
+    common.TOPO_FILE, common.PLACES_FILE = p.topo, p.places
+    import importlib
+    airport_list = importlib.import_module(f"countries.{cc}_airports") if cc != "es" else airport_list
+
+
 def main():
     ap = argparse.ArgumentParser()
+    add_country_arg(ap)
     ap.add_argument("--limit", type=int, help="only compute the first N airports (testing)")
     ap.add_argument("--only", help="comma-separated IATA codes to compute (testing)")
     ap.add_argument("--no-cache", action="store_true")
     args = ap.parse_args()
+    if args.country != "es":
+        configure(args.country)
 
     places = load_json(PLACES_FILE)
     munis = places["municipalities"]

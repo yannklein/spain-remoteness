@@ -15,13 +15,14 @@ import json
 import sys
 from datetime import datetime, timezone
 
-from common import (DATA, PLACES_FILE, ROOT, HTTPStatusError, dump_json, load_json, write_csv, zone)
+import common
+from common import (PLACES_FILE, HTTPStatusError, add_country_arg, dump_json, load_json, paths, write_csv, zone)
 from compute_times import ARRIVAL_TIMES, MAX_SECONDS, TIERS, Client, cache_dir, compute_all
 
-PLACED_FILE = DATA / "hospitals.json"
-OUTPUT_FILE = ROOT / "web" / "public" / "data" / "hospitals.json"
-CSV_FILE = ROOT / "web" / "public" / "data" / "hospitals.csv"
-CACHE_DIR = ROOT / ".cache" / "hospitals"
+PLACED_FILE = paths("es").hospitals_placed
+OUTPUT_FILE = paths("es").hospitals_json
+CSV_FILE = paths("es").hospitals_csv
+CACHE_DIR = paths("es").hospitals_cache
 SOURCE = "Catálogo Nacional de Hospitales 2025, Ministerio de Sanidad"
 
 
@@ -123,12 +124,23 @@ def hospitals_csv_rows(output, munis):
     return header, rows
 
 
+def configure(cc):
+    global PLACED_FILE, OUTPUT_FILE, CSV_FILE, CACHE_DIR, PLACES_FILE
+    p = paths(cc)
+    PLACED_FILE, OUTPUT_FILE, CSV_FILE, CACHE_DIR, PLACES_FILE = (
+        p.hospitals_placed, p.hospitals_json, p.hospitals_csv, p.hospitals_cache, p.places)
+    common.TOPO_FILE, common.PLACES_FILE = p.topo, p.places
+
+
 def main():
     ap = argparse.ArgumentParser()
+    add_country_arg(ap)
     ap.add_argument("--limit", type=int, help="only compute the first N hospitals (testing)")
     ap.add_argument("--only", help="comma-separated CODCNH codes to compute (testing)")
     ap.add_argument("--no-cache", action="store_true")
     args = ap.parse_args()
+    if args.country != "es":
+        configure(args.country)
 
     places = load_json(PLACES_FILE)
     munis = places["municipalities"]
