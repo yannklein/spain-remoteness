@@ -20,6 +20,7 @@
         <button role="radio" data-mode="airports">Airports</button>
         <button role="radio" data-mode="internet">Internet</button>
         <button role="radio" data-mode="hospitals">Hospitals</button>
+        <button role="radio" data-mode="gems">Gems</button>
       </div>
       <h1 id="title">How far is rural Spain from a city?</h1>
       <p class="lead" id="lead">
@@ -41,11 +42,41 @@
       </label>
       <p class="tier-help" id="tier-help"></p>
 
+      <form id="gems-controls" class="gems" data-for="gems" hidden onsubmit="return false">
+        <div class="g-row">
+          <span class="g-name">Size</span>
+          <span>under <select id="g-pop"></select> inhabitants</span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-net-on" autocomplete="off" /> Internet</label>
+          <span>≥ <select id="g-net-min"></select> Mbps <select id="g-net-kind">
+            <option value="fixed">fixed</option><option value="mobile">mobile</option><option value="either">fixed or mobile</option>
+          </select></span>
+        </div>
+        <label class="g-sub"><input type="checkbox" id="g-est" autocomplete="off" /> count estimates from nearby speed tests</label>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-city-on" autocomplete="off" /> City</label>
+          <span><select id="g-city-tier"></select> within <select id="g-city-max"></select></span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-air-on" autocomplete="off" /> Airport</label>
+          <span><select id="g-air-tier"></select> within <select id="g-air-max"></select></span>
+        </div>
+        <label class="g-sub"><input type="checkbox" id="g-summer" autocomplete="off" /> count seasonal flights</label>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-hosp-on" autocomplete="off" /> Hospital</label>
+          <span><select id="g-hosp-tier"></select> within <select id="g-hosp-max"></select></span>
+        </div>
+        <button type="button" id="g-reset" class="g-reset">Reset to defaults</button>
+      </form>
+
       <div id="headline" class="headline" hidden></div>
 
       <div class="legend" id="legend"></div>
 
       <div id="status" class="status" hidden></div>
+
+      <div id="gems-list" class="gems-list" data-for="gems" hidden></div>
 
       <details>
         <summary>How this map is made</summary>
@@ -86,6 +117,12 @@
           <li>Speeds people actually measured with Speedtest by Ookla over the last 4 quarters, ~600 m tiles assigned to the commune containing their centre, averaged by number of tests; at least 20 tests and 5 devices in one quarter, otherwise an estimate from tests within 10 km (hatched).</li>
           <li>Official coverage: Arcep “Ma connexion internet”, share of premises that can get ≥100 Mbps and 1 Gbps (no per-commune 5G figure). No fixed estimate where fewer than half the premises can get 100 Mbps.</li>
           <li>Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps, CC BY-NC-SA 4.0. The internet data derived here is shared under the same licence.</li>
+        </ul>
+        <ul data-for="gems" hidden>
+          <li>Gems combine the four other maps: a municipality is a <b>gem</b> when it is under the size limit and meets every criterion that is ticked; a <b>near miss</b> fails exactly one. Places over the size limit are grey: they can be the city you travel to, never the gem.</li>
+          <li>Times are the same public transport times as on the other maps (best weekday connection, capped at 3 hours); a place that is itself a city of the chosen category counts as being there, and a hospital in town counts as 0 min.</li>
+          <li>Internet is the average download speed from Speedtest by Ookla, measured in the municipality or, if ticked, estimated from tests within 10 km. A place with no speed data, or with no connection within 3 hours, fails that criterion.</li>
+          <li>Your settings are kept in the page address: bookmark or share it to come back to the same filters.</li>
         </ul>
         <ul data-for="airports" id="airport-notes" hidden></ul>
         <ul data-for="hospitals" data-country="es" hidden>
