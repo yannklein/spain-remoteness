@@ -233,9 +233,18 @@ def test_cities_csv_rows():
              {"code": "44216", "name": "Teruel", "province": "Teruel", "pop": 36000}]
     header, rows = compute_times.cities_csv_rows(output, munis)
     assert header == ["code", "name", "province", "population",
-                      "t1_min", "t1_city", "t2_min", "t2_city", "t3_min", "t3_city"]
-    assert rows[0] == ["44001", "Ababuj", "Teruel", 100, None, None, 35, "44216", 35, "44216"]
+                      "t1_min", "t1_city", "t2_min", "t2_city", "t3_min", "t3_city", "t1_via", "t2_via", "t3_via"]
+    assert rows[0] == ["44001", "Ababuj", "Teruel", 100, None, None, 35, "44216", 35, "44216", None, None, None]
     assert rows[1][4:6] == [None, None] and rows[1][6:8] == [0, "44216"]
+
+
+def test_cities_csv_names_the_border_station_of_an_estimate():
+    output = {"cities": [["44216", "Teruel", 2, 0, 0, None, 1], ["PT:porto", "Porto", 2, 0, 0, None, 1]],
+              "gateways": [["vigo", "Vigo bus station", 42.2, -8.7]],
+              "m": {"36057": [-1, -1, 130, 1, 40, 0, 0, 100, [-1, 0, -1]]}}
+    munis = [{"code": "36057", "name": "Vigo", "province": "Pontevedra", "pop": 100}]
+    _, rows = compute_times.cities_csv_rows(output, munis)
+    assert rows[0][6:8] == [130, "PT:porto"] and rows[0][10:] == [None, "Vigo bus station", None]
 
 
 def test_write_csv_keeps_codes_as_text(tmp_path):

@@ -136,7 +136,7 @@ def write_csv(path, header, rows):
         for r in rows:
             w.writerow(["" if v is None else v for v in r])
     def kind(i, c):
-        if c in TEXT_COLUMNS or c.endswith(("_city", "_airport", "_hospital")):
+        if c in TEXT_COLUMNS or c.endswith(("_city", "_airport", "_hospital", "_via")):
             return '"String"'
         return '"Real"' if any(isinstance(r[i], float) for r in rows) else '"Integer"'
 

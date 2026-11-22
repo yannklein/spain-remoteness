@@ -38,7 +38,7 @@ import {
   loadHospitals,
   type HospitalsData,
 } from './hospitals'
-import { dataUrl, setDataCountry, type Country } from './country'
+import { dataUrl, setDataCountry, viaText, withCountry, type Country, type Gateway } from './country'
 import {
   DEFAULTS as GEM_DEFAULTS,
   HOSP_TIME_CHOICES,
@@ -62,9 +62,11 @@ type City = [string, string, number, number, number, string | null, number | nul
 interface Remoteness {
   generated_at: string
   params: { arrival: string; endpoint: string; max_minutes: number; population_year: number | null; notes: string[] }
-  cities: City[]
-  // code -> [t1, c1, t2, c2, t3, c3, urban (any tier), population]; t = minutes, -1 = over the cap
-  m: Record<string, [number, number, number, number, number, number, 0 | 1, number | null]>
+  cities: City[] // codes: INE/INSEE, or "PT:porto" for a city abroad
+  gateways?: Gateway[] // border stations estimates go through
+  // code -> [t1, c1, t2, c2, t3, c3, urban (any tier), population, via]; t = minutes, -1 = over the cap;
+  // via: null, or the gateway index per tier (-1 = measured)
+  m: Record<string, [number, number, number, number, number, number, 0 | 1, number | null, number[] | null]>
 }
 
 // Sequential blue ramp (light = close, dark = remote): 7 bins of 30 min.
@@ -169,11 +171,28 @@ function valueKey(): string {
   return mode === 'cities' ? `t${tier}` : `${summer ? 's' : 'y'}${tier}`
 }
 
-/** Hatch layer on top of municipalities whose value is an estimate (internet mode only). */
+/** Feature property set where the shown time is an estimate through a border station. */
+function viaKey(): string | null {
+  if (mode === 'cities') return `v${tier}`
+  if (mode === 'airports') return `v${summer ? 's' : 'y'}${tier}`
+  return null
+}
+
+/** Hatch layer on top of municipalities whose value is an estimate (internet: nearby tests; cities and
+ * airports: through a border station). */
 function applyEstimateLayer(map: maplibregl.Map) {
   if (!map.getLayer('muni-est')) return
-  map.setLayoutProperty('muni-est', 'visibility', mode === 'internet' ? 'visible' : 'none')
+  const via = viaKey()
+  const on = mode === 'internet' || via !== null
+  map.setLayoutProperty('muni-est', 'visibility', on ? 'visible' : 'none')
   if (mode === 'internet') map.setFilter('muni-est', internetEstimateFilter(tier, mobile))
+  else if (via) {
+    // a main city of the tier is grey, never hatched
+    const notCity: ExpressionSpecification = mode === 'cities'
+      ? ['!', ['all', ['>', ['get', 'dt'], 0], ['<=', ['get', 'dt'], tier]]]
+      : ['literal', true]
+    map.setFilter('muni-est', ['all', ['has', via], notCity] as ExpressionSpecification)
+  }
 }
 
 const GEM_COLORS = { gem: '#d99a00', near: '#f2d27e', other: '#f1f0ec', big: URBAN }
@@ -235,6 +254,9 @@ async function loadData() {
     const row = cities?.m[code]
     if (row) {
       ;[p.t1, p.c1, p.t2, p.c2, p.t3, p.c3, , p.pop] = row
+      row[8]?.forEach((g, i) => {
+        if (g >= 0) p[`v${i + 1}`] = g // estimate through a border station
+      })
     }
     p.dt = cityTier.get(code) ?? 0
     f.properties = p
@@ -352,9 +374,13 @@ function renderLegend() {
     return
   }
   const labels = ['< 30 min', '30–60', '60–90', '90 min–2 h', '2 h–2 h 30', '2 h 30–3 h', '3 h+ / no service']
+  const gateways = mode === 'cities' ? data?.gateways : mode === 'airports' ? airports?.gateways : undefined
   $('#legend').innerHTML =
     COLORS.map((c, i) => item(c, labels[i])).join('') +
-    (mode === 'cities' ? item(URBAN, 'City of the selected tier') : '')
+    (mode === 'cities' ? item(URBAN, 'City of the selected tier') : '') +
+    (gateways?.length
+      ? `<div class="wide"><i class="hatched" style="background-color:${COLORS[3]}"></i>Hatched: across the border, estimated through a border station</div>`
+      : '')
 }
 
 function fmtDate(iso: string): string {
@@ -647,11 +673,12 @@ function gemTooltip(p: Record<string, unknown>): string {
     if (c.crit === 'city' && f.city) {
       if ((p.dt as number) > 0 && (p.dt as number) <= f.city.tier) return 'is one'
       const city = data?.cities[p[`c${f.city.tier}`] as number]
-      return city ? `to ${city[1]}` : ''
+      return city ? `to ${withCountry(city[1], foreignIso(city[0]))}${viaText(data?.gateways, p[`v${f.city.tier}`])}` : ''
     }
     if (c.crit === 'air' && f.air) {
-      const a = airports?.airports[p[`${f.summer ? 's' : 'y'}a${f.air.tier}`] as number]
-      return a ? `to ${a[1]}` : ''
+      const v = f.summer ? 's' : 'y'
+      const a = airports?.airports[p[`${v}a${f.air.tier}`] as number]
+      return a ? `to ${withCountry(a[1], a[2])}${viaText(airports?.gateways, p[`v${v}${f.air.tier}`])}` : ''
     }
     if (c.crit === 'hosp' && f.hosp) {
       if (c.value === 0) return 'in town'
@@ -761,13 +788,19 @@ function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string 
   const t = p[`t${tier}`] as number
   const ci = p[`c${tier}`] as number
   const city = data && ci >= 0 ? data.cities[ci] : null
-  const cityName = city ? (city[5] ? `${city[1]} (${city[5]} metro)` : city[1]) : ''
+  const cityName = city ? (city[5] ? `${city[1]} (${city[5]} metro)` : withCountry(city[1], foreignIso(city[0]))) : ''
   const max = data?.params.max_minutes ?? 180
+  const via = p[`v${tier}`]
   return (
     `<b>${name}</b>${pop ? `<br><span class="muted">${pop}</span>` : ''}` +
-    `<br><span class="big">${fmtMinutes(t, max)}</span>` +
-    (city ? `<br>to ${cityName}` : `<br><span class="muted">no ${CITY_TEXT[country][tier].noun} within ${max / 60} h</span>`)
+    `<br><span class="big">${via !== undefined ? '≈ ' : ''}${fmtMinutes(t, max)}</span>` +
+    (city ? `<br>to ${cityName}${viaText(data?.gateways, via)}` : `<br><span class="muted">no ${CITY_TEXT[country][tier].noun} within ${max / 60} h</span>`)
   )
+}
+
+/** "PT" for a city abroad ("PT:porto"), null at home. */
+function foreignIso(code: string): string | null {
+  return code.includes(':') ? code.split(':')[0] : null
 }
 
 function showTooltip(x: number, y: number, html: string) {
@@ -914,7 +947,7 @@ async function main() {
       showTooltip(e.point.x, e.point.y, tooltipHTML(f.properties as Record<string, unknown>, [e.lngLat.lng, e.lngLat.lat]))
     })
     map.on('movestart', hideTooltip)
-    if (mode === 'gems') refresh(map) // feature-states need the source: paint them now
+    refresh(map) // layers exist now: estimate hatching, and gem feature-states, need them
   })
 
   document.querySelectorAll<HTMLButtonElement>('.tiers button').forEach((b) =>

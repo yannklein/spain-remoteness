@@ -161,8 +161,10 @@ AIRPORTS = [
 
 # Shown on the page and stored in airports.json params.notes.
 NOTES = [
-    "Cross-border public transport to Portugal and France is missing from TravelTime's data "
-    "(Nov 2026 check), so airports across the border never come out nearest. Gibraltar works on foot.",
+    "Cross-border public transport to Portugal and France is missing from TravelTime's data (Nov 2026 check). "
+    "Airports across the border are reached through border stations instead (Vigo, Huelva, Sevilla, Figueres-Vilafant, "
+    "Irun): the time to the station plus the scheduled bus or train ride and 10 min to change. Those times are "
+    "estimates (hatched). Gibraltar works on foot.",
     "Where an airport bus is missing from the data, times are mostly walking (e.g. Maó).",
 ]
 

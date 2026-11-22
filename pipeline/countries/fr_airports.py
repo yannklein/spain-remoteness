@@ -9,7 +9,7 @@ seasonal ones (summer-only, or winter-only ski routes for Grenoble/Chambéry).
 
 Foreign airports within reach of the border are listed (Geneva, Luxembourg,
 Charleroi, Karlsruhe/Baden-Baden, Saarbrücken, Girona, San Sebastián,
-Barcelona). Basel-Mulhouse (BSL) lies on French soil. Corsica is its own zone.
+Barcelona, and through border stations Zürich, Brussels, Frankfurt, Bilbao). Basel-Mulhouse (BSL) lies on French soil. Corsica is its own zone.
 
 Coordinates are approximate terminal points; compute_airports' pre-check and
 the stop/nudge step move them where TravelTime can't attach (see README).
@@ -83,14 +83,22 @@ AIRPORTS = [
     ("GVA", "Geneva", "CH", 46.2381, 6.1090, 1, 1, "mainland", "year: Emirates Dubai, Etihad; summer: United Newark"),
     ("LUX", "Luxembourg", "LU", 49.6266, 6.2115, 2, 2, "mainland", "year: European routes"),
     ("SCN", "Saarbrücken", "DE", 49.2146, 7.1095, 3, 2, "mainland", "year: Berlin/Hamburg; seasonal holiday routes"),
+    # reached only through border stations (countries/fr_crossborder.py)
+    ("ZRH", "Zürich", "CH", 47.4504, 8.5625, 1, 1, "mainland", "year: intercontinental hub"),
+    ("BRU", "Brussels", "BE", 50.8986, 4.4840, 1, 1, "mainland", "year: intercontinental routes"),
+    ("FRA", "Frankfurt", "DE", 50.0512, 8.5706, 1, 1, "mainland", "year: intercontinental hub"),
+    ("BIO", "Bilbao", "ES", 43.3011, -2.9106, 2, 2, "mainland", "year: European routes"),
 ]
+
+GATEWAY_ONLY = {"ZRH", "BRU", "FRA", "BIO"}
 
 FIELDS = ("iata", "name", "country", "lat", "lng", "tier_year", "tier_summer", "zone", "note")
 
 NOTES = [
-    "Cross-border public transport is mostly missing from TravelTime's data: only a few communes near the border "
-    "reach Geneva, Luxembourg, Karlsruhe/Baden-Baden or Charleroi, and none reach Girona, Barcelona or San Sebastián "
-    "(Nov 2026). Basel-Mulhouse lies on French soil and works.",
+    "Cross-border public transport is mostly missing from TravelTime's data (Nov 2026). Airports across the border "
+    "are reached through border stations instead (Annemasse, Saint-Louis, Strasbourg, Forbach, Thionville, Lille, "
+    "Hendaye, Perpignan…): the time to the station plus the scheduled train or bus ride and 10 min to change. Those "
+    "times are estimates (hatched). Basel-Mulhouse lies on French soil and is measured.",
 ]
 
 # (commune, airport) pairs printed after each run: cross-border links depend on TravelTime's data.
@@ -105,5 +113,7 @@ def destinations():
         if d["tier_year"] is None and d["tier_summer"] is None:
             continue
         d["code"] = "AIR:" + d["iata"]
+        if d["iata"] in GATEWAY_ONLY:
+            d["max_km"] = 60  # TravelTime can't reach them from France: border stations do (countries/fr_crossborder.py)
         out.append(d)
     return out

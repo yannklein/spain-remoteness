@@ -1,6 +1,6 @@
 # Cross-border cities and airports, through border stations
 
-Date: 2026-11-22 · Status: draft, awaiting approval
+Date: 2026-11-22 · Status: approved 2026-11-22 ("go for the cross-border"); built, see Build notes
 
 ## Intent
 
@@ -94,3 +94,18 @@ Tiers follow each country's own rule: for Spain the municipal population thresho
 - Exact gateway coordinates (snapped to the stop, as for airports).
 - Hop research.
 - Copy for the method text, and the airports note on cross-border links, which is rewritten to explain the gateways.
+
+## Build notes (2026-11-22)
+
+- **Probe (27 searches): TravelTime routes into no neighbouring country from Spain.** Not even Hendaye on foot from Irun, so every Spanish gateway is on the Spanish side. From France, only Monaco is well reached (94 communes); Geneva, Saarbrücken, Tournai, Mouscron and Lausanne are reached from fewer than 10 communes each. Foreign cities are measured directly within 60 km (`DIRECT_KM`), for those rare links.
+- **Dropped:**
+  - Lisbon, Lausanne-area extras, Neuchâtel and Cuneo: no service gets there within 3 h;
+  - Bordeaux airport for Spain: Irun → Bordeaux is already 2 h 25.
+- **Added:** Pamplona (France's map, tier 2), via Hendaye.
+- **The Celta train (Vigo–Porto) is replaced by buses Vigo–Valença until April 2027.** Galicia → Porto uses the Vigo–Porto buses.
+- **Time sources:**
+  - **Checked against 2026 timetables or aggregators:** Puigcerdà–Foix/Toulouse, La Seu–Andorra, Vigo–Porto and Porto airport, Huelva/Sevilla–Faro, Badajoz–Évora, Salamanca–Guarda, Modane–Torino, Chamonix–Aosta, Strasbourg–Karlsruhe and Baden airport.
+  - **Marked "verify":** the rest.
+- **First results:**
+  - **Spain:** the cities map changes in 31 municipalities. On the European-airports map, Biarritz becomes nearest for 30 municipalities, Perpignan for 24 and Faro for 12; Porto becomes the nearest intercontinental airport for 5.
+  - **France:** a foreign city becomes the nearest métropole-sized city for about 1,100 communes (Basel 378, Geneva 213, Saarbrücken 198, Luxembourg 101, Barcelona 92…). Brussels airport becomes the nearest intercontinental airport for 420 communes; Luxembourg becomes the nearest European airport for 331.

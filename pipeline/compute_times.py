@@ -25,6 +25,7 @@ from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 import common
+import crossborder
 from common import (CACHE_DIR, CITIES_CSV, OUTPUT_FILE, PLACES_FILE, HTTPStatusError, add_country_arg,
                     dump_json, haversine_km, http, load_json, paths, write_csv, zone)
 
@@ -236,9 +237,11 @@ def aggregate(munis, dests, results):
 
 
 def cities_csv_rows(output, munis):
-    """One row per municipality: minutes and INE code of the nearest city per tier."""
+    """One row per municipality: minutes and code of the nearest city per tier, then the border
+    station each time goes through when it is an estimate (empty when measured)."""
     header = ["code", "name", "province", "population",
-              "t1_min", "t1_city", "t2_min", "t2_city", "t3_min", "t3_city"]
+              "t1_min", "t1_city", "t2_min", "t2_city", "t3_min", "t3_city", "t1_via", "t2_via", "t3_via"]
+    gateways = output.get("gateways", [])
     rows = []
     for m in munis:
         r = output["m"].get(m["code"])
@@ -246,6 +249,8 @@ def cities_csv_rows(output, munis):
         for tier in TIERS:
             t, c = (r[(tier - 1) * 2], r[(tier - 1) * 2 + 1]) if r else (-1, -1)
             row += [None, None] if t < 0 else [t, output["cities"][c][0]]
+        via = r[8] if r and len(r) > 8 and r[8] else [-1, -1, -1]
+        row += [gateways[g][1] if g >= 0 else None for g in via]
         rows.append(row)
     return header, rows
 
@@ -279,17 +284,29 @@ def main():
     dests = [m for m in munis if m["tier"] is not None]
     if args.limit:
         dests = sorted(dests, key=lambda d: d["tier"])[:args.limit]
+    # foreign cities, measured directly nearby and estimated through border stations
+    xb = None if args.limit else crossborder.config(args.country)
+    foreign, gateways = crossborder.foreign_city_dests(xb), crossborder.gateway_dests(xb)
 
     client = Client(args.endpoint)
     try:
-        results = compute_all(munis, dests, client, use_cache=not args.no_cache)
+        results = compute_all(munis, dests + foreign + gateways, client, use_cache=not args.no_cache)
     except HTTPStatusError as e:
         if e.code in (401, 403):
             sys.exit(f"TravelTime rejected the credentials ({e}).\n"
                      "Check TRAVELTIME_APP_ID / TRAVELTIME_API_KEY on https://account.traveltime.com")
         raise
 
-    cities, rows = aggregate(munis, dests, results)
+    foreign_codes = {d["code"] for d in foreign}
+    via = crossborder.apply_hops(results, [h for h in (xb.HOPS if xb else []) if h[1] in foreign_codes],
+                                 {m["code"] for m in munis}, MAX_SECONDS)
+    cities, rows = aggregate(munis, dests + foreign, results)
+    slots = crossborder.via_slots(rows, cities, via, crossborder.gateway_ids(xb))
+    notes = list(places["meta"].get("notes", []))
+    if xb:
+        notes.append(f"Cities across the border count too: TravelTime has almost no cross-border public transport, "
+                     f"so they are reached through border stations (time to the station + the scheduled ride + "
+                     f"{crossborder.TRANSFER_MIN} min to change); those times are estimates.")
     arrival = ("weekday morning (fast endpoint profile)" if client.endpoint == "fast"
                else f"best of {', '.join(ARRIVAL_TIMES)} on a Tuesday")
     output = {
@@ -301,17 +318,20 @@ def main():
             "endpoint": client.endpoint,
             "max_minutes": MAX_SECONDS // 60,
             "population_year": places["meta"].get("population_year"),
-            "notes": places["meta"].get("notes", []),
+            "notes": notes,
         },
         # [code, name, tier, lat, lng, metro, population]
         "cities": [[d["code"], d["name"], d["tier"], d["lat"], d["lng"], d.get("metro"), d.get("pop")]
                    for d in cities],
-        # code -> [t1_min, t1_city, t2_min, t2_city, t3_min, t3_city, urban, population]
+        # border stations estimates go through: [id, name, lat, lng]
+        "gateways": crossborder.gateway_list(xb),
+        # code -> [t1_min, t1_city, t2_min, t2_city, t3_min, t3_city, urban, population, via]
+        # via: null when every time is measured, else the gateway index per tier (-1 = measured)
         "m": {},
     }
     by_code = {m["code"]: m for m in munis}
     for c, r in rows.items():
-        output["m"][c] = r + [1 if by_code[c]["urban"] else 0, by_code[c].get("pop")]
+        output["m"][c] = r + [1 if by_code[c]["urban"] else 0, by_code[c].get("pop"), slots[c]]
     dump_json(output, OUTPUT_FILE, compact=True)
     write_csv(CITIES_CSV, *cities_csv_rows(output, munis))
     print(f"Wrote {OUTPUT_FILE} and {CITIES_CSV.name} ({client.calls} API calls)")

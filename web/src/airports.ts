@@ -1,4 +1,4 @@
-import { dataUrl } from './country'
+import { dataUrl, viaText, withCountry, type Gateway } from './country'
 import type { FeatureCollection } from 'geojson'
 
 export type Tier = 1 | 2 | 3
@@ -11,8 +11,10 @@ export interface AirportsData {
   generated_at: string
   params: { arrival: string; max_minutes: number; population_year: number | null; notes: string[] }
   airports: Airport[]
-  // code -> [y1, ya1, y2, ya2, y3, ya3, s1, sa1, s2, sa2, s3, sa3, population]
-  // minutes (-1 = over the cap / none), index into airports (-1 = none)
+  gateways?: Gateway[] // border stations estimates go through
+  // code -> [y1, ya1, y2, ya2, y3, ya3, s1, sa1, s2, sa2, s3, sa3, population, via]
+  // minutes (-1 = over the cap / none), index into airports (-1 = none);
+  // via: null, or the gateway index per slot (y1..y3, s1..s3; -1 = measured)
   m: Record<string, (number | null)[]>
 }
 
@@ -29,8 +31,6 @@ export const AIRPORT_TEXT: Record<Tier, { label: string; noun: string; help: str
   },
   3: { label: 'Any airport', noun: 'an airport', help: 'Any airport with scheduled passenger flights.' },
 }
-
-const COUNTRY: Record<string, string> = { PT: 'Portugal', FR: 'France', GI: 'Gibraltar' }
 
 export async function loadAirports(): Promise<AirportsData | null> {
   try {
@@ -49,6 +49,8 @@ export function airportProps(row: (number | null)[]): Record<string, number> {
       const i = vi * 6 + (t - 1) * 2
       p[`${v}${t}`] = row[i] as number
       p[`${v}a${t}`] = row[i + 1] as number
+      const via = row[13] as unknown as number[] | null | undefined
+      if (via && via[vi * 3 + t - 1] >= 0) p[`v${v}${t}`] = via[vi * 3 + t - 1]
     }
   })
   return p
@@ -103,8 +105,9 @@ export function airportTooltip(
       : ''
     return `${head}<br><span class="muted">no ${noun} reachable within ${max / 60} h by public transport</span>${why}`
   }
-  const where = COUNTRY[a[2]] ? `${a[0]}, ${COUNTRY[a[2]]}` : a[0]
-  return `${head}<br><span class="big">${fmt(t as number, max)}</span><br>to ${a[1]} (${where})`
+  const est = p[`v${v}${tier}`] !== undefined
+  return `${head}<br><span class="big">${est ? '≈ ' : ''}${fmt(t as number, max)}</span><br>to ${a[1]} (${withCountry(a[0], a[2]).replace(/ \((.*)\)$/, ', $1')})` +
+    viaText(d.gateways, p[`v${v}${tier}`])
 }
 
 function kmBetween([lng1, lat1]: [number, number], [lng2, lat2]: [number, number]): number {

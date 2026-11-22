@@ -234,6 +234,26 @@ python3 pipeline/compute_hospitals.py --country fr        # ~5,000 searches
 python3 pipeline/nudge_hospitals.py --country fr          # then compute_hospitals again
 ```
 
+## Cities and airports across the border
+
+A town near the border often uses the city or airport on the other side (Hendaye → San Sebastián, Annemasse →
+Geneva, Tui → Viana do Castelo). TravelTime has almost no cross-border public transport (Nov 2026 probe: from Spain
+no station across the border is reachable, not even Hendaye on foot from Irun; from France only Monaco works well),
+so foreign destinations are reached through **border stations** ("gateways"):
+
+- each gateway is a home-side stop with a scheduled cross-border service, computed like any destination
+  (origins within 250 km);
+- a hop adds the scheduled ride from the gateway to the foreign city's main station or the airport, plus 10 min to
+  change (`pipeline/crossborder.py`);
+- the estimate counts only where it beats the measured time and stays within 3 hours. Foreign cities are also measured
+  directly within 60 km, for the few links TravelTime has.
+
+Gateways, foreign cities (with tiers by each country's rule) and hops live in
+`pipeline/countries/{es,fr}_crossborder.py`; "verify" marks ride times taken from general knowledge of the line
+rather than a timetable checked in November 2026. Estimated times are hatched on the map, say "via <station>" in
+the tooltip, and fill the `*_via` columns of the CSVs. Gateway results share the cities cache, so
+`compute_airports.py` reuses them.
+
 ## Using the data in QGIS
 
 Both datasets come as a flat CSV, one row per municipality, next to the JSON:
@@ -250,7 +270,7 @@ Both datasets come as a flat CSV, one row per municipality, next to the JSON:
   `fixed_est_*` / `mobile_est_*` (estimated from tests within 10 km, only where there is no measured value)
   and `coverage_100mbps_pct`, `coverage_1gbps_pct`, `coverage_5g_pct` (official 2025 coverage).
 
-Empty cells in the first two mean over 3 hours or no airport/city reachable. Load the CSV as a delimited text layer
+Empty cells in the first two mean over 3 hours or no airport/city reachable. A filled `*_via` column (cities: `t1_via`..`t3_via`, airports: `y1_via`..`s3_via`) names the border station a time goes through: that time is an estimate and the destination code is foreign (`PT:porto`, or an IATA code). Load the CSV as a delimited text layer
 without geometry and join it on `code` to a municipalities layer whose INE code is a 5-digit text field
 (for example `web/public/data/es/municipalities.topo.json`, whose feature ids are those codes). The `.csvt` file next to each
 CSV makes QGIS read `code` as text, so `01001` keeps its leading zero.

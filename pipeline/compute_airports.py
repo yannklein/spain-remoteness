@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 
 import airports as airport_list
 import common
+import crossborder
 from common import (AIRPORT_CACHE_DIR, AIRPORTS_CSV, AIRPORTS_OUTPUT_FILE, PLACES_FILE,
                     HTTPStatusError, add_country_arg, dump_json, load_json, paths, write_csv)
 from compute_times import (ARRIVAL_TIMES, MAX_SECONDS, TIERS, Client, cache_dir,
@@ -92,11 +93,14 @@ def build_output(places, airports, rows, results):
 
 
 def airports_csv_rows(output, munis):
-    """One row per municipality: minutes and IATA code of the nearest airport per variant/tier."""
+    """One row per municipality: minutes and IATA code of the nearest airport per variant/tier, then the
+    border station each time goes through when it is an estimate (empty when measured)."""
     header = ["code", "name", "province", "population"]
     for v in ("y", "s"):
         for tier in TIERS:
             header += [f"{v}{tier}_min", f"{v}{tier}_airport"]
+    header += [f"{v}{tier}_via" for v in ("y", "s") for tier in TIERS]
+    gateways = output.get("gateways", [])
     rows = []
     for m in munis:
         r = output["m"].get(m["code"], [-1] * 12)
@@ -104,6 +108,8 @@ def airports_csv_rows(output, munis):
         for k in range(6):
             t, i = r[k * 2], r[k * 2 + 1]
             row += [None, None] if t < 0 else [t, output["airports"][i][0]]
+        via = r[13] if len(r) > 13 and r[13] else [-1] * 6
+        row += [gateways[g][1] if g >= 0 else None for g in via]
         rows.append(row)
     return header, rows
 
@@ -179,8 +185,20 @@ def main():
         print(f"Partial run ({len(dests)} airports): no output written ({client.calls} API calls)")
         return
 
+    # foreign airports estimated through border stations (shared with compute_times: same cache)
+    xb = crossborder.config(args.country)
+    gw_cdir = paths(args.country).times_cache / cache_dir(client).name
+    results.update(compute_all(munis, crossborder.gateway_dests(xb), client, use_cache=not args.no_cache, cdir=gw_cdir))
+    codes = {d["code"] for d in dests}
+    via = crossborder.apply_hops(results, [h for h in (xb.HOPS if xb else []) if h[1] in codes],
+                                 {m["code"] for m in munis}, MAX_SECONDS)
     aps, rows = aggregate_airports(munis, dests, results)
     output = build_output(places, aps, rows, results)
+    slots = crossborder.via_slots(rows, aps, via, crossborder.gateway_ids(xb))
+    # border stations estimates go through: [id, name, lat, lng]; each m row ends with via:
+    # null when every time is measured, else the gateway index per slot (y1..y3, s1..s3; -1 = measured)
+    output["gateways"] = crossborder.gateway_list(xb)
+    output["m"] = {c: r + [slots[c]] for c, r in output["m"].items()}
     dump_json(output, AIRPORTS_OUTPUT_FILE, compact=True)
     write_csv(AIRPORTS_CSV, *airports_csv_rows(output, munis))
     print(f"Wrote {AIRPORTS_OUTPUT_FILE} and {AIRPORTS_CSV.name} ({client.calls} API calls)")

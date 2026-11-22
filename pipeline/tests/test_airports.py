@@ -145,9 +145,10 @@ def test_airports_csv(monkeypatch, tmp_path):
     header, csv_rows = compute_airports.airports_csv_rows(output, munis)
     assert header == ["code", "name", "province", "population",
                       "y1_min", "y1_airport", "y2_min", "y2_airport", "y3_min", "y3_airport",
-                      "s1_min", "s1_airport", "s2_min", "s2_airport", "s3_min", "s3_airport"]
+                      "s1_min", "s1_airport", "s2_min", "s2_airport", "s3_min", "s3_airport",
+                      "y1_via", "y2_via", "y3_via", "s1_via", "s2_via", "s3_via"]
     by = {r[0]: r for r in csv_rows}
-    assert by["07024"][4:] == [None] * 12
+    assert by["07024"][4:] == [None] * 18
     assert by["44216"][15] == "XXX"
     p = tmp_path / "airports.csv"
     write_csv(p, header, csv_rows)
