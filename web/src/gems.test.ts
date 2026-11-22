@@ -9,6 +9,7 @@ const good = (): Record<string, unknown> => ({
   y1: 150, y2: 70, y3: 60, s1: 150, s2: 50, s3: 50,
   hm1: 90, hm2: 30, hm3: 20,
   rh: 7.5, rf: 9, bh: 1400, bf: 1800, srh: 0, srf: 0, sbh: 2, sbf: 2,
+  ch: 12, cn: 30, cf: 4,
 })
 const f = (over: Partial<GemFilters> = {}): GemFilters => ({ ...DEFAULTS, ...over })
 
@@ -105,6 +106,22 @@ describe('housing criteria', () => {
   })
 })
 
+describe('climate criteria', () => {
+  it('are off by default', () => {
+    expect(judge(good(), f()).checks.some((c) => c.crit === 'heat' || c.crit === 'frost')).toBe(false)
+  })
+  it('pass at or under the number of days', () => {
+    const r = judge(good(), f({ heat: 10, frost: 5 }))
+    expect(r.checks.find((c) => c.crit === 'heat')).toMatchObject({ ok: false, value: 12 })
+    expect(r.checks.find((c) => c.crit === 'frost')).toMatchObject({ ok: true, value: 4 })
+  })
+  it('fail without climate data', () => {
+    const p = good()
+    delete p.ch
+    expect(judge(p, f({ heat: 30 })).checks.find((c) => c.crit === 'heat')!.ok).toBe(false)
+  })
+})
+
 describe('hash', () => {
   it('round-trips the defaults', () => {
     expect(parseHash(formatHash(DEFAULTS))).toEqual(DEFAULTS)
@@ -112,13 +129,13 @@ describe('hash', () => {
   it('round-trips criteria switched off and other values', () => {
     const x: GemFilters = {
       pop: null, net: null, est: false, city: { tier: 3, max: 30 }, air: null, summer: true, hosp: { tier: 1, max: 120 },
-      rent: null, buy: { kind: 'flat', max: 2000 },
+      rent: null, buy: { kind: 'flat', max: 2000 }, heat: 5, frost: null,
     }
-    expect(formatHash(x)).toBe('pop=any&net=off&est=0&city=3:30&air=off&summer=1&hosp=1:120&rent=off&buy=flat:2000')
+    expect(formatHash(x)).toBe('pop=any&net=off&est=0&city=3:30&air=off&summer=1&hosp=1:120&rent=off&buy=flat:2000&heat=5&frost=off')
     expect(parseHash(formatHash(x))).toEqual(x)
   })
   it('falls back to the defaults on garbage', () => {
-    expect(parseHash('pop=lots&net=fast:x&city=9:60&air=2&hosp=2:-5&summer=maybe&est=2&rent=castle:9&buy=house:')).toEqual(DEFAULTS)
+    expect(parseHash('pop=lots&net=fast:x&city=9:60&air=2&hosp=2:-5&summer=maybe&est=2&rent=castle:9&buy=house:&heat=-1&frost=lots')).toEqual(DEFAULTS)
   })
   it('keeps old links working: no rent/buy means the defaults', () => {
     expect(parseHash('pop=20000&net=fixed:100&est=1&city=2:60&air=2:90&summer=0&hosp=2:45')).toEqual(DEFAULTS)

@@ -20,6 +20,8 @@ export interface GemFilters {
   hosp: Limit | null
   rent: PriceLimit | null
   buy: PriceLimit | null
+  heat: number | null // most days a year at or above 35 °C
+  frost: number | null // most frost days a year
 }
 
 export const DEFAULTS: GemFilters = {
@@ -32,6 +34,8 @@ export const DEFAULTS: GemFilters = {
   hosp: { tier: 2, max: 45 },
   rent: null, // off by default: a missing figure fails, which would exclude the smallest villages
   buy: null,
+  heat: null,
+  frost: null,
 }
 
 export const POP_CHOICES = [1000, 2000, 5000, 10000, 20000, 50000]
@@ -40,8 +44,10 @@ export const TIME_CHOICES = [30, 45, 60, 90, 120, 150, 180]
 export const HOSP_TIME_CHOICES = [15, 30, 45, 60, 90, 120, 180]
 export const RENT_CHOICES = [4, 5, 6, 7, 8, 9, 10, 12, 15]
 export const BUY_CHOICES = [500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000]
+export const HEAT_CHOICES = [1, 3, 5, 10, 20, 30, 50]
+export const FROST_CHOICES = [1, 5, 10, 20, 40, 60, 90]
 
-export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy'
+export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy' | 'heat' | 'frost'
 /** scope (housing): 0 own figure, 1 nearby estimate, 2 province average, 3 area model */
 export interface Check { crit: Crit; value: number | null; ok: boolean; est?: boolean; scope?: number }
 /** 0 other, 1 near miss (exactly one criterion missed), 2 gem, 3 too big to be a gem. */
@@ -56,6 +62,10 @@ function download(p: Record<string, unknown>, k: 'f' | 'm', est: boolean): { v: 
   if (measured !== null) return { v: measured, est: false }
   const e = est ? num(p[`${k}ed`]) : null
   return { v: e, est: e !== null }
+}
+
+function days(value: number | null, max: number, crit: Crit): Check {
+  return { crit, value, ok: value !== null && value <= max }
 }
 
 function minutes(value: number | null, max: number, crit: Crit): Check {
@@ -88,6 +98,8 @@ export function judge(p: Record<string, unknown>, f: GemFilters): Verdict {
     const scope = num(p[`s${key}`])
     checks.push({ crit, value, ok: value !== null && value <= l.max, ...(scope !== null ? { scope } : {}) })
   }
+  if (f.heat !== null) checks.push(days(num(p.ch), f.heat, 'heat'))
+  if (f.frost !== null) checks.push(days(num(p.cf), f.frost, 'frost'))
 
   const pop = num(p.pop)
   if (f.pop !== null && pop !== null && pop > f.pop) return { cls: 3, checks }
@@ -109,6 +121,8 @@ export function formatHash(f: GemFilters): string {
     `hosp=${limitText(f.hosp)}`,
     `rent=${f.rent ? `${f.rent.kind}:${f.rent.max}` : 'off'}`,
     `buy=${f.buy ? `${f.buy.kind}:${f.buy.max}` : 'off'}`,
+    `heat=${f.heat ?? 'off'}`,
+    `frost=${f.frost ?? 'off'}`,
   ].join('&')
 }
 
@@ -127,6 +141,12 @@ function parseLimit(s: string | null, fallback: Limit | null): Limit | null {
 }
 
 const parseBool = (s: string | null, fallback: boolean) => (s === '1' ? true : s === '0' ? false : fallback)
+
+function parseDays(s: string | null, fallback: number | null): number | null {
+  if (s === null) return fallback
+  if (s === 'off') return null
+  return positive(s) ?? fallback
+}
 
 function parsePrice(s: string | null, fallback: PriceLimit | null): PriceLimit | null {
   if (s === null) return fallback
@@ -160,5 +180,7 @@ export function parseHash(query: string): GemFilters {
     hosp: parseLimit(q.get('hosp'), d.hosp),
     rent: parsePrice(q.get('rent'), d.rent),
     buy: parsePrice(q.get('buy'), d.buy),
+    heat: parseDays(q.get('heat'), d.heat),
+    frost: parseDays(q.get('frost'), d.frost),
   }
 }
