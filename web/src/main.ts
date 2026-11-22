@@ -38,6 +38,7 @@ import {
   loadHospitals,
   type HospitalsData,
 } from './hospitals'
+import { dataUrl, setDataCountry, type Country } from './country'
 
 type Mode = 'cities' | 'airports' | 'internet' | 'hospitals'
 
@@ -58,24 +59,52 @@ const COLORS = ['#cde2fb', '#9ec5f4', '#6da7ec', '#3987e5', '#256abf', '#184f95'
 const URBAN = '#b9b7b1'
 const NODATA = '#ecebe8'
 
-const TIER_TEXT: Record<Tier, { label: string; noun: string; help: string }> = {
-  1: { label: 'Metros', noun: 'metro', help: 'Madrid, Barcelona, València, Sevilla, Zaragoza, Málaga.' },
-  2: { label: 'Regional hubs', noun: 'regional hub', help: 'Provincial and regional capitals plus every city over 100k.' },
-  3: { label: 'All urban', noun: 'urban area', help: 'Regional hubs plus every municipality over 50k.' },
+type TierText = Record<Tier, { label: string; noun: string; help: string }>
+
+const CITY_TEXT: Record<Country, TierText> = {
+  es: {
+    1: { label: 'Metros', noun: 'metro', help: 'Madrid, Barcelona, València, Sevilla, Zaragoza, Málaga.' },
+    2: { label: 'Regional hubs', noun: 'regional hub', help: 'Provincial and regional capitals plus every city over 100k.' },
+    3: { label: 'All urban', noun: 'urban area', help: 'Regional hubs plus every municipality over 50k.' },
+  },
+  fr: {
+    1: { label: 'Métropoles', noun: 'métropole', help: 'The central communes of the 22 métropoles (Paris, Lyon, Marseille, Toulouse…).' },
+    2: { label: 'Hubs', noun: 'regional hub', help: 'Métropoles plus every préfecture and every commune over 100k.' },
+    3: { label: 'All urban', noun: 'urban area', help: 'Regional hubs plus every commune over 50k.' },
+  },
 }
 
-const TITLE: Record<Mode, string> = {
-  cities: 'How far is rural Spain from a city?',
-  airports: 'How far is rural Spain from an airport?',
-  internet: 'How good is the internet in rural Spain?',
-  hospitals: 'How far is rural Spain from a hospital?',
+/** France counts only hospitals with a general emergency department (DREES SAE). */
+const HOSPITAL_TEXT_FR: TierText = {
+  1: { label: 'Major', noun: 'a major hospital', help: 'University and regional hospitals (CHU/CHR) with an emergency department.' },
+  2: { label: 'Public', noun: 'a public hospital', help: 'Public hospitals with a 24 h emergency department.' },
+  3: { label: 'Any', noun: 'a hospital', help: 'Any hospital with an emergency department, private clinics included.' },
+}
+
+const COUNTRY_NAME: Record<Country, string> = { es: 'Spain', fr: 'France' }
+
+function title(m: Mode): string {
+  const where = `rural ${COUNTRY_NAME[country]}`
+  return {
+    cities: `How far is ${where} from a city?`,
+    airports: `How far is ${where} from an airport?`,
+    internet: `How good is the internet in ${where}?`,
+    hospitals: `How far is ${where} from a hospital?`,
+  }[m]
 }
 const INTERNET_NODATA = '#c4c2bc'
 
-const VIEWS: Record<string, [[number, number], [number, number]]> = {
-  peninsula: [[-9.6, 35.8], [4.5, 43.9]],
-  canarias: [[-18.3, 27.5], [-13.3, 29.5]],
-  baleares: [[1.1, 38.6], [4.4, 40.2]],
+type Bounds = [[number, number], [number, number]]
+const VIEWS: Record<Country, { id: string; label: string; bounds: Bounds }[]> = {
+  es: [
+    { id: 'peninsula', label: 'Peninsula', bounds: [[-9.6, 35.8], [4.5, 43.9]] },
+    { id: 'canarias', label: 'Canarias', bounds: [[-18.3, 27.5], [-13.3, 29.5]] },
+    { id: 'baleares', label: 'Balears', bounds: [[1.1, 38.6], [4.4, 40.2]] },
+  ],
+  fr: [
+    { id: 'metropole', label: 'Métropole', bounds: [[-5.3, 41.3], [9.6, 51.15]] },
+    { id: 'corse', label: 'Corse', bounds: [[8.5, 41.3], [9.6, 43.1]] },
+  ],
 }
 
 const BASE_STYLE = 'https://tiles.openfreemap.org/styles/positron'
@@ -88,7 +117,11 @@ const FALLBACK_STYLE: StyleSpecification = {
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T
 
 const MODES: Mode[] = ['cities', 'airports', 'internet', 'hospitals']
-let mode: Mode = MODES.find((m) => location.hash === `#${m}`) ?? 'cities'
+// hash: "#fr/hospitals", "#es/airports"; old links ("#airports") mean Spain
+const [hashCountry, hashMode] = location.hash.slice(1).includes('/') ? location.hash.slice(1).split('/') : ['es', location.hash.slice(1)]
+let country: Country = hashCountry === 'fr' ? 'fr' : 'es'
+setDataCountry(country)
+let mode: Mode = MODES.find((m) => m === hashMode) ?? 'cities'
 const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1, hospitals: 2 }
 let tier: Tier = tiers[mode]
 let summer = false
@@ -150,7 +183,7 @@ async function loadStyle(): Promise<StyleSpecification | string> {
 }
 
 async function loadData() {
-  const topo = (await (await fetch('./data/es/municipalities.topo.json')).json()) as Topology
+  const topo = (await (await fetch(dataUrl('municipalities.topo.json'))).json()) as Topology
   const g = feature(topo, topo.objects.municipalities as GeometryCollection) as FeatureCollection<
     Geometry,
     Record<string, unknown>
@@ -158,7 +191,8 @@ async function loadData() {
   const provinces = feature(topo, topo.objects.provinces as GeometryCollection)
 
   try {
-    const r = await fetch('./data/es/remoteness.json')
+    data = null
+    const r = await fetch(dataUrl('remoteness.json'))
     if (r.ok) data = (await r.json()) as Remoteness
   } catch {
     data = null
@@ -180,7 +214,6 @@ async function loadData() {
   return { geo: g, provinces }
 }
 
-/** Load airports.json once and merge its values into the municipality features. */
 /** Load hospitals.json once and merge its values into the municipality features. */
 async function ensureHospitals(map: maplibregl.Map) {
   if (hospitals !== undefined) return
@@ -261,7 +294,7 @@ function headline(t: Tier): string | null {
   const pct = Math.round((far / total) * 100)
   const n = data.cities.filter((c) => c[2] <= t).length
   const who = usesPop ? `of people living outside these ${n} cities` : 'of the other municipalities'
-  return `<b>${pct}%</b> ${who} are more than <b>1 hour</b> by public transport from a ${TIER_TEXT[t].noun}.`
+  return `<b>${pct}%</b> ${who} are more than <b>1 hour</b> by public transport from a ${CITY_TEXT[country][t].noun}.`
 }
 
 function renderLegend() {
@@ -292,11 +325,20 @@ function refresh(map: maplibregl.Map) {
     b.setAttribute('aria-checked', String(b.dataset.mode === mode))
   })
   document.querySelectorAll<HTMLElement>('[data-for]').forEach((el) => {
-    el.hidden = el.dataset.for !== mode
+    el.hidden = el.dataset.for !== mode || (el.dataset.country ?? country) !== country
   })
-  $('#title').textContent = TITLE[mode]
-  document.title = TITLE[mode]
-  const text = { cities: TIER_TEXT, airports: AIRPORT_TEXT, internet: METRICS, hospitals: HOSPITAL_TEXT }[mode]
+  $('#title').textContent = title(mode)
+  document.title = title(mode)
+  panel.dataset.country = country
+  document.querySelectorAll<HTMLButtonElement>('.countries button').forEach((b) => {
+    b.setAttribute('aria-checked', String(b.dataset.country === country))
+  })
+  const text = {
+    cities: CITY_TEXT[country],
+    airports: AIRPORT_TEXT,
+    internet: METRICS,
+    hospitals: country === 'fr' ? HOSPITAL_TEXT_FR : HOSPITAL_TEXT,
+  }[mode]
   const counts: (number | null)[] =
     mode === 'cities'
       ? [1, 2, 3].map((t) => (data ? data.cities.filter((c) => c[2] <= t).length : null))
@@ -380,6 +422,38 @@ function refresh(map: maplibregl.Map) {
   hideTooltip()
 }
 
+function writeHash() {
+  const plain = location.pathname + location.search
+  history.replaceState(null, '', country === 'es' && mode === 'cities' ? plain : `#${country}/${mode}`)
+}
+
+function renderViews(map: maplibregl.Map, padding: () => maplibregl.PaddingOptions) {
+  const box = $('#jump')
+  box.innerHTML = VIEWS[country].map((v) => `<button data-view="${v.id}">${v.label}</button>`).join('')
+  box.querySelectorAll<HTMLButtonElement>('button').forEach((b) =>
+    b.addEventListener('click', () =>
+      map.fitBounds(VIEWS[country].find((v) => v.id === b.dataset.view)!.bounds, { padding: padding() }),
+    ),
+  )
+}
+
+/** Switch country: reload its boundaries and city data; its other datasets load when their mode is shown. */
+async function setCountry(map: maplibregl.Map, cc: Country, padding: () => maplibregl.PaddingOptions) {
+  if (cc === country) return
+  country = cc
+  setDataCountry(cc)
+  airports = internet = hospitals = undefined
+  muniNames.clear()
+  hideTooltip()
+  const loaded = await loadData()
+  geo = loaded.geo
+  ;(map.getSource('munis') as maplibregl.GeoJSONSource).setData(geo)
+  ;(map.getSource('provinces') as maplibregl.GeoJSONSource).setData(loaded.provinces)
+  renderViews(map, padding)
+  map.fitBounds(VIEWS[cc][0].bounds, { padding: padding() })
+  await setMode(map, mode)
+}
+
 function setTier(map: maplibregl.Map, t: Tier) {
   tier = tiers[mode] = t
   refresh(map)
@@ -388,7 +462,7 @@ function setTier(map: maplibregl.Map, t: Tier) {
 async function setMode(map: maplibregl.Map, m: Mode) {
   mode = m
   tier = tiers[m]
-  history.replaceState(null, '', m === 'cities' ? location.pathname + location.search : `#${m}`)
+  writeHash()
   if (m === 'airports') await ensureAirports(map)
   if (m === 'internet') await ensureInternet(map)
   if (m === 'hospitals') await ensureHospitals(map)
@@ -417,7 +491,7 @@ function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string 
   return (
     `<b>${name}</b>${pop ? `<br><span class="muted">${pop}</span>` : ''}` +
     `<br><span class="big">${fmtMinutes(t, max)}</span>` +
-    (city ? `<br>to ${cityName}` : `<br><span class="muted">no ${TIER_TEXT[tier].noun} within ${max / 60} h</span>`)
+    (city ? `<br>to ${cityName}` : `<br><span class="muted">no ${CITY_TEXT[country][tier].noun} within ${max / 60} h</span>`)
   )
 }
 
@@ -461,7 +535,7 @@ async function main() {
     zoom: 4.5,
     attributionControl: { compact: true },
   })
-  map.fitBounds(VIEWS.peninsula, { padding: padding(), animate: false })
+  map.fitBounds(VIEWS[country][0].bounds, { padding: padding(), animate: false })
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
 
   map.on('load', () => {
@@ -472,7 +546,7 @@ async function main() {
       data: geo!,
       promoteId: 'code',
       attribution:
-        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID · Hospitals © Ministerio de Sanidad',
+        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID / Arcep · Hospitals © Ministerio de Sanidad / FINESS, DREES · Communes © INSEE, Etalab',
     })
     map.addSource('provinces', { type: 'geojson', data: provinces })
     map.addSource('dests', { type: 'geojson', data: destGeoJSON() })
@@ -578,12 +652,13 @@ async function main() {
     summer = (e.target as HTMLInputElement).checked
     refresh(map)
   })
-  document.querySelectorAll<HTMLButtonElement>('.jump button').forEach((b) =>
-    b.addEventListener('click', () => map.fitBounds(VIEWS[b.dataset.view!], { padding: padding() })),
+  renderViews(map, padding)
+  document.querySelectorAll<HTMLButtonElement>('.countries button').forEach((b) =>
+    b.addEventListener('click', () => setCountry(map, b.dataset.country as Country, padding)),
   )
   $('#collapse').addEventListener('click', () => {
     $('#panel').classList.toggle('collapsed')
-    map.fitBounds(VIEWS.peninsula, { padding: padding() })
+    map.fitBounds(VIEWS[country][0].bounds, { padding: padding() })
   })
 
   await setMode(map, mode)

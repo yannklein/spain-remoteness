@@ -1,3 +1,4 @@
+import { dataUrl } from './country'
 import type { ExpressionSpecification } from 'maplibre-gl'
 import type { Tier } from './airports'
 
@@ -11,7 +12,7 @@ export interface InternetData {
     min_devices: number
     estimate_radius_km: number
     estimate_min_coverage_pct?: number
-    coverage: { source: string; year: number | null }
+    coverage: { source: string; year: number | string | null }
     population_year: number | null
     notes: string[]
   }
@@ -44,7 +45,7 @@ export const METRICS: Record<
 
 export async function loadInternet(): Promise<InternetData | null> {
   try {
-    const r = await fetch('./data/es/internet.json')
+    const r = await fetch(dataUrl('internet.json'))
     return r.ok ? ((await r.json()) as InternetData) : null
   } catch {
     return null
@@ -124,9 +125,9 @@ export function internetLegend(metric: Tier): string[] {
 
 const fmt = (v: unknown, unit: string) => (typeof v === 'number' ? `${unit === 'ms' ? Math.round(v) : v.toFixed(1)} ${unit}` : '–')
 
-function coverageLine(p: Record<string, unknown>, year: number | null): string {
+function coverageLine(p: Record<string, unknown>, year: number | string | null, unit = 'households'): string {
   const parts: string[] = []
-  if (typeof p.c100 === 'number') parts.push(`≥100 Mbps for ${p.c100}% of households`)
+  if (typeof p.c100 === 'number') parts.push(`≥100 Mbps for ${p.c100}% of ${unit}`)
   if (typeof p.c1g === 'number') parts.push(`1 Gbps ${p.c1g}%`)
   if (typeof p.c5g === 'number') parts.push(`5G ${p.c5g}%`)
   return parts.length ? `<br><span class="muted">Official coverage${year ? ` ${year}` : ''}: ${parts.join(' · ')}</span>` : ''
@@ -136,7 +137,9 @@ export function internetTooltip(p: Record<string, unknown>, metric: Tier, mobile
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
   const head = `<b>${name}</b>${pop ? `<br><span class="muted">${pop}</span>` : ''}`
-  const cov = coverageLine(p, d?.params.coverage?.year ?? null)
+  // Spain's ministry counts households, Arcep (France) counts premises
+  const unit = d?.params.coverage?.source?.startsWith('Arcep') ? 'premises' : 'households'
+  const cov = coverageLine(p, d?.params.coverage?.year ?? null, unit)
   const km = d?.params.estimate_radius_km ?? 10
   const t = mobile ? 'm' : 'f'
   const kind = mobile ? 'Mobile' : 'Fixed broadband'

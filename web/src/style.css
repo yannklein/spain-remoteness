@@ -51,6 +51,13 @@ html, body { margin: 0; height: 100%; }
 #panel[data-mode='airports'] .tiers button .n:not(:empty)::after { content: ' airports'; }
 #panel[data-mode='hospitals'] .tiers button .n:not(:empty)::after { content: ' hospitals'; }
 
+.countries { display: flex; gap: 6px; margin-bottom: 8px; }
+.countries button {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 2px 10px;
+  font: inherit; font-size: 12px; color: var(--ink-2); cursor: pointer;
+}
+.countries button[aria-checked='true'] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+
 .modes {
   display: inline-grid; grid-template-columns: repeat(4, auto); margin-bottom: 10px;
   background: #f1f0ed; border-radius: 7px; padding: 2px; gap: 2px;

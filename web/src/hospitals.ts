@@ -1,3 +1,4 @@
+import { dataUrl } from './country'
 import type { FeatureCollection } from 'geojson'
 import type { Tier } from './airports'
 
@@ -30,7 +31,7 @@ export const HEADLINE_MINUTES = 30
 
 export async function loadHospitals(): Promise<HospitalsData | null> {
   try {
-    const r = await fetch('./data/es/hospitals.json')
+    const r = await fetch(dataUrl('hospitals.json'))
     return r.ok ? ((await r.json()) as HospitalsData) : null
   } catch {
     return null

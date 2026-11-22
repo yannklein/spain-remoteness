@@ -11,6 +11,10 @@
 
     <aside id="panel">
       <button id="collapse" aria-label="Toggle panel">▾</button>
+      <div class="countries" role="radiogroup" aria-label="Country">
+        <button role="radio" data-country="es" aria-checked="true">Spain</button>
+        <button role="radio" data-country="fr">France</button>
+      </div>
       <div class="modes" role="radiogroup" aria-label="Map">
         <button role="radio" data-mode="cities" aria-checked="true">Cities</button>
         <button role="radio" data-mode="airports">Airports</button>
@@ -45,7 +49,7 @@
 
       <details>
         <summary>How this map is made</summary>
-        <ul data-for="cities">
+        <ul data-for="cities" data-country="es">
           <li><b>Metros</b>: the 6 municipalities over 500k people (Madrid, Barcelona, València, Sevilla, Zaragoza, Málaga).</li>
           <li><b>Regional hubs</b>: the 50 provincial capitals, Ceuta, Melilla, Mérida, Santiago de Compostela, and every municipality over 100k. Suburbs over 100k are labelled with their metro.</li>
           <li><b>All urban</b>: hubs plus every municipality over 50k, the core-city threshold Eurostat uses for Functional Urban Areas.</li>
@@ -54,7 +58,7 @@
           <li>Coverage depends on the timetables TravelTime has. Some local bus networks are missing (e.g. Alcantarilla to Murcia, Petrer to Elda), so a few places look more isolated than they are.</li>
           <li>Boundaries: IGN via <a href="https://github.com/martgnz/es-atlas">es-atlas</a>. Population: INE padrón.</li>
         </ul>
-        <ul data-for="airports" hidden>
+        <ul data-for="airports" data-country="es" hidden>
           <li><b>Intercontinental</b>: airports with at least one scheduled flight longer than 4,000 km (the Americas, the Gulf, Asia).</li>
           <li><b>Europe</b>: airports with at least one scheduled flight to another European country.</li>
           <li><b>Any airport</b>: any scheduled passenger flight, domestic included. Airports with no scheduled flights (Teruel, Huesca, Ciudad Real, Burgos, Albacete) are left out.</li>
@@ -63,8 +67,28 @@
           <li>Airports near the border (Lisbon, Porto, Faro, Gibraltar, Biarritz, Toulouse, Perpignan…) are included too. Faded markers are airports nobody reaches by public transport in TravelTime's data; they are not counted.</li>
           <li>Timetables are a November weekday's: summer-only airport shuttles are not reflected.</li>
         </ul>
+        <ul data-for="cities" data-country="fr" hidden>
+          <li><b>Métropoles</b>: the central communes of the 22 métropoles (Paris, Lyon, Marseille, Toulouse, Nice, Nantes…).</li>
+          <li><b>Regional hubs</b>: métropoles plus every préfecture and every commune over 100k. <b>All urban</b>: plus every commune over 50k.</li>
+          <li>Main-city communes themselves are grey. Times come from the TravelTime API: public transport incl. walking, the fastest of three Tuesday arrivals (08:30, 11:30, 14:30), from each commune's town hall (mairie), capped at 3 hours. Corsica only counts Corsican cities.</li>
+          <li>Communes and population: INSEE via geo.api.gouv.fr; boundaries: Etalab contours administratifs (simplified).</li>
+        </ul>
+        <ul data-for="airports" data-country="fr" hidden>
+          <li>Same categories as for Spain: <b>Intercontinental</b> (a route over 4,000 km, overseas France included), <b>Europe</b>, <b>Any airport</b>; year-round routes by default, seasonal ones (summer, or winter ski routes) with the checkbox. Routes checked November 2026.</li>
+          <li>Airports near the border are included too: Geneva, Basel-Mulhouse (on French soil), Luxembourg, Charleroi, Karlsruhe/Baden-Baden, Saarbrücken, Girona, Barcelona, San Sebastián.</li>
+        </ul>
+        <ul data-for="hospitals" data-country="fr" hidden>
+          <li>Only hospitals with a general emergency department count (DREES SAE 2025, sites with general emergency visits), placed with FINESS coordinates and snapped to the nearest bus or rail stop.</li>
+          <li><b>Major</b>: university and regional hospitals (CHU/CHR). <b>Public</b>: public hospitals, non-profit ones in the public service (ESPIC) and army hospitals. <b>Any</b>: private clinics with an emergency department too.</li>
+          <li>Public transport times as for the other maps; a commune with its own hospital counts as close (“in town”).</li>
+        </ul>
+        <ul data-for="internet" data-country="fr" hidden>
+          <li>Speeds people actually measured with Speedtest by Ookla over the last 4 quarters, ~600 m tiles assigned to the commune containing their centre, averaged by number of tests; at least 20 tests and 5 devices in one quarter, otherwise an estimate from tests within 10 km (hatched).</li>
+          <li>Official coverage: Arcep “Ma connexion internet”, share of premises that can get ≥100 Mbps and 1 Gbps (no per-commune 5G figure). No fixed estimate where fewer than half the premises can get 100 Mbps.</li>
+          <li>Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps, CC BY-NC-SA 4.0. The internet data derived here is shared under the same licence.</li>
+        </ul>
         <ul data-for="airports" id="airport-notes" hidden></ul>
-        <ul data-for="hospitals" hidden>
+        <ul data-for="hospitals" data-country="es" hidden>
           <li>Hospitals come from the Ministry of Health’s national hospital catalogue (Catálogo Nacional de Hospitales 2025, situation at 31 December 2024). Only general hospitals count; psychiatric, long-stay, rehabilitation and other specialised centres are left out.</li>
           <li><b>Major</b>: public hospitals with a cardiac catheterisation lab and at least 100 beds (heart attacks, strokes, major trauma, most specialists). <b>Public</b>: any public general hospital, including those run by foundations and consortia in Catalonia’s public network. <b>Any</b>: private clinics too.</li>
           <li>Times come from the TravelTime API, as for the other maps: public transport incl. walking, the fastest of three Tuesday arrivals (08:30, 11:30, 14:30), from each municipality’s town centre to the hospital’s nearest bus or rail stop (OpenStreetMap), capped at 3 hours.</li>
@@ -72,7 +96,7 @@
           <li>The catalogue doesn’t say which private clinics have a 24 h emergency department, so “Any” may include some that don’t.</li>
         </ul>
         <ul data-for="hospitals" id="hospital-notes" hidden></ul>
-        <ul data-for="internet" hidden>
+        <ul data-for="internet" data-country="es" hidden>
           <li>Speeds people actually measured with Speedtest by Ookla, <span id="internet-period">over the last 4 quarters</span>, pooled. Ookla publishes ~600 m tiles with average download, upload and latency and the number of tests behind them.</li>
           <li>Each tile counts for the municipality containing its centre. Values are averages weighted by the number of tests.</li>
           <li>A municipality gets a value only with at least 20 tests over the year and 5 devices testing within one quarter; otherwise it gets an estimate from nearby tests (next point) or stays grey (“not enough speed tests”).</li>
@@ -85,11 +109,7 @@
         <p class="meta" id="meta"></p>
       </details>
 
-      <div class="jump">
-        <button data-view="peninsula">Peninsula</button>
-        <button data-view="canarias">Canarias</button>
-        <button data-view="baleares">Balears</button>
-      </div>
+      <div class="jump" id="jump"></div>
     </aside>
 
     <div id="tooltip" hidden></div>
