@@ -16,10 +16,11 @@ Usage: python pipeline/nudge_hospitals.py
 
 import math
 
-from common import PLACES_FILE, HTTPStatusError, dump_json, load_json
-from compute_hospitals import OUTPUT_FILE, PLACED_FILE
+import argparse
+
+import compute_hospitals
+from common import HTTPStatusError, add_country_arg, dump_json, load_json, paths
 from compute_times import MAX_SECONDS, Client, arrival_times, parse_results
-from place_hospitals import OVERRIDES
 
 RINGS_M = (200, 400, 600)
 DIRECTIONS = 8
@@ -47,10 +48,16 @@ def first_reachable(points, reach):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    add_country_arg(ap)
+    cc = ap.parse_args().country
+    if cc != "es":
+        compute_hospitals.configure(cc)
+    PLACED_FILE, OUTPUT_FILE, OVERRIDES = paths(cc).hospitals_placed, paths(cc).hospitals_json, paths(cc).hospital_overrides
     placed = load_json(PLACED_FILE)
     out = load_json(OUTPUT_FILE)
     dead = {h[0] for h in out["hospitals"] if h[9] == 0}
-    places = {m["code"]: m for m in load_json(PLACES_FILE)["municipalities"]}
+    places = {m["code"]: m for m in load_json(paths(cc).places)["municipalities"]}
     overrides = load_json(OVERRIDES) if OVERRIDES.exists() else {}
     client = Client("regular")
     at = arrival_times()[1]

@@ -199,6 +199,41 @@ python3 pipeline/compute_hospitals.py    # TravelTime, ~2,700 searches (~25 min)
 python3 pipeline/nudge_hospitals.py      # move points of unreached hospitals, then run compute_hospitals.py again
 ```
 
+## France (metropolitan)
+
+The same four maps exist for metropolitan France (incl. Corsica): pick **France** at the top of the panel
+(`#fr/cities`, `#fr/airports`, `#fr/internet`, `#fr/hospitals`).
+
+**Each country is self-contained.** Everything a country reads and writes lives in its own folders:
+
+```
+data/es/  data/fr/                         inputs and curated lists (places.json, hospitals.json, overrides…)
+web/public/data/es/  web/public/data/fr/   outputs: remoteness / airports / internet / hospitals .json .csv .csvt + boundaries
+.cache/es/  .cache/fr/                     caches
+```
+
+Every pipeline takes `--country es|fr` (default `es`); Spain's outputs are checked to regenerate byte for byte.
+
+| Map | France specifics |
+|---|---|
+| Base | ~34,700 communes from geo.api.gouv.fr (INSEE populations légales); origin = town hall (*mairie*); Etalab 2026 commune boundaries, simplified. Corsica is its own zone. |
+| Cities | 1 central communes of the 22 *métropoles* · 2 + every *préfecture* + communes > 100k · 3 + communes > 50k |
+| Airports | `pipeline/countries/fr_airports.py`, same rules as Spain. Points snapped to the airport's stop (`place_airports.py`, `data/fr/airport_points.json`). Cross-border links (Geneva, Luxembourg…) are mostly missing from TravelTime; 10 regional airports have no transit in the data. |
+| Internet | Ookla as for Spain; official coverage from Arcep *Ma connexion internet* (share of premises ≥ 100 Mbps / 1 Gbps; no 5G per commune). |
+| Hospitals | Only sites with a general emergency department (DREES SAE, table URGENCES2), positioned with FINESS coordinates (Lambert-93) and snapped to stops. 1 CHU/CHR · 2 public (incl. ESPIC, army hospitals) · 3 any. Search radius 150 km (300 km for CHU/CHR). |
+
+```bash
+python3 pipeline/build_places_fr.py                       # communes, city tiers, boundaries (npx mapshaper)
+python3 pipeline/compute_times.py --country fr            # ~3,200 searches
+python3 pipeline/compute_internet.py --country fr         # no API key
+python3 pipeline/place_airports.py --country fr           # snap airports to stops (Overpass)
+python3 pipeline/compute_airports.py --country fr
+python3 pipeline/place_airports.py --country fr --nudge   # move points nobody reaches, then compute again
+python3 pipeline/place_hospitals.py --country fr          # FINESS + SAE, snap to stops
+python3 pipeline/compute_hospitals.py --country fr        # ~5,000 searches
+python3 pipeline/nudge_hospitals.py --country fr          # then compute_hospitals again
+```
+
 ## Using the data in QGIS
 
 Both datasets come as a flat CSV, one row per municipality, next to the JSON:
@@ -264,4 +299,5 @@ cd web && npm install && npm run dev
 - Internet speeds: [Speedtest® by Ookla® Global Fixed and Mobile Network Performance Maps](https://github.com/teamookla/ookla-open-data) (CC BY-NC-SA 4.0)
 - Hospitals: Ministerio de Sanidad, [Catálogo Nacional de Hospitales](https://www.sanidad.gob.es/estadEstudios/estadisticas/sisInfSanSNS/ofertaRecursos/hospitales/home.htm) (2025); hospital positions © OpenStreetMap contributors (ODbL) and Nominatim
 - Broadband coverage: Ministerio para la Transformación Digital y de la Función Pública (SETID), [Información de cobertura](https://digital.gob.es/telecomunicaciones-infraestructuras-digitales/areas-interes/banda-ancha/informacion-cobertura)
+- France: communes and populations © INSEE via [geo.api.gouv.fr](https://geo.api.gouv.fr); boundaries © IGN / Etalab [contours administratifs](https://etalab-datasets.geo.data.gouv.fr/contours-administratifs/); hospitals: FINESS (Ministère de la Santé) and [DREES SAE](https://data.drees.solidarites-sante.gouv.fr); internet coverage © [Arcep](https://data.arcep.fr) Ma connexion internet
 - Basemap: [OpenFreeMap](https://openfreemap.org) Positron
