@@ -227,3 +227,45 @@ def test_compute_airports_uses_placed_points(tmp_path):
     out = {d["iata"]: d for d in cap.apply_points(dests, pts)}
     assert (out["LYS"]["lat"], out["LYS"]["lng"]) == (45.72, 5.08) and out["NCE"]["lat"] == 43.6
     assert cap.apply_points(dests, tmp_path / "missing.json") == dests
+
+
+def test_finess_precision_is_kept(tmp_path):
+    import hospitals_fr as hf
+    f, u = tmp_path / "finess.csv", tmp_path / "urg.csv"
+    f.write_text(FINESS.replace("2A0000011;1180000.0;6108000.0;1,ATLASANTE", "2A0000011;1180000.0;6108000.0;4,ATLASANTE"),
+                 encoding="utf-8")
+    u.write_text(URG, encoding="utf-8")
+    hs = {h["codcnh"]: h for h in hf.read_hospitals_fr(f, u)}
+    assert hs["2A0000011"]["precise"] is False and hs["010000024"]["precise"] is True
+
+
+def test_ban_result_must_be_an_address():
+    import place_hospitals as ph
+    good = {"features": [{"geometry": {"coordinates": [1.39, 43.61]},
+                          "properties": {"score": 0.82, "type": "housenumber", "citycode": "31555"}}]}
+    assert ph.pick_ban(good, "31555") == (43.61, 1.39)
+    town = {"features": [{"geometry": {"coordinates": [1.44, 43.60]},
+                          "properties": {"score": 0.9, "type": "municipality", "citycode": "31555"}}]}
+    assert ph.pick_ban(town, "31555") is None                          # the commune centre again: no gain
+    other = {"features": [{"geometry": {"coordinates": [1.0, 43.0]},
+                           "properties": {"score": 0.9, "type": "street", "citycode": "31000"}}]}
+    assert ph.pick_ban(other, "31555") is None                         # wrong commune
+    weak = {"features": [{"geometry": {"coordinates": [1.0, 43.0]},
+                          "properties": {"score": 0.4, "type": "street", "citycode": "31555"}}]}
+    assert ph.pick_ban(weak, "31555") is None
+
+
+def test_geocoded_point_must_be_in_the_commune():
+    import place_hospitals as ph
+    assert ph.in_commune((48.73, 1.37), "28134", lambda lng, lat: "28134") is True
+    assert ph.in_commune((48.55, 1.53), "28134", lambda lng, lat: "28419") is False   # Dreux -> Villiers-le-Morhier
+    assert ph.in_commune(None, "28134", lambda lng, lat: "28134") is False
+
+
+def test_commune_level_hospitals_are_noted():
+    import compute_hospitals as chos
+    places = {"meta": {}, "municipalities": [{"code": "28134", "name": "Dreux", "pop": 30000}]}
+    hs = [{"codcnh": "1", "code": "HOS:1", "name": "Ch Dreux", "muni": "28134", "lat": 48.7, "lng": 1.3, "tier": 2,
+           "point_source": "commune+stop"}]
+    out = chos.build_output(places, hs, {"28134": [0, 0, 0, 0, 0, 0]}, {"HOS:1": {"28134": 60}})
+    assert any("Ch Dreux (Dreux)" in n and "commune" in n for n in out["params"]["notes"])

@@ -76,20 +76,22 @@ def read_hospitals_fr(finess_path, urgences_path):
             if f[0] == "structureet" and f[1] in er:
                 structures[f[1]] = f
             elif f[0] == "geolocalisation" and f[1] in er and "2154" in f[4]:
-                coords[f[1]] = (float(f[2]), float(f[3]))
+                # precision: 1-3 address-level, 4 = commune centroid (ADMIN-EXPRESS)
+                coords[f[1]] = (float(f[2]), float(f[3]), f[4].split(",")[0])
     out = []
     for fi, f in structures.items():
         dep = f[13]
         if METRO_DEPS_EXCLUDED.match(dep) or fi not in coords:
             continue
-        lat, lng = lambert93_to_wgs84(*coords[fi])
+        x, y, precision = coords[fi]
+        lat, lng = lambert93_to_wgs84(x, y)
         category, sph = f[18], f[26]
         public = sph in PUBLIC_SPH or category in PUBLIC_CATEGORIES or category == "355"
         tier = 1 if category == "101" else 2 if public else 3
         out.append({"codcnh": fi, "name": (f[4] or f[3]).strip().strip('"').strip().title(), "muni": commune_of(dep, f[12]),
                     "address": " ".join(x for x in (f[7], f[8], f[9]) if x), "postcode": f[15][:5],
                     "beds": None, "cls": category, "public": public, "cath_lab": False, "tier": tier,
-                    "lat": round(lat, 6), "lng": round(lng, 6)})
+                    "lat": round(lat, 6), "lng": round(lng, 6), "precise": precision != "4"})
     return out
 
 

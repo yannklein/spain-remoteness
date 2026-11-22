@@ -223,6 +223,50 @@ def settle_muni(h, locate):
     return locate(h["lng"], h["lat"]) or h["muni"]
 
 
+BAN = "https://api-adresse.data.gouv.fr/search/"
+
+
+def pick_ban(resp, citycode):
+    """(lat, lng) of a BAN result that is a real address in the hospital's commune, else None."""
+    import hospitals_fr
+    for f in resp.get("features", [])[:1]:
+        pr = f["properties"]
+        code = pr.get("citycode", "")
+        if (pr.get("type") in ("housenumber", "street") and pr.get("score", 0) >= 0.6
+                and hospitals_fr.commune_of(code[:2], code[2:]) == citycode):
+            lng, lat = f["geometry"]["coordinates"]
+            return lat, lng
+    return None
+
+
+def in_commune(point, muni, locate):
+    return point is not None and locate(point[1], point[0]) == muni
+
+
+def _nominatim(q):
+    time.sleep(1.1)  # usage policy: max 1 request per second
+    params = {"q": q, "format": "json", "limit": 1, "countrycodes": "fr"}
+    res = json.loads(http(NOMINATIM + "?" + urllib.parse.urlencode(params), headers={"User-Agent": USER_AGENT}, timeout=60))
+    return (float(res[0]["lat"]), float(res[0]["lon"])) if res else None
+
+
+def geocode_fr(h, muni_name, locate):
+    """For FINESS sites only placed at commune level: the address (BAN), else the name, else
+    "Centre hospitalier, <commune>" (Nominatim). Name searches must land in the hospital's commune."""
+    q = {"q": f"{h['address']} {h['postcode']} {muni_name}", "limit": 1}
+    try:
+        got = pick_ban(json.loads(http(BAN + "?" + urllib.parse.urlencode(q), timeout=60)), h["muni"])
+    except Exception:  # noqa: BLE001 - fall back to Nominatim
+        got = None
+    if got:
+        return got[0], got[1], "ban"
+    for q in (f"{h['name']}, {muni_name}", f"Centre hospitalier, {muni_name}"):
+        got = _nominatim(q)
+        if in_commune(got, h["muni"], locate):
+            return got[0], got[1], "nominatim"
+    return None
+
+
 def main_fr():
     """France: FINESS has coordinates, so no OSM matching; snap to the nearest stop and apply overrides."""
     import hospitals_fr
@@ -230,15 +274,25 @@ def main_fr():
     hosps = hospitals_fr.read_hospitals_fr(hospitals_fr.fetch_finess(), hospitals_fr.fetch_urgences())
     index = MuniIndex(load_municipalities(p.topo))
     overrides = load_json(p.hospital_overrides) if p.hospital_overrides.exists() else {}
+    places = {m["code"]: m for m in load_json(p.places)["municipalities"]}
+    for h in hosps:  # FINESS sometimes only knows the commune: place those from their address or name
+        if not h["precise"] and h["codcnh"] not in overrides:
+            got = geocode_fr(h, places.get(h["muni"], {}).get("name", ""), index.locate)
+            if got:
+                h["lat"], h["lng"], h["placed_by"] = round(got[0], 6), round(got[1], 6), got[2]
+            print(f"  {h['name']}: {got[2] if got else 'still at the commune centre'}")
     stops = fetch_stops([(h["lat"], h["lng"]) for h in hosps])
     out = []
     for h in hosps:
-        a = apply_override(h, overrides, []) or {"lat": h["lat"], "lng": h["lng"], "entrances": [], "via": "finess"}
+        via = h.pop("placed_by", "finess" if h["precise"] else "commune")
+        a = apply_override(h, overrides, []) or {"lat": h["lat"], "lng": h["lng"], "entrances": [], "via": via}
         lat, lng, source, stop_name = place_anchor(a, stops)
         if a.get("exact"):
             source = overrides[h["codcnh"]].get("source", "override")
         elif source == "osm":
-            source = "finess"
+            source = a["via"]
+        elif via != "finess":
+            source = f"{via}+stop"
         h = dict(h, lat=round(lat, 6), lng=round(lng, 6), point_source=source, osm_id=None, stop_name=stop_name)
         h["muni"] = settle_muni(h, index.locate)
         out.append(h)

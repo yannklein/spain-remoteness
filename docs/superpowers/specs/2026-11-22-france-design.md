@@ -59,7 +59,7 @@ web/public/data/es/…  web/public/data/fr/…  outputs: *.json, *.csv, *.csvt, 
 |---|---|---|---|
 | Cities | central communes of the 22 *métropoles* | + every *préfecture* + communes > 100k | + communes > 50k |
 | Airports | route > 4,000 km | ≥ 1 route to another European country | any scheduled flight |
-| Hospitals | CHU/CHR (FINESS category 101) with an emergency department | + public *centres hospitaliers* (355) with an emergency department | + private medicine/surgery/obstetrics establishments with an emergency department |
+| Hospitals | CHU/CHR (FINESS category 101) with an emergency department | + public hospitals with an emergency department: *centres hospitaliers* (355) and CHU/CHR, non-profit hospitals in the public service (ESPIC, PSPH), army hospitals (114) and public cooperation groups (697) (ruling during build) | + private medicine/surgery/obstetrics establishments with an emergency department |
 | Internet | Ookla speeds, estimates within 10 km, official coverage (Arcep) | | |
 
 - Airports keep the year-round / seasonal variants. Foreign airports with scheduled flights within reach of the border are listed: Geneva, Luxembourg, Brussels-Charleroi, Karlsruhe/Baden-Baden, Saarbrücken, Girona, San Sebastián, Barcelona. Basel-Mulhouse is on French soil. As in Spain, a cross-border check runs first.

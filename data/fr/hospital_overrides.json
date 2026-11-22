@@ -58,5 +58,22 @@
    43.862326,
    5.362515
   ]
+ },
+ "280000084": {
+  "unattachable_at": [
+   48.637657,
+   1.590956
+  ]
+ },
+ "2B0005359": {
+  "unattachable_at": [
+   42.636859,
+   8.972774
+  ]
+ },
+ "310783048": {
+  "lat": 43.60715,
+  "lng": 1.39696,
+  "note": "Hôpital Purpan (CHU Toulouse), Rue Georges Vedel: FINESS only has the commune centre; position from Nominatim 'Hôpital Purpan, Toulouse', Nov 2026"
  }
 }

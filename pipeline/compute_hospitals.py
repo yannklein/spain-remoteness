@@ -93,6 +93,11 @@ def build_output(places, hospitals, rows, results):
     if dead:
         notes.append("Not reached by anyone in TravelTime's data (arrival point may not attach to the network): "
                      + ", ".join(dead) + ".")
+    rough = [f"{h['name']} ({by.get(h['muni'], {}).get('name', h['muni'])})" for h in hospitals
+             if str(h.get("point_source", "")).startswith("commune")]
+    if rough:
+        notes.append("Only placed at commune level (the register has no precise position and no geocoder found one), "
+                     "so times to them may be slightly short: " + ", ".join(rough) + ".")
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "params": {
