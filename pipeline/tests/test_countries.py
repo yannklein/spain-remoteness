@@ -42,8 +42,16 @@ def test_paths_are_per_country():
 ])
 def test_spain_outputs_unchanged(monkeypatch, tmp_path, module, argv, files):
     import importlib
+    import shutil
     import compute_times
     mod = importlib.import_module(module)
+    # work on copies of the caches: pipelines record positions / invalidate entries in their cache dirs
+    real = sorted((p, p.stat().st_mtime_ns) for p in ES_CACHE.rglob("positions.json"))
+    for attr, sub in (("AIRPORT_CACHE_DIR", "airports"), ("CACHE_DIR", "hospitals" if module == "compute_hospitals" else "times")):
+        if hasattr(mod, attr):
+            copy = tmp_path / "cache" / sub
+            shutil.copytree(ES_CACHE / sub, copy)
+            monkeypatch.setattr(mod, attr, copy)
     monkeypatch.setenv("TRAVELTIME_APP_ID", "x")
     monkeypatch.setenv("TRAVELTIME_API_KEY", "y")
     monkeypatch.setattr(compute_times.Client, "post", no_calls)
@@ -53,5 +61,6 @@ def test_spain_outputs_unchanged(monkeypatch, tmp_path, module, argv, files):
     monkeypatch.setattr(sys, "argv", [module + ".py"] + argv)
     mod.main()
     j, c = committed
+    assert sorted((p, p.stat().st_mtime_ns) for p in ES_CACHE.rglob("positions.json")) == real   # real caches untouched
     assert j.parent == ES_OUT and same(j, tmp_path / j.name)
     assert (tmp_path / c.name).read_text() == c.read_text()
