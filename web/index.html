@@ -20,6 +20,7 @@
         <button role="radio" data-mode="airports">Airports</button>
         <button role="radio" data-mode="internet">Internet</button>
         <button role="radio" data-mode="hospitals">Hospitals</button>
+        <button role="radio" data-mode="housing">Housing</button>
         <button role="radio" data-mode="gems">Gems</button>
       </div>
       <h1 id="title">How far is rural Spain from a city?</h1>
@@ -36,6 +37,9 @@
       <label id="summer-wrap" class="summer" hidden>
         <input type="checkbox" id="summer" autocomplete="off" /> Include seasonal routes
         <span class="muted" id="summer-note">(summer-only, or winter-only in Canarias)</span>
+      </label>
+      <label id="flats-wrap" class="summer" hidden>
+        <input type="checkbox" id="flats" autocomplete="off" /> Flats instead of houses
       </label>
       <label id="mobile-wrap" class="summer" hidden>
         <input type="checkbox" id="mobile" autocomplete="off" /> Mobile instead of fixed broadband
@@ -66,6 +70,16 @@
         <div class="g-row">
           <label class="g-name"><input type="checkbox" id="g-hosp-on" autocomplete="off" /> Hospital</label>
           <span><select id="g-hosp-tier" aria-label="Hospital category"></select> within <select id="g-hosp-max" aria-label="Longest time to a hospital"></select></span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-rent-on" autocomplete="off" /> Rent</label>
+          <span><select id="g-rent-kind" aria-label="Home type for rent"><option value="house">house</option><option value="flat">flat</option></select>
+            ≤ <select id="g-rent-max" aria-label="Highest rent per m² a month"></select>/m²</span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-buy-on" autocomplete="off" /> Buy</label>
+          <span><select id="g-buy-kind" aria-label="Home type to buy"><option value="house">house</option><option value="flat">flat</option></select>
+            ≤ <select id="g-buy-max" aria-label="Highest price per m²"></select>/m²</span>
         </div>
         <button type="button" id="g-reset" class="g-reset">Reset to defaults</button>
       </form>
@@ -124,8 +138,20 @@
           <li>Gems combine the four other maps: a municipality is a <b>gem</b> when it is under the size limit and meets every criterion that is ticked; a <b>near miss</b> fails exactly one. Places over the size limit are grey: they can be the city you travel to, never the gem.</li>
           <li>Times are the same public transport times as on the other maps (best weekday connection, capped at 3 hours); a place that is itself a city of the chosen category counts as being there, and a hospital in town counts as 0 min.</li>
           <li>Internet is the average download speed from Speedtest by Ookla, measured in the municipality or, if ticked, estimated from tests within 10 km. A place with no speed data, or with no connection within 3 hours, fails that criterion.</li>
+          <li>Rent and price to buy come from the Housing map: a missing figure fails the criterion; estimates count and say so in the tooltip (in Spain, the price to buy is the province average for villages).</li>
           <li>Your settings are kept in the page address: bookmark or share it to come back to the same filters.</li>
         </ul>
+        <ul data-for="housing" data-country="es" hidden>
+          <li><b>Rent</b>: median rent per m² a month of the leases declared to the tax agency (Ministry of Housing, SERPAVI), houses and flats separately, latest year of 2022–2024 with at least 10 leases. Where a municipality has too few, the figure is estimated from those within 10 km (hatched). The Basque Country and Navarre collect their own taxes and are not covered.</li>
+          <li><b>Buy</b>: there is no open sale price for each village in Spain. Towns over 25,000 show the Ministry's appraisal value of free-market housing; every other municipality shows its province average (hatched): a rough guide, villages are usually cheaper.</li>
+          <li>Declared rents tend to be lower than advertised ones; compare places within Spain, not with France.</li>
+        </ul>
+        <ul data-for="housing" data-country="fr" hidden>
+          <li><b>Rent</b>: advertised rents per m² a month including charges, ANIL “carte des loyers” 2025 (leboncoin and SeLoger listings). Where a commune has few listings, the figure is predicted from its wider area (hatched).</li>
+          <li><b>Buy</b>: median price per m² of the house and flat sales recorded in DVF over the last 5 years (at least 5 sales); otherwise estimated from communes within 10 km (hatched). Alsace-Moselle (Bas-Rhin, Haut-Rhin, Moselle) has its own land register and no DVF data.</li>
+          <li>Advertised rents include charges and run higher than declared ones; compare places within France, not with Spain.</li>
+        </ul>
+        <ul data-for="housing" id="housing-notes" hidden></ul>
         <ul data-for="airports" id="airport-notes" hidden></ul>
         <ul data-for="hospitals" data-country="es" hidden>
           <li>Hospitals come from the Ministry of Health’s national hospital catalogue (Catálogo Nacional de Hospitales 2025, situation at 31 December 2024). Only general hospitals count; psychiatric, long-stay, rehabilitation and other specialised centres are left out.</li>

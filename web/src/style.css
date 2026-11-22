@@ -59,7 +59,7 @@ html, body { margin: 0; height: 100%; }
 .countries button[aria-checked='true'] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
 
 .modes {
-  display: inline-grid; grid-template-columns: repeat(5, auto); margin-bottom: 10px;
+  display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;
   background: #f1f0ed; border-radius: 7px; padding: 2px; gap: 2px;
 }
 .modes button {
@@ -145,3 +145,5 @@ details a { color: var(--accent); }
 .gems-list li .muted, .gems-list .more { color: var(--muted); }
 #tooltip .ok { color: #2f7d32; }
 #tooltip .ko { color: #b3261e; }
+#panel[data-mode='housing'] .tiers { grid-template-columns: repeat(2, 1fr); }
+#panel[data-mode='housing'] .tiers button[data-tier='3'] { display: none; }

@@ -234,6 +234,21 @@ python3 pipeline/compute_hospitals.py --country fr        # ~5,000 searches
 python3 pipeline/nudge_hospitals.py --country fr          # then compute_hospitals again
 ```
 
+## Housing map
+
+Rent and purchase prices per m² per municipality (`pipeline/compute_housing.py --country es|fr`, no API key):
+
+| | Rent (per month) | Buy |
+|---|---|---|
+| Spain | SERPAVI (Ministry of Housing): median of declared leases, houses and flats, latest of 2022–2024 (≥ 10 leases). No data in the Basque Country and Navarre | Coarse: Ministry appraisal value for towns over 25,000, the province average elsewhere (no open per-village sale prices; the notaries' portal forbids redistribution) |
+| France | ANIL "carte des loyers" 2025: advertised rents incl. charges; area-model predictions are marked | DVF statistics (Etalab): median €/m² of sales over 5 years (≥ 5 sales). None in Alsace-Moselle |
+
+A municipality without its own figure gets the count-weighted mean of those within 10 km, marked "nearby". Every
+figure carries its scope (own / nearby / province / area); anything but "own" is hatched on the map. Rents are not
+comparable between the countries (declared leases vs listings with charges), so the colour bins are per country.
+`housing.csv`: `rent_house`, `rent_flat`, `buy_house`, `buy_flat` (€/m²), `*_source` (own, nearby, province, area)
+and `*_n` (leases, listings or sales behind the figure).
+
 ## Cities and airports across the border
 
 A town near the border often uses the city or airport on the other side (Hendaye → San Sebastián, Annemasse →

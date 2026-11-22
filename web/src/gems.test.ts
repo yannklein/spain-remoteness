@@ -8,6 +8,7 @@ const good = (): Record<string, unknown> => ({
   t1: 120, t2: 40, t3: 30,
   y1: 150, y2: 70, y3: 60, s1: 150, s2: 50, s3: 50,
   hm1: 90, hm2: 30, hm3: 20,
+  rh: 7.5, rf: 9, bh: 1400, bf: 1800, srh: 0, srf: 0, sbh: 2, sbf: 2,
 })
 const f = (over: Partial<GemFilters> = {}): GemFilters => ({ ...DEFAULTS, ...over })
 
@@ -75,13 +76,30 @@ describe('judge', () => {
   })
   it('ignores a criterion that is off', () => {
     const r = judge({ ...good(), y2: -1 }, f({ air: null }))
-    expect(r.checks.map((c) => c.crit)).toEqual(['net', 'city', 'hosp'])
+    expect(r.checks.map((c) => c.crit)).toEqual(['net', 'city', 'hosp', 'rent'])
     expect(r.cls).toBe(2)
   })
   it('uses the chosen tier and limit', () => {
     const p = good()
     expect(judge(p, f({ city: { tier: 1, max: 90 } })).checks.find((c) => c.crit === 'city')).toMatchObject({ ok: false, value: 120 })
     expect(judge(p, f({ city: { tier: 1, max: 120 } })).checks.find((c) => c.crit === 'city')!.ok).toBe(true)
+  })
+})
+
+describe('housing criteria', () => {
+  it('passes rent at or under the limit for the chosen kind', () => {
+    expect(judge(good(), f()).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: true, value: 7.5 })
+    expect(judge(good(), f({ rent: { kind: 'flat', max: 8 } })).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: false, value: 9 })
+  })
+  it('fails a missing rent', () => {
+    const p = good()
+    delete p.rh
+    expect(judge(p, f()).checks.find((c) => c.crit === 'rent')).toMatchObject({ ok: false, value: null })
+  })
+  it('judges buy only when switched on, and reports the scope', () => {
+    expect(judge(good(), f()).checks.some((c) => c.crit === 'buy')).toBe(false)
+    const c = judge(good(), f({ buy: { kind: 'house', max: 1500 } })).checks.find((x) => x.crit === 'buy')!
+    expect(c).toMatchObject({ ok: true, value: 1400, scope: 2 })
   })
 })
 
@@ -92,12 +110,16 @@ describe('hash', () => {
   it('round-trips criteria switched off and other values', () => {
     const x: GemFilters = {
       pop: null, net: null, est: false, city: { tier: 3, max: 30 }, air: null, summer: true, hosp: { tier: 1, max: 120 },
+      rent: null, buy: { kind: 'flat', max: 2000 },
     }
-    expect(formatHash(x)).toBe('pop=any&net=off&est=0&city=3:30&air=off&summer=1&hosp=1:120')
+    expect(formatHash(x)).toBe('pop=any&net=off&est=0&city=3:30&air=off&summer=1&hosp=1:120&rent=off&buy=flat:2000')
     expect(parseHash(formatHash(x))).toEqual(x)
   })
   it('falls back to the defaults on garbage', () => {
-    expect(parseHash('pop=lots&net=fast:x&city=9:60&air=2&hosp=2:-5&summer=maybe&est=2')).toEqual(DEFAULTS)
+    expect(parseHash('pop=lots&net=fast:x&city=9:60&air=2&hosp=2:-5&summer=maybe&est=2&rent=castle:9&buy=house:')).toEqual(DEFAULTS)
+  })
+  it('keeps old links working: no rent/buy means the defaults', () => {
+    expect(parseHash('pop=20000&net=fixed:100&est=1&city=2:60&air=2:90&summer=0&hosp=2:45')).toEqual(DEFAULTS)
   })
   it('fills missing keys with the defaults', () => {
     expect(parseHash('pop=5000')).toEqual({ ...DEFAULTS, pop: 5000 })

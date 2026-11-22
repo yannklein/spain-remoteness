@@ -38,10 +38,24 @@ import {
   loadHospitals,
   type HospitalsData,
 } from './hospitals'
+import {
+  HOUSING_TEXT,
+  SCOPE_TEXT,
+  housingEstimateFilter,
+  housingFill,
+  housingHeadline,
+  housingLegend,
+  housingProps,
+  housingTooltip,
+  loadHousing,
+  type HousingData,
+} from './housing'
 import { dataUrl, setDataCountry, viaText, withCountry, type Country, type Gateway } from './country'
 import {
   DEFAULTS as GEM_DEFAULTS,
+  BUY_CHOICES,
   HOSP_TIME_CHOICES,
+  RENT_CHOICES,
   NET_CHOICES,
   POP_CHOICES,
   TIME_CHOICES,
@@ -50,11 +64,13 @@ import {
   parseHash,
   type Check,
   type GemFilters,
+  type HomeKind,
   type Limit,
+  type PriceLimit,
   type NetKind,
 } from './gems'
 
-type Mode = 'cities' | 'airports' | 'internet' | 'hospitals' | 'gems'
+type Mode = 'cities' | 'airports' | 'internet' | 'hospitals' | 'housing' | 'gems'
 
 // [code, name, tier, lat, lng, metro, population]
 type City = [string, string, number, number, number, string | null, number | null]
@@ -106,6 +122,7 @@ function title(m: Mode): string {
     airports: `How far is ${where} from an airport?`,
     internet: `How good is the internet in ${where}?`,
     hospitals: `How far is ${where} from a hospital?`,
+    housing: `What does housing cost in ${where}?`,
     gems: `Where could you live and work remotely in ${where}?`,
   }[m]
 }
@@ -133,14 +150,14 @@ const FALLBACK_STYLE: StyleSpecification = {
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T
 
-const MODES: Mode[] = ['cities', 'airports', 'internet', 'hospitals', 'gems']
+const MODES: Mode[] = ['cities', 'airports', 'internet', 'hospitals', 'housing', 'gems']
 // hash: "#fr/hospitals", "#es/airports", "#fr/gems?pop=20000&…"; old links ("#airports") mean Spain
 const [hashPath, hashQuery = ''] = location.hash.slice(1).split('?')
 const [hashCountry, hashMode] = hashPath.includes('/') ? hashPath.split('/') : ['es', hashPath]
 let country: Country = hashCountry === 'fr' ? 'fr' : 'es'
 setDataCountry(country)
 let mode: Mode = MODES.find((m) => m === hashMode) ?? 'cities'
-const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1, hospitals: 2, gems: 2 }
+const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1, hospitals: 2, housing: 1, gems: 2 }
 let gemFilters: GemFilters = mode === 'gems' ? parseHash(hashQuery) : { ...GEM_DEFAULTS }
 let tier: Tier = tiers[mode]
 let summer = false
@@ -148,6 +165,8 @@ let data: Remoteness | null = null
 let airports: AirportsData | null | undefined // undefined = not loaded yet
 let internet: InternetData | null | undefined
 let hospitals: HospitalsData | null | undefined
+let housing: HousingData | null | undefined
+let flats = false
 const muniNames = new Map<string, string>()
 let mobile = false
 let geo: FeatureCollection<Geometry, Record<string, unknown>> | null = null
@@ -183,9 +202,10 @@ function viaKey(): string | null {
 function applyEstimateLayer(map: maplibregl.Map) {
   if (!map.getLayer('muni-est')) return
   const via = viaKey()
-  const on = mode === 'internet' || via !== null
+  const on = mode === 'internet' || mode === 'housing' || via !== null
   map.setLayoutProperty('muni-est', 'visibility', on ? 'visible' : 'none')
   if (mode === 'internet') map.setFilter('muni-est', internetEstimateFilter(tier, mobile))
+  else if (mode === 'housing') map.setFilter('muni-est', housingEstimateFilter(tier, flats))
   else if (via) {
     // a main city of the tier is grey, never hatched
     const notCity: ExpressionSpecification = mode === 'cities'
@@ -203,6 +223,7 @@ function currentFill(): ExpressionSpecification {
       2, GEM_COLORS.gem, 1, GEM_COLORS.near, 0, GEM_COLORS.other, 3, GEM_COLORS.big, NODATA] as ExpressionSpecification
   }
   if (mode === 'internet') return internetFill(tier, mobile, COLORS.slice(1), INTERNET_NODATA)
+  if (mode === 'housing') return housingFill(tier, flats, COLORS.slice(1), INTERNET_NODATA)
   return fillColor(valueKey(), mode === 'cities' ? tier : null)
 }
 
@@ -295,6 +316,21 @@ async function ensureAirports(map: maplibregl.Map) {
   src?.setData(geo)
 }
 
+/** Load housing.json once and merge its values into the municipality features. */
+async function ensureHousing(map: maplibregl.Map) {
+  if (housing !== undefined || loading) return
+  const g = gen
+  const got = await loadHousing()
+  if (g !== gen || loading) return // the country changed meanwhile: these values belong to the other one
+  housing = got
+  if (!housing || !geo) return
+  for (const f of geo.features) {
+    const row = housing.m[String(f.id)]
+    if (row) Object.assign(f.properties, housingProps(row))
+  }
+  ;(map.getSource('munis') as maplibregl.GeoJSONSource | undefined)?.setData(geo)
+}
+
 /** Load internet.json once and merge its values into the municipality features. */
 async function ensureInternet(map: maplibregl.Map) {
   if (internet !== undefined || loading) return
@@ -313,7 +349,7 @@ async function ensureInternet(map: maplibregl.Map) {
 }
 
 function destGeoJSON(): FeatureCollection {
-  if (mode === 'internet' || mode === 'gems') return { type: 'FeatureCollection', features: [] }
+  if (mode === 'internet' || mode === 'gems' || mode === 'housing') return { type: 'FeatureCollection', features: [] }
   if (mode === 'hospitals') return hospitals ? hospitalMarkers(hospitals, tier) : { type: 'FeatureCollection', features: [] }
   if (mode === 'airports') return airports ? airportMarkers(airports, tier, summer) : { type: 'FeatureCollection', features: [] }
   return cityGeoJSON(tier)
@@ -367,6 +403,14 @@ function renderLegend() {
       `<div class="wide"><i class="hatched" style="background-color:${COLORS[3]}"></i>Hatched: estimated from speed tests within ${internet?.params.estimate_radius_km ?? 10} km</div>`
     return
   }
+  if (mode === 'housing') {
+    const labels = housingLegend(tier)
+    $('#legend').innerHTML =
+      COLORS.slice(1).map((c, i) => item(c, labels[i])).join('') +
+      item(INTERNET_NODATA, 'No figure') +
+      `<div class="wide"><i class="hatched" style="background-color:${COLORS[3]}"></i>Hatched: not the place's own figure (nearby, area or province estimate)</div>`
+    return
+  }
   if (mode === 'gems') {
     $('#legend').innerHTML =
       item(GEM_COLORS.gem, 'Gem: meets everything') + item(GEM_COLORS.near, 'Near miss: one short') +
@@ -408,6 +452,7 @@ function refresh(map: maplibregl.Map) {
     airports: AIRPORT_TEXT,
     internet: METRICS,
     hospitals: country === 'fr' ? HOSPITAL_TEXT_FR : HOSPITAL_TEXT,
+    housing: HOUSING_TEXT,
     gems: CITY_TEXT[country],
   }[mode]
   const counts: (number | null)[] =
@@ -428,10 +473,19 @@ function refresh(map: maplibregl.Map) {
   $('#summer-note').textContent =
     country === 'fr' ? '(summer-only, or winter-only ski routes)' : '(summer-only, or winter-only in Canarias)'
   $('#mobile-wrap').hidden = mode !== 'internet'
+  $('#flats-wrap').hidden = mode !== 'housing'
   const noun = `<strong>${text[tier].noun.replace(/^an? /, '')}</strong>`
   $('#lead').innerHTML =
     mode === 'gems'
       ? 'Small places that meet <strong>all</strong> your needs (gold) or miss just one (pale). Tune the thresholds below.'
+      : mode === 'housing'
+      ? country === 'es'
+        ? tier === 1
+          ? 'Median <strong>rent</strong> per m² a month from declared leases (Ministry of Housing).'
+          : 'Appraisal <strong>price</strong> per m²: towns over 25,000 have their own; villages show their province average (hatched).'
+        : tier === 1
+          ? 'Advertised <strong>rent</strong> per m² a month, charges included (ANIL rent map 2025).'
+          : 'Median <strong>price</strong> per m² of sales over the last 5 years (DVF).'
       : mode === 'internet'
       ? `Average ${noun}${tier === 3 ? '' : ' speed'} per municipality from Speedtest by Ookla, measured locally or estimated from nearby tests (hatched), last 4 quarters.`
       : `Public transport time from each municipality to the nearest ${noun}, best connection of a weekday.`
@@ -439,11 +493,13 @@ function refresh(map: maplibregl.Map) {
 
   if (mode === 'gems') renderGemControls()
   // gems need all four datasets: judging before they arrive would show wrong counts
-  const gemsLoading = mode === 'gems' && [airports, internet, hospitals].some((x) => x === undefined)
+  const gemsLoading = mode === 'gems' && [airports, internet, hospitals, housing].some((x) => x === undefined)
   const gemResult = mode === 'gems' && geo && !loading && !gemsLoading ? computeGems() : null
   const h =
     mode === 'gems'
       ? gemResult && gemHeadline(gemResult)
+      : mode === 'housing'
+        ? housing ? housingHeadline(housing, tier, flats) : null
       : mode === 'cities'
       ? headline(tier)
       : mode === 'airports'
@@ -466,10 +522,11 @@ function refresh(map: maplibregl.Map) {
   }
   const gemsMissing = [
     !data && 'cities', airports === null && 'airports', internet === null && 'internet', hospitals === null && 'hospitals',
+    housing === null && 'housing',
   ].filter(Boolean)
   const missing = {
     cities: !data, airports: airports === null, internet: internet === null, hospitals: hospitals === null,
-    gems: gemsMissing.length > 0,
+    housing: housing === null, gems: gemsMissing.length > 0,
   }[mode]
   s.hidden = !missing
   s.innerHTML = {
@@ -477,6 +534,7 @@ function refresh(map: maplibregl.Map) {
     airports: 'Airport travel times have not been computed yet. Run <code>python3 pipeline/compute_airports.py</code>.',
     internet: 'Internet speeds have not been computed yet. Run <code>python3 pipeline/compute_internet.py</code>.',
     hospitals: 'Hospital travel times have not been computed yet. Run <code>python3 pipeline/compute_hospitals.py</code>.',
+    housing: 'Housing prices have not been computed yet. Run <code>python3 pipeline/compute_housing.py</code>.',
     gems: `Missing data (${gemsMissing.join(', ')}): those criteria fail everywhere.`,
   }[mode]
 
@@ -496,6 +554,9 @@ function refresh(map: maplibregl.Map) {
       `Computed ${fmtDate(hospitals.generated_at)} · ${hospitals.hospitals.length} hospitals · ${hospitals.params.source}` +
       (hospitals.params.population_year ? ` · population ${hospitals.params.population_year}` : '')
     $('#hospital-notes').innerHTML = hospitals.params.notes.map((n) => `<li>${n}</li>`).join('')
+  } else if (mode === 'housing' && housing) {
+    meta.textContent = `Computed ${fmtDate(housing.generated_at)} · ${housing.params.sources.join(' · ')}`
+    $('#housing-notes').innerHTML = housing.params.notes.map((n) => `<li>${n}</li>`).join('')
   } else if (mode === 'internet' && internet) {
     const q = internet.params.quarters
     const n = Object.values(internet.m).filter((r) => typeof r[mobile ? 5 : 0] === 'number').length
@@ -631,7 +692,17 @@ function renderGemControls() {
   limit('city', TIME_CHOICES)
   limit('air', TIME_CHOICES)
   limit('hosp', HOSP_TIME_CHOICES)
-  for (const [on, row] of [['#g-net-on', 'net'], ['#g-city-on', 'city'], ['#g-air-on', 'air'], ['#g-hosp-on', 'hosp']] as const) {
+  const price = (key: 'rent' | 'buy', choices: number[], fmt: (v: number) => string) => {
+    const d = { kind: 'house' as HomeKind, max: key === 'rent' ? GEM_DEFAULTS.rent!.max : 1500 }
+    const l = f[key] ?? { kind: (sel(`#g-${key}-kind`).value || d.kind) as HomeKind, max: shownNum(`#g-${key}-max`) ?? d.max }
+    inp(`#g-${key}-on`).checked = !!f[key]
+    sel(`#g-${key}-kind`).value = l.kind
+    options(sel(`#g-${key}-max`), choices.map((v) => [String(v), fmt(v)]), String(withChoice(choices, l.max)))
+  }
+  price('rent', RENT_CHOICES, (v) => `€${v}`)
+  price('buy', BUY_CHOICES, (v) => `€${v.toLocaleString('en')}`)
+  for (const [on, row] of [['#g-net-on', 'net'], ['#g-city-on', 'city'], ['#g-air-on', 'air'], ['#g-hosp-on', 'hosp'],
+    ['#g-rent-on', 'rent'], ['#g-buy-on', 'buy']] as const) {
     inp(on).closest('.g-row')!.classList.toggle('off', !f[row])
   }
 }
@@ -646,6 +717,8 @@ function readGemControls(): GemFilters {
   const val = (id: string) => $<HTMLSelectElement>(id).value
   const limit = (key: string): Limit | null =>
     inp(`#g-${key}-on`).checked ? { tier: Number(val(`#g-${key}-tier`)) as Tier, max: Number(val(`#g-${key}-max`)) } : null
+  const price = (key: string): PriceLimit | null =>
+    inp(`#g-${key}-on`).checked ? { kind: val(`#g-${key}-kind`) as HomeKind, max: Number(val(`#g-${key}-max`)) } : null
   return {
     pop: val('#g-pop') === 'any' ? null : Number(val('#g-pop')),
     net: inp('#g-net-on').checked ? { kind: val('#g-net-kind') as 'fixed', min: Number(val('#g-net-min')) } : null,
@@ -654,6 +727,8 @@ function readGemControls(): GemFilters {
     air: limit('air'),
     summer: inp('#g-summer').checked,
     hosp: limit('hosp'),
+    rent: price('rent'),
+    buy: price('buy'),
   }
 }
 
@@ -661,7 +736,9 @@ function gemTooltip(p: Record<string, unknown>): string {
   const v = judge(p, gemFilters)
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
-  const label: Record<Check['crit'], string> = { net: 'Internet', city: 'City', air: 'Airport', hosp: 'Hospital' }
+  const label: Record<Check['crit'], string> = {
+    net: 'Internet', city: 'City', air: 'Airport', hosp: 'Hospital', rent: 'Rent', buy: 'Price to buy',
+  }
   const failed = v.checks.filter((c) => !c.ok)
   const verdict =
     v.cls === 3 ? `Over ${gemFilters.pop!.toLocaleString('en')} inhabitants: not a gem`
@@ -695,6 +772,14 @@ function gemTooltip(p: Record<string, unknown>): string {
     if (c.crit === 'net') {
       value = c.value === null ? 'no speed data' : `${c.est ? '≈ ' : ''}${Math.round(c.value)} Mbps${c.est ? ' (estimate)' : ''}`
       limit = `≥ ${f.net!.min} Mbps`
+    } else if (c.crit === 'rent' || c.crit === 'buy') {
+      const lp = f[c.crit]!
+      const rent = c.crit === 'rent'
+      const fmt = (v: number) => (rent ? `€${v.toFixed(1)}` : `€${Math.round(v).toLocaleString('en')}`)
+      value = c.value === null
+        ? 'no figure'
+        : `${c.scope ? '≈ ' : ''}${fmt(c.value)}/m²${rent ? ' a month' : ''}, ${lp.kind}${c.scope ? ` (${SCOPE_TEXT[c.scope]})` : ''}`
+      limit = `≤ ${fmt(lp.max)}`
     } else {
       const l = f[c.crit]!
       value = c.value === null ? 'none within 3 h' : c.value === 0 ? '' : fmtMinutes(c.value)
@@ -730,7 +815,7 @@ async function setCountry(map: maplibregl.Map, cc: Country, padding: () => mapli
   country = cc
   setDataCountry(cc)
   loading = true
-  airports = internet = hospitals = undefined
+  airports = internet = hospitals = housing = undefined
   hideTooltip()
   refresh(map)
   const loaded = await loadData()
@@ -765,13 +850,15 @@ async function setMode(map: maplibregl.Map, m: Mode) {
   if (m === 'airports') await ensureAirports(map)
   if (m === 'internet') await ensureInternet(map)
   if (m === 'hospitals') await ensureHospitals(map)
-  if (m === 'gems') await Promise.all([ensureAirports(map), ensureInternet(map), ensureHospitals(map)])
+  if (m === 'housing') await ensureHousing(map)
+  if (m === 'gems') await Promise.all([ensureAirports(map), ensureInternet(map), ensureHospitals(map), ensureHousing(map)])
   if (mode !== m) return // another mode was chosen while this one loaded
   refresh(map)
 }
 
 function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string {
   if (mode === 'gems') return gemTooltip(p)
+  if (mode === 'housing') return housingTooltip(p)
   if (mode === 'internet') return internetTooltip(p, tier, mobile, internet)
   if (mode === 'hospitals') {
     return hospitals
@@ -823,6 +910,7 @@ async function main() {
   // browsers may restore a ticked checkbox on reload: start from what is shown
   summer = $<HTMLInputElement>('#summer').checked
   mobile = $<HTMLInputElement>('#mobile').checked
+  flats = $<HTMLInputElement>('#flats').checked
   const [style, loaded] = await Promise.all([loadStyle(), loadData()])
   geo = loaded.geo
   data = loaded.cities
@@ -958,6 +1046,10 @@ async function main() {
   )
   $<HTMLInputElement>('#mobile').addEventListener('change', (e) => {
     mobile = (e.target as HTMLInputElement).checked
+    refresh(map)
+  })
+  $<HTMLInputElement>('#flats').addEventListener('change', (e) => {
+    flats = (e.target as HTMLInputElement).checked
     refresh(map)
   })
   $<HTMLInputElement>('#summer').addEventListener('change', (e) => {

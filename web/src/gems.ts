@@ -8,6 +8,8 @@ import type { Tier } from './airports'
 
 export type NetKind = 'fixed' | 'mobile' | 'either'
 export interface Limit { tier: Tier; max: number }
+export type HomeKind = 'house' | 'flat'
+export interface PriceLimit { kind: HomeKind; max: number } // €/m² (rent: per month)
 export interface GemFilters {
   pop: number | null // largest population a gem may have; null = any size
   net: { kind: NetKind; min: number } | null // minimum download in Mbps; null = criterion off
@@ -16,6 +18,8 @@ export interface GemFilters {
   air: Limit | null
   summer: boolean // count seasonal flights
   hosp: Limit | null
+  rent: PriceLimit | null
+  buy: PriceLimit | null
 }
 
 export const DEFAULTS: GemFilters = {
@@ -26,15 +30,20 @@ export const DEFAULTS: GemFilters = {
   air: { tier: 2, max: 90 },
   summer: false,
   hosp: { tier: 2, max: 45 },
+  rent: { kind: 'house', max: 10 },
+  buy: null,
 }
 
 export const POP_CHOICES = [1000, 2000, 5000, 10000, 20000, 50000]
 export const NET_CHOICES = [10, 25, 50, 100, 300]
 export const TIME_CHOICES = [30, 45, 60, 90, 120, 150, 180]
 export const HOSP_TIME_CHOICES = [15, 30, 45, 60, 90, 120, 180]
+export const RENT_CHOICES = [4, 5, 6, 7, 8, 9, 10, 12, 15]
+export const BUY_CHOICES = [500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000]
 
-export type Crit = 'net' | 'city' | 'air' | 'hosp'
-export interface Check { crit: Crit; value: number | null; ok: boolean; est?: boolean }
+export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy'
+/** scope (housing): 0 own figure, 1 nearby estimate, 2 province average, 3 area model */
+export interface Check { crit: Crit; value: number | null; ok: boolean; est?: boolean; scope?: number }
 /** 0 other, 1 near miss (exactly one criterion missed), 2 gem, 3 too big to be a gem. */
 export type GemClass = 0 | 1 | 2 | 3
 export interface Verdict { cls: GemClass; checks: Check[] }
@@ -71,6 +80,14 @@ export function judge(p: Record<string, unknown>, f: GemFilters): Verdict {
   }
   if (f.air) checks.push(minutes(num(p[`${f.summer ? 's' : 'y'}${f.air.tier}`]), f.air.max, 'air'))
   if (f.hosp) checks.push(minutes(num(p[`hm${f.hosp.tier}`]), f.hosp.max, 'hosp'))
+  for (const crit of ['rent', 'buy'] as const) {
+    const l = f[crit]
+    if (!l) continue
+    const key = `${crit === 'rent' ? 'r' : 'b'}${l.kind === 'flat' ? 'f' : 'h'}`
+    const value = num(p[key])
+    const scope = num(p[`s${key}`])
+    checks.push({ crit, value, ok: value !== null && value <= l.max, ...(scope !== null ? { scope } : {}) })
+  }
 
   const pop = num(p.pop)
   if (f.pop !== null && pop !== null && pop > f.pop) return { cls: 3, checks }
@@ -90,6 +107,8 @@ export function formatHash(f: GemFilters): string {
     `air=${limitText(f.air)}`,
     `summer=${f.summer ? 1 : 0}`,
     `hosp=${limitText(f.hosp)}`,
+    `rent=${f.rent ? `${f.rent.kind}:${f.rent.max}` : 'off'}`,
+    `buy=${f.buy ? `${f.buy.kind}:${f.buy.max}` : 'off'}`,
   ].join('&')
 }
 
@@ -108,6 +127,14 @@ function parseLimit(s: string | null, fallback: Limit | null): Limit | null {
 }
 
 const parseBool = (s: string | null, fallback: boolean) => (s === '1' ? true : s === '0' ? false : fallback)
+
+function parsePrice(s: string | null, fallback: PriceLimit | null): PriceLimit | null {
+  if (s === null) return fallback
+  if (s === 'off') return null
+  const [kind, m] = s.split(':')
+  const max = positive(m)
+  return (kind === 'house' || kind === 'flat') && max !== null ? { kind, max } : fallback
+}
 
 /** Settings from the hash query; anything missing or unreadable keeps its default. */
 export function parseHash(query: string): GemFilters {
@@ -131,5 +158,7 @@ export function parseHash(query: string): GemFilters {
     air: parseLimit(q.get('air'), d.air),
     summer: parseBool(q.get('summer'), d.summer),
     hosp: parseLimit(q.get('hosp'), d.hosp),
+    rent: parsePrice(q.get('rent'), d.rent),
+    buy: parsePrice(q.get('buy'), d.buy),
   }
 }
