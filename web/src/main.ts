@@ -354,6 +354,8 @@ function refresh(map: maplibregl.Map) {
     b.querySelector('.n')!.textContent = counts[t - 1] == null ? '' : String(counts[t - 1])
   })
   $('#summer-wrap').hidden = mode !== 'airports'
+  $('#summer-note').textContent =
+    country === 'fr' ? '(summer-only, or winter-only ski routes)' : '(summer-only, or winter-only in Canarias)'
   $('#mobile-wrap').hidden = mode !== 'internet'
   const noun = `<strong>${text[tier].noun.replace(/^an? /, '')}</strong>`
   $('#lead').innerHTML =

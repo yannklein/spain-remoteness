@@ -88,9 +88,9 @@ AIRPORTS = [
 FIELDS = ("iata", "name", "country", "lat", "lng", "tier_year", "tier_summer", "zone", "note")
 
 NOTES = [
-    "Cross-border public transport is almost entirely missing from TravelTime's data (Nov 2026 check: no French "
-    "commune reaches Geneva, Luxembourg, Karlsruhe, Girona, Barcelona or San Sebastián), so airports across the "
-    "border rarely come out nearest. Basel-Mulhouse lies on French soil and works.",
+    "Cross-border public transport is mostly missing from TravelTime's data: only a few communes near the border "
+    "reach Geneva, Luxembourg, Karlsruhe/Baden-Baden or Charleroi, and none reach Girona, Barcelona or San Sebastián "
+    "(Nov 2026). Basel-Mulhouse lies on French soil and works.",
 ]
 
 # (commune, airport) pairs printed after each run: cross-border links depend on TravelTime's data.
