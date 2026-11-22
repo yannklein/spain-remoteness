@@ -56,7 +56,7 @@ This adds a fifth map per country that combines the four existing ones. It is fo
 - **One judging function:** a single function, `judge()`, decides each class. The map colours through feature-state set from it, so the map, counts, list and tooltip can't disagree.
 - **Colours:**
   - gem: gold `#d99a00`;
-  - near miss: pale gold `#f2dc9b`;
-  - other: light grey `#e4e2dd`;
+  - near miss: pale gold `#f2d27e`;
+  - other: light grey `#f1f0ec`;
   - too big: the urban grey `#b9b7b1`.
 - **Tests:** vitest, a new dev dependency, tests the pure logic in `web/src/gems.ts`.

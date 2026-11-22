@@ -51,6 +51,7 @@ import {
   type Check,
   type GemFilters,
   type Limit,
+  type NetKind,
 } from './gems'
 
 type Mode = 'cities' | 'airports' | 'internet' | 'hospitals' | 'gems'
@@ -175,7 +176,7 @@ function applyEstimateLayer(map: maplibregl.Map) {
   if (mode === 'internet') map.setFilter('muni-est', internetEstimateFilter(tier, mobile))
 }
 
-const GEM_COLORS = { gem: '#d99a00', near: '#f2dc9b', other: '#e2e0da', big: URBAN }
+const GEM_COLORS = { gem: '#d99a00', near: '#f2d27e', other: '#f1f0ec', big: URBAN }
 
 function currentFill(): ExpressionSpecification {
   if (mode === 'gems') {
@@ -411,7 +412,9 @@ function refresh(map: maplibregl.Map) {
   $('#tier-help').textContent = text[tier].help
 
   if (mode === 'gems') renderGemControls()
-  const gemResult = mode === 'gems' && geo && !loading ? computeGems() : null
+  // gems need all four datasets: judging before they arrive would show wrong counts
+  const gemsLoading = mode === 'gems' && [airports, internet, hospitals].some((x) => x === undefined)
+  const gemResult = mode === 'gems' && geo && !loading && !gemsLoading ? computeGems() : null
   const h =
     mode === 'gems'
       ? gemResult && gemHeadline(gemResult)
@@ -427,10 +430,11 @@ function refresh(map: maplibregl.Map) {
   if (h) el.innerHTML = h
 
   const s = $('#status')
-  if (loading) {
+  if (loading || gemsLoading) {
     s.hidden = false
     s.textContent = `Loading ${COUNTRY_NAME[country]}…`
     $('#headline').hidden = true
+    $('#gems-list').innerHTML = ''
     renderLegend()
     return
   }
@@ -543,10 +547,10 @@ function renderGemList(map: maplibregl.Map, r: GemResult | null) {
   const shown = r.list.slice(0, 100)
   box.innerHTML =
     `<h2>Gems${gemFilters.net ? ', fastest internet first' : ''}</h2><ol>` +
-    shown.map((g) => `<li data-code="${g.code}"><span>${g.name}</span>${g.net !== null ? `<span class="muted">${Math.round(g.net)} Mbps</span>` : ''}</li>`).join('') +
+    shown.map((g) => `<li><button type="button" data-code="${g.code}"><span>${g.name}</span>${g.net !== null ? `<span class="muted">${Math.round(g.net)} Mbps</span>` : ''}</button></li>`).join('') +
     '</ol>' +
     (r.list.length > shown.length ? `<p class="more">and ${(r.list.length - shown.length).toLocaleString('en')} more on the map</p>` : '')
-  box.querySelectorAll<HTMLLIElement>('li').forEach((li) => li.addEventListener('click', () => zoomTo(map, li.dataset.code!)))
+  box.querySelectorAll<HTMLButtonElement>('li button').forEach((b) => b.addEventListener('click', () => zoomTo(map, b.dataset.code!)))
 }
 
 function zoomTo(map: maplibregl.Map, code: string) {
@@ -583,13 +587,17 @@ function renderGemControls() {
   const time = (list: number[]) => list.map((m) => [String(m), fmtMinutes(m)] as [string, string])
   options(sel('#g-pop'), [...POP_CHOICES.map((p) => [String(p), p.toLocaleString('en')] as [string, string]), ['any', 'any size']],
     f.pop === null ? 'any' : String(withChoice(POP_CHOICES, f.pop)))
+  // an unticked criterion keeps the values its selects show, so ticking it again brings them back
+  const shownNum = (id: string) => Number(sel(id).value) || null
+  const net = f.net ?? { kind: (sel('#g-net-kind').value || GEM_DEFAULTS.net!.kind) as NetKind, min: shownNum('#g-net-min') ?? GEM_DEFAULTS.net!.min }
   inp('#g-net-on').checked = !!f.net
-  options(sel('#g-net-min'), NET_CHOICES.map((m) => [String(m), String(m)]), String(withChoice(NET_CHOICES, (f.net ?? GEM_DEFAULTS.net!).min)))
-  sel('#g-net-kind').value = (f.net ?? GEM_DEFAULTS.net!).kind
+  options(sel('#g-net-min'), NET_CHOICES.map((m) => [String(m), String(m)]), String(withChoice(NET_CHOICES, net.min)))
+  sel('#g-net-kind').value = net.kind
   inp('#g-est').checked = f.est
   inp('#g-summer').checked = f.summer
   const limit = (key: 'city' | 'air' | 'hosp', choices: number[]) => {
-    const l = f[key] ?? (GEM_DEFAULTS[key] as Limit)
+    const d = GEM_DEFAULTS[key] as Limit
+    const l = f[key] ?? { tier: (shownNum(`#g-${key}-tier`) ?? d.tier) as Tier, max: shownNum(`#g-${key}-max`) ?? d.max }
     inp(`#g-${key}-on`).checked = !!f[key]
     options(sel(`#g-${key}-tier`), ([1, 2, 3] as Tier[]).map((t) => [String(t), text[key][t].label]), String(l.tier))
     options(sel(`#g-${key}-max`), time(choices), String(withChoice(choices, l.max)))
@@ -643,7 +651,7 @@ function gemTooltip(p: Record<string, unknown>): string {
     }
     if (c.crit === 'air' && f.air) {
       const a = airports?.airports[p[`${f.summer ? 's' : 'y'}a${f.air.tier}`] as number]
-      return a ? `to ${a[0]}` : ''
+      return a ? `to ${a[1]}` : ''
     }
     if (c.crit === 'hosp' && f.hosp) {
       if (c.value === 0) return 'in town'
@@ -700,6 +708,9 @@ async function setCountry(map: maplibregl.Map, cc: Country, padding: () => mapli
   refresh(map)
   const loaded = await loadData()
   if (g !== gen) return // a newer switch is under way
+  // the old country's gem classes would colour the new one's communes sharing a code
+  if (map.getSource('munis')) map.removeFeatureState({ source: 'munis' })
+  painted = null
   geo = loaded.geo
   data = loaded.cities
   muniNames.clear()

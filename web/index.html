@@ -45,27 +45,27 @@
       <form id="gems-controls" class="gems" data-for="gems" hidden onsubmit="return false">
         <div class="g-row">
           <span class="g-name">Size</span>
-          <span>under <select id="g-pop"></select> inhabitants</span>
+          <span>under <select id="g-pop" aria-label="Largest population"></select> inhabitants</span>
         </div>
         <div class="g-row">
           <label class="g-name"><input type="checkbox" id="g-net-on" autocomplete="off" /> Internet</label>
-          <span>≥ <select id="g-net-min"></select> Mbps <select id="g-net-kind">
+          <span>≥ <select id="g-net-min" aria-label="Minimum download speed"></select> Mbps <select id="g-net-kind" aria-label="Connection type">
             <option value="fixed">fixed</option><option value="mobile">mobile</option><option value="either">fixed or mobile</option>
           </select></span>
         </div>
         <label class="g-sub"><input type="checkbox" id="g-est" autocomplete="off" /> count estimates from nearby speed tests</label>
         <div class="g-row">
           <label class="g-name"><input type="checkbox" id="g-city-on" autocomplete="off" /> City</label>
-          <span><select id="g-city-tier"></select> within <select id="g-city-max"></select></span>
+          <span><select id="g-city-tier" aria-label="City category"></select> within <select id="g-city-max" aria-label="Longest time to a city"></select></span>
         </div>
         <div class="g-row">
           <label class="g-name"><input type="checkbox" id="g-air-on" autocomplete="off" /> Airport</label>
-          <span><select id="g-air-tier"></select> within <select id="g-air-max"></select></span>
+          <span><select id="g-air-tier" aria-label="Airport category"></select> within <select id="g-air-max" aria-label="Longest time to an airport"></select></span>
         </div>
         <label class="g-sub"><input type="checkbox" id="g-summer" autocomplete="off" /> count seasonal flights</label>
         <div class="g-row">
           <label class="g-name"><input type="checkbox" id="g-hosp-on" autocomplete="off" /> Hospital</label>
-          <span><select id="g-hosp-tier"></select> within <select id="g-hosp-max"></select></span>
+          <span><select id="g-hosp-tier" aria-label="Hospital category"></select> within <select id="g-hosp-max" aria-label="Longest time to a hospital"></select></span>
         </div>
         <button type="button" id="g-reset" class="g-reset">Reset to defaults</button>
       </form>
