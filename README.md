@@ -251,17 +251,16 @@ and `*_n` (leases, listings or sales behind the figure).
 
 ## Climate map
 
-`pipeline/compute_climate.py --country es|fr` downloads ERA5-Land daily statistics (Copernicus Climate Data Store:
-daily max and min of 2 m temperature, 2015–2024, one request per box, statistic and year, cached in
-`.cache/<cc>/climate/`) and samples the ~9 km grid at each town centre (the nearest land cell on the coast).
-It needs a free CDS account: accept the dataset licence on
-[its page](https://cds.climate.copernicus.eu/datasets/derived-era5-land-daily-statistics) and put the API token in
-`~/.cdsapirc` (`url: https://cds.climate.copernicus.eu/api` and `key: <token>`). The first download takes hours
-(the CDS queue).
+`pipeline/compute_climate.py --country es|fr` downloads five indicators from the Copernicus
+[Climate indicators for Europe](https://cds.climate.copernicus.eu/datasets/sis-ecde-climate-indicators) (ERA5
+reanalysis, 0.25° grid: hot days ≥ 35 °C, tropical nights, frost days per year; monthly mean daily highs and lows),
+averages 2015–2024 and samples the cell at each town centre. It needs a free CDS account: accept the dataset licence
+on its page and put the API token in `~/.cdsapirc` (`url: https://cds.climate.copernicus.eu/api`, `key: <token>`).
+The downloads take seconds (pre-computed files; an earlier ERA5-Land daily approach queued for hours).
 
-`climate.csv`: `hot_days` (≥ 35 °C), `hot_nights` (≥ 20 °C), `frost_days` (< 0 °C) per year, `july_high_c`,
-`january_low_c`. ERA5-Land runs 2–3 °C cooler than stations on extreme days, so hot-day counts are conservative.
-Contains modified Copernicus Climate Change Service information (CC BY 4.0).
+`climate.csv`: `hot_days`, `hot_nights`, `frost_days` per year, `july_high_c`, `january_low_c`. A 25 km grid smooths
+mountains and valleys; coastal cells partly over the sea keep nights warmer. Contains modified Copernicus Climate
+Change Service information (CC BY 4.0).
 
 ## Incentives map
 

@@ -84,6 +84,7 @@ import {
   TIME_CHOICES,
   formatHash,
   judge,
+  neededData,
   parseHash,
   type Check,
   type GemFilters,
@@ -556,7 +557,7 @@ function refresh(map: maplibregl.Map) {
         ? `Regional <strong>${INCENTIVE_TEXT[tier].label.toLowerCase()}</strong> for this municipality, from official texts checked November 2026.`
         : `<strong>${INCENTIVE_TEXT[tier].label}</strong> incentives (FRR / FRR+ zones), from the official list of July 2025.`
       : mode === 'climate'
-      ? `<strong>${CLIMATE_TEXT[tier].label}</strong> a year at each town, averaged over ${climate?.params.period ?? '2015–2024'} (ERA5-Land, ~9 km grid).`
+      ? `<strong>${CLIMATE_TEXT[tier].label}</strong> a year at each town, averaged over ${climate?.params.period ?? '2015–2024'} (Copernicus, ~25 km grid).`
       : mode === 'housing'
       ? country === 'es'
         ? tier === 1
@@ -605,10 +606,10 @@ function refresh(map: maplibregl.Map) {
     renderLegend()
     return
   }
-  const gemsMissing = [
-    !data && 'cities', airports === null && 'airports', internet === null && 'internet', hospitals === null && 'hospitals',
-    housing === null && 'housing', climate === null && 'climate', incentives === null && 'incentives',
-  ].filter(Boolean)
+  // only the datasets an active criterion reads (a dataset not published yet must not alarm anyone)
+  const loadedNull = { cities: !data, airports: airports === null, internet: internet === null, hospitals: hospitals === null,
+    housing: housing === null, climate: climate === null, incentives: incentives === null }
+  const gemsMissing = neededData(gemFilters).filter((d) => loadedNull[d])
   const missing = {
     cities: !data, airports: airports === null, internet: internet === null, hospitals: hospitals === null,
     housing: housing === null, climate: climate === null, incentives: incentives === null, gems: gemsMissing.length > 0,
@@ -1064,7 +1065,7 @@ async function main() {
       data: geo!,
       promoteId: 'code',
       attribution:
-        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID / Arcep · Hospitals © Ministerio de Sanidad / FINESS, DREES · Communes © INSEE, Etalab · Housing © MIVAU, ANIL, DVF · Climate © Copernicus (ERA5-Land) · Incentives © AEAT, regional governments, ANCT',
+        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID / Arcep · Hospitals © Ministerio de Sanidad / FINESS, DREES · Communes © INSEE, Etalab · Housing © MIVAU, ANIL, DVF · Climate © Copernicus (C3S, ERA5) · Incentives © AEAT, regional governments, ANCT',
     })
     map.addSource('provinces', { type: 'geojson', data: provincesGeo! })
     map.addSource('dests', { type: 'geojson', data: destGeoJSON() })

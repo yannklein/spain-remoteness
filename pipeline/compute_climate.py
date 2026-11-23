@@ -1,85 +1,59 @@
-"""Climate per municipality from ERA5-Land daily statistics (Copernicus CDS), 2015-2024 averages.
+"""Climate per municipality from the Copernicus "Climate indicators for Europe" (C3S / EEA), 2015-2024 averages.
 
-Per municipality (the grid cell at its town centre, ~9 km; the nearest land cell on the coast):
-  hot days      daily maximum >= 35 °C, per year
-  hot nights    daily minimum >= 20 °C ("tropical nights"), per year
-  frost days    daily minimum < 0 °C, per year
-  July high     mean daily maximum in July; January low: mean daily minimum in January
-ERA5-Land runs cooler than weather stations on the hottest days (Montoro, 14 Aug 2021: 44.9 °C vs
-47.4 °C measured), so hot-day counts are conservative.
+The indicators are computed by Copernicus from ERA5 reanalysis on a 0.25° grid (~25 km), yearly or monthly:
+  hot days      days a year with a maximum >= 35 °C
+  hot nights    days a year with a minimum >= 20 °C ("tropical nights")
+  frost days    days a year with a minimum < 0 °C
+  July high     monthly mean of the daily maximum in July; January low: of the daily minimum in January
+Each municipality takes the grid cell at its town centre. A 25 km cell averages mountains with valleys, so
+mountain villages read milder and valley towns cooler than they are on the hottest days.
 
-Needs a free CDS account: ~/.cdsapirc with the API token, and the dataset licence accepted on
-https://cds.climate.copernicus.eu/datasets/derived-era5-land-daily-statistics
+Needs a free CDS account (~/.cdsapirc with the API token) and the licence of the dataset accepted on
+https://cds.climate.copernicus.eu/datasets/sis-ecde-climate-indicators (CC BY 4.0). Five small downloads.
 Usage: python pipeline/compute_climate.py --country es|fr [--download-only]
 """
 
 import argparse
 import math
+import zipfile
 from datetime import datetime, timezone
 
 from common import add_country_arg, dump_json, load_json, paths, write_csv
 
-DATASET = "derived-era5-land-daily-statistics"
+DATASET = "sis-ecde-climate-indicators"
 YEARS = range(2015, 2025)
-STATS = ("daily_maximum", "daily_minimum")
-# [north, west, south, east] per country; each country downloads its own boxes (self-contained)
-BOXES = {
-    "es": {"peninsula": [44.0, -9.5, 35.0, 4.5], "canarias": [29.5, -18.3, 27.5, -13.3]},
-    "fr": {"metropole": [51.2, -5.3, 41.3, 9.7]},
+BASE = {"origin": "reanalysis", "spatial_aggregation": "gridded", "version": "v2_0"}
+# metric -> (request, netCDF variable, month or None for yearly values, Kelvin?)
+INDICATORS = {
+    "hot": (dict(variable="hot_days", temporal_aggregation="yearly", other_parameters="35_c"), "hot_days", None, False),
+    "nights": (dict(variable="tropical_nights", temporal_aggregation="yearly"), "tropical_nights", None, False),
+    "frost": (dict(variable="frost_days", temporal_aggregation="yearly"), "frost_days", None, False),
+    "jul_high": (dict(variable="daily_maximum_temperature", temporal_aggregation="monthly", other_parameters="mean"),
+                 "t2m", 7, True),
+    "jan_low": (dict(variable="daily_minimum_temperature", temporal_aggregation="monthly", other_parameters="mean"),
+                "t2m", 1, True),
 }
-HOT, TROPICAL, FROST = 35.0, 20.0, 0.0
-
-
-def cache_file(p, box, stat, year):
-    return p.climate_cache / f"{box}-{stat}-{year}.nc"
-
-
-PARALLEL = 6   # the CDS queues several requests per user; one at a time would take most of a day
+METRICS = tuple(INDICATORS)
 
 
 def download(cc):
-    from concurrent.futures import ThreadPoolExecutor
     import cdsapi
     p = paths(cc)
     p.climate_cache.mkdir(parents=True, exist_ok=True)
-    todo = [(box, area, stat, year) for box, area in BOXES[cc].items() for year in YEARS for stat in STATS
-            if not cache_file(p, box, stat, year).exists()]
-
-    def fetch(job):
-        box, area, stat, year = job
-        f = cache_file(p, box, stat, year)
-        tmp = f.with_suffix(f".{stat}.part")
-        print(f"requesting {box} {stat} {year}", flush=True)
-        cdsapi.Client(quiet=True, progress=False).retrieve(DATASET, {
-            "variable": ["2m_temperature"], "year": str(year),
-            "month": [f"{m:02d}" for m in range(1, 13)], "day": [f"{d:02d}" for d in range(1, 32)],
-            "daily_statistic": stat, "time_zone": "utc+01:00", "frequency": "1_hourly", "area": area,
-        }, str(tmp))
-        tmp.rename(f)
-        print(f"done {box} {stat} {year}", flush=True)
-
-    with ThreadPoolExecutor(PARALLEL) as pool:
-        list(pool.map(fetch, todo))
+    client = cdsapi.Client(quiet=True, progress=False)
+    for metric, (req, _, _, _) in INDICATORS.items():
+        z = p.climate_cache / f"{req['variable']}.zip"
+        if not z.exists():
+            print(f"requesting {req['variable']}", flush=True)
+            client.retrieve(DATASET, dict(BASE, **req), str(z.with_suffix(".part")))
+            z.with_suffix(".part").rename(z)
 
 
-def year_metrics(tmax, tmin, months):
-    """Per grid cell for one year (arrays day x lat x lon, °C; months per day) -> dict of lat x lon arrays."""
+def period_mean(values, dates, years=YEARS, month=None):
+    """Mean over the time steps in `years` (and `month` for monthly series): time x lat x lon -> lat x lon."""
     import numpy as np
-    with np.errstate(invalid="ignore"):
-        out = {
-            "hot": (tmax >= HOT).sum(axis=0).astype(float),
-            "nights": (tmin >= TROPICAL).sum(axis=0).astype(float),
-            "frost": (tmin < FROST).sum(axis=0).astype(float),
-            "jul_high": np.nanmean(tmax[months == 7], axis=0),
-            "jan_low": np.nanmean(tmin[months == 1], axis=0),
-        }
-    sea = np.isnan(tmax).all(axis=0)
-    for k in out:
-        out[k][sea] = np.nan
-    return out
-
-
-METRICS = ("hot", "nights", "frost", "jul_high", "jan_low")
+    idx = [k for k, d in enumerate(dates) if d.year in years and (month is None or d.month == month)]
+    return np.nanmean(values[idx], axis=0)
 
 
 def sample_index(grid, lat, lon, la, lo, reach=3):
@@ -129,47 +103,40 @@ def climate_csv_rows(output, munis):
                     for mu in munis]
 
 
-def box_grids(p, box):
-    """Mean metrics over YEARS for one box -> (lat, lon, {metric: grid})."""
+def load_grids(p):
+    """{metric: grid} over YEARS, plus lat and lon (all indicators share the grid)."""
     import netCDF4
     import numpy as np
-    sums, n, lat, lon = None, 0, None, None
-    for year in YEARS:
-        days = {}
-        for stat in STATS:
-            with netCDF4.Dataset(cache_file(p, box, stat, year)) as d:
-                t = d.variables["valid_time"]
-                dates = netCDF4.num2date(t[:], t.units)
-                days[stat] = (np.ma.filled(d.variables["t2m"][:].astype(float), np.nan) - 273.15,
-                              np.array([x.month for x in dates]))
-                lat, lon = d.variables["latitude"][:].data, d.variables["longitude"][:].data
-        (tmax, months), (tmin, _) = days["daily_maximum"], days["daily_minimum"]
-        got = year_metrics(tmax, tmin, months)
-        sums = got if sums is None else {k: sums[k] + got[k] for k in METRICS}
-        n += 1
-    return lat, lon, {k: sums[k] / n for k in METRICS}
+    grids, lat, lon = {}, None, None
+    for metric, (req, var, month, kelvin) in INDICATORS.items():
+        with zipfile.ZipFile(p.climate_cache / f"{req['variable']}.zip") as z:
+            name = next(n for n in z.namelist() if n.endswith(".nc"))
+            data = z.read(name)
+        with netCDF4.Dataset("inmemory.nc", memory=data) as d:
+            t = d.variables["time"]
+            dates = netCDF4.num2date(t[:], t.units)
+            values = np.ma.filled(d.variables[var][:].astype(float), np.nan)
+            lat, lon = d.variables["lat"][:].data, d.variables["lon"][:].data
+        grid = period_mean(values, dates, month=month)
+        grids[metric] = grid - 273.15 if kelvin else grid
+    return lat, lon, grids
 
 
 def compute(cc):
     p = paths(cc)
     places = load_json(p.places)
-    grids = {box: box_grids(p, box) for box in BOXES[cc]}
+    lat, lon, grids = load_grids(p)
     values, missing = {}, []
     for mu in places["municipalities"]:
-        got = None
-        for lat, lon, g in grids.values():
-            ij = sample_index(g["hot"], lat, lon, mu["lat"], mu["lng"])
-            if ij is not None:
-                got = [float(g[k][ij]) for k in METRICS]
-                break
-        if got is None:
+        ij = sample_index(grids["hot"], lat, lon, mu["lat"], mu["lng"])
+        if ij is None:
             missing.append(mu["name"])
         else:
-            values[mu["code"]] = got
-    params = {"source": "ERA5-Land daily statistics (Copernicus Climate Change Service)", "period": f"{YEARS[0]}-{YEARS[-1]}",
-              "thresholds": {"hot": HOT, "nights": TROPICAL, "frost": FROST},
-              "notes": ["ERA5-Land is a ~9 km grid: it runs 2-3 °C cooler than weather stations on the hottest days, so "
-                        "hot-day counts are conservative, and it averages mountain villages with their valleys."]}
+            values[mu["code"]] = [float(grids[k][ij]) for k in METRICS]
+    params = {"source": "Copernicus Climate Change Service, Climate indicators for Europe (ERA5 reanalysis, 0.25°)",
+              "period": f"{YEARS[0]}-{YEARS[-1]}",
+              "notes": ["A ~25 km grid: mountain villages read milder and valley towns slightly cooler on the hottest days "
+                        "than their own weather station would say."]}
     out = build_output(places, values, params)
     dump_json(out, p.climate_json, compact=True)
     write_csv(p.climate_csv, *climate_csv_rows(out, places["municipalities"]))

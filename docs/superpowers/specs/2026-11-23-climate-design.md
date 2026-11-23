@@ -7,7 +7,7 @@ Summer heat is becoming a deal-breaker for living somewhere (inland Spain especi
 This adds a Climate map per country and gems criteria.
 
 ## Approaches
-- **A. ERA5-Land daily statistics (Copernicus CDS), chosen.** Gridded at about 9 km, daily highs and lows, CC BY licence, can be cut to each country, free account.
+- **A. ERA5-Land daily statistics (Copernicus CDS), chosen, then replaced by the pre-computed indicators (see Build notes).** Gridded at about 9 km, daily highs and lows, CC BY licence, can be cut to each country, free account.
 - B. E-OBS (station-based grid): better at extremes, but its licence covers non-commercial research and education.
 - C. WorldClim monthly normals: no account, but no counts of hot days.
 
@@ -35,3 +35,10 @@ This adds a Climate map per country and gems criteria.
 - **Locations:**
   - cache: `.cache/<cc>/climate/`;
   - outputs: `climate.json`, `climate.csv`.
+
+## Build notes (2026-11-23)
+- **Source changed.** ERA5-Land daily statistics are computed on demand: after 12 hours in the CDS queue, only 8 of the 60 yearly files had arrived. The same indicators exist pre-computed in the Copernicus "Climate indicators for Europe" (sis-ecde-climate-indicators, CC BY 4.0, ERA5, 0.25°): hot_days (35_c), tropical_nights and frost_days yearly, plus the monthly mean daily max and min.
+  - Five downloads take seconds.
+  - The grid is coarser (~25 km instead of 9 km).
+  - Hot-day counts match stations better (Seville: 44 a year, July high 35.1 °C).
+- **Coast:** cells that are partly sea keep nights warm (Marseille: 78 tropical nights), and the notes say so.

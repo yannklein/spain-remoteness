@@ -202,3 +202,17 @@ export function parseHash(query: string): GemFilters {
     incent: parseIncent(q.get('incent'), d.incent),
   }
 }
+
+export type Dataset = 'cities' | 'airports' | 'internet' | 'hospitals' | 'housing' | 'climate' | 'incentives'
+
+/** Datasets the active criteria read (cities always: it carries the population). */
+export function neededData(f: GemFilters): Dataset[] {
+  const out: Dataset[] = ['cities']
+  if (f.air) out.push('airports')
+  if (f.net) out.push('internet')
+  if (f.hosp) out.push('hospitals')
+  if (f.rent || f.buy) out.push('housing')
+  if (f.heat !== null || f.frost !== null) out.push('climate')
+  if (f.incent !== null) out.push('incentives')
+  return out
+}

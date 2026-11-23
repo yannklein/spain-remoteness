@@ -162,3 +162,12 @@ describe('hash', () => {
     expect(parseHash('')).toEqual(DEFAULTS)
   })
 })
+
+describe('datasets a filter needs', () => {
+  it('lists only the datasets of active criteria', async () => {
+    const { neededData } = await import('./gems')
+    expect(neededData(DEFAULTS).sort()).toEqual(['airports', 'cities', 'hospitals', 'internet'])
+    expect(neededData({ ...DEFAULTS, net: null, heat: 5, incent: 'any' }).sort()).toEqual(['airports', 'cities', 'climate', 'hospitals', 'incentives'])
+    expect(neededData({ ...DEFAULTS, rent: { kind: 'house', max: 8 } })).toContain('housing')
+  })
+})

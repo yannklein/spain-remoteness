@@ -158,7 +158,7 @@
           <li>Times are the same public transport times as on the other maps (best weekday connection, capped at 3 hours); a place that is itself a city of the chosen category counts as being there, and a hospital in town counts as 0 min.</li>
           <li>Internet is the average download speed from Speedtest by Ookla, measured in the municipality or, if ticked, estimated from tests within 10 km. A place with no speed data, or with no connection within 3 hours, fails that criterion.</li>
           <li>Incentives count offers open to all ages (see the Incentives map).</li>
-          <li>Heat and frost come from the Climate map (2015–2024 averages, ERA5-Land).</li>
+          <li>Heat and frost come from the Climate map (2015–2024 averages, Copernicus).</li>
           <li>Rent and price to buy come from the Housing map: a missing figure fails the criterion; estimates count and say so in the tooltip (in Spain, the price to buy is the province average for villages).</li>
           <li>Your settings are kept in the page address: bookmark or share it to come back to the same filters.</li>
         </ul>
@@ -172,10 +172,9 @@
         </ul>
         <ul data-for="incentives" id="incentive-offers" hidden></ul>
         <ul data-for="climate" hidden>
-          <li>Daily highs and lows from ERA5-Land, the Copernicus reanalysis on a ~9 km grid, averaged over 2015–2024: <b>hot days</b> reach 35 °C or more, <b>hot nights</b> stay at 20 °C or above, <b>frost days</b> drop below 0 °C.</li>
-          <li>Each municipality takes the grid cell at its town centre (the nearest land cell on the coast). A 9 km cell averages a mountain village with its valley.</li>
-          <li>ERA5-Land runs 2–3 °C cooler than weather stations on the hottest days (Montoro, 14 August 2021: 44.9 °C against 47.4 °C measured), so hot-day counts are on the low side.</li>
-          <li>Contains modified Copernicus Climate Change Service information (ERA5-Land, CC BY 4.0).</li>
+          <li>From the Copernicus “Climate indicators for Europe” (computed from ERA5 reanalysis on a ~25 km grid), averaged over 2015–2024: <b>hot days</b> reach 35 °C or more, <b>hot nights</b> stay at 20 °C or above, <b>frost days</b> drop below 0 °C.</li>
+          <li>Each municipality takes the grid cell at its town centre. A 25 km cell averages a mountain village with its valley, and on the coast it partly covers the sea, which keeps nights warmer (Marseille, Ajaccio).</li>
+          <li>Contains modified Copernicus Climate Change Service information (CC BY 4.0).</li>
         </ul>
         <ul data-for="housing" data-country="es" hidden>
           <li><b>Rent</b>: median rent per m² a month of the leases declared to the tax agency (Ministry of Housing, SERPAVI), houses and flats separately, latest year of 2022–2024 with at least 10 leases. Where a municipality has too few, the figure is estimated from those within 10 km (hatched).</li>

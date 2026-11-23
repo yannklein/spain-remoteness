@@ -9,17 +9,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import compute_climate as cc  # noqa: E402
 
 
-def test_year_counts_per_cell():
-    # 2 cells, 4 days; days 0-1 in January, days 2-3 in July
-    tmax = np.array([[[10, 36]], [[12, 35]], [[30, 34.9]], [[32, 40]]], dtype=float)   # (day, lat, lon)
-    tmin = np.array([[[-1, 5]], [[0, -0.5]], [[21, 19.9]], [[20, 25]]], dtype=float)
-    months = np.array([1, 1, 7, 7])
-    got = cc.year_metrics(tmax, tmin, months)
-    assert got["hot"].tolist() == [[0, 3]]
-    assert got["nights"].tolist() == [[2, 1]]
-    assert got["frost"].tolist() == [[1, 1]]
-    assert got["jul_high"].tolist() == [[31, 37.45]]
-    assert got["jan_low"].tolist() == [[-0.5, 2.25]]
+def test_period_mean_selects_years_and_month():
+    from datetime import datetime
+    dates = [datetime(2014, 7, 1), datetime(2015, 1, 1), datetime(2015, 7, 1), datetime(2024, 7, 1), datetime(2025, 7, 1)]
+    values = np.array([[[100.0]], [[0.0]], [[30.0]], [[40.0]], [[100.0]]])
+    assert cc.period_mean(values, dates, month=7).tolist() == [[35.0]]       # July 2015 and 2024 only
+    assert cc.period_mean(values, dates).tolist() == [[70 / 3]]               # every step of 2015-2024
 
 
 def test_sea_cells_stay_nan_and_points_take_the_nearest_land_cell():
