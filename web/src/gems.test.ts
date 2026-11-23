@@ -11,7 +11,7 @@ const good = (): Record<string, unknown> => ({
   rh: 7.5, rf: 9, bh: 1400, bf: 1800, srh: 0, srf: 0, sbh: 2, sbf: 2,
   ch: 12, cn: 30, cf: 4,
   i1o: 1, i2o: 0, i3o: 0,
-  sn: 62, sw: 0.4, sv: 0.55, sr: 420, sh: 0, sl: 'pmb',
+  sn: 62, sw: 0.4, sv: 0.55, sr: 420, sh: 0, sl: 'pmb', sk: 96,
 })
 const f = (over: Partial<GemFilters> = {}): GemFilters => ({ ...DEFAULTS, ...over })
 
@@ -142,13 +142,17 @@ describe('incentive criterion', () => {
 
 describe('setting criteria', () => {
   it('are off by default', () => {
-    expect(judge(good(), f()).checks.some((c) => ['nature', 'green', 'char', 'relief', 'water'].includes(c.crit))).toBe(false)
+    expect(judge(good(), f()).checks.some((c) => ['nature', 'rural', 'green', 'char', 'relief', 'water'].includes(c.crit))).toBe(false)
   })
   it('nature, July greenness and relief are minimums', () => {
     const r = judge(good(), f({ nature: 60, green: 0.6, relief: 300 }))
     expect(r.checks.find((c) => c.crit === 'nature')).toMatchObject({ ok: true, value: 62 })
     expect(r.checks.find((c) => c.crit === 'green')).toMatchObject({ ok: false, value: 0.55 })
     expect(r.checks.find((c) => c.crit === 'relief')).toMatchObject({ ok: true, value: 420 })
+  })
+  it('countryside is a minimum share of land that is not built-up', () => {
+    expect(judge(good(), f({ rural: 95 })).checks.find((c) => c.crit === 'rural')).toMatchObject({ ok: true, value: 96 })
+    expect(judge(good(), f({ rural: 98 })).checks.find((c) => c.crit === 'rural')!.ok).toBe(false)
   })
   it('character needs a label or a protected historic centre', () => {
     expect(judge(good(), f({ char: true })).checks.find((c) => c.crit === 'char')!.ok).toBe(true)
@@ -177,13 +181,13 @@ describe('hash', () => {
     const x: GemFilters = {
       pop: null, net: null, est: false, city: { tier: 3, max: 30 }, air: null, summer: true, hosp: { tier: 1, max: 120 },
       rent: null, buy: { kind: 'flat', max: 2000 }, heat: 5, frost: null, incent: 'grant',
-      nature: 50, green: null, char: true, relief: null, water: false,
+      nature: 50, rural: 90, green: null, char: true, relief: null, water: false,
     }
-    expect(formatHash(x)).toBe('pop=any&net=off&est=0&city=3:30&air=off&summer=1&hosp=1:120&rent=off&buy=flat:2000&heat=5&frost=off&incent=grant&nature=50&green=off&char=1&relief=off&water=0')
+    expect(formatHash(x)).toBe('pop=any&net=off&est=0&city=3:30&air=off&summer=1&hosp=1:120&rent=off&buy=flat:2000&heat=5&frost=off&incent=grant&nature=50&rural=90&green=off&char=1&relief=off&water=0')
     expect(parseHash(formatHash(x))).toEqual(x)
   })
   it('falls back to the defaults on garbage', () => {
-    expect(parseHash('pop=lots&net=fast:x&city=9:60&air=2&hosp=2:-5&summer=maybe&est=2&rent=castle:9&buy=house:&heat=-1&frost=lots&incent=money&nature=-3&green=x&char=2&relief=high&water=maybe')).toEqual(DEFAULTS)
+    expect(parseHash('pop=lots&net=fast:x&city=9:60&air=2&hosp=2:-5&summer=maybe&est=2&rent=castle:9&buy=house:&heat=-1&frost=lots&incent=money&nature=-3&rural=all&green=x&char=2&relief=high&water=maybe')).toEqual(DEFAULTS)
   })
   it('keeps old links working: no rent/buy means the defaults', () => {
     expect(parseHash('pop=20000&net=fixed:100&est=1&city=2:60&air=2:90&summer=0&hosp=2:45')).toEqual(DEFAULTS)

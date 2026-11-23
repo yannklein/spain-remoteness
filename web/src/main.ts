@@ -47,6 +47,7 @@ import {
   settingLegend,
   settingProps,
   settingTooltip,
+  type NatureMeasure,
   type SettingData,
 } from './setting'
 import {
@@ -86,6 +87,7 @@ import { dataUrl, setDataCountry, viaText, withCountry, type Country, type Gatew
 import {
   DEFAULTS as GEM_DEFAULTS,
   BUY_CHOICES,
+  RURAL_CHOICES,
   GREEN_CHOICES,
   NATURE_CHOICES,
   RELIEF_CHOICES,
@@ -211,7 +213,7 @@ let housing: HousingData | null | undefined
 let climate: ClimateData | null | undefined
 let incentives: IncentivesData | null | undefined
 let setting: SettingData | null | undefined
-let july = false
+let natureMeasure: NatureMeasure = 'wild'
 let young = false
 let flats = false
 const muniNames = new Map<string, string>()
@@ -273,7 +275,7 @@ function currentFill(): ExpressionSpecification {
   if (mode === 'housing') return housingFill(tier, flats, COLORS.slice(1), INTERNET_NODATA)
   if (mode === 'climate') return climateFill(tier, COLORS.slice(1), INTERNET_NODATA)
   if (mode === 'incentives') return incentiveFill(tier, young, INTERNET_NODATA)
-  if (mode === 'setting') return settingFill(tier, july, COLORS.slice(1), INTERNET_NODATA)
+  if (mode === 'setting') return settingFill(tier, natureMeasure, COLORS.slice(1), INTERNET_NODATA)
   return fillColor(valueKey(), mode === 'cities' ? tier : null)
 }
 
@@ -498,7 +500,7 @@ function renderLegend() {
     return
   }
   if (mode === 'setting') {
-    $('#legend').innerHTML = settingLegend(tier, july, COLORS.slice(1)).map(([c, l]) => item(c, l)).join('') + item(INTERNET_NODATA, 'No data')
+    $('#legend').innerHTML = settingLegend(tier, natureMeasure, COLORS.slice(1)).map(([c, l]) => item(c, l)).join('') + item(INTERNET_NODATA, 'No data')
     return
   }
   if (mode === 'incentives') {
@@ -585,7 +587,7 @@ function refresh(map: maplibregl.Map) {
   $('#mobile-wrap').hidden = mode !== 'internet'
   // Spain's price to buy covers any home: the flats switch would change nothing there
   $('#young-wrap').hidden = mode !== 'incentives'
-  $('#july-wrap').hidden = mode !== 'setting' || tier !== 1
+  $('#measure-wrap').hidden = mode !== 'setting' || tier !== 1
   $('#flats-wrap').hidden = mode !== 'housing' || (tier === 2 && !!housing?.params.buy_all_dwellings)
   const noun = `<strong>${text[tier].noun.replace(/^an? /, '')}</strong>`
   $('#lead').innerHTML =
@@ -593,9 +595,11 @@ function refresh(map: maplibregl.Map) {
       ? 'Small places that meet <strong>all</strong> your needs (gold) or miss just one (pale). Tune the thresholds below.'
       : mode === 'setting'
       ? tier === 1
-        ? july
+        ? natureMeasure === 'july'
           ? 'How <strong>green in July</strong> the land within 3 km is (satellite vegetation index, 2021–2025).'
-          : 'Share of the <strong>land</strong> within 3 km of the village centre that is nature: forest, meadow, scrub, wetland (satellite land cover).'
+          : natureMeasure === 'countryside'
+            ? '<strong>Countryside</strong>: share of the land within 3 km that isn\'t built-up (farmland, forest, open land).'
+            : '<strong>Wild nature</strong>: share of the land within 3 km that is forest, scrub, grassland, wetland, rock or snow (satellite land cover).'
         : tier === 2
           ? '<strong>Character</strong>: beautiful-village labels, protected historic centres and listed buildings.'
           : '<strong>Relief</strong>: height difference within 5 km, from flat plains to mountain valleys.'
@@ -630,7 +634,7 @@ function refresh(map: maplibregl.Map) {
         : mode === 'climate'
           ? climate ? climateHeadline(climate, tier) : null
           : mode === 'setting'
-            ? setting ? settingHeadline(setting, tier, july) : null
+            ? setting ? settingHeadline(setting, tier, natureMeasure) : null
           : mode === 'incentives'
             ? incentives && geo
               ? incentiveHeadline(incentives, tier, young, new Map(geo.features.map((f) => [String(f.id), Number(f.properties.pop) || 0])))
@@ -853,11 +857,12 @@ function renderGemControls() {
   }
   dayLimit('heat', HEAT_CHOICES, 10)
   dayLimit('frost', FROST_CHOICES, 20)
-  const minimum = (key: 'nature' | 'green' | 'relief', choices: number[], d: number, fmt: (v: number) => string) => {
+  const minimum = (key: 'nature' | 'rural' | 'green' | 'relief', choices: number[], d: number, fmt: (v: number) => string) => {
     inp(`#g-${key}-on`).checked = f[key] !== null
     options(sel(`#g-${key}-min`), choices.map((v) => [String(v), fmt(v)]), String(withChoice(choices, f[key] ?? shownNum(`#g-${key}-min`) ?? d)))
   }
   minimum('nature', NATURE_CHOICES, 50, (v) => `${v}%`)
+  minimum('rural', RURAL_CHOICES, 90, (v) => `${v}%`)
   minimum('green', GREEN_CHOICES, 0.5, (v) => v.toFixed(1))
   minimum('relief', RELIEF_CHOICES, 300, (v) => `${v} m`)
   inp('#g-char-on').checked = f.char
@@ -866,7 +871,7 @@ function renderGemControls() {
   if (f.incent) sel('#g-incent-kind').value = f.incent
   for (const [on, row] of [['#g-net-on', 'net'], ['#g-city-on', 'city'], ['#g-air-on', 'air'], ['#g-hosp-on', 'hosp'],
     ['#g-rent-on', 'rent'], ['#g-buy-on', 'buy'], ['#g-heat-on', 'heat'], ['#g-frost-on', 'frost'],
-    ['#g-incent-on', 'incent'], ['#g-nature-on', 'nature'], ['#g-green-on', 'green'], ['#g-relief-on', 'relief']] as const) {
+    ['#g-incent-on', 'incent'], ['#g-nature-on', 'nature'], ['#g-rural-on', 'rural'], ['#g-green-on', 'green'], ['#g-relief-on', 'relief']] as const) {
     inp(on).closest('.g-row')!.classList.toggle('off', f[row] === null)
   }
 }
@@ -897,6 +902,7 @@ function readGemControls(): GemFilters {
     frost: inp('#g-frost-on').checked ? Number(val('#g-frost-max')) : null,
     incent: inp('#g-incent-on').checked ? (val('#g-incent-kind') as IncentiveKind) : null,
     nature: inp('#g-nature-on').checked ? Number(val('#g-nature-min')) : null,
+    rural: inp('#g-rural-on').checked ? Number(val('#g-rural-min')) : null,
     green: inp('#g-green-on').checked ? Number(val('#g-green-min')) : null,
     char: inp('#g-char-on').checked,
     relief: inp('#g-relief-on').checked ? Number(val('#g-relief-min')) : null,
@@ -911,7 +917,7 @@ function gemTooltip(p: Record<string, unknown>): string {
   const label: Record<Check['crit'], string> = {
     net: 'Internet', city: 'City', air: 'Airport', hosp: 'Hospital', rent: 'Rent', buy: 'Price to buy',
     heat: 'Hot days (≥ 35 °C)', frost: 'Frost days', incent: 'Incentives',
-    nature: 'Nature within 3 km', green: 'Green in July', char: 'Character', relief: 'Relief within 5 km', water: 'Water nearby',
+    nature: 'Wild nature within 3 km', rural: 'Countryside within 3 km', green: 'Lush in July', char: 'Character', relief: 'Relief within 5 km', water: 'Water nearby',
   }
   const failed = v.checks.filter((c) => !c.ok)
   const verdict =
@@ -946,7 +952,7 @@ function gemTooltip(p: Record<string, unknown>): string {
     if (c.crit === 'net') {
       value = c.value === null ? 'no speed data' : `${c.est ? '≈ ' : ''}${Math.round(c.value)} Mbps${c.est ? ' (estimate)' : ''}`
       limit = `≥ ${f.net!.min} Mbps`
-    } else if (c.crit === 'nature' || c.crit === 'green' || c.crit === 'relief' || c.crit === 'water') {
+    } else if (c.crit === 'nature' || c.crit === 'rural' || c.crit === 'green' || c.crit === 'relief' || c.crit === 'water') {
       const fmt = (v: number) => (c.crit === 'green' ? `NDVI ${v.toFixed(2)}` : c.crit === 'relief' ? `${Math.round(v)} m` : `${Math.round(v)}%`)
       value = c.value === null ? 'no data' : fmt(c.value)
       limit = c.crit === 'water' ? 'at least 1%' : `at least ${fmt((f[c.crit] as number))}`
@@ -1108,7 +1114,7 @@ async function main() {
   mobile = $<HTMLInputElement>('#mobile').checked
   flats = $<HTMLInputElement>('#flats').checked
   young = $<HTMLInputElement>('#young').checked
-  july = $<HTMLInputElement>('#july').checked
+  natureMeasure = $<HTMLSelectElement>('#measure').value as NatureMeasure
   const [style, loaded] = await Promise.all([loadStyle(), loadData()])
   geo = loaded.geo
   data = loaded.cities
@@ -1246,8 +1252,8 @@ async function main() {
     mobile = (e.target as HTMLInputElement).checked
     refresh(map)
   })
-  $<HTMLInputElement>('#july').addEventListener('change', (e) => {
-    july = (e.target as HTMLInputElement).checked
+  $<HTMLSelectElement>('#measure').addEventListener('change', (e) => {
+    natureMeasure = (e.target as HTMLSelectElement).value as NatureMeasure
     refresh(map)
   })
   $<HTMLInputElement>('#young').addEventListener('change', (e) => {

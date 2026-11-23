@@ -150,3 +150,4 @@ details a { color: var(--accent); }
 #tooltip .cond { font-size: 11.5px; }
 #tooltip { max-width: 340px; }
 .gems .g-check { margin-left: 0; }
+#measure { font: inherit; font-size: 12.5px; max-width: 250px; }

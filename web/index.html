@@ -41,8 +41,12 @@
         <input type="checkbox" id="summer" autocomplete="off" /> Include seasonal routes
         <span class="muted" id="summer-note">(summer-only, or winter-only in Canarias)</span>
       </label>
-      <label id="july-wrap" class="summer" hidden>
-        <input type="checkbox" id="july" autocomplete="off" /> How green in July instead
+      <label id="measure-wrap" class="summer" hidden>
+        Show <select id="measure" autocomplete="off">
+          <option value="wild">wild nature (forest, scrub, rock…)</option>
+          <option value="countryside">countryside (not built-up, farmland included)</option>
+          <option value="july">how green it stays in July</option>
+        </select>
       </label>
       <label id="young-wrap" class="summer" hidden>
         <input type="checkbox" id="young" autocomplete="off" /> Include offers with an age limit <span class="muted">(under 35, 36 or 40)</span>
@@ -105,11 +109,15 @@
           </select></span>
         </div>
         <div class="g-row">
-          <label class="g-name"><input type="checkbox" id="g-nature-on" autocomplete="off" /> Nature</label>
-          <span>≥ <select id="g-nature-min" aria-label="Least nature within 3 km"></select> within 3 km</span>
+          <label class="g-name"><input type="checkbox" id="g-nature-on" autocomplete="off" /> Wild nature</label>
+          <span>≥ <select id="g-nature-min" aria-label="Least wild nature within 3 km"></select> of the land, 3 km</span>
         </div>
         <div class="g-row">
-          <label class="g-name"><input type="checkbox" id="g-green-on" autocomplete="off" /> July green</label>
+          <label class="g-name"><input type="checkbox" id="g-rural-on" autocomplete="off" /> Countryside</label>
+          <span>≥ <select id="g-rural-min" aria-label="Least countryside within 3 km"></select> not built-up, 3 km</span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-green-on" autocomplete="off" /> Lush in July</label>
           <span>vegetation index ≥ <select id="g-green-min" aria-label="Least July greenness"></select></span>
         </div>
         <div class="g-row">
@@ -181,7 +189,7 @@
           <li>Your settings are kept in the page address: bookmark or share it to come back to the same filters.</li>
         </ul>
         <ul data-for="setting" hidden>
-          <li><b>Green</b>: share of the land within 3 km of the village centre (water left out) that is forest, shrubland, grassland or wetland, from ESA WorldCover 2021 (10 m satellite land cover, read at 80 m). Farmland, bare rock and built-up land don't count. “How green in July” is the mean satellite vegetation index (NDVI, MODIS 500 m) within 3 km in July 2021–2025: about 0.2 is dry and brown, 0.6 and above lush.</li>
+          <li><b>Nature</b>: <b>wild nature</b> is the share of the land within 3 km of the village centre (water left out) that is forest, scrub, grassland, wetland, bare rock or snow, from ESA WorldCover 2021 (10 m satellite land cover, read at 80 m). <b>Countryside</b> is all the land that isn't built-up, farmland included. <b>How green it stays in July</b> is the mean satellite vegetation index (NDVI, MODIS 500 m) within 3 km in July 2021–2025: about 0.2 is dry and brown, 0.6 and above lush.</li>
           <li><b>Setting</b>: height difference between the highest and lowest point within 5 km (Copernicus DEM, 90 m). Water nearby counts lakes, wide rivers and the sea within 3 km; narrow rivers are too thin to show at this resolution.</li>
           <li data-for="setting" data-country="es"><b>Character (Spain)</b>: Los Pueblos más Bonitos de España (the association's list), historic ensembles (“conjunto histórico”) and buildings of cultural interest (BIC) located in the municipality, from Wikidata. Wikidata is much more complete in some regions (Balearics) than others (Basque Country, Galicia), so the building counts are shown in the tooltip but not used for colour.</li>
           <li data-for="setting" data-country="fr"><b>Character (France)</b>: Plus Beaux Villages de France, Petites Cités de Caractère (2023), sites patrimoniaux remarquables (protected historic centres from the Géoportail de l'Urbanisme: the commune counts when its centre lies inside one) and historic monuments (Mérimée, Ministère de la Culture).</li>

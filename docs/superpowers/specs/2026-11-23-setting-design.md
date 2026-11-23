@@ -50,3 +50,11 @@ separate signals to combine on the gems map, never one beauty score.
 - **Wikidata answers are cached,** because the query service throttles hard at times.
 - **Headline:** follows the July checkbox.
 - **Deferred:** network failures read as "sea" in the tile reader; the stage cache doesn't track its settings; MODIS circles near tile edges are cut short.
+
+## Nature, not green (2026-11-23, user: "not the colour green, non-urban natural area"; chose C)
+- **The Green view becomes Nature,** with two shares of the land within 3 km:
+  - **wild nature:** forest, scrub, grassland, wetland, plus bare rock, sparse vegetation and snow;
+  - **countryside:** everything that isn't built-up, farmland included.
+- **July greenness** stays as an optional third measure.
+- **Gems:** "wild nature ≥ X%", "countryside ≥ X%" and "lush in July", all off by default.
+- **Medians in places under 20,000:** wild nature 77% in Spain and 64% in France; countryside 98–99%. Countryside mainly separates villages from suburbs.

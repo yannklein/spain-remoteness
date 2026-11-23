@@ -38,10 +38,11 @@ def test_circle_reads_across_tiles():
 
 
 def test_cover_shares():
-    vals = np.array([10, 10, 20, 40, 50, 80, 0, 30])
+    vals = np.array([10, 10, 20, 40, 50, 80, 0, 30, 60, 70])
     got = cs.cover_shares(vals)
-    # nature and built-up are shares of the land (water is not counted against them); water is a share of everything
-    assert got == {"nature": 4 / 6 * 100, "water": 1 / 7 * 100, "built": 1 / 6 * 100}   # 0 = no data, left out
+    # wild nature includes bare rock (60) and snow (70), not farmland (40); shares of the land (water left out);
+    # water is a share of everything; countryside = everything on land that isn't built-up
+    assert got == {"nature": 6 / 8 * 100, "water": 1 / 9 * 100, "built": 1 / 8 * 100, "countryside": 7 / 8 * 100}
     assert cs.cover_shares(np.array([0, 0])) is None
 
 
@@ -83,11 +84,11 @@ def test_output_rows_and_csv():
     values = {"44001": {"nature": 61.24, "water": 0.0, "built": 1.04, "ndvi": 0.4123, "relief": 312.6, "elev": 1281.2,
                         "label": None, "historic": 0, "listed": 1}}
     out = cs.build_output(places, values, {})
-    assert out["m"]["44001"] == [61.2, 0.0, 1.0, 0.41, 313, 1281, None, 0, 1, 73]
+    assert out["m"]["44001"] == [61.2, 0.0, 1.0, 0.41, 313, 1281, None, 0, 1, 73]   # countryside = 100 - built
     header, rows = cs.setting_csv_rows(out, places["municipalities"])
-    assert header[4:] == ["nature_pct", "water_pct", "built_pct", "ndvi_july", "relief_m", "elevation_m", "label",
-                          "historic_centre", "listed_buildings"]
-    assert rows[0][4:] == [61.2, 0.0, 1.0, 0.41, 313, 1281, None, 0, 1]
+    assert header[4:] == ["wild_nature_pct", "countryside_pct", "water_pct", "built_pct", "ndvi_july", "relief_m",
+                          "elevation_m", "label", "historic_centre", "listed_buildings"]
+    assert rows[0][4:] == [61.2, 99.0, 0.0, 1.0, 0.41, 313, 1281, None, 0, 1]
 
 
 def test_labelled_villages_by_name_first():

@@ -1,8 +1,9 @@
 """Setting per municipality: green around, summer greenness, relief and water, village character.
 
 Green and setting (sampled around each town centre):
-  nature %    forest, shrubland, grassland, wetland, moss within 3 km (ESA WorldCover 2021, read at 80 m from
-              the 10 m cloud-optimised tiles); water % (rivers, lakes, sea) and built-up % likewise
+  nature %    wild nature: forest, scrub, grassland, wetland, bare rock, snow, as a share of the land within 3 km
+              (ESA WorldCover 2021, read at 80 m from the 10 m tiles); built-up % likewise, and countryside % =
+              100 - built-up (farmland included); water % (lakes, wide rivers, sea) as a share of everything
   ndvi_july   mean July vegetation index within 3 km, 2021-2025 (MODIS 500 m 16-day composites, NASA, via the
               Microsoft Planetary Computer): ~0.2 brown, ~0.4 mixed, 0.6+ lush green
   relief      highest minus lowest point within 5 km (Copernicus DEM GLO-90); elevation at the town centre
@@ -33,7 +34,9 @@ from common import add_country_arg, dump_json, load_json, paths, write_csv
 from compute_housing import _names, normalise
 
 GREEN_KM, RELIEF_KM, NDVI_KM = 3, 5, 3
-NATURE = (10, 20, 30, 90, 95, 100)   # trees, shrubland, grassland, wetland, mangroves, moss & lichen
+# wild nature: trees, shrubland, grassland, bare rock & sparse vegetation, snow & ice, wetland, mangroves, moss & lichen
+# (not farmland, 40, nor built-up, 50); countryside = all land that isn't built-up
+NATURE = (10, 20, 30, 60, 70, 90, 95, 100)
 WATER, BUILT = (80,), (50,)
 WC_URL = "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_{}_Map.tif"
 WC_DECIMATE = 8                      # read the 10 m tiles' 80 m overview
@@ -135,7 +138,9 @@ def cover_shares(vals):
     n = len(vals)
     land = int((~np.isin(vals, WATER)).sum())   # sea and lakes don't count against nature
     share = lambda k: (np.isin(vals, k).sum() / land * 100) if land else 0.0   # noqa: E731
-    return {"nature": share(NATURE), "water": np.isin(vals, WATER).sum() / n * 100, "built": share(BUILT)}
+    built = share(BUILT)
+    return {"nature": share(NATURE), "water": np.isin(vals, WATER).sum() / n * 100, "built": built,
+            "countryside": (100.0 - built) if land else 0.0}
 
 
 def relief(vals):
@@ -422,10 +427,14 @@ def build_output(places, values, params):
 
 
 def setting_csv_rows(output, munis):
-    header = ["code", "name", "province", "population", "nature_pct", "water_pct", "built_pct", "ndvi_july", "relief_m",
-              "elevation_m", "label", "historic_centre", "listed_buildings"]
-    return header, [[mu["code"], mu["name"], mu.get("province"), mu.get("pop")] + (output["m"].get(mu["code"]) or [None] * 10)[:9]
-                    for mu in munis]
+    header = ["code", "name", "province", "population", "wild_nature_pct", "countryside_pct", "water_pct", "built_pct",
+              "ndvi_july", "relief_m", "elevation_m", "label", "historic_centre", "listed_buildings"]
+    rows = []
+    for mu in munis:
+        r = (output["m"].get(mu["code"]) or [None] * 10)[:9]
+        countryside = round(100 - r[2], 1) if r[2] is not None else None   # land that isn't built-up
+        rows.append([mu["code"], mu["name"], mu.get("province"), mu.get("pop"), r[0], countryside] + r[1:])
+    return header, rows
 
 
 def main():

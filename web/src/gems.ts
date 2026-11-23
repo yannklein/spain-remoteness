@@ -24,7 +24,8 @@ export interface GemFilters {
   heat: number | null // most days a year at or above 35 °C
   frost: number | null // most frost days a year
   incent: IncentiveKind | null // at least one offer of this kind (open to all ages)
-  nature: number | null // at least this % of nature (forest, meadow, scrub, wetland) within 3 km
+  nature: number | null // at least this % of wild nature (forest, scrub, grassland, wetland, rock) on the land within 3 km
+  rural: number | null // at least this % of countryside (land that isn't built-up, farmland included) within 3 km
   green: number | null // at least this July vegetation index (NDVI) within 3 km
   char: boolean // a beautiful-village label or a protected historic centre
   relief: number | null // at least this many metres between the highest and lowest point within 5 km
@@ -45,6 +46,7 @@ export const DEFAULTS: GemFilters = {
   frost: null,
   incent: null,
   nature: null,
+  rural: null,
   green: null,
   char: false,
   relief: null,
@@ -60,10 +62,11 @@ export const BUY_CHOICES = [500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000]
 export const HEAT_CHOICES = [1, 3, 5, 10, 20, 30, 50]
 export const FROST_CHOICES = [1, 5, 10, 20, 40, 60, 90]
 export const NATURE_CHOICES = [25, 40, 50, 60, 75, 90]
+export const RURAL_CHOICES = [70, 80, 90, 95]
 export const GREEN_CHOICES = [0.3, 0.4, 0.5, 0.6, 0.7]
 export const RELIEF_CHOICES = [100, 200, 300, 500, 800]
 
-export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy' | 'heat' | 'frost' | 'incent' | 'nature' | 'green' | 'char' | 'relief' | 'water'
+export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy' | 'heat' | 'frost' | 'incent' | 'nature' | 'rural' | 'green' | 'char' | 'relief' | 'water'
 /** scope (housing): 0 own figure, 1 nearby estimate, 2 province average, 3 area model */
 export interface Check { crit: Crit; value: number | null; ok: boolean; est?: boolean; scope?: number }
 /** 0 other, 1 near miss (exactly one criterion missed), 2 gem, 3 too big to be a gem. */
@@ -126,6 +129,7 @@ export function judge(p: Record<string, unknown>, f: GemFilters): Verdict {
   // setting: sn nature %, sv July NDVI, sr relief m, sw water %, sl label, sh protected historic centre
   const atLeast = (crit: Crit, value: number | null, min: number) => checks.push({ crit, value, ok: value !== null && value >= min })
   if (f.nature !== null) atLeast('nature', num(p.sn), f.nature)
+  if (f.rural !== null) atLeast('rural', num(p.sk), f.rural)
   if (f.green !== null) atLeast('green', num(p.sv), f.green)
   if (f.relief !== null) atLeast('relief', num(p.sr), f.relief)
   if (f.water) atLeast('water', num(p.sw), 1)
@@ -159,6 +163,7 @@ export function formatHash(f: GemFilters): string {
     `frost=${f.frost ?? 'off'}`,
     `incent=${f.incent ?? 'off'}`,
     `nature=${f.nature ?? 'off'}`,
+    `rural=${f.rural ?? 'off'}`,
     `green=${f.green ?? 'off'}`,
     `char=${f.char ? 1 : 0}`,
     `relief=${f.relief ?? 'off'}`,
@@ -230,6 +235,7 @@ export function parseHash(query: string): GemFilters {
     frost: parseDays(q.get('frost'), d.frost),
     incent: parseIncent(q.get('incent'), d.incent),
     nature: parseDays(q.get('nature'), d.nature),
+    rural: parseDays(q.get('rural'), d.rural),
     green: parseDays(q.get('green'), d.green),
     char: parseBool(q.get('char'), d.char),
     relief: parseDays(q.get('relief'), d.relief),
@@ -248,6 +254,6 @@ export function neededData(f: GemFilters): Dataset[] {
   if (f.rent || f.buy) out.push('housing')
   if (f.heat !== null || f.frost !== null) out.push('climate')
   if (f.incent !== null) out.push('incentives')
-  if (f.nature !== null || f.green !== null || f.char || f.relief !== null || f.water) out.push('setting')
+  if (f.nature !== null || f.rural !== null || f.green !== null || f.char || f.relief !== null || f.water) out.push('setting')
   return out
 }
