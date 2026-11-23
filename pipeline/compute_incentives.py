@@ -8,6 +8,7 @@ Usage: python pipeline/compute_incentives.py --country es|fr
 
 import argparse
 import csv
+import difflib
 import importlib
 import io
 import re
@@ -37,15 +38,18 @@ def parse_rango_x(text, munis):
     names = _by_name(munis, ("22", "44", "50"))
     seen, unmatched = {}, set()
     for line in text.split("\n"):
-        parts = [p.strip() for p in re.split(r"\s{2,}", line.strip()) if p.strip()]
-        if len(parts) != 3 or parts[2] not in ("HUESCA", "TERUEL", "ZARAGOZA"):
+        # the province is sometimes only one space after a long municipality name
+        m = re.match(r"^\s*(.+?)\s{2,}(.+?)\s+(HUESCA|TERUEL|ZARAGOZA)\s*$", line)
+        if not m:
             continue
+        parts = [m.group(1).strip(), m.group(2).strip()]
         settlement, muni = normalise(parts[0]), normalise(parts[1])
         code = names.get(muni)
         if code is None:
             unmatched.add(parts[1])
             continue
-        own = settlement == muni or settlement in _names(parts[1])
+        # "BLECUA" is the main settlement of "BLECUA Y TORRES"
+        own = settlement == muni or settlement in _names(parts[1]) or muni.startswith(settlement + " y ")
         seen[code] = None if (own or seen.get(code, "partial") is None) else "partial"
     if unmatched:
         print(f"Rango X: {len(unmatched)} municipalities not matched: {sorted(unmatched)[:20]}", file=sys.stderr)
@@ -83,21 +87,42 @@ def parse_clm(text):
 
 def parse_valencia(text):
     csv.field_size_limit(sys.maxsize)
-    return {r["cod_ine_mun"].zfill(5) for r in csv.DictReader(io.StringIO(text)) if r.get("fondo_coop_mun_2025") == "S"}
+    # the law counts municipalities in the fund "in the tax year or the previous one"
+    return {r["cod_ine_mun"].zfill(5) for r in csv.DictReader(io.StringIO(text))
+            if "S" in (r.get("fondo_coop_mun_2025"), r.get("fondo_coop_mun_2024"))}
 
 
-def parse_rioja(text):
-    """INE codes of La Rioja's 'pequeños municipios' (first annex of its deductions in the tax manual)."""
+def parse_rioja(text, munis):
+    """INE codes of La Rioja's 'pequeños municipios' (first annex of its deductions in the tax manual).
+
+    Codes are INE municipality codes with a check digit (12 -> 26001); each is checked against its name, since the
+    manual has typos (129 for Robres del Castillo, 26126). Page running headers repeat the annex title, indented.
+    """
     lines = text.split("\n")
-    starts = [i for i, l in enumerate(lines) if l.strip().startswith("Anexo: Relación de municipios de La Rioja con")]
+    title = "Anexo: Relación de municipios de La Rioja con"
+    starts = [i for i, l in enumerate(lines) if l.strip().startswith(title) and len(l) - len(l.lstrip()) < 4]
     start = next((i for i in starts if "pequeños municipios" in " ".join(lines[i:i + 6])), None)
     if start is None:
         return set()
     end = next((i for i in starts if i > start), len(lines))
-    codes = set()
-    for line in lines[start:end]:
-        for c, _ in re.findall(r"(?<!\S)(\d{1,4})\s+([A-ZÁÉÍÓÚÑa-záéíóúñ][^\d]*)", line):
-            codes.add("26" + f"{int(c) // 10:03d}")
+    rioja = [m for m in munis if m["code"].startswith("26")]
+    by_name = {n: m["code"] for m in rioja for n in _names(m["name"])}
+    codes, unmatched = set(), []
+    for line in lines[start + 1:end]:
+        for c, name in re.findall(r"(?<!\S)(\d{1,4})\s{2,}([A-ZÁÉÍÓÚÑ][^\d]*?)(?=\s{2,}\d|\s*$)", line):
+            guess = "26" + f"{int(c) // 10:03d}"
+            names = _names(name.strip())
+            by_code = next((m for m in rioja if m["code"] == guess), None)
+            own = _names(by_code["name"]) if by_code else set()
+            close = any(o.startswith(n) or difflib.SequenceMatcher(None, n, o).ratio() >= 0.9 for n in names for o in own)
+            if by_code and (names & own or close):   # same code, same or nearly the same name
+                codes.add(guess)
+            elif any(n in by_name for n in names):
+                codes.add(next(by_name[n] for n in names if n in by_name))
+            else:
+                unmatched.append(f"{c} {name.strip()}")
+    if unmatched:
+        print(f"La Rioja annex: not matched {unmatched}", file=sys.stderr)
     return codes
 
 
@@ -180,7 +205,9 @@ def run_es(p, places, cfg):
         elif key == "asturias_concejos":
             lists[key] = parse_concejos(pdf_text(f), munis)
         elif key == "rioja_small":
-            lists[key] = {c: None for c in parse_rioja(pdf_text(f))}
+            lists[key] = {c: None for c in parse_rioja(pdf_text(f), munis)}
+        elif key == "clm_rent":   # the list gives the maximum: €612 where the rural rate applies, else €500
+            lists[key] = {c: None for c, v in parse_clm(pdf_text(f)).items() if v == 612}
         elif key == "clm_residence":
             lists[key] = {c: f"{v}% here" for c, v in parse_clm(pdf_text(f)).items()}
         else:

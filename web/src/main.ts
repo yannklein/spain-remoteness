@@ -977,7 +977,7 @@ function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string 
   if (mode === 'gems') return gemTooltip(p)
   if (mode === 'housing') return housingTooltip(p, !!housing?.params.buy_all_dwellings)
   if (mode === 'climate') return climateTooltip(p, climate?.params.period ?? '')
-  if (mode === 'incentives') return incentiveTooltip(p, incentives, young)
+  if (mode === 'incentives') return incentiveTooltip(p, incentives, young, country)
   if (mode === 'internet') return internetTooltip(p, tier, mobile, internet)
   if (mode === 'hospitals') {
     return hospitals

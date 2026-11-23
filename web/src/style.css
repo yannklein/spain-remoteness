@@ -147,3 +147,5 @@ details a { color: var(--accent); }
 #tooltip .ko { color: #b3261e; }
 #panel[data-mode='housing'] .tiers { grid-template-columns: repeat(2, 1fr); }
 #panel[data-mode='housing'] .tiers button[data-tier='3'] { display: none; }
+#tooltip .cond { font-size: 11.5px; }
+#tooltip { max-width: 340px; }

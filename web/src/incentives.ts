@@ -14,8 +14,12 @@ export interface IncentivesData {
 }
 
 const KINDS = ['tax', 'grant', 'business'] as const
-/** Offers limited to people under 35/36 show only with "I'm under 35". */
-export const YOUNG_ONLY = (o: Offer) => o[6] !== null && o[6] <= 36
+/** Offers with an age limit (under 35, 36 or 40) show only with the age box ticked. */
+export const YOUNG_ONLY = (o: Offer) => o[6] !== null
+/** A detail ending in "only" means the offer covers part of the municipality: listed, never counted. */
+export const PARTIAL = (detail: string | null) => !!detail && /\bonly$/.test(detail)
+/** Spain: the Basque Country and Navarre have their own tax systems, not researched. */
+const NOT_COVERED = (cc: string, code: string) => cc === 'es' && ['01', '20', '31', '48'].includes(code.slice(0, 2))
 
 export const INCENTIVE_TEXT: Record<Tier, { label: string; noun: string; help: string }> = {
   1: { label: 'Tax breaks', noun: 'tax break', help: 'Yearly income-tax deductions for living, moving, renting or buying here.' },
@@ -36,7 +40,7 @@ export async function loadIncentives(): Promise<IncentivesData | null> {
 export function incentiveProps(row: [number, string | null][], offers: Offer[]): Record<string, number> {
   const p: Record<string, number> = {}
   KINDS.forEach((k, i) => {
-    const of = row.map(([o]) => offers[o]).filter((o) => o[1] === k)
+    const of = row.filter(([, detail]) => !PARTIAL(detail)).map(([o]) => offers[o]).filter((o) => o[1] === k)
     p[`i${i + 1}a`] = of.length
     p[`i${i + 1}o`] = of.filter((o) => !YOUNG_ONLY(o)).length
   })
@@ -57,15 +61,19 @@ export function incentiveLegend(): [string, string][] {
 
 const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!)
 
-export function incentiveTooltip(p: Record<string, unknown>, d: IncentivesData | null | undefined, young: boolean): string {
+export function incentiveTooltip(p: Record<string, unknown>, d: IncentivesData | null | undefined, young: boolean, cc: string): string {
   const name = String(p.name ?? '')
   const pop = typeof p.pop === 'number' ? `${p.pop.toLocaleString('en')} inhabitants` : ''
   const head = `<b>${esc(name)}</b>${pop ? `<br><span class="muted">${pop}</span>` : ''}`
   const row = d?.m[String(p.code)] ?? []
   const shown = row.filter(([i]) => young || !YOUNG_ONLY(d!.offers[i]))
+  const extra = NOT_COVERED(cc, String(p.code))
+    ? `<br><span class="muted">The Basque Country and Navarre have their own tax systems: not covered here</span>`
+    : ''
   if (!shown.length) {
     const hidden = row.length - shown.length
-    return `${head}<br><span class="muted">No incentive found here${hidden ? ` (${hidden} for people under 35: tick the box)` : ''}</span>`
+    if (extra) return head + extra
+    return `${head}<br><span class="muted">No incentive found here${hidden ? ` (${hidden} with an age limit: tick the box)` : ''}</span>`
   }
   const lines = KINDS.map((k, ki) => {
     const items = shown.filter(([i]) => d!.offers[i][1] === k)
@@ -73,10 +81,11 @@ export function incentiveTooltip(p: Record<string, unknown>, d: IncentivesData |
     return `<br><b>${INCENTIVE_TEXT[(ki + 1) as Tier].label}</b>` + items.map(([i, detail]) => {
       const o = d!.offers[i]
       const age = o[6] ? ` <span class="muted">(under ${o[6]})</span>` : ''
-      return `<br>· ${esc(o[3])}: ${esc(o[4])}${detail ? ` <b>(${esc(detail)})</b>` : ''}${age}`
+      return `<br>· ${esc(o[3])}: ${esc(o[4])}${detail ? ` <b>(${esc(detail)})</b>` : ''}${age}` +
+        `<br><span class="muted cond">${esc(o[5])}</span>`
     }).join('')
   })
-  return head + lines.join('') + `<br><span class="muted">Conditions and sources under “How this map is made”</span>`
+  return head + extra + lines.join('') + `<br><span class="muted">Sources and validity under “How this map is made”</span>`
 }
 
 /** Share of people in places under 20,000 with at least one offer of this kind. */
@@ -87,7 +96,7 @@ export function incentiveHeadline(d: IncentivesData, tier: Tier, young: boolean,
     const pop = pops.get(code) ?? 0
     if (pop >= 20000) continue
     total += pop
-    if (row.some(([i]) => d.offers[i][1] === KINDS[tier - 1] && (young || !YOUNG_ONLY(d.offers[i])))) with_ += pop
+    if (row.some(([i, detail]) => !PARTIAL(detail) && d.offers[i][1] === KINDS[tier - 1] && (young || !YOUNG_ONLY(d.offers[i])))) with_ += pop
   }
   if (!total) return null
   const pct = Math.round((with_ / total) * 100)

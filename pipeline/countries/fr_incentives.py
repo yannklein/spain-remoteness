@@ -3,7 +3,7 @@
 France has no tax break for simply living somewhere. The FRR zoning (France Ruralités Revitalisation,
 article 44 quindecies A of the tax code) exempts new businesses and self-employed activities from profit
 tax: 100% for 5 years, then 75%, 50% and 25%; micro-entrepreneurs qualify when creating or taking over a
-business. FRR+ communes widen who is eligible; "FRR bénéficiaire" communes keep the same exemptions.
+business. FRR+ communes widen who is eligible; "FRR bénéficiaire" communes keep the same exemptions on a transitional basis.
 Source: the ministry's list of communes (10 July 2025) and its FAQ (July 2025).
 """
 

@@ -14,6 +14,8 @@ RANGO_X = """                             Asentamientos Rango X, con ISDT < 100
 ABABUJ                                 ABABUJ                        TERUEL
 ABELLA                                 LASPAÚLES                     HUESCA
 ALDEHUELA DE SANTA CRUZ (LA)           SANTA CRUZ DE GRÍO            ZARAGOZA
+VILLANUEVA DEL REBOLLAR DE LA SIERRA   VILLANUEVA DEL REBOLLAR DE LA SIERRA TERUEL
+BLECUA                                 BLECUA Y TORRES               HUESCA
 """
 CONCEJOS = """                  CONCEJO                     TIPOLOGÍA
 Allande                      Concejos en riesgo de despoblamiento
@@ -30,9 +32,12 @@ Abengibre                          ALBACETE       02001        INTENSA DESPOBLAC
 RIOJA = """ Anexo: Relación de municipios de La Rioja con
  derecho a deducción: "Por la adquisición,
  construcción o rehabilitación de vivienda habitual
- en pequeños municipios de La Rioja”
+ en pequeños municipios de La Rioja”, “Por cada hijo de 0 a 3 años”
     Código             Municipio             Código               Municipio      Código                Municipio
       12      Abalos                           630      Fonzaleche                1275     Rodezno
+21/10/2026 - Manual práctico de Renta 2025. Parte 2. Deducciones autonómicas                     Página 524
+                                   Anexo: Relación de municipios de La Rioja con derecho a deducción: "Por la adquisición, const
+      129     Robres del Castillo              1036     Nalda                  913      Lumbreras
  Anexo: Relación de municipios de La Rioja con
  derecho a deducción: "Por adquisición o
     Código              Municipio
@@ -42,6 +47,8 @@ MUNIS = [
     {"code": "44001", "name": "Ababuj", "province": "Teruel", "pop": 73, "lat": 40.55, "lng": -0.81},
     {"code": "22140", "name": "Laspaúles", "province": "Huesca", "pop": 250, "lat": 42.47, "lng": 0.6},
     {"code": "50235", "name": "Santa Cruz de Grío", "province": "Zaragoza", "pop": 150, "lat": 41.37, "lng": -1.43},
+    {"code": "44256", "name": "Villanueva del Rebollar de la Sierra", "province": "Teruel", "pop": 60, "lat": 41.0, "lng": -1.0},
+    {"code": "22066", "name": "Blecua y Torres", "province": "Huesca", "pop": 200, "lat": 42.1, "lng": -0.2},
     {"code": "33001", "name": "Allande", "province": "Asturias", "pop": 1600, "lat": 43.27, "lng": -6.61},
     {"code": "33006", "name": "Bimenes", "province": "Asturias", "pop": 1700, "lat": 43.33, "lng": -5.55},
     {"code": "33044", "name": "Oviedo", "province": "Asturias", "pop": 220000, "lat": 43.36, "lng": -5.85},
@@ -50,7 +57,8 @@ MUNIS = [
 
 def test_rango_x_maps_settlements_to_their_municipality():
     got = ci.parse_rango_x(RANGO_X, MUNIS)
-    assert got == {"44001": None, "22140": "partial", "50235": "partial"}   # Ababuj is its own settlement
+    # Ababuj and Villanueva (one space before the province) are their own settlement; Blecua is Blecua y Torres's
+    assert got == {"44001": None, "22140": "partial", "50235": "partial", "44256": None, "22066": None}
 
 
 def test_concejos_by_name():
@@ -62,14 +70,20 @@ def test_clm_lists_keep_the_best_value_per_code_and_drop_zero():
     assert ci.parse_clm(CLM_PURCHASE) == {"02001": 15}
 
 
-def test_valencia_2025_beneficiaries():
+def test_valencia_fund_this_year_or_the_previous():
     text = 'WKT,id,cod_ine_mun,fondo_coop_mun_2023,fondo_coop_mun_2024,fondo_coop_mun_2025,noms_mun\n' \
-           '"POLY",1,12081,S,S,S,Navajas\n"POLY",2,46250,N,N,N,València\n"POLY",3,3001,N,S,S,Atzúbia\n'
+           '"POLY",1,12081,S,S,S,Navajas\n"POLY",2,46250,N,N,N,València\n"POLY",3,3001,N,S,N,Atzúbia\n'
     assert ci.parse_valencia(text) == {"12081", "03001"}
 
 
-def test_rioja_first_annex_only_with_check_digit_dropped():
-    assert ci.parse_rioja(RIOJA) == {"26001", "26063", "26127"}
+RIOJA_MUNIS = [{"code": c, "name": n} for c, n in (("26001", "Ábalos"), ("26063", "Fonzaleche"), ("26127", "Rodezno"),
+                                                    ("26012", "Almarza de Cameros"), ("26126", "Robres del Castillo"),
+                                                    ("26103", "Nalda"), ("26091", "Lumbreras de Cameros"))]
+
+
+def test_rioja_first_annex_across_page_headers_with_codes_checked_against_names():
+    # 129 is a typo in the manual (it reads as 26012, Almarza): the name wins; "0 a 3 años" is not a row
+    assert ci.parse_rioja(RIOJA, RIOJA_MUNIS) == {"26001", "26063", "26127", "26126", "26103", "26091"}
 
 
 def test_cover_rules():
@@ -91,7 +105,7 @@ def test_output_rows_and_details():
     assert out["m"]["33044"] == []
     header, rows = ci.incentives_csv_rows(out, MUNIS)
     assert header[4:] == ["n_tax", "n_grant", "n_business", "offers"]
-    assert rows[3][4:] == [1, 1, 0, "a; b"]
+    assert rows[5][4:] == [1, 1, 0, "a; b"]
 
 
 @pytest.mark.parametrize("cc", ["es", "fr"])
