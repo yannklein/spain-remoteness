@@ -595,7 +595,7 @@ function refresh(map: maplibregl.Map) {
       ? tier === 1
         ? july
           ? 'How <strong>green in July</strong> the land within 3 km is (satellite vegetation index, 2021–2025).'
-          : 'Share of <strong>nature</strong> (forest, meadow, scrub, wetland) within 3 km of the village centre (satellite land cover).'
+          : 'Share of the <strong>land</strong> within 3 km of the village centre that is nature: forest, meadow, scrub, wetland (satellite land cover).'
         : tier === 2
           ? '<strong>Character</strong>: beautiful-village labels, protected historic centres and listed buildings.'
           : '<strong>Relief</strong>: height difference within 5 km, from flat plains to mountain valleys.'
@@ -630,7 +630,7 @@ function refresh(map: maplibregl.Map) {
         : mode === 'climate'
           ? climate ? climateHeadline(climate, tier) : null
           : mode === 'setting'
-            ? setting ? settingHeadline(setting, tier) : null
+            ? setting ? settingHeadline(setting, tier, july) : null
           : mode === 'incentives'
             ? incentives && geo
               ? incentiveHeadline(incentives, tier, young, new Map(geo.features.map((f) => [String(f.id), Number(f.properties.pop) || 0])))

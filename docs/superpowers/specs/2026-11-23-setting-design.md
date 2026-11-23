@@ -39,3 +39,14 @@ separate signals to combine on the gems map, never one beauty score.
 - **Natura 2000:** too common to discriminate (a quarter of Spain) and too big for the free disk.
 - **"Not spoilt" (motorway, industry, quarry next door):** needs a national OpenStreetMap or Corine extraction. Only the built-up % is shown.
 - **Spanish heritage via Wikidata:** the association's own list replaces Wikidata's incomplete one (85 of 126). Wikidata's BIC and conjunto histórico entries are mostly but not completely located.
+
+## Review fixes (2026-11-23)
+- **Nature and built-up shares** are now shares of the land: water is left out, so coastal villages are no longer penalised (Étretat: 33% to 63%).
+- **Plus Beaux Villages** are located by name (the nearest namesake), with the point as a fallback. Seven villages had landed in a neighbouring commune.
+- **Protected historic centres (France):** a commune counts when its town centre lies inside any part of a protected area. This fixed Draguignan, Toulon and Saint-Brieuc, previously misplaced or missed.
+- **Spanish village matching:** fixed an operator-precedence bug (Trevejo); more region names added.
+- **Spain's Character colours** use labels and historic centres only. Wikidata's BIC counts are uneven between regions, so they stay in the tooltip with a note.
+- **Mérimée:** records with several commune codes now count for the first code.
+- **Wikidata answers are cached,** because the query service throttles hard at times.
+- **Headline:** follows the July checkbox.
+- **Deferred:** network failures read as "sea" in the tile reader; the stage cache doesn't track its settings; MODIS circles near tile edges are cut short.

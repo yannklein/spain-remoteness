@@ -133,8 +133,9 @@ def cover_shares(vals):
     if not len(vals):
         return None
     n = len(vals)
-    return {"nature": np.isin(vals, NATURE).sum() / n * 100, "water": np.isin(vals, WATER).sum() / n * 100,
-            "built": np.isin(vals, BUILT).sum() / n * 100}
+    land = int((~np.isin(vals, WATER)).sum())   # sea and lakes don't count against nature
+    share = lambda k: (np.isin(vals, k).sum() / land * 100) if land else 0.0   # noqa: E731
+    return {"nature": share(NATURE), "water": np.isin(vals, WATER).sum() / n * 100, "built": share(BUILT)}
 
 
 def relief(vals):
@@ -222,6 +223,7 @@ REGIONS = {
     "catalunya": ["08", "17", "25", "43"], "comunidad valenciana": ["03", "12", "46"],
     "comunitat valenciana": ["03", "12", "46"], "extremadura": ["06", "10"], "galicia": ["15", "27", "32", "36"],
     "madrid": ["28"], "comunidad de madrid": ["28"], "murcia": ["30"], "region de murcia": ["30"], "navarra": ["31"],
+    "principado de asturias": ["33"], "islas baleares": ["07"], "comunidad foral de navarra": ["31"],
     "pais vasco": ["01", "20", "48"], "euskadi": ["01", "20", "48"], "la rioja": ["26"],
 }
 # villages that are not municipalities of their own, or named differently -> their municipality's INE code
@@ -232,6 +234,7 @@ PMB_VILLAGES = {
     "bulnes": "33008", "llastres": "33019", "tazones": "33076", "torazu": "33009",
     "castrillo de los polvazares": "24008", "penalba de santiago": "24115", "puentedey": "09216",
     "roda de isabena": "22129", "oseira": "32076", "ponte maceira": "15002", "vilanova dos infantes": "32024",
+    "trevejo": "10210",
 }
 
 
@@ -241,7 +244,7 @@ def match_pmb(cards, munis):
         provs = REGIONS.get(normalise(region))
         key = normalise(name)
         cands = [m for m in munis if (provs is None or m["code"][:2] in provs) and
-                 (key in _names(m["name"]) or any(n.endswith(" " + key) or n.startswith(key + " ") and len(n) - len(key) < 4
+                 (key in _names(m["name"]) or any((n.endswith(" " + key) or n.startswith(key + " ")) and len(n) - len(key) < 4
                                                   for n in _names(m["name"])))]
         if key in PMB_VILLAGES:
             found.add(PMB_VILLAGES[key])
@@ -253,12 +256,46 @@ def match_pmb(cards, munis):
     return found, missing
 
 
+def locate_named(rows, munis, locate):
+    """Communes of labelled villages ({nom, latitude, longitude}): by name (the nearest namesake), else by the point."""
+    from common import haversine_km
+    by_name = {}
+    for m in munis:
+        for n in _names(m["name"]):
+            by_name.setdefault(n, []).append(m)
+    out = set()
+    for r in rows:
+        lat, lng = float(r["latitude"]), float(r["longitude"])
+        cands = by_name.get(normalise(r["nom"]), [])
+        if cands:
+            out.add(min(cands, key=lambda m: haversine_km(lat, lng, m["lat"], m["lng"]))["code"])
+        else:
+            c = locate(lng, lat)
+            if c:
+                out.add(c)
+    return out
+
+
+def centres_inside(geometries, munis):
+    """Codes of municipalities whose town centre lies inside any of the (multi)polygons (lon/lat)."""
+    from shapely.geometry import Point, shape
+    from shapely.strtree import STRtree
+    polys = [shape(g) for g in geometries]
+    tree = STRtree(polys)
+    out = set()
+    for m in munis:
+        pt = Point(m["lng"], m["lat"])
+        if any(polys[i].covers(pt) for i in tree.query(pt)):
+            out.add(m["code"])
+    return out
+
+
 def count_merimee(rows, codes, locate):
     """Listed monuments per commune: by INSEE code (arrondissements -> their city), else by coordinates."""
     from hospitals_fr import commune_of
     out = {}
     for r in rows:
-        raw = (r.get("COG_Insee_lors_de_la_protection") or "").strip()
+        raw = (r.get("COG_Insee_lors_de_la_protection") or "").split(";")[0].strip()   # "13058;13068": the first
         code = commune_of(raw[:2], raw[2:]) if len(raw) == 5 else None
         if code not in codes:
             code = None
@@ -326,40 +363,36 @@ def character_es(p, munis):
                  "heritage": "Wikidata (CC0): conjuntos históricos and Bienes de Interés Cultural"}
 
 
+def lonlat(geom):
+    """The WFS answers EPSG:4326 in latitude, longitude order: swap to longitude, latitude (France: lat > lon)."""
+    def fix(c):
+        return [fix(x) for x in c] if isinstance(c[0], list) else ([c[1], c[0]] if c[0] > c[1] else c)
+    return {"type": geom["type"], "coordinates": fix(geom["coordinates"])}
+
+
 def character_fr(p, munis, locate):
     from hospitals_fr import commune_of
     codes = {m["code"] for m in munis}
     rows = csv.DictReader(io.StringIO(fetch_text("https://ministere-culture.s3.sbg.io.cloud.ovh.net/POP/merimee.csv",
                                                  p.setting_cache / "merimee.csv")), delimiter="|")
     listed = count_merimee(rows, codes, locate)
-    pbvf = set()
-    for r in csv.DictReader(io.StringIO(fetch_text(
+    pbvf = locate_named(csv.DictReader(io.StringIO(fetch_text(
             "https://static.data.gouv.fr/resources/les-plus-beaux-villages-de-france-183-communes-labellisees-geolocalisees/"
-            "20261009-092412/plus-beaux-villages-de-france.csv", p.setting_cache / "pbvf.csv").lstrip("﻿")), delimiter=";"):
-        c = locate(float(r["longitude"]), float(r["latitude"]))
-        if c:
-            pbvf.add(c)
+            "20261009-092412/plus-beaux-villages-de-france.csv", p.setting_cache / "pbvf.csv").lstrip("\ufeff")), delimiter=";"),
+        munis, locate)
     pcc = {r["code_commune"] for r in csv.DictReader(io.StringIO(fetch_text(
         "https://static.data.gouv.fr/resources/petites-cites-de-caractere-de-france-aout-2023/20230906-082506/"
         "petites-cites-de-caracteres-2023.csv", p.setting_cache / "pcc.csv")))}
-    spr = set()
-    start = 0
+    geoms, start = [], 0
     while True:   # protected historic centres: AC4 easements of the Géoportail de l'Urbanisme
         url = ("https://data.geopf.fr/wfs/ows?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&TYPENAMES=wfs_sup:assiette_sup_s"
                f"&OUTPUTFORMAT=application/json&SRSNAME=EPSG:4326&CQL_FILTER=suptype%3D%27ac4%27&COUNT=500&STARTINDEX={start}")
         feats = json.loads(fetch_text(url, p.setting_cache / f"spr_{start}.json"))["features"]
-        for f in feats:
-            ring = f["geometry"]["coordinates"][0] if f["geometry"]["type"] == "Polygon" else f["geometry"]["coordinates"][0][0]
-            lon = sum(x[0] for x in ring) / len(ring)
-            lat = sum(x[1] for x in ring) / len(ring)
-            if lat < lon:   # axis order lat, lon
-                lat, lon = lon, lat
-            c = locate(lon, lat)
-            if c:
-                spr.add(c)
+        geoms += [lonlat(f["geometry"]) for f in feats if f.get("geometry")]
         if len(feats) < 500:
             break
         start += 500
+    spr = centres_inside(geoms, munis)   # a commune counts when its town centre lies inside a protected area
     out = {}
     for c in codes:
         label = "pbvf" if c in pbvf else "pcc" if commune_of(c[:2], c[2:]) in pcc or c in pcc else None
@@ -451,7 +484,7 @@ def main():
     char, char_params = (character_es(p, munis) if args.country == "es" else character_fr(p, munis, index.locate))
     for c, v in char.items():
         values[c].update(v)
-    params = dict(char_params, sources=["ESA WorldCover 2021 (CC BY 4.0)", "MODIS MOD13A1 NDVI (NASA), 2021-2025",
+    params = dict(char_params, sources=["ESA WorldCover 2021 (CC BY 4.0)", "MODIS MOD13A1/MYD13A1 NDVI (NASA), 2021-2025",
                                         "Copernicus DEM GLO-90"])
     out = build_output(places, values, params)
     dump_json(out, p.setting_json, compact=True)

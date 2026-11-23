@@ -1,4 +1,4 @@
-import { dataUrl } from './country'
+import { dataCountry, dataUrl } from './country'
 import type { ExpressionSpecification } from 'maplibre-gl'
 import type { Tier } from './airports'
 
@@ -10,7 +10,7 @@ export interface SettingData {
 }
 
 export const SETTING_TEXT: Record<Tier, { label: string; noun: string; help: string }> = {
-  1: { label: 'Green', noun: 'nature', help: 'Share of forest, meadow, scrub and wetland within 3 km of the village centre.' },
+  1: { label: 'Green', noun: 'nature', help: 'Share of the land within 3 km of the village centre that is forest, meadow, scrub or wetland (water left out).' },
   2: { label: 'Character', noun: 'character', help: 'Beautiful-village labels, protected historic centres and listed buildings.' },
   3: { label: 'Setting', noun: 'relief', help: 'Height difference within 5 km: hills and mountains around.' },
 }
@@ -52,7 +52,11 @@ export const settingKey = (tier: Tier, summer: boolean) => (tier === 1 ? (summer
 
 export function settingFill(tier: Tier, summer: boolean, colors: string[], nodata: string): ExpressionSpecification {
   if (tier === 2) {
-    // character: label > protected historic centre > listed buildings (many / some / none)
+    // character: label > protected historic centre > listed buildings (many / some / none). Spain's listed-building
+    // counts come from Wikidata and are uneven between regions: not used for colour there.
+    if (dataCountry() === 'es') {
+      return ['case', ['!', ['has', 'sh']], nodata, ['has', 'sl'], '#d99a00', ['==', ['get', 'sh'], 1], '#0d366b', '#e7e5e0'] as ExpressionSpecification
+    }
     return ['case',
       ['!', ['has', 'sh']], nodata,
       ['has', 'sl'], '#d99a00',
@@ -70,8 +74,9 @@ export function settingFill(tier: Tier, summer: boolean, colors: string[], nodat
 
 export function settingLegend(tier: Tier, summer: boolean, colors: string[]): [string, string][] {
   if (tier === 2) {
-    return [['#d99a00', 'Beautiful-village label'], ['#0d366b', 'Protected historic centre'],
-      ['#3987e5', '5+ listed buildings'], ['#9ec5f4', '1-4 listed buildings'], ['#e7e5e0', 'None']]
+    const head: [string, string][] = [['#d99a00', 'Beautiful-village label'], ['#0d366b', 'Protected historic centre']]
+    if (dataCountry() === 'es') return [...head, ['#e7e5e0', 'Neither']]
+    return [...head, ['#3987e5', '5+ listed buildings'], ['#9ec5f4', '1-4 listed buildings'], ['#e7e5e0', 'None']]
   }
   const key = settingKey(tier, summer)
   const b = BINS[key]
@@ -96,24 +101,26 @@ export function settingTooltip(p: Record<string, unknown>): string {
     typeof p.sw === 'number' && (p.sw as number) >= 1 ? `Water within 3 km: <b>${pct(p.sw)}</b> (lake, wide river or sea)` : '',
     p.sl ? `<b>${LABELS[String(p.sl)] ?? p.sl}</b>` : '',
     p.sh === 1 ? 'Protected historic centre' : '',
-    typeof p.sc === 'number' && p.sc > 0 ? `${p.sc} listed building${p.sc === 1 ? '' : 's'}` : '',
+    typeof p.sc === 'number' && p.sc > 0
+      ? `${p.sc} listed building${p.sc === 1 ? '' : 's'}${dataCountry() === 'es' ? ' <span class="muted">(Wikidata, incomplete in some regions)</span>' : ''}`
+      : '',
   ].filter(Boolean)
   return head + lines.map((l) => `<br>${l}`).join('')
 }
 
 /** Share of people in places under 20,000 with at least 50% nature within 3 km (or the tier's own measure). */
-export function settingHeadline(d: SettingData, tier: Tier): string | null {
+export function settingHeadline(d: SettingData, tier: Tier, summer = false): string | null {
   let total = 0
   let yes = 0
   for (const r of Object.values(d.m)) {
     const pop = (r[9] as number) ?? 0
     if (pop >= 20000) continue
     total += pop
-    const hit = tier === 1 ? (r[0] as number) >= 50 : tier === 2 ? Boolean(r[6]) || r[7] === 1 : (r[4] as number) >= 300
+    const hit = tier === 1 ? (summer ? (r[3] as number) >= 0.5 : (r[0] as number) >= 50) : tier === 2 ? Boolean(r[6]) || r[7] === 1 : (r[4] as number) >= 300
     if (hit) yes += pop
   }
   if (!total) return null
   const pct = Math.round((yes / total) * 100)
-  const what = tier === 1 ? 'have at least half nature within 3 km' : tier === 2 ? 'live in a labelled village or a protected historic centre' : 'have hills or mountains around (300 m+ within 5 km)'
+  const what = tier === 1 ? (summer ? 'have land still green in July (vegetation index 0.5+)' : 'have at least half of the land around as nature (3 km)') : tier === 2 ? 'live in a labelled village or a protected historic centre' : 'have hills or mountains around (300 m+ within 5 km)'
   return `<b>${pct}%</b> of the people in places under 20,000 ${what}.`
 }
