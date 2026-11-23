@@ -39,6 +39,17 @@ import {
   type HospitalsData,
 } from './hospitals'
 import {
+  LABELS,
+  SETTING_TEXT,
+  loadSetting,
+  settingFill,
+  settingHeadline,
+  settingLegend,
+  settingProps,
+  settingTooltip,
+  type SettingData,
+} from './setting'
+import {
   INCENTIVE_TEXT,
   incentiveFill,
   incentiveHeadline,
@@ -75,6 +86,9 @@ import { dataUrl, setDataCountry, viaText, withCountry, type Country, type Gatew
 import {
   DEFAULTS as GEM_DEFAULTS,
   BUY_CHOICES,
+  GREEN_CHOICES,
+  NATURE_CHOICES,
+  RELIEF_CHOICES,
   FROST_CHOICES,
   HEAT_CHOICES,
   HOSP_TIME_CHOICES,
@@ -95,7 +109,7 @@ import {
   type NetKind,
 } from './gems'
 
-type Mode = 'cities' | 'airports' | 'internet' | 'hospitals' | 'housing' | 'climate' | 'incentives' | 'gems'
+type Mode = 'cities' | 'airports' | 'internet' | 'hospitals' | 'housing' | 'climate' | 'incentives' | 'setting' | 'gems'
 
 // [code, name, tier, lat, lng, metro, population]
 type City = [string, string, number, number, number, string | null, number | null]
@@ -150,6 +164,7 @@ function title(m: Mode): string {
     housing: `What does housing cost in ${where}?`,
     climate: `How hot and cold is ${where}?`,
     incentives: `What do you get for moving to ${where}?`,
+    setting: `How green and picturesque is ${where}?`,
     gems: `Where could you live and work remotely in ${where}?`,
   }[m]
 }
@@ -177,14 +192,14 @@ const FALLBACK_STYLE: StyleSpecification = {
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T
 
-const MODES: Mode[] = ['cities', 'airports', 'internet', 'hospitals', 'housing', 'climate', 'incentives', 'gems']
+const MODES: Mode[] = ['cities', 'airports', 'internet', 'hospitals', 'housing', 'climate', 'incentives', 'setting', 'gems']
 // hash: "#fr/hospitals", "#es/airports", "#fr/gems?pop=20000&…"; old links ("#airports") mean Spain
 const [hashPath, hashQuery = ''] = location.hash.slice(1).split('?')
 const [hashCountry, hashMode] = hashPath.includes('/') ? hashPath.split('/') : ['es', hashPath]
 let country: Country = hashCountry === 'fr' ? 'fr' : 'es'
 setDataCountry(country)
 let mode: Mode = MODES.find((m) => m === hashMode) ?? 'cities'
-const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1, hospitals: 2, housing: 1, climate: 1, incentives: 1, gems: 2 }
+const tiers: Record<Mode, Tier> = { cities: 2, airports: 2, internet: 1, hospitals: 2, housing: 1, climate: 1, incentives: 1, setting: 1, gems: 2 }
 let gemFilters: GemFilters = mode === 'gems' ? parseHash(hashQuery) : { ...GEM_DEFAULTS }
 let tier: Tier = tiers[mode]
 let summer = false
@@ -195,6 +210,8 @@ let hospitals: HospitalsData | null | undefined
 let housing: HousingData | null | undefined
 let climate: ClimateData | null | undefined
 let incentives: IncentivesData | null | undefined
+let setting: SettingData | null | undefined
+let july = false
 let young = false
 let flats = false
 const muniNames = new Map<string, string>()
@@ -256,6 +273,7 @@ function currentFill(): ExpressionSpecification {
   if (mode === 'housing') return housingFill(tier, flats, COLORS.slice(1), INTERNET_NODATA)
   if (mode === 'climate') return climateFill(tier, COLORS.slice(1), INTERNET_NODATA)
   if (mode === 'incentives') return incentiveFill(tier, young, INTERNET_NODATA)
+  if (mode === 'setting') return settingFill(tier, july, COLORS.slice(1), INTERNET_NODATA)
   return fillColor(valueKey(), mode === 'cities' ? tier : null)
 }
 
@@ -348,6 +366,21 @@ async function ensureAirports(map: maplibregl.Map) {
   src?.setData(geo)
 }
 
+/** Load setting.json once and merge its values into the municipality features. */
+async function ensureSetting(map: maplibregl.Map) {
+  if (setting !== undefined || loading) return
+  const g = gen
+  const got = await loadSetting()
+  if (g !== gen || loading) return // the country changed meanwhile: these values belong to the other one
+  setting = got
+  if (!setting || !geo) return
+  for (const f of geo.features) {
+    const row = setting.m[String(f.id)]
+    if (row) Object.assign(f.properties, settingProps(row))
+  }
+  ;(map.getSource('munis') as maplibregl.GeoJSONSource | undefined)?.setData(geo)
+}
+
 /** Load incentives.json once and merge its counts into the municipality features. */
 async function ensureIncentives(map: maplibregl.Map) {
   if (incentives !== undefined || loading) return
@@ -410,7 +443,7 @@ async function ensureInternet(map: maplibregl.Map) {
 }
 
 function destGeoJSON(): FeatureCollection {
-  if (mode === 'internet' || mode === 'gems' || mode === 'housing' || mode === 'climate' || mode === 'incentives') return { type: 'FeatureCollection', features: [] }
+  if (mode === 'internet' || mode === 'gems' || mode === 'housing' || mode === 'climate' || mode === 'incentives' || mode === 'setting') return { type: 'FeatureCollection', features: [] }
   if (mode === 'hospitals') return hospitals ? hospitalMarkers(hospitals, tier) : { type: 'FeatureCollection', features: [] }
   if (mode === 'airports') return airports ? airportMarkers(airports, tier, summer) : { type: 'FeatureCollection', features: [] }
   return cityGeoJSON(tier)
@@ -462,6 +495,10 @@ function renderLegend() {
       COLORS.slice(1).map((c, i) => item(c, labels[i])).join('') +
       item(INTERNET_NODATA, 'Not enough speed tests') +
       `<div class="wide"><i class="hatched" style="background-color:${COLORS[3]}"></i>Hatched: estimated from speed tests within ${internet?.params.estimate_radius_km ?? 10} km</div>`
+    return
+  }
+  if (mode === 'setting') {
+    $('#legend').innerHTML = settingLegend(tier, july, COLORS.slice(1)).map(([c, l]) => item(c, l)).join('') + item(INTERNET_NODATA, 'No data')
     return
   }
   if (mode === 'incentives') {
@@ -525,6 +562,7 @@ function refresh(map: maplibregl.Map) {
     housing: HOUSING_TEXT,
     climate: CLIMATE_TEXT,
     incentives: INCENTIVE_TEXT,
+    setting: SETTING_TEXT,
     gems: CITY_TEXT[country],
   }[mode]
   const counts: (number | null)[] =
@@ -547,11 +585,20 @@ function refresh(map: maplibregl.Map) {
   $('#mobile-wrap').hidden = mode !== 'internet'
   // Spain's price to buy covers any home: the flats switch would change nothing there
   $('#young-wrap').hidden = mode !== 'incentives'
+  $('#july-wrap').hidden = mode !== 'setting' || tier !== 1
   $('#flats-wrap').hidden = mode !== 'housing' || (tier === 2 && !!housing?.params.buy_all_dwellings)
   const noun = `<strong>${text[tier].noun.replace(/^an? /, '')}</strong>`
   $('#lead').innerHTML =
     mode === 'gems'
       ? 'Small places that meet <strong>all</strong> your needs (gold) or miss just one (pale). Tune the thresholds below.'
+      : mode === 'setting'
+      ? tier === 1
+        ? july
+          ? 'How <strong>green in July</strong> the land within 3 km is (satellite vegetation index, 2021–2025).'
+          : 'Share of <strong>nature</strong> (forest, meadow, scrub, wetland) within 3 km of the village centre (satellite land cover).'
+        : tier === 2
+          ? '<strong>Character</strong>: beautiful-village labels, protected historic centres and listed buildings.'
+          : '<strong>Relief</strong>: height difference within 5 km, from flat plains to mountain valleys.'
       : mode === 'incentives'
       ? country === 'es'
         ? `Regional <strong>${INCENTIVE_TEXT[tier].label.toLowerCase()}</strong> for this municipality, from official texts checked November 2026.`
@@ -573,7 +620,7 @@ function refresh(map: maplibregl.Map) {
 
   if (mode === 'gems') renderGemControls()
   // gems need all four datasets: judging before they arrive would show wrong counts
-  const gemsLoading = mode === 'gems' && [airports, internet, hospitals, housing, climate, incentives].some((x) => x === undefined)
+  const gemsLoading = mode === 'gems' && [airports, internet, hospitals, housing, climate, incentives, setting].some((x) => x === undefined)
   const gemResult = mode === 'gems' && geo && !loading && !gemsLoading ? computeGems() : null
   const h =
     mode === 'gems'
@@ -582,6 +629,8 @@ function refresh(map: maplibregl.Map) {
         ? housing ? housingHeadline(housing, tier, flats) : null
         : mode === 'climate'
           ? climate ? climateHeadline(climate, tier) : null
+          : mode === 'setting'
+            ? setting ? settingHeadline(setting, tier) : null
           : mode === 'incentives'
             ? incentives && geo
               ? incentiveHeadline(incentives, tier, young, new Map(geo.features.map((f) => [String(f.id), Number(f.properties.pop) || 0])))
@@ -608,11 +657,12 @@ function refresh(map: maplibregl.Map) {
   }
   // only the datasets an active criterion reads (a dataset not published yet must not alarm anyone)
   const loadedNull = { cities: !data, airports: airports === null, internet: internet === null, hospitals: hospitals === null,
-    housing: housing === null, climate: climate === null, incentives: incentives === null }
+    housing: housing === null, climate: climate === null, incentives: incentives === null, setting: setting === null }
   const gemsMissing = neededData(gemFilters).filter((d) => loadedNull[d])
   const missing = {
     cities: !data, airports: airports === null, internet: internet === null, hospitals: hospitals === null,
-    housing: housing === null, climate: climate === null, incentives: incentives === null, gems: gemsMissing.length > 0,
+    housing: housing === null, climate: climate === null, incentives: incentives === null, setting: setting === null,
+    gems: gemsMissing.length > 0,
   }[mode]
   s.hidden = !missing
   s.innerHTML = {
@@ -623,6 +673,7 @@ function refresh(map: maplibregl.Map) {
     housing: 'Housing prices have not been computed yet. Run <code>python3 pipeline/compute_housing.py</code>.',
     climate: 'Climate has not been computed yet. Run <code>python3 pipeline/compute_climate.py</code>.',
     incentives: 'Incentives have not been computed yet. Run <code>python3 pipeline/compute_incentives.py</code>.',
+    setting: 'Setting has not been computed yet. Run <code>python3 pipeline/compute_setting.py</code>.',
     gems: `Missing data (${gemsMissing.join(', ')}): those criteria fail everywhere.`,
   }[mode]
 
@@ -642,6 +693,8 @@ function refresh(map: maplibregl.Map) {
       `Computed ${fmtDate(hospitals.generated_at)} · ${hospitals.hospitals.length} hospitals · ${hospitals.params.source}` +
       (hospitals.params.population_year ? ` · population ${hospitals.params.population_year}` : '')
     $('#hospital-notes').innerHTML = hospitals.params.notes.map((n) => `<li>${n}</li>`).join('')
+  } else if (mode === 'setting' && setting) {
+    meta.textContent = `Computed ${fmtDate(setting.generated_at)} · ${setting.params.sources.join(' · ')} · ${setting.params.labels} · ${setting.params.heritage}`
   } else if (mode === 'incentives' && incentives) {
     meta.textContent = `Computed ${fmtDate(incentives.generated_at)} · ${incentives.offers.length} offers · checked ${incentives.params.checked}`
     $('#incentive-offers').innerHTML = offerList(incentives)
@@ -800,11 +853,20 @@ function renderGemControls() {
   }
   dayLimit('heat', HEAT_CHOICES, 10)
   dayLimit('frost', FROST_CHOICES, 20)
+  const minimum = (key: 'nature' | 'green' | 'relief', choices: number[], d: number, fmt: (v: number) => string) => {
+    inp(`#g-${key}-on`).checked = f[key] !== null
+    options(sel(`#g-${key}-min`), choices.map((v) => [String(v), fmt(v)]), String(withChoice(choices, f[key] ?? shownNum(`#g-${key}-min`) ?? d)))
+  }
+  minimum('nature', NATURE_CHOICES, 50, (v) => `${v}%`)
+  minimum('green', GREEN_CHOICES, 0.5, (v) => v.toFixed(1))
+  minimum('relief', RELIEF_CHOICES, 300, (v) => `${v} m`)
+  inp('#g-char-on').checked = f.char
+  inp('#g-water-on').checked = f.water
   inp('#g-incent-on').checked = f.incent !== null
   if (f.incent) sel('#g-incent-kind').value = f.incent
   for (const [on, row] of [['#g-net-on', 'net'], ['#g-city-on', 'city'], ['#g-air-on', 'air'], ['#g-hosp-on', 'hosp'],
     ['#g-rent-on', 'rent'], ['#g-buy-on', 'buy'], ['#g-heat-on', 'heat'], ['#g-frost-on', 'frost'],
-    ['#g-incent-on', 'incent']] as const) {
+    ['#g-incent-on', 'incent'], ['#g-nature-on', 'nature'], ['#g-green-on', 'green'], ['#g-relief-on', 'relief']] as const) {
     inp(on).closest('.g-row')!.classList.toggle('off', f[row] === null)
   }
 }
@@ -834,6 +896,11 @@ function readGemControls(): GemFilters {
     heat: inp('#g-heat-on').checked ? Number(val('#g-heat-max')) : null,
     frost: inp('#g-frost-on').checked ? Number(val('#g-frost-max')) : null,
     incent: inp('#g-incent-on').checked ? (val('#g-incent-kind') as IncentiveKind) : null,
+    nature: inp('#g-nature-on').checked ? Number(val('#g-nature-min')) : null,
+    green: inp('#g-green-on').checked ? Number(val('#g-green-min')) : null,
+    char: inp('#g-char-on').checked,
+    relief: inp('#g-relief-on').checked ? Number(val('#g-relief-min')) : null,
+    water: inp('#g-water-on').checked,
   }
 }
 
@@ -844,6 +911,7 @@ function gemTooltip(p: Record<string, unknown>): string {
   const label: Record<Check['crit'], string> = {
     net: 'Internet', city: 'City', air: 'Airport', hosp: 'Hospital', rent: 'Rent', buy: 'Price to buy',
     heat: 'Hot days (≥ 35 °C)', frost: 'Frost days', incent: 'Incentives',
+    nature: 'Nature within 3 km', green: 'Green in July', char: 'Character', relief: 'Relief within 5 km', water: 'Water nearby',
   }
   const failed = v.checks.filter((c) => !c.ok)
   const verdict =
@@ -878,6 +946,13 @@ function gemTooltip(p: Record<string, unknown>): string {
     if (c.crit === 'net') {
       value = c.value === null ? 'no speed data' : `${c.est ? '≈ ' : ''}${Math.round(c.value)} Mbps${c.est ? ' (estimate)' : ''}`
       limit = `≥ ${f.net!.min} Mbps`
+    } else if (c.crit === 'nature' || c.crit === 'green' || c.crit === 'relief' || c.crit === 'water') {
+      const fmt = (v: number) => (c.crit === 'green' ? `NDVI ${v.toFixed(2)}` : c.crit === 'relief' ? `${Math.round(v)} m` : `${Math.round(v)}%`)
+      value = c.value === null ? 'no data' : fmt(c.value)
+      limit = c.crit === 'water' ? 'at least 1%' : `at least ${fmt((f[c.crit] as number))}`
+    } else if (c.crit === 'char') {
+      value = c.value === null ? 'no data' : p.sl ? (LABELS[String(p.sl)] ?? String(p.sl)) : p.sh === 1 ? 'protected historic centre' : 'none'
+      limit = 'a label or a protected historic centre'
     } else if (c.crit === 'incent') {
       value = c.value === null ? 'no data' : `${c.value} offer${c.value === 1 ? '' : 's'}`
       limit = `at least 1 ${f.incent === 'any' ? 'offer' : INCENTIVE_TEXT[({ tax: 1, grant: 2, business: 3 } as const)[f.incent as 'tax']].noun}`
@@ -927,7 +1002,7 @@ async function setCountry(map: maplibregl.Map, cc: Country, padding: () => mapli
   country = cc
   setDataCountry(cc)
   loading = true
-  airports = internet = hospitals = housing = climate = incentives = undefined
+  airports = internet = hospitals = housing = climate = incentives = setting = undefined
   hideTooltip()
   refresh(map)
   const loaded = await loadData()
@@ -965,9 +1040,10 @@ async function setMode(map: maplibregl.Map, m: Mode) {
   if (m === 'housing') await ensureHousing(map)
   if (m === 'climate') await ensureClimate(map)
   if (m === 'incentives') await ensureIncentives(map)
+  if (m === 'setting') await ensureSetting(map)
   if (m === 'gems') {
     await Promise.all([ensureAirports(map), ensureInternet(map), ensureHospitals(map), ensureHousing(map), ensureClimate(map),
-      ensureIncentives(map)])
+      ensureIncentives(map), ensureSetting(map)])
   }
   if (mode !== m) return // another mode was chosen while this one loaded
   refresh(map)
@@ -978,6 +1054,7 @@ function tooltipHTML(p: Record<string, unknown>, at?: [number, number]): string 
   if (mode === 'housing') return housingTooltip(p, !!housing?.params.buy_all_dwellings)
   if (mode === 'climate') return climateTooltip(p, climate?.params.period ?? '')
   if (mode === 'incentives') return incentiveTooltip(p, incentives, young, country)
+  if (mode === 'setting') return settingTooltip(p)
   if (mode === 'internet') return internetTooltip(p, tier, mobile, internet)
   if (mode === 'hospitals') {
     return hospitals
@@ -1031,6 +1108,7 @@ async function main() {
   mobile = $<HTMLInputElement>('#mobile').checked
   flats = $<HTMLInputElement>('#flats').checked
   young = $<HTMLInputElement>('#young').checked
+  july = $<HTMLInputElement>('#july').checked
   const [style, loaded] = await Promise.all([loadStyle(), loadData()])
   geo = loaded.geo
   data = loaded.cities
@@ -1065,7 +1143,7 @@ async function main() {
       data: geo!,
       promoteId: 'code',
       attribution:
-        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID / Arcep · Hospitals © Ministerio de Sanidad / FINESS, DREES · Communes © INSEE, Etalab · Housing © MIVAU, ANIL, DVF · Climate © Copernicus (C3S, ERA5) · Incentives © AEAT, regional governments, ANCT',
+        'Travel times © <a href="https://traveltime.com">TravelTime</a> · Boundaries © IGN · Population © INE · Stops © OpenStreetMap · Speed tests © Ookla · Coverage © SETID / Arcep · Hospitals © Ministerio de Sanidad / FINESS, DREES · Communes © INSEE, Etalab · Housing © MIVAU, ANIL, DVF · Climate © Copernicus (C3S, ERA5) · Incentives © AEAT, regional governments, ANCT · Setting © ESA WorldCover, NASA MODIS, Copernicus DEM, Wikidata, Ministère de la Culture',
     })
     map.addSource('provinces', { type: 'geojson', data: provincesGeo! })
     map.addSource('dests', { type: 'geojson', data: destGeoJSON() })
@@ -1166,6 +1244,10 @@ async function main() {
   )
   $<HTMLInputElement>('#mobile').addEventListener('change', (e) => {
     mobile = (e.target as HTMLInputElement).checked
+    refresh(map)
+  })
+  $<HTMLInputElement>('#july').addEventListener('change', (e) => {
+    july = (e.target as HTMLInputElement).checked
     refresh(map)
   })
   $<HTMLInputElement>('#young').addEventListener('change', (e) => {

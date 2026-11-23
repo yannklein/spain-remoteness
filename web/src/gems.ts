@@ -24,6 +24,11 @@ export interface GemFilters {
   heat: number | null // most days a year at or above 35 °C
   frost: number | null // most frost days a year
   incent: IncentiveKind | null // at least one offer of this kind (open to all ages)
+  nature: number | null // at least this % of nature (forest, meadow, scrub, wetland) within 3 km
+  green: number | null // at least this July vegetation index (NDVI) within 3 km
+  char: boolean // a beautiful-village label or a protected historic centre
+  relief: number | null // at least this many metres between the highest and lowest point within 5 km
+  water: boolean // a lake, wide river or the sea within 3 km (at least 1% water)
 }
 
 export const DEFAULTS: GemFilters = {
@@ -39,6 +44,11 @@ export const DEFAULTS: GemFilters = {
   heat: null,
   frost: null,
   incent: null,
+  nature: null,
+  green: null,
+  char: false,
+  relief: null,
+  water: false,
 }
 
 export const POP_CHOICES = [1000, 2000, 5000, 10000, 20000, 50000]
@@ -49,8 +59,11 @@ export const RENT_CHOICES = [4, 5, 6, 7, 8, 9, 10, 12, 15]
 export const BUY_CHOICES = [500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000]
 export const HEAT_CHOICES = [1, 3, 5, 10, 20, 30, 50]
 export const FROST_CHOICES = [1, 5, 10, 20, 40, 60, 90]
+export const NATURE_CHOICES = [25, 40, 50, 60, 75, 90]
+export const GREEN_CHOICES = [0.3, 0.4, 0.5, 0.6, 0.7]
+export const RELIEF_CHOICES = [100, 200, 300, 500, 800]
 
-export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy' | 'heat' | 'frost' | 'incent'
+export type Crit = 'net' | 'city' | 'air' | 'hosp' | 'rent' | 'buy' | 'heat' | 'frost' | 'incent' | 'nature' | 'green' | 'char' | 'relief' | 'water'
 /** scope (housing): 0 own figure, 1 nearby estimate, 2 province average, 3 area model */
 export interface Check { crit: Crit; value: number | null; ok: boolean; est?: boolean; scope?: number }
 /** 0 other, 1 near miss (exactly one criterion missed), 2 gem, 3 too big to be a gem. */
@@ -110,6 +123,17 @@ export function judge(p: Record<string, unknown>, f: GemFilters): Verdict {
     const value = pick.some((c) => c === null) ? null : pick.reduce((a: number, b) => a + (b as number), 0)
     checks.push({ crit: 'incent', value, ok: value !== null && value >= 1 })
   }
+  // setting: sn nature %, sv July NDVI, sr relief m, sw water %, sl label, sh protected historic centre
+  const atLeast = (crit: Crit, value: number | null, min: number) => checks.push({ crit, value, ok: value !== null && value >= min })
+  if (f.nature !== null) atLeast('nature', num(p.sn), f.nature)
+  if (f.green !== null) atLeast('green', num(p.sv), f.green)
+  if (f.relief !== null) atLeast('relief', num(p.sr), f.relief)
+  if (f.water) atLeast('water', num(p.sw), 1)
+  if (f.char) {
+    const h = num(p.sh)
+    const value = h === null ? null : (p.sl ? 1 : 0) + h
+    checks.push({ crit: 'char', value, ok: value !== null && value >= 1 })
+  }
 
   const pop = num(p.pop)
   if (f.pop !== null && pop !== null && pop > f.pop) return { cls: 3, checks }
@@ -134,6 +158,11 @@ export function formatHash(f: GemFilters): string {
     `heat=${f.heat ?? 'off'}`,
     `frost=${f.frost ?? 'off'}`,
     `incent=${f.incent ?? 'off'}`,
+    `nature=${f.nature ?? 'off'}`,
+    `green=${f.green ?? 'off'}`,
+    `char=${f.char ? 1 : 0}`,
+    `relief=${f.relief ?? 'off'}`,
+    `water=${f.water ? 1 : 0}`,
   ].join('&')
 }
 
@@ -200,10 +229,15 @@ export function parseHash(query: string): GemFilters {
     heat: parseDays(q.get('heat'), d.heat),
     frost: parseDays(q.get('frost'), d.frost),
     incent: parseIncent(q.get('incent'), d.incent),
+    nature: parseDays(q.get('nature'), d.nature),
+    green: parseDays(q.get('green'), d.green),
+    char: parseBool(q.get('char'), d.char),
+    relief: parseDays(q.get('relief'), d.relief),
+    water: parseBool(q.get('water'), d.water),
   }
 }
 
-export type Dataset = 'cities' | 'airports' | 'internet' | 'hospitals' | 'housing' | 'climate' | 'incentives'
+export type Dataset = 'cities' | 'airports' | 'internet' | 'hospitals' | 'housing' | 'climate' | 'incentives' | 'setting'
 
 /** Datasets the active criteria read (cities always: it carries the population). */
 export function neededData(f: GemFilters): Dataset[] {
@@ -214,5 +248,6 @@ export function neededData(f: GemFilters): Dataset[] {
   if (f.rent || f.buy) out.push('housing')
   if (f.heat !== null || f.frost !== null) out.push('climate')
   if (f.incent !== null) out.push('incentives')
+  if (f.nature !== null || f.green !== null || f.char || f.relief !== null || f.water) out.push('setting')
   return out
 }

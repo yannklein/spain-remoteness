@@ -23,6 +23,7 @@ def paths(cc):
         airports_json=out / "airports.json", airports_csv=out / "airports.csv", airports_cache=cache / "airports",
         internet_json=out / "internet.json", internet_csv=out / "internet.csv", internet_cache=cache / "internet",
         hospitals_json=out / "hospitals.json", hospitals_csv=out / "hospitals.csv", hospitals_cache=cache / "hospitals",
+        setting_json=out / "setting.json", setting_csv=out / "setting.csv", setting_cache=cache / "setting",
         incentives_json=out / "incentives.json", incentives_csv=out / "incentives.csv", incentives_cache=cache / "incentives",
         climate_json=out / "climate.json", climate_csv=out / "climate.csv", climate_cache=cache / "climate",
         housing_json=out / "housing.json", housing_csv=out / "housing.csv", housing_cache=cache / "housing",

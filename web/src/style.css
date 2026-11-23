@@ -59,7 +59,7 @@ html, body { margin: 0; height: 100%; }
 .countries button[aria-checked='true'] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
 
 .modes {
-  display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 10px;
+  display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;
   background: #f1f0ed; border-radius: 7px; padding: 2px; gap: 2px;
 }
 .modes button {
@@ -149,3 +149,4 @@ details a { color: var(--accent); }
 #panel[data-mode='housing'] .tiers button[data-tier='3'] { display: none; }
 #tooltip .cond { font-size: 11.5px; }
 #tooltip { max-width: 340px; }
+.gems .g-check { margin-left: 0; }

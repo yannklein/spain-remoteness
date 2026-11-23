@@ -23,6 +23,7 @@
         <button role="radio" data-mode="housing">Housing</button>
         <button role="radio" data-mode="climate">Climate</button>
         <button role="radio" data-mode="incentives">Incentives</button>
+        <button role="radio" data-mode="setting">Setting</button>
         <button role="radio" data-mode="gems">Gems</button>
       </div>
       <h1 id="title">How far is rural Spain from a city?</h1>
@@ -39,6 +40,9 @@
       <label id="summer-wrap" class="summer" hidden>
         <input type="checkbox" id="summer" autocomplete="off" /> Include seasonal routes
         <span class="muted" id="summer-note">(summer-only, or winter-only in Canarias)</span>
+      </label>
+      <label id="july-wrap" class="summer" hidden>
+        <input type="checkbox" id="july" autocomplete="off" /> How green in July instead
       </label>
       <label id="young-wrap" class="summer" hidden>
         <input type="checkbox" id="young" autocomplete="off" /> Include offers with an age limit <span class="muted">(under 35, 36 or 40)</span>
@@ -100,6 +104,20 @@
             <option value="tax">tax break</option><option value="grant">grant</option><option value="business">business incentive</option><option value="any">offer of any kind</option>
           </select></span>
         </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-nature-on" autocomplete="off" /> Nature</label>
+          <span>≥ <select id="g-nature-min" aria-label="Least nature within 3 km"></select> within 3 km</span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-green-on" autocomplete="off" /> July green</label>
+          <span>vegetation index ≥ <select id="g-green-min" aria-label="Least July greenness"></select></span>
+        </div>
+        <div class="g-row">
+          <label class="g-name"><input type="checkbox" id="g-relief-on" autocomplete="off" /> Relief</label>
+          <span>≥ <select id="g-relief-min" aria-label="Least height difference within 5 km"></select> within 5 km</span>
+        </div>
+        <label class="g-sub g-check"><input type="checkbox" id="g-char-on" autocomplete="off" /> Character: a beautiful-village label or a protected historic centre</label>
+        <label class="g-sub g-check"><input type="checkbox" id="g-water-on" autocomplete="off" /> Water nearby: a lake, wide river or the sea within 3 km</label>
         <button type="button" id="g-reset" class="g-reset">Reset to defaults</button>
       </form>
 
@@ -161,6 +179,12 @@
           <li>Heat and frost come from the Climate map (2015–2024 averages, Copernicus).</li>
           <li>Rent and price to buy come from the Housing map: a missing figure fails the criterion; estimates count and say so in the tooltip (in Spain, the price to buy is the province average for villages).</li>
           <li>Your settings are kept in the page address: bookmark or share it to come back to the same filters.</li>
+        </ul>
+        <ul data-for="setting" hidden>
+          <li><b>Green</b>: share of forest, shrubland, grassland and wetland within 3 km of the village centre, from ESA WorldCover 2021 (10 m satellite land cover, read at 80 m). Farmland, bare rock and built-up land don't count. “How green in July” is the mean satellite vegetation index (NDVI, MODIS 500 m) within 3 km in July 2021–2025: about 0.2 is dry and brown, 0.6 and above lush.</li>
+          <li><b>Setting</b>: height difference between the highest and lowest point within 5 km (Copernicus DEM, 90 m). Water nearby counts lakes, wide rivers and the sea within 3 km; narrow rivers are too thin to show at this resolution.</li>
+          <li data-for="setting" data-country="es"><b>Character (Spain)</b>: Los Pueblos más Bonitos de España (the association's list), historic ensembles (“conjunto histórico”) and buildings of cultural interest (BIC) located in the municipality, from Wikidata, which is mostly but not completely filled in.</li>
+          <li data-for="setting" data-country="fr"><b>Character (France)</b>: Plus Beaux Villages de France, Petites Cités de Caractère (2023), sites patrimoniaux remarquables (protected historic centres, from the Géoportail de l'Urbanisme) and historic monuments (Mérimée, Ministère de la Culture).</li>
         </ul>
         <ul data-for="incentives" data-country="es" hidden>
           <li>Tax breaks are the regional income-tax deductions tied to where you live, for the 2025 tax year (filed in 2026), from the tax agency's manual of regional deductions and the official municipality lists it links to. Amounts are as the law states them: “15% of the regional share” depends on your tax bill.</li>

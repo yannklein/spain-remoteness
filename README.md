@@ -279,6 +279,23 @@ Change Service information (CC BY 4.0).
 The PDFs are read with `pdftotext` (poppler). `incentives.csv`: `n_tax`, `n_grant`, `n_business` and the offer ids.
 Offers change every year: re-check the sources before relying on them.
 
+## Setting map (green and picturesque)
+
+`pipeline/compute_setting.py --country es|fr` (no account; `rasterio` reads the cloud-optimised rasters remotely, tile by
+tile, so nothing large is stored; each stage is cached in `.cache/<cc>/setting/stage_*.json`):
+
+- **Green**: % of forest, shrubland, grassland and wetland within 3 km of the town centre (ESA WorldCover 2021, CC BY 4.0,
+  read at 80 m from the 10 m tiles); built-up % and water % likewise. **July greenness**: mean NDVI within 3 km of the
+  MODIS 500 m 16-day composites overlapping July 2021–2025 (NASA, via the Microsoft Planetary Computer).
+- **Setting**: relief = highest minus lowest point within 5 km, and the village's elevation (Copernicus DEM GLO-90).
+- **Character**: Spain: Los Pueblos más Bonitos de España (the association's list), conjuntos históricos and Bienes de
+  Interés Cultural from Wikidata (CC0); France: Plus Beaux Villages de France, Petites Cités de Caractère (2023), sites
+  patrimoniaux remarquables (AC4 easements of the Géoportail de l'Urbanisme) and monuments historiques (Mérimée).
+
+`setting.csv`: `nature_pct`, `water_pct`, `built_pct`, `ndvi_july`, `relief_m`, `elevation_m`, `label`
+(`pmb`, `pbvf`, `pcc`), `historic_centre`, `listed_buildings`. Flower towns (Villes et Villages Fleuris) are left out:
+the only national open list (2022) holds 404 of the 4,000+ labelled communes.
+
 ## Cities and airports across the border
 
 A town near the border often uses the city or airport on the other side (Hendaye → San Sebastián, Annemasse →
